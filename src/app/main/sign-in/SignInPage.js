@@ -10,8 +10,6 @@ import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 import _ from '@lodash';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import AvatarGroup from '@mui/material/AvatarGroup';
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import { useEffect } from 'react';
@@ -239,24 +237,6 @@ function SignInPage() {
           <div className="mt-24 text-lg tracking-tight leading-6 text-gray-400">
             Fuse helps developers to build organized and well coded dashboards full of beautiful and
             rich modules. Join us and start building your application today.
-          </div>
-          <div className="flex items-center mt-32">
-            <AvatarGroup
-              sx={{
-                '& .MuiAvatar-root': {
-                  borderColor: 'primary.main',
-                },
-              }}
-            >
-              <Avatar src="assets/images/avatars/female-18.jpg" />
-              <Avatar src="assets/images/avatars/female-11.jpg" />
-              <Avatar src="assets/images/avatars/male-09.jpg" />
-              <Avatar src="assets/images/avatars/male-16.jpg" />
-            </AvatarGroup>
-
-            <div className="ml-16 font-medium tracking-tight text-gray-400">
-              More than 17k people joined us, it's your turn
-            </div>
           </div>
         </div>
       </Box>

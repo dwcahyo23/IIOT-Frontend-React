@@ -9,6 +9,7 @@ import { selectFuseCurrentLayoutConfig, selectToolbarTheme } from 'app/store/fus
 import { selectFuseNavbar } from 'app/store/fuse/navbarSlice';
 import AdjustFontSize from '../../shared-components/AdjustFontSize';
 import FullScreenToggle from '../../shared-components/FullScreenToggle';
+// eslint-disable-next-line unused-imports/no-unused-imports
 import LanguageSwitcher from '../../shared-components/LanguageSwitcher';
 import NotificationPanelToggleButton from '../../shared-components/notificationPanel/NotificationPanelToggleButton';
 import NavigationShortcuts from '../../shared-components/NavigationShortcuts';
@@ -64,7 +65,7 @@ function ToolbarLayout1(props) {
           </div>
 
           <div className="flex items-center px-8 h-full overflow-x-auto">
-            <LanguageSwitcher />
+            {/* <LanguageSwitcher /> */}
 
             <AdjustFontSize />
 

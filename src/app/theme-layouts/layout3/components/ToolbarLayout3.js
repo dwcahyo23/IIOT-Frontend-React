@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { selectFuseCurrentLayoutConfig, selectToolbarTheme } from 'app/store/fuse/settingsSlice';
 import AdjustFontSize from '../../shared-components/AdjustFontSize';
 import FullScreenToggle from '../../shared-components/FullScreenToggle';
+// eslint-disable-next-line unused-imports/no-unused-imports
 import LanguageSwitcher from '../../shared-components/LanguageSwitcher';
 import NotificationPanelToggleButton from '../../shared-components/notificationPanel/NotificationPanelToggleButton';
 import NavigationSearch from '../../shared-components/NavigationSearch';
@@ -57,7 +58,7 @@ function ToolbarLayout3(props) {
               <ChatPanelToggleButton />
             </Hidden>
 
-            <LanguageSwitcher />
+            {/* <LanguageSwitcher /> */}
 
             <AdjustFontSize />
 
