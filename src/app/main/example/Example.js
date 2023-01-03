@@ -18,7 +18,6 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 
 function ExamplePage(props) {
   const { t } = useTranslation('examplePage');
-
   return (
     <Root
       header={
