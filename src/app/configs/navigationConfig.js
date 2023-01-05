@@ -16,6 +16,32 @@ const navigationConfig = [
     icon: 'heroicons-outline:star',
     url: 'example',
   },
+  {
+    id: 'apps',
+    title: 'Applications',
+    subtitle: 'Custom made application designs',
+    type: 'group',
+    icon: 'heroicons-outline:cube',
+    translate: 'APPLICATIONS',
+    children: [
+      {
+        id: 'apps.mnpreventive',
+        title: 'MN Preventive',
+        type: 'collapse',
+        icon: 'heroicons-outline:shopping-cart',
+        translate: 'ECOMMERCE',
+        children: [
+          {
+            id: 'mn-prreventive-items',
+            title: 'Items',
+            type: 'item',
+            url: 'apps/mn-preventive/items',
+            end: true,
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 export default navigationConfig;
