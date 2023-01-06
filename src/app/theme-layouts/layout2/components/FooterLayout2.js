@@ -9,6 +9,9 @@ import { selectFooterTheme } from 'app/store/fuse/settingsSlice';
 function FooterLayout2(props) {
   const footerTheme = useSelector(selectFooterTheme);
 
+  const d = new Date();
+  const year = d.getFullYear();
+
   return (
     <ThemeProvider theme={footerTheme}>
       <AppBar
@@ -18,7 +21,7 @@ function FooterLayout2(props) {
         sx={{ backgroundColor: footerTheme.palette.background.paper }}
       >
         <Toolbar className="container min-h-48 md:min-h-64 px-8 sm:px-12 py-0 flex items-center overflow-x-auto">
-          Footer
+          ©{year} IIOT Garuda Metalindo
         </Toolbar>
       </AppBar>
     </ThemeProvider>

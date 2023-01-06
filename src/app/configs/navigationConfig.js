@@ -19,7 +19,6 @@ const navigationConfig = [
   {
     id: 'apps',
     title: 'Applications',
-    subtitle: 'Custom made application designs',
     type: 'group',
     icon: 'heroicons-outline:cube',
     translate: 'APPLICATIONS',
@@ -29,7 +28,7 @@ const navigationConfig = [
         title: 'MN Preventive',
         type: 'collapse',
         icon: 'heroicons-outline:shopping-cart',
-        translate: 'ECOMMERCE',
+        translate: 'Preventive',
         children: [
           {
             id: 'mn-prreventive-items',

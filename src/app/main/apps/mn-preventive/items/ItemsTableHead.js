@@ -21,11 +21,46 @@ import { removeItems } from '../store/itemsSlice';
 
 const rows = [
   {
-    id: '',
+    uuid: 'bom',
     align: 'left',
-    disablePadding: true,
-    label: '',
-    sort: false,
+    disablePadding: false,
+    label: 'BOM',
+    sort: true,
+  },
+  {
+    uuid: 'category',
+    align: 'left',
+    disablePadding: false,
+    label: 'Category',
+    sort: true,
+  },
+  {
+    uuid: 'item_name',
+    align: 'left',
+    disablePadding: false,
+    label: 'Name',
+    sort: true,
+  },
+  {
+    uuid: 'item_life_time',
+    align: 'left',
+    disablePadding: false,
+    label: 'Life Time',
+    sort: true,
+  },
+  {
+    uuid: 'item_lead_time',
+    align: 'left',
+    disablePadding: false,
+    label: 'Lead Time',
+    sort: true,
+  },
+  {
+    uuid: 'item_status',
+    align: 'left',
+    disablePadding: false,
+    label: 'Status',
+    sort: true,
   },
 ];
 
@@ -81,7 +116,7 @@ function ItemsTableHead(props) {
                 <FuseSvgIcon>heroicons-outline:dots-horizontal</FuseSvgIcon>
               </IconButton>
               <Menu
-                id="selectedItemsMenu"
+                uuid="selectedItemsMenu"
                 anchorEl={selectedItemsMenu}
                 open={Boolean(selectedItemsMenu)}
                 onClose={closeSelectedItemsMenu}
@@ -114,10 +149,10 @@ function ItemsTableHead(props) {
                     : lighten(theme.palette.background.default, 0.02),
               }}
               className="p-4 md:p-16"
-              key={row.id}
+              key={row.uuid}
               align={row.align}
               padding={row.disablePadding ? 'none' : 'normal'}
-              sortDirection={props.order.id === row.id ? props.order.direction : false}
+              sortDirection={props.order.uuid === row.uuid ? props.order.direction : false}
             >
               {row.sort && (
                 <Tooltip
@@ -126,9 +161,9 @@ function ItemsTableHead(props) {
                   enterDelay={300}
                 >
                   <TableSortLabel
-                    active={props.order.id === row.id}
+                    active={props.order.uuid === row.uuid}
                     direction={props.order.direction}
-                    onClick={createSortHandler(row.id)}
+                    onClick={createSortHandler(row.uuid)}
                     className="font-semibold"
                   >
                     {row.label}

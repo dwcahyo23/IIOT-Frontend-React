@@ -7,30 +7,29 @@ import TableCell from '@mui/material/TableCell';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
-import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { getItems, selectItems, selectItemsSearchText } from '../store/itemsSlice';
+import ItemsStatus from './tabs/ItemsStatus';
 import ItemsTableHead from './ItemsTableHead';
 
 function ItemsTable(props) {
   const dispatch = useDispatch();
-  const products = useSelector(selectItems);
+  const items = useSelector(selectItems);
   const searchText = useSelector(selectItemsSearchText);
 
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState([]);
-  const [data, setData] = useState(products);
+  const [data, setData] = useState(items);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [order, setOrder] = useState({
     direction: 'asc',
-    id: null,
+    uuid: null,
   });
 
   useEffect(() => {
@@ -40,31 +39,31 @@ function ItemsTable(props) {
   useEffect(() => {
     if (searchText.length !== 0) {
       setData(
-        _.filter(products, (item) => item.name.toLowerCase().includes(searchText.toLowerCase()))
+        _.filter(items, (item) => item.name.toLowerCase().includes(searchText.toLowerCase()))
       );
       setPage(0);
     } else {
-      setData(products);
+      setData(items);
     }
-  }, [products, searchText]);
+  }, [items, searchText]);
 
   function handleRequestSort(event, property) {
-    const id = property;
+    const uuid = property;
     let direction = 'desc';
 
-    if (order.id === property && order.direction === 'desc') {
+    if (order.uuid === property && order.direction === 'desc') {
       direction = 'asc';
     }
 
     setOrder({
       direction,
-      id,
+      uuid,
     });
   }
 
   function handleSelectAllClick(event) {
     if (event.target.checked) {
-      setSelected(data.map((n) => n.id));
+      setSelected(data.map((n) => n.uuid));
       return;
     }
     setSelected([]);
@@ -75,15 +74,15 @@ function ItemsTable(props) {
   }
 
   function handleClick(item) {
-    props.navigate(`/apps/mn-preventive/items/${item.id}/${item.handle}`);
+    props.navigate(`/apps/mn-preventive/items/${item.uuid}/${item.handle}`);
   }
 
-  function handleCheck(event, id) {
-    const selectedIndex = selected.indexOf(id);
+  function handleCheck(event, uuid) {
+    const selectedIndex = selected.indexOf(uuid);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
+      newSelected = newSelected.concat(selected, uuid);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -122,7 +121,7 @@ function ItemsTable(props) {
         className="flex flex-1 items-center justify-center h-full"
       >
         <Typography color="text.secondary" variant="h5">
-          There are no products!
+          There are no items!
         </Typography>
       </motion.div>
     );
@@ -133,7 +132,7 @@ function ItemsTable(props) {
       <FuseScrollbars className="grow overflow-x-auto">
         <Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
           <ItemsTableHead
-            selectedProductIds={selected}
+            selectedItemsIds={selected}
             order={order}
             onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
@@ -146,12 +145,12 @@ function ItemsTable(props) {
               data,
               [
                 (o) => {
-                  switch (order.id) {
+                  switch (order.uuid) {
                     case 'categories': {
                       return o.categories[0];
                     }
                     default: {
-                      return o[order.id];
+                      return o[order.uuid];
                     }
                   }
                 },
@@ -160,7 +159,7 @@ function ItemsTable(props) {
             )
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((n) => {
-                const isSelected = selected.indexOf(n.id) !== -1;
+                const isSelected = selected.indexOf(n.uuid) !== -1;
                 return (
                   <TableRow
                     className="h-72 cursor-pointer"
@@ -168,7 +167,7 @@ function ItemsTable(props) {
                     role="checkbox"
                     aria-checked={isSelected}
                     tabIndex={-1}
-                    key={n.id}
+                    key={n.uuid}
                     selected={isSelected}
                     onClick={(event) => handleClick(n)}
                   >
@@ -176,11 +175,11 @@ function ItemsTable(props) {
                       <Checkbox
                         checked={isSelected}
                         onClick={(event) => event.stopPropagation()}
-                        onChange={(event) => handleCheck(event, n.id)}
+                        onChange={(event) => handleCheck(event, n.uuid)}
                       />
                     </TableCell>
 
-                    <TableCell
+                    {/* <TableCell
                       className="w-52 px-4 md:px-0"
                       component="th"
                       scope="row"
@@ -189,7 +188,7 @@ function ItemsTable(props) {
                       {n.images.length > 0 && n.featuredImageId ? (
                         <img
                           className="w-full block rounded"
-                          src={_.find(n.images, { id: n.featuredImageId }).url}
+                          src={_.find(n.images, { uuid: n.featuredImageId }).url}
                           alt={n.name}
                         />
                       ) : (
@@ -199,43 +198,32 @@ function ItemsTable(props) {
                           alt={n.name}
                         />
                       )}
+                    </TableCell> */}
+
+                    <TableCell className="p-4 md:p-16" component="th" scope="row">
+                      {n.bom}
                     </TableCell>
 
                     <TableCell className="p-4 md:p-16" component="th" scope="row">
-                      {n.name}
+                      {n.category}
                     </TableCell>
 
-                    <TableCell className="p-4 md:p-16 truncate" component="th" scope="row">
-                      {n.categories.join(', ')}
+                    <TableCell className="p-4 md:p-16" component="th" scope="row">
+                      {n.item_name}
                     </TableCell>
 
-                    <TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
-                      <span>$</span>
-                      {n.priceTaxIncl}
+                    <TableCell className="p-4 md:p-16" component="th" scope="row">
+                      <span>H. </span>
+                      {n.item_life_time}
                     </TableCell>
 
-                    <TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
-                      {n.quantity}
-                      <i
-                        className={clsx(
-                          'inline-block w-8 h-8 rounded mx-8',
-                          n.quantity <= 5 && 'bg-red',
-                          n.quantity > 5 && n.quantity <= 25 && 'bg-orange',
-                          n.quantity > 25 && 'bg-green'
-                        )}
-                      />
+                    <TableCell className="p-4 md:p-16" component="th" scope="row">
+                      <span>H. </span>
+                      {n.item_lead_time}
                     </TableCell>
 
-                    <TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
-                      {n.active ? (
-                        <FuseSvgIcon className="text-green" size={20}>
-                          heroicons-outline:check-circle
-                        </FuseSvgIcon>
-                      ) : (
-                        <FuseSvgIcon className="text-red" size={20}>
-                          heroicons-outline:minus-circle
-                        </FuseSvgIcon>
-                      )}
+                    <TableCell className="p-4 md:p-16" component="th" scope="row">
+                      <ItemsStatus id={n.item_status} />
                     </TableCell>
                   </TableRow>
                 );

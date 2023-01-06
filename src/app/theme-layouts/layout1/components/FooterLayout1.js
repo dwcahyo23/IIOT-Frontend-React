@@ -9,6 +9,9 @@ import clsx from 'clsx';
 function FooterLayout1(props) {
   const footerTheme = useSelector(selectFooterTheme);
 
+  const d = new Date();
+  const year = d.getFullYear();
+
   return (
     <ThemeProvider theme={footerTheme}>
       <AppBar
@@ -23,7 +26,7 @@ function FooterLayout1(props) {
         }}
       >
         <Toolbar className="min-h-48 md:min-h-64 px-8 sm:px-12 py-0 flex items-center overflow-x-auto">
-          Footer
+          ©{year} IIOT Garuda Metalindo
         </Toolbar>
       </AppBar>
     </ThemeProvider>
