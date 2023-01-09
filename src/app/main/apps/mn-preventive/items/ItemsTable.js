@@ -39,7 +39,7 @@ function ItemsTable(props) {
   useEffect(() => {
     if (searchText.length !== 0) {
       setData(
-        _.filter(items, (item) => item.name.toLowerCase().includes(searchText.toLowerCase()))
+        _.filter(items, (item) => item.item_name.toLowerCase().includes(searchText.toLowerCase()))
       );
       setPage(0);
     } else {
@@ -74,7 +74,7 @@ function ItemsTable(props) {
   }
 
   function handleClick(item) {
-    props.navigate(`/apps/mn-preventive/items/${item.uuid}/${item.handle}`);
+    props.navigate(`/apps/mn-preventive/items/${item.uuid}`);
   }
 
   function handleCheck(event, uuid) {

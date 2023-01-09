@@ -14,7 +14,7 @@ function ItemHeader(props) {
   const { isValid, dirtyFields } = formState;
   const featuredImageId = watch('featuredImageId');
   const images = watch('images');
-  const name = watch('name');
+  const name = watch('item_name');
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -52,7 +52,7 @@ function ItemHeader(props) {
         </motion.div>
 
         <div className="flex items-center max-w-full">
-          <motion.div
+          {/* <motion.div
             className="hidden sm:flex"
             initial={{ scale: 0 }}
             animate={{ scale: 1, transition: { delay: 0.3 } }}
@@ -70,17 +70,17 @@ function ItemHeader(props) {
                 alt={name}
               />
             )}
-          </motion.div>
+          </motion.div> */}
           <motion.div
             className="flex flex-col items-center sm:items-start min-w-0 mx-8 sm:mx-16"
             initial={{ x: -20 }}
             animate={{ x: 0, transition: { delay: 0.3 } }}
           >
             <Typography className="text-16 sm:text-20 truncate font-semibold">
-              {name || 'New Product'}
+              {name || 'New Item'}
             </Typography>
             <Typography variant="caption" className="font-medium">
-              Product Detail
+              Item Detail
             </Typography>
           </motion.div>
         </div>

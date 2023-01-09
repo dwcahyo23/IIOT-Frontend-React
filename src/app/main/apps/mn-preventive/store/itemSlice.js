@@ -3,17 +3,17 @@ import axios from 'axios';
 import FuseUtils from '@fuse/utils';
 
 export const getItem = createAsyncThunk('mnPreventiveApp/item/getItem', async (itemId) => {
-  const response = await axios.get(`http://10.23.29.77:5000/item/${itemId}`);
+  const response = await axios.get(`http://10.23.29.77:5000/machineitem/${itemId}`);
   const data = await response.data;
 
   return data === undefined ? null : data;
 });
 
 export const removeItem = createAsyncThunk(
-  'mnPreventiveApp/item/removeItems',
+  'mnPreventiveApp/item/removeItem',
   async (val, { dispatch, getState }) => {
     const { id } = getState().mnPreventiveApp.item;
-    await axios.delete(`http://10.23.29.77:5000/item/${id}`);
+    await axios.delete(`http://10.23.29.77:5000/machineitem/${id}`);
 
     return id;
   }
@@ -22,15 +22,16 @@ export const removeItem = createAsyncThunk(
 export const saveItem = createAsyncThunk(
   'mnPreventiveApp/item/saveItem',
   async (itemData, { dispatch, getState }) => {
-    const { id } = getState().mnPreventiveApp;
-    const response = await axios.put(`http://localhost:500/item/${id}`);
+    console.log(itemData);
+    // const { id } = getState().mnPreventiveApp;
+    const response = await axios.post(`http://localhost:5000/machineitem`);
     const data = await response.data;
 
     return data;
   }
 );
 
-const itemsSlice = createSlice({
+const itemSlice = createSlice({
   name: 'mnPreventiveApp/item',
   initialState: null,
   reducers: {
@@ -39,7 +40,7 @@ const itemsSlice = createSlice({
       reducer: (state, action) => action.payload,
       prepare: (event) => ({
         payload: {
-          id: FuseUtils.generateGUID(),
+          uuid: FuseUtils.generateGUID(),
           bom: '',
           category: '',
           item_name: '',
@@ -58,8 +59,8 @@ const itemsSlice = createSlice({
   },
 });
 
-export const { newItems, resetItem } = itemsSlice.actions;
+export const { newItem, resetItem } = itemSlice.actions;
 
 export const selectItem = ({ mnPreventiveApp }) => mnPreventiveApp.item;
 
-export default itemsSlice.reducer;
+export default itemSlice.reducer;

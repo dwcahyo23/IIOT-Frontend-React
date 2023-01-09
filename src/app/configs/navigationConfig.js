@@ -37,6 +37,12 @@ const navigationConfig = [
             url: 'apps/mn-preventive/items',
             end: true,
           },
+          {
+            id: 'mn-prreventive-new-item',
+            title: 'New Item',
+            type: 'item',
+            url: 'apps/mn-preventive/items/new',
+          },
         ],
       },
     ],
