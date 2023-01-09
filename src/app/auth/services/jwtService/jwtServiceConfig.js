@@ -1,8 +1,8 @@
 const jwtServiceConfig = {
-  signIn: 'http://10.23.29.77:5000/signin',
-  signUp: 'http://10.23.29.77:5000/signup',
-  accessToken: 'http://10.23.29.77:5000/accesstoken',
-  updateUser: 'api/auth/user/update',
+  signIn: 'http://localhost:5000/signin',
+  signUp: 'http://localhost:5000/signup',
+  accessToken: 'http://localhost:5000/accesstoken',
+  updateUser: 'http://localhost:5000/updateapp',
 };
 
 export default jwtServiceConfig;

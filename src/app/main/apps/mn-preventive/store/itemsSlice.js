@@ -2,7 +2,7 @@ import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/too
 import axios from 'axios';
 
 export const getItems = createAsyncThunk('mnPreventiveApp/items/getItems', async () => {
-  const response = await axios.get('http://10.23.29.77:5000/machineitems');
+  const response = await axios.get('http://localhost:5000/machineitems');
   const data = await response.data;
 
   return data;
@@ -11,7 +11,7 @@ export const getItems = createAsyncThunk('mnPreventiveApp/items/getItems', async
 export const removeItems = createAsyncThunk(
   'mnPreventiveApp/items',
   async (itemsIds, { dispatch, getState }) => {
-    await axios.delete('http://10.23.29.77:5000/items', { data: itemsIds });
+    await axios.delete('http://localhost:5000/items', { data: itemsIds });
 
     return itemsIds;
   }
