@@ -46,7 +46,7 @@ function Item(props) {
     defaultValues: {},
     resolver: yupResolver(schema),
   });
-  const { reset, watch, control, onChange, fromState } = methods;
+  const { reset, watch, control, onChange, formState } = methods;
   const form = watch();
 
   useDeepCompareEffect(() => {
@@ -77,7 +77,6 @@ function Item(props) {
   }, [dispatch, routeParams]);
 
   useEffect(() => {
-    console.log(item);
     if (!item) {
       return;
     }

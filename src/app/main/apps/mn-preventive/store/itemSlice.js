@@ -9,6 +9,13 @@ export const getItem = createAsyncThunk('mnPreventiveApp/item/getItem', async (i
   return data === undefined ? null : data;
 });
 
+export const getMachines = createAsyncThunk('mnPreventiveApp/item/getMachines', async () => {
+  const response = await axios.get(`http://localhost:5000/machines`);
+  const data = await response.data;
+
+  return data === undefined ? null : data;
+});
+
 export const removeItem = createAsyncThunk(
   'mnPreventiveApp/item/removeItem',
   async (val, { dispatch, getState }) => {
@@ -54,6 +61,7 @@ const itemSlice = createSlice({
   },
   extraReducers: {
     [getItem.fulfilled]: (state, action) => action.payload,
+    [getMachines.fulfilled]: (state, action) => action.payload,
     [saveItem.fulfilled]: (state, action) => action.payload,
     [removeItem.fulfilled]: (state, action) => null,
   },
