@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import FuseUtils from '@fuse/utils';
 
 export const getItem = createAsyncThunk('mnPreventiveApp/item/getItem', async (itemId) => {
   const response = await axios.get(`http://localhost:5000/machineitem/${itemId}`);
@@ -9,29 +8,24 @@ export const getItem = createAsyncThunk('mnPreventiveApp/item/getItem', async (i
   return data === undefined ? null : data;
 });
 
-export const getMachines = createAsyncThunk('mnPreventiveApp/item/getMachines', async () => {
-  const response = await axios.get(`http://localhost:5000/machines`);
-  const data = await response.data;
-
-  return data === undefined ? null : data;
-});
-
 export const removeItem = createAsyncThunk(
   'mnPreventiveApp/item/removeItem',
   async (val, { dispatch, getState }) => {
-    const { id } = getState().mnPreventiveApp.item;
-    await axios.delete(`http://localhost:5000/machineitem/${id}`);
+    const { uuid } = getState().mnPreventiveApp.item;
+    await axios.delete(`http://localhost:5000/machineitem/${uuid}`);
 
-    return id;
+    return uuid;
   }
 );
 
 export const saveItem = createAsyncThunk(
   'mnPreventiveApp/item/saveItem',
   async (itemData, { dispatch, getState }) => {
-    console.log(itemData);
-    // const { id } = getState().mnPreventiveApp;
-    const response = await axios.post(`http://localhost:5000/machineitem`);
+    const { uuid } = getState().mnPreventiveApp;
+    const response = await axios.patch(
+      `http://localhost:5000/machineitem/${itemData.uuid}`,
+      itemData
+    );
     const data = await response.data;
 
     return data;
@@ -47,7 +41,7 @@ const itemSlice = createSlice({
       reducer: (state, action) => action.payload,
       prepare: (event) => ({
         payload: {
-          uuid: FuseUtils.generateGUID(),
+          uuid: 'new',
           bom: '',
           category: '',
           item_name: '',
@@ -61,7 +55,6 @@ const itemSlice = createSlice({
   },
   extraReducers: {
     [getItem.fulfilled]: (state, action) => action.payload,
-    [getMachines.fulfilled]: (state, action) => action.payload,
     [saveItem.fulfilled]: (state, action) => action.payload,
     [removeItem.fulfilled]: (state, action) => null,
   },

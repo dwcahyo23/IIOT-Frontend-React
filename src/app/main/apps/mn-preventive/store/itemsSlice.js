@@ -11,7 +11,8 @@ export const getItems = createAsyncThunk('mnPreventiveApp/items/getItems', async
 export const removeItems = createAsyncThunk(
   'mnPreventiveApp/items',
   async (itemsIds, { dispatch, getState }) => {
-    await axios.delete('http://localhost:5000/items', { data: itemsIds });
+    console.log(itemsIds);
+    await axios.delete('http://localhost:5000/machineitem', { data: itemsIds });
 
     return itemsIds;
   }

@@ -1,33 +1,37 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { TextField } from '@mui/material';
-import ReactSelect from 'react-select';
 import { Controller, useFormContext } from 'react-hook-form';
+// eslint-disable-next-line unused-imports/no-unused-imports
+import WindowedSelect from 'react-windowed-select';
 
 function BasicInfoTab(props) {
   const methods = useFormContext();
-  const { control, formState } = methods;
+  const { control, watch, formState } = methods;
+  const machines = watch('machines');
   const { errors } = formState;
+
+  // const options = Array.from(new Array(1000), (_, index) => ({
+  //   label: `Item ${index}`,
+  //   value: index,
+  // }));
+
+  // const getMachines = machines.map((machine) => ({
+  //   label: machine.mch_code,
+  //   value: machine.uuid,
+  // }));
+
   return (
     <div className="container">
-      <section>
+      {/* <section>
         <label>Selecte</label>
         <Controller
-          name="ReactSelect"
+          name="machineIndexUuid"
           control={control}
           render={({ field }) => (
-            <ReactSelect
-              className="mt-8 mb-16"
-              {...field}
-              options={[
-                { value: 'chocolate', label: 'Chocolate' },
-                { value: 'strawberry', label: 'Strawberry' },
-                { value: 'vanilla', label: 'Vanilla' },
-              ]}
-            />
+            <WindowedSelect {...field} className="mt-8 mb-16" options={getMachines} />
           )}
         />
-      </section>
-
+      </section> */}
       <section>
         <label>Machine Code</label>
         <Controller
@@ -48,7 +52,6 @@ function BasicInfoTab(props) {
           )}
         />
       </section>
-
       <section>
         <label>Machine Name</label>
         <Controller
@@ -69,7 +72,6 @@ function BasicInfoTab(props) {
           )}
         />
       </section>
-
       <section>
         <label>Machine Location</label>
         <Controller

@@ -14,6 +14,7 @@ import * as yup from 'yup';
 import reducer from '../store';
 import ItemHeader from './ItemHeader';
 import { getItem, newItem, selectItem, resetItem } from '../store/itemSlice';
+import { getMachines, selectMachines } from '../store/machinesSlice';
 import BasicInfoTab from './tabs/BasicInfoTab';
 import ItemTab from './tabs/ItemTab';
 
@@ -22,6 +23,12 @@ import ItemTab from './tabs/ItemTab';
  */
 const schema = yup.object().shape({
   item_name: yup
+    .string()
+    .required('You must enter a item name')
+    .min(5, 'The item name must be at least 5 characters'),
+  bom: yup.string().required('You must enter a bom'),
+  category: yup.string().required('You must enter a category'),
+  item_life_time: yup
     .string()
     .required('You must enter a item name')
     .min(5, 'The item name must be at least 5 characters'),
@@ -36,6 +43,7 @@ const schema = yup.object().shape({
 function Item(props) {
   const dispatch = useDispatch();
   const item = useSelector(selectItem);
+  const machines = useSelector(selectMachines);
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 
   const routeParams = useParams();
@@ -63,6 +71,7 @@ function Item(props) {
          * Get Product data
          */
         dispatch(getItem(itemID)).then((action) => {
+          dispatch(getMachines());
           /**
            * If the requested product is not exist show message
            */
@@ -77,14 +86,15 @@ function Item(props) {
   }, [dispatch, routeParams]);
 
   useEffect(() => {
+    const data = { ...item, machines };
     if (!item) {
       return;
     }
     /**
      * Reset the form on item state changes
      */
-    reset(item);
-  }, [item, reset]);
+    reset(data);
+  }, [item, machines, reset]);
 
   useEffect(() => {
     return () => {

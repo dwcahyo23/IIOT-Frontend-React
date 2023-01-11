@@ -15,6 +15,7 @@ function ItemHeader(props) {
   const featuredImageId = watch('featuredImageId');
   const images = watch('images');
   const name = watch('item_name');
+  const uuid = watch('uuid');
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -52,25 +53,17 @@ function ItemHeader(props) {
         </motion.div>
 
         <div className="flex items-center max-w-full">
-          {/* <motion.div
+          <motion.div
             className="hidden sm:flex"
             initial={{ scale: 0 }}
             animate={{ scale: 1, transition: { delay: 0.3 } }}
           >
-            {images.length > 0 && featuredImageId ? (
-              <img
-                className="w-32 sm:w-48 rounded"
-                src={_.find(images, { id: featuredImageId }).url}
-                alt={name}
-              />
-            ) : (
-              <img
-                className="w-32 sm:w-48 rounded"
-                src="assets/images/apps/ecommerce/product-image-placeholder.png"
-                alt={name}
-              />
-            )}
-          </motion.div> */}
+            <img
+              className="w-32 sm:w-48 rounded"
+              src="assets/images/apps/ecommerce/product-image-placeholder.png"
+              alt={name}
+            />
+          </motion.div>
           <motion.div
             className="flex flex-col items-center sm:items-start min-w-0 mx-8 sm:mx-16"
             initial={{ x: -20 }}

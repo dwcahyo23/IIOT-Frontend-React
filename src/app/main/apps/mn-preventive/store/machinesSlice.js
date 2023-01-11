@@ -9,16 +9,16 @@ export const getMachines = createAsyncThunk('mnPreventiveApp/machines/getMachine
 });
 
 export const removeMachines = createAsyncThunk(
-  'mnPreventiveApp/items',
+  'mnPreventiveApp/machines',
   async (itemsIds, { dispatch, getState }) => {
-    await axios.delete('http://localhost:5000/items', { data: itemsIds });
+    await axios.delete('http://localhost:5000/machines', { data: itemsIds });
 
     return itemsIds;
   }
 );
 
 const machinesAdapter = createEntityAdapter({
-  selectId: (items) => items.uuid,
+  selectId: (machine) => machine.uuid,
 });
 
 export const { selectAll: selectMachines, selectById: selectMachinesById } =

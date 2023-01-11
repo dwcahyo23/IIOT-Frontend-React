@@ -1,4 +1,4 @@
-import TextField from '@mui/material/TextField';
+import { TextField, MenuItem } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
 
 function ItemTab(props) {
@@ -50,11 +50,26 @@ function ItemTab(props) {
             className="mt-8 mb-16"
             required
             label="Category"
+            select
             autoFocus
             id="category"
-            variant="outlined"
             fullWidth
-          />
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            <MenuItem value="BLT">Belt</MenuItem>
+            <MenuItem value="BRG">Bearing</MenuItem>
+            <MenuItem value="SRV">Servo</MenuItem>
+            <MenuItem value="CTR">Contactor</MenuItem>
+            <MenuItem value="INV">Inverter</MenuItem>
+            <MenuItem value="SNR">Sensor</MenuItem>
+            <MenuItem value="HYD">Hydraulic</MenuItem>
+            <MenuItem value="PNU">Pneumatic</MenuItem>
+            <MenuItem value="SOL">Solenoid</MenuItem>
+            <MenuItem value="REG">Regulator</MenuItem>
+            <MenuItem value="SEA">Seal</MenuItem>
+          </TextField>
         )}
       />
 
