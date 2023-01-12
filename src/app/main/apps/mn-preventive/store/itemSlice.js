@@ -22,6 +22,9 @@ export const removeItem = createAsyncThunk(
 export const saveItem = createAsyncThunk(
   'mnPreventiveApp/item/saveItem',
   async (itemData, { dispatch, getState }) => {
+    delete itemData.machines;
+    delete itemData.machine_index;
+    console.log(itemData);
     const { uuid } = getState().mnPreventiveApp;
     const response = await axios.patch(
       `http://localhost:5000/machineitem/${itemData.uuid}`,

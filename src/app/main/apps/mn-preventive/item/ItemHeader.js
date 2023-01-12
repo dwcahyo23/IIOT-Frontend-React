@@ -19,6 +19,19 @@ function ItemHeader(props) {
   const theme = useTheme();
   const navigate = useNavigate();
 
+  // console.log(
+  //   getValues(
+  //     'bom',
+  //     'category',
+  //     'item_name',
+  //     'item_life_time',
+  //     'item_lead_time',
+  //     'item_status',
+  //     'machineIndexUuid',
+  //     'images'
+  //   )
+  // );
+
   function handleSaveItem() {
     dispatch(saveItem(getValues()));
   }
