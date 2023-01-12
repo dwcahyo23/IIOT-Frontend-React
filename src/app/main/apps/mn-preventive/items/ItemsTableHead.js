@@ -21,6 +21,13 @@ import { removeItems } from '../store/itemsSlice';
 
 const rows = [
   {
+    uuid: 'image',
+    align: 'left',
+    disablePadding: true,
+    label: '',
+    sort: false,
+  },
+  {
     uuid: 'bom',
     align: 'left',
     disablePadding: false,
@@ -38,7 +45,28 @@ const rows = [
     uuid: 'item_name',
     align: 'left',
     disablePadding: false,
-    label: 'Name',
+    label: 'Sprepart Name',
+    sort: true,
+  },
+  {
+    uuid: 'mch_code',
+    align: 'left',
+    disablePadding: false,
+    label: 'Machine Code',
+    sort: true,
+  },
+  {
+    uuid: 'mch_name',
+    align: 'left',
+    disablePadding: false,
+    label: 'Machine Name',
+    sort: true,
+  },
+  {
+    uuid: 'mch_com',
+    align: 'left',
+    disablePadding: false,
+    label: 'Plant Name',
     sort: true,
   },
   {
@@ -49,10 +77,10 @@ const rows = [
     sort: true,
   },
   {
-    uuid: 'item_lead_time',
+    uuid: 'change_next',
     align: 'left',
     disablePadding: false,
-    label: 'Lead Time',
+    label: 'Inspection Date',
     sort: true,
   },
   {

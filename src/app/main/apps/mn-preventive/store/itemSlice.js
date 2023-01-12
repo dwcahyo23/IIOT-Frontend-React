@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import FuseUtils from '@fuse/utils';
 
 export const getItem = createAsyncThunk('mnPreventiveApp/item/getItem', async (itemId) => {
   const response = await axios.get(`http://localhost:5000/machineitem/${itemId}`);
@@ -41,14 +42,16 @@ const itemSlice = createSlice({
       reducer: (state, action) => action.payload,
       prepare: (event) => ({
         payload: {
-          uuid: 'new',
+          uuid: FuseUtils.generateGUID(),
           bom: '',
           category: '',
           item_name: '',
           item_life_time: '',
           item_lead_time: '',
           change_at: '',
-          change_next: '',
+          item_status: '',
+          images: [],
+          changes: [],
         },
       }),
     },

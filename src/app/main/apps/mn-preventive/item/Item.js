@@ -17,6 +17,7 @@ import { getItem, newItem, selectItem, resetItem } from '../store/itemSlice';
 import { getMachines, selectMachines } from '../store/machinesSlice';
 import BasicInfoTab from './tabs/BasicInfoTab';
 import ItemTab from './tabs/ItemTab';
+import ItemImagesTab from './tabs/ItemImagesTab';
 
 /**
  * From Validation Schema
@@ -66,6 +67,7 @@ function Item(props) {
          * Create New Product data
          */
         dispatch(newItem());
+        dispatch(getMachines());
       } else {
         /**
          * Get Product data
@@ -165,6 +167,7 @@ function Item(props) {
             >
               <Tab className="h-64" label="Basic Info" />
               <Tab className="h-64" label="Item" />
+              <Tab className="h-64" label="Item Images" />
             </Tabs>
             <div className="p-16 sm:p-24 max-w-3xl">
               <div className={tabValue !== 0 ? 'hidden' : ''}>
@@ -172,6 +175,9 @@ function Item(props) {
               </div>
               <div className={tabValue !== 1 ? 'hidden' : ''}>
                 <ItemTab />
+              </div>
+              <div className={tabValue !== 2 ? 'hidden' : ''}>
+                <ItemImagesTab />
               </div>
             </div>
           </>

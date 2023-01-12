@@ -9,11 +9,13 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { format, differenceInHours, addHours } from 'date-fns';
 
 import { useDispatch, useSelector } from 'react-redux';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { getItems, selectItems, selectItemsSearchText } from '../store/itemsSlice';
+import ProgressBar from './tabs/ProgressBar';
 import ItemsStatus from './tabs/ItemsStatus';
 import ItemsTableHead from './ItemsTableHead';
 
@@ -179,26 +181,18 @@ function ItemsTable(props) {
                       />
                     </TableCell>
 
-                    {/* <TableCell
+                    <TableCell
                       className="w-52 px-4 md:px-0"
                       component="th"
                       scope="row"
                       padding="none"
                     >
-                      {n.images.length > 0 && n.featuredImageId ? (
-                        <img
-                          className="w-full block rounded"
-                          src={_.find(n.images, { uuid: n.featuredImageId }).url}
-                          alt={n.name}
-                        />
-                      ) : (
-                        <img
-                          className="w-full block rounded"
-                          src="assets/images/apps/ecommerce/product-image-placeholder.png"
-                          alt={n.name}
-                        />
-                      )}
-                    </TableCell> */}
+                      <img
+                        className="w-full block rounded"
+                        src="assets/images/apps/ecommerce/product-image-placeholder.png"
+                        alt={n.name}
+                      />
+                    </TableCell>
 
                     <TableCell className="p-4 md:p-16" component="th" scope="row">
                       {n.bom}
@@ -213,13 +207,33 @@ function ItemsTable(props) {
                     </TableCell>
 
                     <TableCell className="p-4 md:p-16" component="th" scope="row">
-                      <span>H. </span>
-                      {n.item_life_time}
+                      {n.machine_index.mch_code}
                     </TableCell>
 
                     <TableCell className="p-4 md:p-16" component="th" scope="row">
-                      <span>H. </span>
-                      {n.item_lead_time}
+                      {n.machine_index.mch_name}
+                    </TableCell>
+
+                    <TableCell className="p-4 md:p-16" component="th" scope="row">
+                      {n.machine_index.mch_com}
+                    </TableCell>
+
+                    <TableCell className="p-4 md:p-16" component="th" scope="row">
+                      <ProgressBar
+                        value={
+                          differenceInHours(
+                            addHours(new Date(n.change_at), n.item_life_time),
+                            new Date()
+                          ) / n.item_life_time
+                        }
+                      />
+                    </TableCell>
+
+                    <TableCell className="p-4 md:p-16" component="th" scope="row">
+                      {format(
+                        addHours(new Date(n.change_at), n.item_life_time),
+                        'dd MMM yyyy HH:mm'
+                      )}
                     </TableCell>
 
                     <TableCell className="p-4 md:p-16" component="th" scope="row">

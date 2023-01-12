@@ -9,6 +9,8 @@ function BasicInfoTab(props) {
   const { control, watch, formState } = methods;
   const machines = watch('machines');
   const { errors } = formState;
+  // const images = watch('images');
+  // console.log(JSON.parse(images));
 
   // const options = Array.from(new Array(1000), (_, index) => ({
   //   label: `Item ${index}`,
@@ -32,66 +34,60 @@ function BasicInfoTab(props) {
           )}
         />
       </section> */}
-      <section>
-        <label>Machine Code</label>
-        <Controller
-          name="machine_index.mch_code"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              className="mt-8 mb-16"
-              error={!!errors.mch_code}
-              required
-              helperText={errors?.mch_code?.message}
-              autoFocus
-              id="mch_code"
-              variant="outlined"
-              fullWidth
-            />
-          )}
-        />
-      </section>
-      <section>
-        <label>Machine Name</label>
-        <Controller
-          name="machine_index.mch_name"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              className="mt-8 mb-16"
-              error={!!errors.mch_name}
-              required
-              helperText={errors?.mch_name?.message}
-              autoFocus
-              id="mch_name"
-              variant="outlined"
-              fullWidth
-            />
-          )}
-        />
-      </section>
-      <section>
-        <label>Machine Location</label>
-        <Controller
-          name="machine_index.mch_loc"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              className="mt-8 mb-16"
-              error={!!errors.mch_loc}
-              required
-              helperText={errors?.mch_loc?.message}
-              autoFocus
-              id="mch_loc"
-              variant="outlined"
-              fullWidth
-            />
-          )}
-        />
-      </section>
+
+      <Controller
+        name="machine_index.mch_code"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            className="mt-8 mb-16"
+            error={!!errors.mch_code}
+            helperText={errors?.mch_code?.message}
+            autoFocus
+            label="Machine Code"
+            id="mch_code"
+            variant="outlined"
+            fullWidth
+          />
+        )}
+      />
+
+      <Controller
+        name="machine_index.mch_name"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            className="mt-8 mb-16"
+            error={!!errors.mch_name}
+            helperText={errors?.mch_name?.message}
+            autoFocus
+            label="Machine Name"
+            id="mch_name"
+            variant="outlined"
+            fullWidth
+          />
+        )}
+      />
+
+      <Controller
+        name="machine_index.mch_com"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            className="mt-8 mb-16"
+            error={!!errors.mch_loc}
+            helperText={errors?.mch_loc?.message}
+            autoFocus
+            label="Plant Name"
+            id="mch_com"
+            variant="outlined"
+            fullWidth
+          />
+        )}
+      />
     </div>
   );
 }

@@ -5,7 +5,7 @@ export const itemStatuses = [
   {
     id: 1,
     name: 'In good condition',
-    color: 'bg-blue text-white',
+    color: 'bg-green-700 text-white',
   },
   {
     id: 2,
@@ -16,6 +16,21 @@ export const itemStatuses = [
     id: 3,
     name: 'Over-limit lifetime',
     color: 'bg-red text-white',
+  },
+  {
+    id: 4,
+    name: 'Bad condition',
+    color: 'bg-red text-white',
+  },
+  {
+    id: 5,
+    name: 'Repairing',
+    color: 'bg-orange text-black',
+  },
+  {
+    id: 6,
+    name: 'Requires purchase sparepart',
+    color: 'bg-pink text-white',
   },
 ];
 

@@ -88,6 +88,49 @@ function ItemTab(props) {
           />
         )}
       />
+
+      <Controller
+        name="item_lead_time"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            className="mt-8 mb-16"
+            label="Lied Time"
+            id="item_lead_time"
+            variant="outlined"
+            type="number"
+            fullWidth
+          />
+        )}
+      />
+
+      <Controller
+        name="item_status"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            className="mt-8 mb-16"
+            required
+            label="Status"
+            select
+            autoFocus
+            id="item_status"
+            fullWidth
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            <MenuItem value="1">In good condition</MenuItem>
+            <MenuItem value="2">Awaiting check conditions</MenuItem>
+            <MenuItem value="3">Over-limit lifetime</MenuItem>
+            <MenuItem value="4">Bad condition</MenuItem>
+            <MenuItem value="5">Repairing</MenuItem>
+            <MenuItem value="6">Requires purchase sparepart</MenuItem>
+          </TextField>
+        )}
+      />
     </div>
   );
 }
