@@ -187,11 +187,20 @@ function ItemsTable(props) {
                       scope="row"
                       padding="none"
                     >
-                      <img
-                        className="w-full block rounded"
-                        src="assets/images/apps/ecommerce/product-image-placeholder.png"
-                        alt={n.name}
-                      />
+                      {n.images.length > 0 && n.featuredImageId ? (
+                        <img
+                          className="w-full block rounded"
+                          // src={_.find(n.images, { id: n.featuredImageId }).url}
+                          alt={_.find(n.images, { id: n.featuredImageId })}
+                          // alt={n.item_name}
+                        />
+                      ) : (
+                        <img
+                          className="w-full block rounded"
+                          src="assets/images/apps/ecommerce/product-image-placeholder.png"
+                          alt={n.item_name}
+                        />
+                      )}
                     </TableCell>
 
                     <TableCell className="p-4 md:p-16" component="th" scope="row">

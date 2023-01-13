@@ -36,14 +36,28 @@ function BasicInfoTab(props) {
       </section> */}
 
       <Controller
+        name="machineIndexUuid"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            className="mt-8 mb-16"
+            autoFocus
+            label="Machine UUID"
+            id="machineIndexUuid"
+            variant="outlined"
+            fullWidth
+          />
+        )}
+      />
+
+      <Controller
         name="machine_index.mch_code"
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
             className="mt-8 mb-16"
-            error={!!errors.mch_code}
-            helperText={errors?.mch_code?.message}
             autoFocus
             label="Machine Code"
             id="mch_code"
@@ -60,8 +74,6 @@ function BasicInfoTab(props) {
           <TextField
             {...field}
             className="mt-8 mb-16"
-            error={!!errors.mch_name}
-            helperText={errors?.mch_name?.message}
             autoFocus
             label="Machine Name"
             id="mch_name"
@@ -78,8 +90,6 @@ function BasicInfoTab(props) {
           <TextField
             {...field}
             className="mt-8 mb-16"
-            error={!!errors.mch_loc}
-            helperText={errors?.mch_loc?.message}
             autoFocus
             label="Plant Name"
             id="mch_com"

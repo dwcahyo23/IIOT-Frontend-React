@@ -1,5 +1,8 @@
 import { TextField, MenuItem } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 function ItemTab(props) {
   const methods = useFormContext();
@@ -129,6 +132,25 @@ function ItemTab(props) {
             <MenuItem value="5">Repairing</MenuItem>
             <MenuItem value="6">Requires purchase sparepart</MenuItem>
           </TextField>
+        )}
+      />
+
+      <Controller
+        name="change_at"
+        control={control}
+        render={({ field }) => (
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DateTimePicker
+              {...field}
+              className="mt-8 mb-16"
+              id="change_at"
+              fullWidth
+              inputFormat="dd/MM/yyyy HH:mm aaa"
+              required
+              label="On Change"
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
         )}
       />
     </div>

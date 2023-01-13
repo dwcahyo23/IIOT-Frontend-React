@@ -19,19 +19,6 @@ function ItemHeader(props) {
   const theme = useTheme();
   const navigate = useNavigate();
 
-  // console.log(
-  //   getValues(
-  //     'bom',
-  //     'category',
-  //     'item_name',
-  //     'item_life_time',
-  //     'item_lead_time',
-  //     'item_status',
-  //     'machineIndexUuid',
-  //     'images'
-  //   )
-  // );
-
   function handleSaveItem() {
     dispatch(saveItem(getValues()));
   }
@@ -71,11 +58,20 @@ function ItemHeader(props) {
             initial={{ scale: 0 }}
             animate={{ scale: 1, transition: { delay: 0.3 } }}
           >
-            <img
-              className="w-32 sm:w-48 rounded"
-              src="assets/images/apps/ecommerce/product-image-placeholder.png"
-              alt={name}
-            />
+            {images.length > 0 && featuredImageId ? (
+              <img
+                className="w-32 sm:w-48 rounded"
+                src={_.find(images, { id: featuredImageId }).url}
+                alt={name}
+                // alt={_.find(images, { id: featuredImageId }).url}
+              />
+            ) : (
+              <img
+                className="w-32 sm:w-48 rounded"
+                src="assets/images/apps/ecommerce/product-image-placeholder.png"
+                alt={name}
+              />
+            )}
           </motion.div>
           <motion.div
             className="flex flex-col items-center sm:items-start min-w-0 mx-8 sm:mx-16"
