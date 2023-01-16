@@ -1,41 +1,51 @@
+/* eslint-disable no-shadow */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { TextField } from '@mui/material';
+import { TextField, Autocomplete } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
-// eslint-disable-next-line unused-imports/no-unused-imports
-import WindowedSelect from 'react-windowed-select';
+import _ from 'lodash';
 
 function BasicInfoTab(props) {
   const methods = useFormContext();
   const { control, watch, formState } = methods;
   const machines = watch('machines');
+  const isNew = watch('isNew');
   const { errors } = formState;
-  // const images = watch('images');
-  // console.log(JSON.parse(images));
 
-  // const options = Array.from(new Array(1000), (_, index) => ({
-  //   label: `Item ${index}`,
-  //   value: index,
-  // }));
-
-  // const getMachines = machines.map((machine) => ({
-  //   label: machine.mch_code,
-  //   value: machine.uuid,
-  // }));
+  const getMachines = machines.map((machine) => ({
+    label: machine.mch_code,
+    value: machine.uuid,
+  }));
 
   return (
     <div className="container">
-      {/* <section>
-        <label>Selecte</label>
-        <Controller
-          name="machineIndexUuid"
-          control={control}
-          render={({ field }) => (
-            <WindowedSelect {...field} className="mt-8 mb-16" options={getMachines} />
-          )}
-        />
-      </section> */}
+      {/* <Controller
+        name="machineIndexUuid"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            className="mt-8 mb-16"
+            required
+            sx={{ width: 300 }}
+            label="Category"
+            select
+            autoFocus
+            id="category"
+            fullWidth
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            {getMachines.map((mch) => (
+              <MenuItem key={mch.value} value={mch.value}>
+                {mch.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        )}
+      /> */}
 
-      <Controller
+      {/* <Controller
         name="machineIndexUuid"
         control={control}
         render={({ field }) => (
@@ -49,55 +59,98 @@ function BasicInfoTab(props) {
             fullWidth
           />
         )}
-      />
+      /> */}
 
       <Controller
-        name="machine_index.mch_code"
+        name="machineIndexUuid"
         control={control}
         render={({ field }) => (
-          <TextField
+          <Autocomplete
             {...field}
-            className="mt-8 mb-16"
-            autoFocus
-            label="Machine Code"
-            id="mch_code"
-            variant="outlined"
-            fullWidth
+            freeSolo
+            options={getMachines}
+            onChange={(_, data) => field.onChange(data)}
+            getOptionLabel={(option) =>
+              option.label || _.find(getMachines, { value: field.value }).label
+            }
+            value={field.value || null}
+            isOptionEqualToValue={(option, value) => option.value === field.value}
+            sx={{ width: 300 }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                className="mt-8 mb-16"
+                variant="outlined"
+                fullWidth
+                autoFocus
+                label="MachineIndexUUID"
+              />
+            )}
           />
         )}
       />
+      {!isNew && (
+        <Controller
+          name="machine_index.mch_code"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              className="mt-8 mb-16"
+              autoFocus
+              label="Machine Code"
+              id="mch_code"
+              variant="filled"
+              fullWidth
+              InputProps={{
+                readOnly: true,
+              }}
+            />
+          )}
+        />
+      )}
 
-      <Controller
-        name="machine_index.mch_name"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            className="mt-8 mb-16"
-            autoFocus
-            label="Machine Name"
-            id="mch_name"
-            variant="outlined"
-            fullWidth
-          />
-        )}
-      />
+      {!isNew && (
+        <Controller
+          name="machine_index.mch_name"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              className="mt-8 mb-16"
+              autoFocus
+              label="Machine Name"
+              id="mch_name"
+              variant="filled"
+              fullWidth
+              InputProps={{
+                readOnly: true,
+              }}
+            />
+          )}
+        />
+      )}
 
-      <Controller
-        name="machine_index.mch_com"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            className="mt-8 mb-16"
-            autoFocus
-            label="Plant Name"
-            id="mch_com"
-            variant="outlined"
-            fullWidth
-          />
-        )}
-      />
+      {!isNew && (
+        <Controller
+          name="machine_index.mch_com"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              className="mt-8 mb-16"
+              autoFocus
+              label="Plant Name"
+              id="mch_com"
+              variant="filled"
+              fullWidth
+              InputProps={{
+                readOnly: true,
+              }}
+            />
+          )}
+        />
+      )}
     </div>
   );
 }

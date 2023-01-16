@@ -58,7 +58,9 @@ function ItemHeader(props) {
             initial={{ scale: 0 }}
             animate={{ scale: 1, transition: { delay: 0.3 } }}
           >
-            {images.length > 0 && featuredImageId ? (
+            {images.length > 0 &&
+            featuredImageId &&
+            _.filter(images, _.matches({ id: featuredImageId })).length > 0 ? (
               <img
                 className="w-32 sm:w-48 rounded"
                 src={_.find(images, { id: featuredImageId }).url}

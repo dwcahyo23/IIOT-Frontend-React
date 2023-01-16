@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
 import Checkbox from '@mui/material/Checkbox';
@@ -15,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { getItems, selectItems, selectItemsSearchText } from '../store/itemsSlice';
+import { getMachines } from '../store/machinesSlice';
 import ProgressBar from './tabs/ProgressBar';
 import ItemsStatus from './tabs/ItemsStatus';
 import ItemsTableHead from './ItemsTableHead';
@@ -36,6 +38,7 @@ function ItemsTable(props) {
 
   useEffect(() => {
     dispatch(getItems()).then(() => setLoading(false));
+    dispatch(getMachines());
   }, [dispatch]);
 
   useEffect(() => {
@@ -187,12 +190,14 @@ function ItemsTable(props) {
                       scope="row"
                       padding="none"
                     >
-                      {n.images.length > 0 && n.featuredImageId ? (
+                      {n.images.length > 0 &&
+                      n.featuredImageId &&
+                      _.filter(n.images, _.matches({ id: n.featuredImageId })).length > 0 ? (
                         <img
                           className="w-full block rounded"
-                          // src={_.find(n.images, { id: n.featuredImageId }).url}
-                          alt={_.find(n.images, { id: n.featuredImageId })}
-                          // alt={n.item_name}
+                          src={_.find(n.images, { id: n.featuredImageId }).url}
+                          // alt={_.find(n.images, { id: n.featuredImageId }).url}
+                          alt={n.item_name}
                         />
                       ) : (
                         <img

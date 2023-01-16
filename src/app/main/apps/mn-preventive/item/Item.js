@@ -14,7 +14,7 @@ import * as yup from 'yup';
 import reducer from '../store';
 import ItemHeader from './ItemHeader';
 import { getItem, newItem, selectItem, resetItem } from '../store/itemSlice';
-import { getMachines, selectMachines } from '../store/machinesSlice';
+import { selectMachines } from '../store/machinesSlice';
 import BasicInfoTab from './tabs/BasicInfoTab';
 import ItemTab from './tabs/ItemTab';
 import ItemImagesTab from './tabs/ItemImagesTab';
@@ -23,22 +23,15 @@ import ItemImagesTab from './tabs/ItemImagesTab';
  * From Validation Schema
  */
 const schema = yup.object().shape({
+  // machineIndexUuid: yup.object().required('You must enter a uuid'),
   item_name: yup
     .string()
     .required('You must enter a item name')
     .min(5, 'The item name must be at least 5 characters'),
   bom: yup.string().required('You must enter a bom'),
   category: yup.string().required('You must enter a category'),
-  item_life_time: yup
-    .string()
-    .required('You must enter a item name')
-    .min(5, 'The item name must be at least 5 characters'),
-  // machine_index: yup.object().shape({
-  //   mch_code: yup
-  //     .string()
-  //     .required('You must enter a item name')
-  //     .min(5, 'The item name must be at least 5 characters'),
-  // }),
+  item_life_time: yup.number().required('You must enter a life time'),
+  item_lead_time: yup.number().required('You must enter a lead time'),
 });
 
 function Item(props) {
@@ -67,13 +60,13 @@ function Item(props) {
          * Create New Product data
          */
         dispatch(newItem());
-        dispatch(getMachines());
+        // dispatch(getMachines());
       } else {
         /**
          * Get Product data
          */
         dispatch(getItem(itemID)).then((action) => {
-          dispatch(getMachines());
+          // dispatch(getMachines());
           /**
            * If the requested product is not exist show message
            */
@@ -95,6 +88,7 @@ function Item(props) {
     /**
      * Reset the form on item state changes
      */
+    console.log(data);
     reset(data);
   }, [item, machines, reset]);
 

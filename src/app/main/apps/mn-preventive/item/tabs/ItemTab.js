@@ -6,7 +6,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 function ItemTab(props) {
   const methods = useFormContext();
-  const { control } = methods;
+  const { control, formState } = methods;
+  const { errors } = formState;
 
   return (
     <div>
@@ -17,7 +18,9 @@ function ItemTab(props) {
           <TextField
             {...field}
             className="mt-8 mb-16"
+            error={!!errors.bom}
             required
+            helperText={errors?.bom?.message}
             label="BOM"
             autoFocus
             id="bom"
@@ -34,7 +37,9 @@ function ItemTab(props) {
           <TextField
             {...field}
             className="mt-8 mb-16"
+            error={!!errors.item_name}
             required
+            helperText={errors?.item_name?.message}
             label="Item Name"
             autoFocus
             id="item_name"
@@ -83,6 +88,9 @@ function ItemTab(props) {
           <TextField
             {...field}
             className="mt-8 mb-16"
+            error={!!errors.item_life_time}
+            required
+            helperText={errors?.item_life_time?.message}
             label="Life Time"
             id="item_life_time"
             variant="outlined"
@@ -99,6 +107,9 @@ function ItemTab(props) {
           <TextField
             {...field}
             className="mt-8 mb-16"
+            error={!!errors.item_lead_time}
+            required
+            helperText={errors?.item_lead_time?.message}
             label="Lied Time"
             id="item_lead_time"
             variant="outlined"

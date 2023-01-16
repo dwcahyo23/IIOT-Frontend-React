@@ -6,6 +6,7 @@ import FuseUtils from '@fuse/utils';
 import { Controller, useFormContext } from 'react-hook-form';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import Box from '@mui/material/Box';
+import Resizer from "react-image-file-resizer";
 
 const Root = styled('div')(({ theme }) => ({
   '& .ItemImageFeaturedStar': {
@@ -44,6 +45,22 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
+const resizeFile = (file) =>
+  new Promise((resolve) => {
+    Resizer.imageFileResizer(
+      file,
+      100,
+      100,
+      "JPEG",
+      70,
+      0,
+      (uri) => {
+        resolve(uri);
+      },
+      "base64"
+    );
+  });
+
 function ItemImagesTab(props) {
   const methods = useFormContext();
   const { control, watch } = methods;
@@ -77,9 +94,11 @@ function ItemImagesTab(props) {
                   function readFileAsync() {
                     return new Promise((resolve, reject) => {
                       const file = e.target.files[0];
+                
                       if (!file) {
                         return;
                       }
+                      const image = resizeFile(file);
                       const reader = new FileReader();
 
                       reader.onload = () => {
