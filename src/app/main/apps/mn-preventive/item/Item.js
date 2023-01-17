@@ -18,6 +18,7 @@ import { selectMachines } from '../store/machinesSlice';
 import BasicInfoTab from './tabs/BasicInfoTab';
 import ItemTab from './tabs/ItemTab';
 import ItemImagesTab from './tabs/ItemImagesTab';
+import CheckItemTab from './tabs/CheckItemTab';
 
 /**
  * From Validation Schema
@@ -162,6 +163,7 @@ function Item(props) {
               <Tab className="h-64" label="Basic Info" />
               <Tab className="h-64" label="Item" />
               <Tab className="h-64" label="Item Images" />
+              <Tab className="h-64" label="Check Item" />
             </Tabs>
             <div className="p-16 sm:p-24 max-w-3xl">
               <div className={tabValue !== 0 ? 'hidden' : ''}>
@@ -172,6 +174,9 @@ function Item(props) {
               </div>
               <div className={tabValue !== 2 ? 'hidden' : ''}>
                 <ItemImagesTab />
+              </div>
+              <div className={tabValue !== 3 ? 'hidden' : ''}>
+                <CheckItemTab />
               </div>
             </div>
           </>
