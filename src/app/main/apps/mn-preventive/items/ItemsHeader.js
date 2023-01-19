@@ -49,7 +49,7 @@ function ItemsHeader(props) {
           <Button
             className=""
             component={Link}
-            to="/apps/e-commerce/products/new"
+            to="/apps/mn-preventive/items/new"
             variant="contained"
             color="secondary"
             startIcon={<FuseSvgIcon>heroicons-outline:plus</FuseSvgIcon>}
