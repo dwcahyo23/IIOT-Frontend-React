@@ -1,3 +1,4 @@
+/* eslint-disable import/order */
 import { Button, useTheme, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
@@ -6,12 +7,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import _ from '@lodash';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { removeItem, saveItem } from '../store/itemSlice';
+import { showMessage } from 'app/store/fuse/messageSlice';
 
 function ItemHeader(props) {
   const dispatch = useDispatch();
   const methods = useFormContext();
   const { formState, watch, getValues } = methods;
-  const { isValid, dirtyFields } = formState;
+  const { isValid, dirtyFields, isSubmitSuccessful } = formState;
   const featuredImageId = watch('featuredImageId');
   const images = watch('images');
   const name = watch('item_name');
@@ -21,6 +23,7 @@ function ItemHeader(props) {
 
   function handleSaveItem() {
     dispatch(saveItem(getValues()));
+    dispatch(showMessage({ message: 'Data has been saved successfully' }));
   }
 
   function handleRemoveItem() {

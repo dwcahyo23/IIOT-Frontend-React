@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 export const getItem = createAsyncThunk('mnPreventiveApp/item/getItem', async (itemId) => {
-  const response = await axios.get(`http://10.23.29.77:5000/machineitem/${itemId}`);
+  const response = await axios.get(`http://localhost:5000/machineitem/${itemId}`);
   const data = await response.data;
 
   return data === undefined ? null : data;
@@ -12,7 +12,7 @@ export const removeItem = createAsyncThunk(
   'mnPreventiveApp/item/removeItem',
   async (val, { dispatch, getState }) => {
     const { uuid } = getState().mnPreventiveApp.item;
-    await axios.delete(`http://10.23.29.77:5000/machineitem/${uuid}`);
+    await axios.delete(`http://localhost:5000/machineitem/${uuid}`);
 
     return uuid;
   }
@@ -21,12 +21,12 @@ export const removeItem = createAsyncThunk(
 export const saveItem = createAsyncThunk(
   'mnPreventiveApp/item/saveItem',
   async (itemData, { dispatch, getState }) => {
-    delete itemData.machines;
-    delete itemData.machine_index;
+    // delete itemData.machines;
+    // delete itemData.machine_index;
     console.log(itemData);
     const { uuid } = getState().mnPreventiveApp;
     const response = await axios.patch(
-      `http://10.23.29.77:5000/machineitem/${itemData.uuid}`,
+      `http://localhost:5000/machineitem/${itemData.uuid}`,
       itemData
     );
     const data = await response.data;

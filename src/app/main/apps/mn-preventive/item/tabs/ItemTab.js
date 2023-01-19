@@ -19,13 +19,15 @@ function ItemTab(props) {
             {...field}
             className="mt-8 mb-16"
             error={!!errors.bom}
-            required
             helperText={errors?.bom?.message}
             label="BOM"
             autoFocus
             id="bom"
-            variant="outlined"
+            variant="filled"
             fullWidth
+            InputProps={{
+              readOnly: true,
+            }}
           />
         )}
       />
