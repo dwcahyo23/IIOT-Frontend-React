@@ -158,7 +158,7 @@ function ItemTab(props) {
               className="mt-8 mb-16"
               id="change_at"
               fullWidth
-              inputFormat="dd/MM/yyyy HH:mm aaa"
+              inputFormat="dd/MM/yyyy HH:mm"
               required
               label="On Change"
               renderInput={(params) => <TextField {...params} />}
