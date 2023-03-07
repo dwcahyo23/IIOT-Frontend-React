@@ -1,14 +1,12 @@
-import { Button, Input, Paper, Typography } from '@mui/material'
+import { Input, Paper, Typography } from '@mui/material'
 import { motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon'
-import { selectItemsSearchText, setItemsSearchText } from '../store/itemsSlice'
+import { selectItemsSearchText, setItemsSearchText } from '../store/modbusSlice'
 
-function ItemsHeader(props) {
+function ModbusHeader(props) {
     const dispatch = useDispatch()
     const searchText = useSelector(selectItemsSearchText)
-
     return (
         <div className="flex flex-col sm:flex-row space-y-16 sm:space-y-0 flex-1 w-full items-center justify-between py-32 px-24 md:px-32">
             <Typography
@@ -18,9 +16,8 @@ function ItemsHeader(props) {
                 delay={300}
                 className="text-24 md:text-32 font-extrabold tracking-tight"
             >
-                Items
+                Electricity
             </Typography>
-
             <div className="flex flex-col w-full sm:w-auto sm:flex-row space-y-16 sm:space-y-0 flex-1 items-center justify-end space-x-8">
                 <Paper
                     component={motion.div}
@@ -38,32 +35,15 @@ function ItemsHeader(props) {
                         disableUnderline
                         fullWidth
                         value={searchText}
-                        inputProps={{
-                            'aria-label': 'Search',
-                        }}
-                        onChange={(ev) => dispatch(setItemsSearchText(ev))}
-                    />
-                </Paper>
-                <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
-                >
-                    <Button
-                        className=""
-                        component={Link}
-                        to="/apps/mn-preventive/items/new"
-                        variant="contained"
-                        color="secondary"
-                        startIcon={
-                            <FuseSvgIcon>heroicons-outline:plus</FuseSvgIcon>
+                        inputProps={{ 'aria-label': 'Search' }}
+                        onChange={(event) =>
+                            dispatch(setItemsSearchText(event))
                         }
-                    >
-                        Add
-                    </Button>
-                </motion.div>
+                    ></Input>
+                </Paper>
             </div>
         </div>
     )
 }
 
-export default ItemsHeader
+export default ModbusHeader

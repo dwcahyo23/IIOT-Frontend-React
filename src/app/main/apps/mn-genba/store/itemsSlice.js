@@ -6,23 +6,21 @@ import {
 import axios from 'axios'
 
 export const getItems = createAsyncThunk(
-    'mnPreventiveApp/items/getItems',
+    'mnGenbaApp/items/getItems',
     async () => {
-        const response = await axios.get('http://localhost:5000/machineitems')
+        const response = await axios.get('http://localhost:5000/genba/items')
         const data = await response.data
         return data
     }
 )
 
 export const removeItems = createAsyncThunk(
-    'mnPreventiveApp/items',
-    async (itemsIds, { dispatch, getState }) => {
+    'mnGenbaApp/items',
+    async (itemsIds, { dispach, getState }) => {
         console.log(itemsIds)
-        await axios.delete('http://localhost:5000/machineitem', {
+        await axios.delete('http://localhost:5000/genba/item', {
             data: itemsIds,
         })
-
-        return itemsIds
     }
 )
 
@@ -30,16 +28,16 @@ const itemsAdapter = createEntityAdapter({
     selectId: (items) => items.uuid,
 })
 
-export const { selectAll: selectItems, selectById: selectedItemsById } =
-    itemsAdapter.getSelectors((state) => state.mnPreventiveApp.items)
+export const { selectAll: selectItems, selectById: selectedItemsId } =
+    itemsAdapter.getSelectors((state) => state.mnGenbaApp.items)
 
 const itemsSlice = createSlice({
-    name: 'mnPreventiveApp/items',
+    name: 'mnGenbaApp/items',
     initialState: itemsAdapter.getInitialState({
         searchText: '',
     }),
     reducers: {
-        setItemsSearchText: {
+        setItemSearchText: {
             reducer: (state, action) => {
                 state.searchText = action.payload
             },
@@ -55,7 +53,7 @@ const itemsSlice = createSlice({
 
 export const { setItemsSearchText } = itemsSlice.actions
 
-export const selectItemsSearchText = ({ mnPreventiveApp }) =>
-    mnPreventiveApp.items.searchText
+export const selectItemsSearchText = ({ mnGenbaApp }) =>
+    mnGenbaApp.items.searchText
 
 export default itemsSlice.reducer

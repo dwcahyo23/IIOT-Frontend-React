@@ -8,7 +8,6 @@ import { selectItemsSearchText, setItemsSearchText } from '../store/itemsSlice'
 function ItemsHeader(props) {
     const dispatch = useDispatch()
     const searchText = useSelector(selectItemsSearchText)
-
     return (
         <div className="flex flex-col sm:flex-row space-y-16 sm:space-y-0 flex-1 w-full items-center justify-between py-32 px-24 md:px-32">
             <Typography
@@ -20,7 +19,6 @@ function ItemsHeader(props) {
             >
                 Items
             </Typography>
-
             <div className="flex flex-col w-full sm:w-auto sm:flex-row space-y-16 sm:space-y-0 flex-1 items-center justify-end space-x-8">
                 <Paper
                     component={motion.div}
@@ -38,11 +36,11 @@ function ItemsHeader(props) {
                         disableUnderline
                         fullWidth
                         value={searchText}
-                        inputProps={{
-                            'aria-label': 'Search',
-                        }}
-                        onChange={(ev) => dispatch(setItemsSearchText(ev))}
-                    />
+                        inputProps={{ 'aria-label': 'Search' }}
+                        onChange={(event) =>
+                            dispatch(setItemsSearchText(event))
+                        }
+                    ></Input>
                 </Paper>
                 <motion.div
                     initial={{ opacity: 0, x: 20 }}
@@ -51,7 +49,7 @@ function ItemsHeader(props) {
                     <Button
                         className=""
                         component={Link}
-                        to="/apps/mn-preventive/items/new"
+                        to="/apps/mn-genbaitems/new"
                         variant="contained"
                         color="secondary"
                         startIcon={

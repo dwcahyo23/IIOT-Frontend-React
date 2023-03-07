@@ -1,13 +1,12 @@
 import FusePageCarded from '@fuse/core/FusePageCarded'
 import withReducer from 'app/store/withReducer'
-import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery'
+import { useThemeMediaQuery } from '@fuse/hooks'
 import reducer from '../store'
 import ItemsHeader from './ItemsHeader'
 import ItemsTable from './ItemsTable'
 
 function Items() {
     const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'))
-
     return (
         <FusePageCarded
             header={<ItemsHeader />}
@@ -17,4 +16,4 @@ function Items() {
     )
 }
 
-export default withReducer('mnPreventiveApp', reducer)(Items)
+export default withReducer('mnGenbaApp', reducer)(Items)

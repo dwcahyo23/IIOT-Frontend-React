@@ -2,19 +2,19 @@ import FusePageCarded from '@fuse/core/FusePageCarded'
 import withReducer from 'app/store/withReducer'
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery'
 import reducer from '../store'
-import ItemsHeader from './ItemsHeader'
-import ItemsTable from './ItemsTable'
+import ModbusHeader from './ModbusHeader'
+import ModbusTable from './ModbusTable'
 
-function Items() {
+function Modbus() {
     const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'))
 
     return (
         <FusePageCarded
-            header={<ItemsHeader />}
-            content={<ItemsTable />}
+            header={<ModbusHeader />}
+            content={<ModbusTable />}
             scroll={isMobile ? 'normal' : 'content'}
         />
     )
 }
 
-export default withReducer('mnPreventiveApp', reducer)(Items)
+export default withReducer('mnElectricityApp', reducer)(Modbus)

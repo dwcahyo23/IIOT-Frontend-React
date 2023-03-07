@@ -29873,43 +29873,43 @@
               "Amount",
               "Status"
             ],
-            "rows":[
-                    {
-                      "id": "528651571NT",
-                      "date": "2019-10-07T22:22:37.274Z",
-                      "name": "Morgan Page",
-                      "amount": 1358.75,
-                      "status": "completed"
-                    },
-                    {
-                      "id": "421436904YT",
-                      "date": "2019-12-18T14:51:24.461Z",
-                      "name": "Nita Hebert",
-                      "amount": -1042.82,
-                      "status": "completed"
-                    },
-                    {
-                      "id": "685377421YT",
-                      "date": "2019-12-25T17:52:14.304Z",
-                      "name": "Marsha Chambers",
-                      "amount": 1828.16,
-                      "status": "pending"
-                    },
-                    {
-                      "id": "884960091RT",
-                      "date": "2019-11-29T06:32:16.111Z",
-                      "name": "Charmaine Jackson",
-                      "amount": 1647.55,
-                      "status": "completed"
-                    },
-                    {
-                      "id": "361402213NT",
-                      "date": "2019-11-24T12:13:23.064Z",
-                      "name": "Maura Carey",
-                      "amount": -927.43,
-                      "status": "completed"
-                    }
-                  ]
+            "rows": [
+              {
+                "id": "528651571NT",
+                "date": "2019-10-07T22:22:37.274Z",
+                "name": "Morgan Page",
+                "amount": 1358.75,
+                "status": "completed"
+              },
+              {
+                "id": "421436904YT",
+                "date": "2019-12-18T14:51:24.461Z",
+                "name": "Nita Hebert",
+                "amount": -1042.82,
+                "status": "completed"
+              },
+              {
+                "id": "685377421YT",
+                "date": "2019-12-25T17:52:14.304Z",
+                "name": "Marsha Chambers",
+                "amount": 1828.16,
+                "status": "pending"
+              },
+              {
+                "id": "884960091RT",
+                "date": "2019-11-29T06:32:16.111Z",
+                "name": "Charmaine Jackson",
+                "amount": 1647.55,
+                "status": "completed"
+              },
+              {
+                "id": "361402213NT",
+                "date": "2019-11-24T12:13:23.064Z",
+                "name": "Maura Carey",
+                "amount": -927.43,
+                "status": "completed"
+              }
+            ]
           }
         }
       },
