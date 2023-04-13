@@ -1,11 +1,6 @@
 import MNPreventiveAppConfig from './mn-preventive/MNPreventiveAppConfig'
-import MNGenbaAppConfig from './mn-genba/MNGenbaAppConfig'
-import MNElectricityAppConfig from './mn-electricity/MNElectricityAppConfig'
+import MaintenanceApp from './maintenanceApp/MaintenanceAppConfig'
 
-const appsConfig = [
-    MNPreventiveAppConfig,
-    MNGenbaAppConfig,
-    MNElectricityAppConfig,
-]
+const appsConfig = [MNPreventiveAppConfig, MaintenanceApp]
 
 export default appsConfig

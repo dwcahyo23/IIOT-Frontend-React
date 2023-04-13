@@ -1,8 +1,10 @@
 import { combineReducers } from '@reduxjs/toolkit'
-import items from './itemsSlice'
+import machines from './machinesSlice'
+import categories from './categoriesSlice'
 
 const reducer = combineReducers({
-    items,
+    categories,
+    machines,
 })
 
 export default reducer

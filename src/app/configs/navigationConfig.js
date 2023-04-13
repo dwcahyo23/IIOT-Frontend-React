@@ -16,6 +16,14 @@ const navigationConfig = [
         translate: 'APPLICATIONS',
         children: [
             {
+                id: 'apps.maintenance',
+                title: 'Maintenance',
+                type: 'item',
+                icon: 'heroicons-outline:academic-cap',
+                url: '/apps/maintenanceApp',
+                translate: 'Maintenance',
+            },
+            {
                 id: 'apps.mnpreventive',
                 title: 'MN Preventive',
                 type: 'collapse',
@@ -34,38 +42,6 @@ const navigationConfig = [
                         title: 'New Item',
                         type: 'item',
                         url: 'apps/mn-preventive/items/new',
-                    },
-                ],
-            },
-            {
-                id: 'apps.mngenba',
-                title: 'MN Genba',
-                type: 'collapse',
-                icon: 'heroicons-outline:shopping-cart',
-                translate: 'Genba',
-                children: [
-                    {
-                        id: 'mn-genba-items',
-                        title: 'Items',
-                        type: 'item',
-                        url: 'apps/mn-genba/items',
-                        end: true,
-                    },
-                ],
-            },
-            {
-                id: 'apps.mnelectricity',
-                title: 'MN Electricity',
-                type: 'collapse',
-                icon: 'heroicons-outline:shopping-cart',
-                translate: 'Electricity',
-                children: [
-                    {
-                        id: 'mn-electricity-modbus',
-                        title: 'Items',
-                        type: 'item',
-                        url: 'apps/mn-electricity/modbus',
-                        end: true,
                     },
                 ],
             },
