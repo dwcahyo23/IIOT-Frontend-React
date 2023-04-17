@@ -1,6 +1,4 @@
 import Typography from '@mui/material/Typography'
-import Divider from '@mui/material/Divider'
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon'
 import clsx from 'clsx'
 import MaintenanceCategory from './MaintenanceCategory'
 

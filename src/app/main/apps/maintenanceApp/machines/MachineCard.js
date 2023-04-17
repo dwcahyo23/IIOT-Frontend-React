@@ -53,8 +53,8 @@ function CourseCard({ course }) {
                 }}
             >
                 <Button
-                    //   to={`/apps/academy/courses/${course.id}/${course.slug}`}
-                    //   component={Link}
+                    to={`/apps/maintenanceApp/course/${course.uuid}/${course.category}`}
+                    component={Link}
                     className="px-16 min-w-100"
                     color={colorProgress()}
                     variant="contained"

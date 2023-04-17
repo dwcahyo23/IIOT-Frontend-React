@@ -15,36 +15,68 @@ const navigationConfig = [
         icon: 'heroicons-outline:cube',
         translate: 'APPLICATIONS',
         children: [
+            // {
+            //     id: 'apps.maintenance',
+            //     title: 'Maintenance',
+            //     type: 'collapse',
+            //     icon: 'heroicons-outline:academic-cap',
+            //     url: '/apps/maintenanceApp',
+            //     translate: 'Maintenance',
+            //     children: [
+            //         {
+            //             id: 'apps.maintenance.newitem',
+            //             title: 'New Item',
+            //             type: 'item',
+            //             url: '/item/new',
+            //         },
+            //     ],
+            // },
+
             {
                 id: 'apps.maintenance',
-                title: 'Maintenance',
-                type: 'item',
-                icon: 'heroicons-outline:academic-cap',
-                url: '/apps/maintenanceApp',
-                translate: 'Maintenance',
-            },
-            {
-                id: 'apps.mnpreventive',
-                title: 'MN Preventive',
+                title: 'Maintenance System',
                 type: 'collapse',
-                icon: 'heroicons-outline:shopping-cart',
-                translate: 'Preventive',
+                icon: 'heroicons-outline:academic-cap',
+                translate: 'Maintenance',
                 children: [
                     {
-                        id: 'mn-prreventive-items',
-                        title: 'Items',
+                        id: 'mn-maintenance',
+                        title: 'Machines',
                         type: 'item',
-                        url: 'apps/mn-preventive/items',
+                        url: '/apps/maintenanceApp',
                         end: true,
                     },
                     {
-                        id: 'mn-prreventive-new-item',
+                        id: 'mn-newitem',
                         title: 'New Item',
                         type: 'item',
-                        url: 'apps/mn-preventive/items/new',
+                        url: 'apps/maintenanceApp/item/new',
                     },
                 ],
             },
+
+            // {
+            //     id: 'apps.mnpreventive',
+            //     title: 'MN Preventive',
+            //     type: 'collapse',
+            //     icon: 'heroicons-outline:shopping-cart',
+            //     translate: 'Preventive',
+            //     children: [
+            //         {
+            //             id: 'mn-prreventive-items',
+            //             title: 'Items',
+            //             type: 'item',
+            //             url: 'apps/mn-preventive/items',
+            //             end: true,
+            //         },
+            //         {
+            //             id: 'mn-prreventive-new-item',
+            //             title: 'New Item',
+            //             type: 'item',
+            //             url: 'apps/mn-preventive/items/new',
+            //         },
+            //     ],
+            // },
         ],
     },
 ]

@@ -9,11 +9,9 @@ import { motion } from 'framer-motion'
 import { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box } from '@mui/system'
-import Switch from '@mui/material/Switch'
-import { FormControlLabel } from '@mui/material'
 import FusePageSimple from '@fuse/core/FusePageSimple'
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery'
-import { selectCategories } from '../store/categoriesSlice'
+import { getCategories, selectCategories } from '../store/categoriesSlice'
 import { getMachines, selectMachines } from '../store/machinesSlice'
 import MachineCard from './MachineCard'
 import Tabs from '@mui/material/Tabs'
@@ -29,7 +27,8 @@ function Machines(props) {
     const [filteredData, setFilteredData] = useState(null)
     const [searchText, setSearchText] = useState('')
     const [selectedCategory, setSelectedCategory] = useState('all')
-    const [searchTab, setSearchTab] = useState('METAL FORMING')
+    const [searchProcessTab, setSearchProcessTab] = useState('METAL FORMING')
+    const [searchComTab, setSearchComTab] = useState('GM1')
 
     useEffect(() => {
         dispatch(getMachines())
@@ -40,7 +39,8 @@ function Machines(props) {
             if (
                 searchText.length === 0 &&
                 selectedCategory === 'all' &&
-                !searchTab
+                !searchProcessTab &&
+                !searchComTab
             ) {
                 return courses
             }
@@ -53,7 +53,11 @@ function Machines(props) {
                     return false
                 }
 
-                if (item.machine_index.mch_process !== searchTab) {
+                if (item.machine_index.mch_process !== searchProcessTab) {
+                    return false
+                }
+
+                if (item.machine_index.mch_com !== searchComTab) {
                     return false
                 }
 
@@ -74,11 +78,9 @@ function Machines(props) {
         if (courses) {
             setFilteredData(getFilteredArray())
         }
-    }, [courses, searchText, searchTab, selectedCategory])
+    }, [courses, searchText, searchComTab, searchProcessTab, selectedCategory])
 
-    useEffect(() => {
-        console.log(searchTab)
-    }, [searchTab])
+    useEffect(() => {}, [searchProcessTab])
 
     function handleSelectedCategory(event) {
         setSelectedCategory(event.target.value)
@@ -88,8 +90,12 @@ function Machines(props) {
         setSearchText(event.target.value)
     }
 
-    function handleSearchTabs(event, value) {
-        setSearchTab(value)
+    function handleSearchProcessTab(event, value) {
+        setSearchProcessTab(value)
+    }
+
+    function handleSearchComTab(event, value) {
+        setSearchComTab(value)
     }
 
     return (
@@ -202,8 +208,26 @@ function Machines(props) {
                     <div className="flex flex-col shrink-0 sm:flex-row items-center justify-between space-y-16 sm:space-y-0">
                         <div className="flex flex-col sm:flex-row w-full sm:w-auto items-center space-y-16 sm:space-y-0 sm:space-x-16">
                             <Tabs
-                                value={searchTab}
-                                onChange={handleSearchTabs}
+                                value={searchComTab}
+                                onChange={handleSearchComTab}
+                                indicatorColor="secondary"
+                                textColor="secondary"
+                                variant="scrollable"
+                                scrollButtons="auto"
+                                classes={{ root: 'w-full h-16 border-b-1' }}
+                            >
+                                <Tab value="GM1" label="GM1" />
+                                <Tab value="GM2" label="GM2" />
+                                <Tab value="GM3" label="GM3" />
+                                <Tab value="GMX" label="GMX" />
+                            </Tabs>
+                        </div>
+                    </div>
+                    <div className="flex flex-col shrink-0 sm:flex-row items-center justify-between space-y-16 sm:space-y-0">
+                        <div className="flex flex-col sm:flex-row w-full sm:w-auto items-center space-y-16 sm:space-y-0 sm:space-x-16">
+                            <Tabs
+                                value={searchProcessTab}
+                                onChange={handleSearchProcessTab}
                                 indicatorColor="secondary"
                                 textColor="secondary"
                                 variant="scrollable"
@@ -264,7 +288,7 @@ function Machines(props) {
                                 <div className="flex flex-1 items-center justify-center">
                                     <Typography
                                         color="text.secondary"
-                                        className="text-24 mt-24 my-24"
+                                        className="text-24 mt-32 my-32"
                                     >
                                         No machine found!
                                     </Typography>

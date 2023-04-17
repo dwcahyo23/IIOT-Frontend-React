@@ -16,49 +16,6 @@ function BasicInfoTab(props) {
 
     return (
         <div className="container">
-            {/* <Controller
-        name="machineIndexUuid"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            className="mt-8 mb-16"
-            required
-            sx={{ width: 300 }}
-            label="Category"
-            select
-            autoFocus
-            id="category"
-            fullWidth
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            {getMachines.map((mch) => (
-              <MenuItem key={mch.value} value={mch.value}>
-                {mch.label}
-              </MenuItem>
-            ))}
-          </TextField>
-        )}
-      /> */}
-
-            {/* <Controller
-        name="machineIndexUuid"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            className="mt-8 mb-16"
-            autoFocus
-            label="Machine UUID"
-            id="machineIndexUuid"
-            variant="outlined"
-            fullWidth
-          />
-        )}
-      /> */}
-
             <Controller
                 name="machineIndexUuid"
                 control={control}

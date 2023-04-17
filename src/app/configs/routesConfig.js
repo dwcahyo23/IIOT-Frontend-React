@@ -24,7 +24,7 @@ const routes = [
     ),
     {
         path: '/',
-        element: <Navigate to="/apps/mn-preventive/items" />,
+        element: <Navigate to="/apps/maintenanceApp" />,
         auth: settingsConfig.defaultAuth,
     },
     {
