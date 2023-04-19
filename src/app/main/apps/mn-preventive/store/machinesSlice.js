@@ -8,7 +8,7 @@ import axios from 'axios'
 export const getMachines = createAsyncThunk(
     'mnPreventiveApp/machines/getMachines',
     async () => {
-        const response = await axios.get('http://localhost:5000/machines')
+        const response = await axios.get('http://192.168.192.7:5000/machines')
         const data = await response.data
 
         return data
@@ -18,7 +18,9 @@ export const getMachines = createAsyncThunk(
 export const removeMachines = createAsyncThunk(
     'mnPreventiveApp/machines',
     async (itemsIds, { dispatch, getState }) => {
-        await axios.delete('http://localhost:5000/machines', { data: itemsIds })
+        await axios.delete('http://192.168.192.7:5000/machines', {
+            data: itemsIds,
+        })
 
         return itemsIds
     }

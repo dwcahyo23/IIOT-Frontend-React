@@ -8,7 +8,7 @@ import axios from 'axios'
 export const getMachineCode = createAsyncThunk(
     'maintenanceApp/machineCode/getMachineCode',
     async () => {
-        const response = await axios.get('http://localhost:5000/machines')
+        const response = await axios.get('http://192.168.192.7:5000/machines')
         const data = await response.data
 
         return data

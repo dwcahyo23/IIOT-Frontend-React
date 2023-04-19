@@ -8,7 +8,7 @@ import axios from 'axios'
 export const getMachines = createAsyncThunk(
     'maintenanceApp/machines/getMachines',
     async () => {
-        const response = await axios.get('http://localhost:5000/finItem')
+        const response = await axios.get('http://192.168.192.7:5000/finItem')
         const data = await response.data
         return data
     }

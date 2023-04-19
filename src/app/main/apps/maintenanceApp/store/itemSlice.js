@@ -5,7 +5,7 @@ export const getItem = createAsyncThunk(
     'maintenanceApp/item/getItem',
     async (itemId) => {
         const response = await axios.get(
-            `http://localhost:5000/machineitem/${itemId}`
+            `http://192.168.192.7:5000/machineitem/${itemId}`
         )
         const data = await response.data
 
@@ -17,7 +17,7 @@ export const removeItem = createAsyncThunk(
     'maintenanceApp/item/removeItem',
     async (val, { dispatch, getState }) => {
         const { uuid } = getState().maintenanceApp.item
-        await axios.delete(`http://localhost:5000/machineitem/${uuid}`)
+        await axios.delete(`http://192.168.192.7:5000/machineitem/${uuid}`)
 
         return uuid
     }
@@ -29,7 +29,7 @@ export const saveItem = createAsyncThunk(
         console.log(itemData)
         const { uuid } = getState().maintenanceApp
         const response = await axios.post(
-            `http://localhost:5000/insItem`,
+            `http://192.168.192.7:5000/insItem`,
             itemData
         )
         const data = await response.data

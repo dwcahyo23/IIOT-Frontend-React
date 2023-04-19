@@ -8,7 +8,9 @@ import axios from 'axios'
 export const getCategories = createAsyncThunk(
     'maintenanceApp/categories/getCategories',
     async () => {
-        const response = await axios.get('http://localhost:5000/getcategory')
+        const response = await axios.get(
+            'http://192.168.192.7:5000/getcategory'
+        )
         const data = await response.data
 
         return data

@@ -6,7 +6,7 @@ export const getCourse = createAsyncThunk(
     'maintenanceApp/course/getCourse',
     async (uuid) => {
         const response = await axios.get(
-            `http://localhost:5000/finItemBy/${uuid}`
+            `http://192.168.192.7:5000/finItemBy/${uuid}`
         )
 
         const data = await response.data
