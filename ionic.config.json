@@ -1,7 +1,0 @@
-{
-  "name": "Fuse React",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "react"
-}

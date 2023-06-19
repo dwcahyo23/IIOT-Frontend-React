@@ -101,8 +101,8 @@ function Course(props) {
                     </Hidden>
 
                     <SwipeableViews enableMouseEvents>
-                        <div className="flex justify-center p-16 pb-64 sm:p-24 sm:pb-64 md:p-48 md:pb-64">
-                            <Paper className="w-full max-w-lg mx-auto sm:my-8 lg:mt-16 p-24 sm:p-40 sm:py-48 rounded-16 shadow overflow-hidden">
+                        <div className="flex justify-center p-8 pb-32 sm:p-24 sm:pb-32 md:p-28 md:pb-32">
+                            <Paper className="w-full max-w-lg mx-8 sm:my-8 lg:mt-16 p-24 sm:p-40 sm:py-48 rounded-16 shadow overflow-hidden">
                                 <Typography className="text-18 font-medium tracking-tight mx-10 mb-16">
                                     Sparepart items :
                                 </Typography>

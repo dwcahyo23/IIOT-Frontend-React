@@ -235,11 +235,13 @@ function Grid({ course }) {
             headerAlign: 'center',
         },
         {
-            field: 'category',
-            headerName: 'CAT',
+            field: 'progress_bar',
+            headerName: 'PROGRESS',
             width: 100,
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
+            valueGetter: ProgresBarCalc,
+            renderCell: RenderProgres,
         },
         {
             field: 'item_life_time',
@@ -257,15 +259,7 @@ function Grid({ course }) {
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
         },
-        {
-            field: 'progress_bar',
-            headerName: 'PROGRESS',
-            width: 100,
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-            valueGetter: ProgresBarCalc,
-            renderCell: RenderProgres,
-        },
+
         {
             field: 'end_life_time',
             headerName: 'END LIFE TIME',

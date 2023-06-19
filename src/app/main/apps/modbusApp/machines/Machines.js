@@ -5,23 +5,21 @@ import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
+import Tabs from '@mui/material/Tabs'
+import Tab from '@mui/material/Tab'
 import { motion } from 'framer-motion'
 import { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box } from '@mui/system'
 import FusePageSimple from '@fuse/core/FusePageSimple'
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery'
-import { getCategories, selectCategories } from '../store/categoriesSlice'
+import { selectCategories } from '../store/categoriesSlice'
 import { getMachines, selectMachines } from '../store/machinesSlice'
-import { getWorder, selectWorder } from '../store/worderSlice'
 import MachineCard from './MachineCard'
-import Tabs from '@mui/material/Tabs'
-import Tab from '@mui/material/Tab'
 
 function Machines(props) {
     const dispatch = useDispatch()
-    const courses = useSelector(selectMachines)
-    const worder = useSelector(selectWorder)
+    const machines = useSelector(selectMachines)
     const categories = useSelector(selectCategories)
     const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'))
 
@@ -29,59 +27,57 @@ function Machines(props) {
     const [filteredData, setFilteredData] = useState(null)
     const [searchText, setSearchText] = useState('')
     const [selectedCategory, setSelectedCategory] = useState('all')
-    const [searchProcessTab, setSearchProcessTab] = useState('METAL FORMING')
-    const [searchComTab, setSearchComTab] = useState('GM1')
+    const [intervalStart, setIntervalStart] = useState(0)
+    const [spinAnimate, setSpinAnimate] = useState(false)
+    const [searchComTab, setSearchComTab] = useState('GM5')
 
     useEffect(() => {
         dispatch(getMachines())
-        dispatch(getWorder())
     }, [dispatch])
+
+    useEffect(() => {
+        console.log(intervalStart)
+        if (intervalStart > 0) {
+            setInterval(() => {
+                dispatch(getMachines()).then(() => {
+                    setSpinAnimate(true)
+                })
+            }, intervalStart)
+        }
+    }, [dispatch, intervalStart, spinAnimate])
 
     useEffect(() => {
         function getFilteredArray() {
             if (
                 searchText.length === 0 &&
                 selectedCategory === 'all' &&
-                !searchProcessTab &&
                 !searchComTab
             ) {
-                return courses
+                return machines
             }
 
-            return _.filter(courses, (item) => {
+            return _.filter(machines, (data) => {
                 if (
                     selectedCategory !== 'all' &&
-                    item.category !== selectedCategory
+                    data.category !== selectedCategory
                 ) {
                     return false
                 }
 
-                if (item.machine_index.mch_process !== searchProcessTab) {
+                if (data.ModbusApp.mch_com !== searchComTab) {
                     return false
                 }
 
-                if (item.machine_index.mch_com !== searchComTab) {
-                    return false
-                }
-
-                return (
-                    item.machine_index.mch_name
-                        .toLowerCase()
-                        .includes(searchText.toLowerCase()) ||
-                    item.machine_index.mch_code
-                        .toLowerCase()
-                        .includes(searchText.toLowerCase()) ||
-                    item.machine_index.mch_com
-                        .toLowerCase()
-                        .includes(searchText.toLowerCase())
-                )
+                return data.mch_code
+                    .toLowerCase()
+                    .includes(searchText.toLowerCase())
             })
         }
 
-        if (courses) {
+        if (machines) {
             setFilteredData(getFilteredArray())
         }
-    }, [courses, searchText, searchComTab, searchProcessTab, selectedCategory])
+    }, [machines, searchText, searchComTab, selectedCategory])
 
     // useEffect(() => {}, [searchProcessTab])
 
@@ -93,12 +89,12 @@ function Machines(props) {
         setSearchText(event.target.value)
     }
 
-    function handleSearchProcessTab(event, value) {
-        setSearchProcessTab(value)
-    }
-
     function handleSearchComTab(event, value) {
         setSearchComTab(value)
+    }
+
+    function handleInterval(event) {
+        setIntervalStart(event.target.value)
     }
 
     return (
@@ -123,7 +119,7 @@ function Machines(props) {
                                 color="inherit"
                                 className="text-18 font-semibold"
                             >
-                                MAINTENANCE SYSTEM
+                                IIOT SYSTEM
                             </Typography>
                         </motion.div>
                         <motion.div
@@ -134,9 +130,9 @@ function Machines(props) {
                                 color="inherit"
                                 className="text-16 sm:text-20 mt-16 sm:mt-24 opacity-75 tracking-tight max-w-md text-center"
                             >
-                                These systems are designed to make sure each
-                                preventive maintenance task occurs exactly as
-                                expected by managers, based on set intervals.
+                                IIOT is a network of intelligent devices
+                                connected to form systems that monitor, collect,
+                                exchange and analyze data.
                             </Typography>
                         </motion.div>
                     </div>
@@ -164,7 +160,7 @@ function Machines(props) {
             content={
                 <div className="flex flex-col flex-1 w-full mx-auto px-24 pt-24 sm:p-40">
                     <div className="flex flex-col shrink-0 sm:flex-row items-center justify-between space-y-16 sm:space-y-0">
-                        <div className="flex flex-col sm:flex-row w-full sm:w-auto items-center space-y-16 sm:space-y-0 sm:space-x-16">
+                        <div className="flex flex-col sm:flex-row w-full sm:w-auto items-center justify-start space-y-16 sm:space-y-0 sm:space-x-16">
                             <FormControl
                                 className="flex w-full sm:w-136"
                                 variant="outlined"
@@ -192,6 +188,7 @@ function Machines(props) {
                                     ))}
                                 </Select>
                             </FormControl>
+
                             <TextField
                                 label="Search"
                                 placeholder="Enter a keyword..."
@@ -206,8 +203,30 @@ function Machines(props) {
                                     shrink: true,
                                 }}
                             />
+                            <FormControl
+                                className="flex w-full sm:w-136"
+                                variant="outlined"
+                            >
+                                <InputLabel id="category-select-label">
+                                    Refresh
+                                </InputLabel>
+                                <Select
+                                    labelId="category-select-label"
+                                    id="category-select"
+                                    label="Category"
+                                    value={intervalStart}
+                                    onChange={handleInterval}
+                                >
+                                    <MenuItem value={0}>
+                                        <em> None </em>
+                                    </MenuItem>
+                                    <MenuItem value={5000}>5 second</MenuItem>
+                                    <MenuItem value={10000}>10 second</MenuItem>
+                                </Select>
+                            </FormControl>
                         </div>
                     </div>
+
                     <div className="flex flex-col shrink-0 sm:flex-row items-center justify-between space-y-16 sm:space-y-0">
                         <div className="flex flex-col sm:flex-row w-full sm:w-auto items-center space-y-16 sm:space-y-0 sm:space-x-16">
                             <Tabs
@@ -223,28 +242,8 @@ function Machines(props) {
                                 <Tab value="GM2" label="GM2" />
                                 <Tab value="GM3" label="GM3" />
                                 <Tab value="GM5" label="GM5" />
+                                <Tab value="GMU" label="GMU" />
                                 <Tab value="GMX" label="GMX" />
-                            </Tabs>
-                        </div>
-                    </div>
-                    <div className="flex flex-col shrink-0 sm:flex-row items-center justify-between space-y-16 sm:space-y-0">
-                        <div className="flex flex-col sm:flex-row w-full sm:w-auto items-center space-y-16 sm:space-y-0 sm:space-x-16">
-                            <Tabs
-                                value={searchProcessTab}
-                                onChange={handleSearchProcessTab}
-                                indicatorColor="secondary"
-                                textColor="secondary"
-                                variant="scrollable"
-                                scrollButtons="auto"
-                                classes={{ root: 'w-full h-16 border-b-1' }}
-                            >
-                                <Tab value="METAL FORMING" label="FORMING" />
-                                <Tab value="ROLLING" label="ROLLING" />
-                                <Tab value="MACHINING" label="MACHINING" />
-                                <Tab
-                                    value="HEAT TREATMENT"
-                                    label="HEAT TREATMENT"
-                                />
                             </Tabs>
                         </div>
                     </div>
@@ -272,18 +271,23 @@ function Machines(props) {
                             filteredData &&
                             (filteredData.length > 0 ? (
                                 <motion.div
-                                    className="flex grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-16 mt-16 sm:mt-16"
+                                    className="flex grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-16 mt-16 sm:mt-16"
                                     variants={container}
                                     initial="hidden"
                                     animate="show"
                                 >
-                                    {filteredData.map((course) => {
+                                    {filteredData.map((data) => {
                                         return (
                                             <motion.div
                                                 variants={item}
-                                                key={course.uuid}
+                                                key={data.uuid}
                                             >
-                                                <MachineCard course={course} />
+                                                <MachineCard
+                                                    params={{
+                                                        ...data,
+                                                        refresh: spinAnimate,
+                                                    }}
+                                                />
                                             </motion.div>
                                         )
                                     })}

@@ -1,11 +1,11 @@
-import i18next from 'i18next'
-import ar from './navigation-i18n/ar'
-import en from './navigation-i18n/en'
-import tr from './navigation-i18n/tr'
+// import i18next from 'i18next'
+// import ar from './navigation-i18n/ar'
+// import en from './navigation-i18n/en'
+// import tr from './navigation-i18n/tr'
 
-i18next.addResourceBundle('en', 'navigation', en)
-i18next.addResourceBundle('tr', 'navigation', tr)
-i18next.addResourceBundle('ar', 'navigation', ar)
+// i18next.addResourceBundle('en', 'navigation', en)
+// i18next.addResourceBundle('tr', 'navigation', tr)
+// i18next.addResourceBundle('ar', 'navigation', ar)
 
 const navigationConfig = [
     {
@@ -36,21 +36,44 @@ const navigationConfig = [
                 id: 'apps.maintenance',
                 title: 'Maintenance System',
                 type: 'collapse',
-                icon: 'heroicons-outline:academic-cap',
+                icon: 'heroicons-outline:desktop-computer',
                 translate: 'Maintenance',
                 children: [
                     {
                         id: 'mn-maintenance',
-                        title: 'Machines',
+                        title: 'Home',
                         type: 'item',
                         url: '/apps/maintenanceApp',
                         end: true,
                     },
                     {
                         id: 'mn-newitem',
-                        title: 'New Item',
+                        title: 'New item',
                         type: 'item',
                         url: 'apps/maintenanceApp/item/new',
+                    },
+                ],
+            },
+
+            {
+                id: 'apps.modbus',
+                title: 'Maintenance System',
+                type: 'collapse',
+                icon: 'heroicons-outline:status-online',
+                translate: 'IIOT',
+                children: [
+                    {
+                        id: 'modbusApp-mch',
+                        title: 'Home',
+                        type: 'item',
+                        url: '/apps/modbusApp',
+                        end: true,
+                    },
+                    {
+                        id: 'modbusApp-new-address',
+                        title: 'New address',
+                        type: 'item',
+                        url: 'apps/modbusApp/address/new',
                     },
                 ],
             },
