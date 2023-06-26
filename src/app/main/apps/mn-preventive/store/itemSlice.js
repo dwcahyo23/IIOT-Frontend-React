@@ -5,7 +5,7 @@ export const getItem = createAsyncThunk(
     'mnPreventiveApp/item/getItem',
     async (itemId) => {
         const response = await axios.get(
-            `http://192.168.192.7:5000/machineitem/${itemId}`
+            `http://localhost:5000/machineitem/${itemId}`
         )
         const data = await response.data
 
@@ -17,7 +17,7 @@ export const removeItem = createAsyncThunk(
     'mnPreventiveApp/item/removeItem',
     async (val, { dispatch, getState }) => {
         const { uuid } = getState().mnPreventiveApp.item
-        await axios.delete(`http://192.168.192.7:5000/machineitem/${uuid}`)
+        await axios.delete(`http://localhost:5000/machineitem/${uuid}`)
 
         return uuid
     }
@@ -31,7 +31,7 @@ export const saveItem = createAsyncThunk(
         console.log(itemData)
         const { uuid } = getState().mnPreventiveApp
         const response = await axios.patch(
-            `http://192.168.192.7:5000/machineitem/${itemData.uuid}`,
+            `http://localhost:5000/machineitem/${itemData.uuid}`,
             itemData
         )
         const data = await response.data

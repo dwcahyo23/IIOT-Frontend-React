@@ -15,42 +15,25 @@ const navigationConfig = [
         icon: 'heroicons-outline:cube',
         translate: 'APPLICATIONS',
         children: [
-            // {
-            //     id: 'apps.maintenance',
-            //     title: 'Maintenance',
-            //     type: 'collapse',
-            //     icon: 'heroicons-outline:academic-cap',
-            //     url: '/apps/maintenanceApp',
-            //     translate: 'Maintenance',
-            //     children: [
-            //         {
-            //             id: 'apps.maintenance.newitem',
-            //             title: 'New Item',
-            //             type: 'item',
-            //             url: '/item/new',
-            //         },
-            //     ],
-            // },
-
             {
-                id: 'apps.maintenance',
-                title: 'Maintenance System',
+                id: 'apps.sparepart',
+                title: 'Maintenance',
                 type: 'collapse',
                 icon: 'heroicons-outline:desktop-computer',
                 translate: 'Maintenance',
                 children: [
                     {
-                        id: 'mn-maintenance',
+                        id: 'sparepart-mch',
                         title: 'Home',
                         type: 'item',
-                        url: '/apps/maintenanceApp',
+                        url: '/apps/maintenanceSystem',
                         end: true,
                     },
                     {
-                        id: 'mn-newitem',
-                        title: 'New item',
+                        id: 'sparepart-new-address',
+                        title: 'New address',
                         type: 'item',
-                        url: 'apps/maintenanceApp/item/new',
+                        url: 'apps/maintenanceSystem/sparepart/new',
                     },
                 ],
             },
@@ -77,29 +60,6 @@ const navigationConfig = [
                     },
                 ],
             },
-
-            // {
-            //     id: 'apps.mnpreventive',
-            //     title: 'MN Preventive',
-            //     type: 'collapse',
-            //     icon: 'heroicons-outline:shopping-cart',
-            //     translate: 'Preventive',
-            //     children: [
-            //         {
-            //             id: 'mn-prreventive-items',
-            //             title: 'Items',
-            //             type: 'item',
-            //             url: 'apps/mn-preventive/items',
-            //             end: true,
-            //         },
-            //         {
-            //             id: 'mn-prreventive-new-item',
-            //             title: 'New Item',
-            //             type: 'item',
-            //             url: 'apps/mn-preventive/items/new',
-            //         },
-            //     ],
-            // },
         ],
     },
 ]

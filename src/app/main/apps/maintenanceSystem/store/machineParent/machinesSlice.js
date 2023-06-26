@@ -6,23 +6,25 @@ import {
 import axios from 'axios'
 
 export const getMachines = createAsyncThunk(
-    'maintenanceApp/machines/getMachines',
+    'maintenanceSystem/machines/getMachines',
     async () => {
-        const response = await axios.get('http://localhost:5000/finItem')
+        const response = await axios.get(
+            'http://localhost:5000/maintenanceMachine'
+        )
         const data = await response.data
         return data
     }
 )
 
 const machinesAdapter = createEntityAdapter({
-    selectId: (machines) => machines.uuid,
+    selectId: (data) => data.uuid,
 })
 
 export const { selectAll: selectMachines, selectById: selectMachinesById } =
-    machinesAdapter.getSelectors((state) => state.maintenanceApp.machines)
+    machinesAdapter.getSelectors((state) => state.maintenanceSystem.machines)
 
 const machinesSlice = createSlice({
-    name: 'maintenanceApp/machines',
+    name: 'maintenanceSystem/machines',
     initialState: machinesAdapter.getInitialState({}),
     reducers: {},
     extraReducers: {

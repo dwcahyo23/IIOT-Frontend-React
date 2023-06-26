@@ -8,7 +8,7 @@ import axios from 'axios'
 export const getWorder = createAsyncThunk(
     'maintenanceApp/worder/getWorder',
     async () => {
-        const response = await axios.get('http://192.168.192.7:5000/pgmtn')
+        const response = await axios.get('http://localhost:5000/pgmtn')
         const data = await response.data
         return data
     }

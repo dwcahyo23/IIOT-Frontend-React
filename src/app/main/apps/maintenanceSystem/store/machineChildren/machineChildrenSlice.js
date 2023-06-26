@@ -1,0 +1,81 @@
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import axios from 'axios'
+import _ from 'lodash'
+
+export const getMaintenanceSystem = createAsyncThunk(
+    'maintenanceSystem/machineChildren/getMaintenanceSystem',
+    async (uuid) => {
+        const response = await axios.get(
+            `http://localhost:5000/maintenanceMachine/${uuid}`
+        )
+
+        const data = await response.data
+
+        return data === undefined ? null : data
+    }
+)
+
+export const saveMaintenanceSystem = createAsyncThunk(
+    'maintenanceSystem/machineChildren/saveMaintenanceSystem',
+    async (sparepartData, { dispatch, getState }) => {
+        try {
+            const response = await axios.post(
+                `http://localhost:5000/maintenanceReport`,
+                sparepartData
+            )
+            console.log(response)
+            const data = await response.data
+            return data
+        } catch (error) {
+            console.log(error)
+        }
+    }
+)
+
+const machineChildrenSlice = createSlice({
+    name: 'maintenanceSystem/machineChildren',
+    initialState: null,
+    reducers: {
+        resetMachineChildren: () => null,
+        newMachineChildren: {
+            reducer: (state, action) => action.payload,
+            prepare: (event) => ({
+                payload: {
+                    uuid: '',
+                    mch_code: '',
+                    mch_name: '',
+                    mch_process: '',
+                    mch_process: '',
+                    mch_com: '',
+                    mch_loc: '',
+                    mch_prod: '',
+                    mch_maker: '',
+                    MaintenanceSpareparts: [],
+                },
+            }),
+        },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(
+                getMaintenanceSystem.fulfilled,
+                (state, action) => action.payload
+            )
+            .addCase(
+                saveMaintenanceSystem.fulfilled,
+                (state, action) => action.payload
+            )
+    },
+    // extraReducers: {
+    //     [getMaintenanceSystem.fulfilled]: (state, action) => action.payload,
+    //     [saveMaintenanceSystem.fulfilled]: (state, action) => action.payload,
+    // },
+})
+
+export const { newMachineChildren, resetMachineChildren } =
+    machineChildrenSlice.actions
+
+export const selectMachineChildren = ({ maintenanceSystem }) =>
+    maintenanceSystem.machineChildren
+
+export default machineChildrenSlice.reducer

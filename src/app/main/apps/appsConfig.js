@@ -1,7 +1,6 @@
-import MNPreventiveAppConfig from './mn-preventive/MNPreventiveAppConfig'
-import MaintenanceApp from './maintenanceApp/MaintenanceAppConfig'
 import ModbusApp from './modbusApp/ModbusAppConfig'
+import MaintenanceSystem from './maintenanceSystem/MaintenanceSystemConfig'
 
-const appsConfig = [MNPreventiveAppConfig, MaintenanceApp, ModbusApp]
+const appsConfig = [ModbusApp, MaintenanceSystem]
 
 export default appsConfig
