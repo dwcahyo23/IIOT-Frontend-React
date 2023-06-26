@@ -62,6 +62,28 @@ function CustomExportButton(props) {
     )
 }
 
+const sendMsgGroup = async (params) => {
+    await axios({
+        method: 'post',
+        url: 'http://192.168.192.7:5010/send-message-group',
+        data: {
+            name: params.name,
+            message: params.msg,
+        },
+    })
+}
+
+const sendMsg = async (params) => {
+    await axios({
+        method: 'post',
+        url: 'http://192.168.192.7:5010/send-message',
+        data: {
+            number: params.number,
+            message: params.msg,
+        },
+    })
+}
+
 function CustomToolbar(props) {
     return (
         <GridToolbarContainer {...props}>
@@ -136,6 +158,7 @@ function TableIndex({ params }) {
             checkboxSelection
             density="compact"
             slots={{ toolbar: CustomToolbar }}
+            autoPageSize
         />
     )
 }

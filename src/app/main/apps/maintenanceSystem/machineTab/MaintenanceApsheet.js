@@ -3,6 +3,8 @@ import { Box } from '@mui/material'
 import { format } from 'date-fns'
 import { useFormContext, useFieldArray } from 'react-hook-form'
 import TableIndex from './TableIndex'
+import StatusColor from './utils/StatusColor'
+import clsx from 'clsx'
 
 function MaintenanceApsheet() {
     const methods = useFormContext()
@@ -11,6 +13,8 @@ function MaintenanceApsheet() {
         name: 'mow',
         control,
     })
+
+    // console.log(fields)
 
     const columns = [
         {
@@ -26,6 +30,24 @@ function MaintenanceApsheet() {
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
             width: 90,
+        },
+        {
+            field: 'pri_no',
+            headerName: 'Status',
+            headerClassName: 'super-app-theme--header',
+            headerAlign: 'center',
+            width: 120,
+            align: 'center',
+            renderCell: (params) => <StatusColor id={params.value} />,
+        },
+        {
+            field: 'chk_mark',
+            headerName: 'Audit',
+            headerClassName: 'super-app-theme--header',
+            headerAlign: 'center',
+            width: 90,
+            align: 'center',
+            renderCell: (params) => <StatusColor id={params.value} />,
         },
         {
             field: 's_ymd',
@@ -55,7 +77,7 @@ function MaintenanceApsheet() {
     return (
         <Box
             sx={{
-                height: 350,
+                height: 400,
                 width: '100%',
             }}
         >

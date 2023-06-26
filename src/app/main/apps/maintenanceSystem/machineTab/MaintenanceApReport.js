@@ -49,7 +49,9 @@ function MaintenanceApReport() {
             if (action.payload) {
                 dispatch(getMaintenanceSystem(action.payload.uuid))
                 dispatch(
-                    showMessage({ message: 'Data has been saved successfully' })
+                    showMessage({
+                        message: 'Data has been saved successfully',
+                    })
                 )
             }
         })
@@ -121,10 +123,8 @@ function MaintenanceApReport() {
                                     {...field}
                                     className="mt-8 mb-16"
                                     error={!!errors.id_report}
-                                    required
                                     helperText={errors?.id_report?.message}
                                     label="Ap-Sheet"
-                                    autoFocus
                                     id="id_report"
                                     variant="outlined"
                                     fullWidth
@@ -144,7 +144,6 @@ function MaintenanceApReport() {
                                         {...field}
                                         className="mt-8 mb-16"
                                         id="date_report"
-                                        required
                                         label="On Change"
                                     />
                                 </LocalizationProvider>
@@ -160,10 +159,8 @@ function MaintenanceApReport() {
                                     {...field}
                                     className="mt-8 mb-16"
                                     error={!!errors.mch_code}
-                                    required
                                     helperText={errors?.mch_code?.message}
                                     label="Machine code"
-                                    autoFocus
                                     id="mch_code"
                                     variant="outlined"
                                     fullWidth
@@ -183,10 +180,8 @@ function MaintenanceApReport() {
                                     {...field}
                                     className="mt-8 mb-16"
                                     error={!!errors.mch_com}
-                                    required
                                     helperText={errors?.mch_com?.message}
                                     label="Machine com"
-                                    autoFocus
                                     id="mch_com"
                                     variant="outlined"
                                     fullWidth
@@ -208,10 +203,8 @@ function MaintenanceApReport() {
                                     {...field}
                                     className="mt-8 mb-16"
                                     error={!!errors.chronological}
-                                    required
                                     helperText={errors?.chronological?.message}
                                     label="Chronological"
-                                    autoFocus
                                     id="chronological"
                                     variant="outlined"
                                     fullWidth
@@ -230,10 +223,8 @@ function MaintenanceApReport() {
                                     {...field}
                                     className="mt-8 mb-16"
                                     error={!!errors.corrective}
-                                    required
                                     helperText={errors?.corrective?.message}
                                     label="Corrective"
-                                    autoFocus
                                     id="corrective"
                                     variant="outlined"
                                     fullWidth
@@ -252,10 +243,8 @@ function MaintenanceApReport() {
                                     {...field}
                                     className="mt-8 mb-16"
                                     error={!!errors.prevention}
-                                    required
                                     helperText={errors?.prevention?.message}
                                     label="Prevention"
-                                    autoFocus
                                     id="prevention"
                                     variant="outlined"
                                     fullWidth

@@ -1,19 +1,57 @@
 import React from 'react'
-import { TextField, MenuItem, Autocomplete, Grid, Box } from '@mui/material'
+import { TextField, Button, Grid, Box } from '@mui/material'
 import { Controller, useFormContext, useFieldArray } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { format } from 'date-fns'
 import TableIndex from './TableIndex'
+import { showMessage } from 'app/store/fuse/messageSlice'
+import {
+    getMaintenanceSystem,
+    saveMaintenanceSystemRequest,
+} from '../store/machineChildren/machineChildrenSlice'
 
 function MaintenanceApReport() {
+    const dispatch = useDispatch()
     const methods = useFormContext()
-    const { control, formState, watch } = methods
+    const { control, formState, watch, getValues, getFieldState } = methods
     const { errors } = formState
     const { fields, remove, append } = useFieldArray({
         name: 'request',
         control,
     })
+
+    function valid() {
+        if (
+            getFieldState('id_request').isDirty &&
+            !getFieldState('id_request').invalid &&
+            getFieldState('item_name').isDirty &&
+            !getFieldState('item_name').invalid &&
+            getFieldState('date_request').isDirty &&
+            !getFieldState('date_request').invalid &&
+            getFieldState('item_qty').isDirty &&
+            !getFieldState('item_qty').invalid &&
+            getFieldState('item_uom').isDirty &&
+            !getFieldState('item_uom').invalid
+        ) {
+            return false
+        }
+
+        return true
+    }
+
+    function handleSave() {
+        dispatch(saveMaintenanceSystemRequest(getValues())).then((action) => {
+            if (action.payload) {
+                dispatch(getMaintenanceSystem(action.payload.uuid))
+                dispatch(
+                    showMessage({ message: 'Data has been saved successfully' })
+                )
+            }
+        })
+    }
 
     const columns = [
         {
@@ -24,31 +62,38 @@ function MaintenanceApReport() {
             width: 120,
         },
         {
-            field: 'mch_no',
+            field: 'mch_code',
             headerName: 'Machine',
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
             width: 90,
         },
         {
-            field: 's_ymd',
-            headerName: 'Stop',
+            field: 'date_request',
+            headerName: 'Date',
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
-            width: 90,
+            width: 120,
             valueFormatter: (params) =>
-                new Date(Date.parse(params.value)).toLocaleDateString(),
+                format(new Date(params.value), 'dd/MM/yy HH:mm'),
         },
         {
-            field: 'memo',
-            headerName: 'Problem',
+            field: 'item_name',
+            headerName: 'Item sparepart',
             flex: 1,
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
         },
         {
-            field: 's_memo',
-            headerName: 'Remarks',
+            field: 'item_qty',
+            headerName: 'Qty',
+            flex: 1,
+            headerClassName: 'super-app-theme--header',
+            headerAlign: 'center',
+        },
+        {
+            field: 'item_uom',
+            headerName: 'Uom',
             flex: 1,
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
@@ -56,12 +101,14 @@ function MaintenanceApReport() {
     ]
 
     return (
-        <Box
-            sx={{
-                width: '100%',
-            }}
-        >
-            <Box>
+        <div>
+            <Box
+                sx={{
+                    width: '100%',
+                    borderBottom: 1,
+                    borderColor: 'divider',
+                }}
+            >
                 <Grid container spacing={2}>
                     <Grid item xs={3}>
                         <Controller
@@ -89,22 +136,14 @@ function MaintenanceApReport() {
                             control={control}
                             render={({ field }) => (
                                 <LocalizationProvider
-                                    dateAdapter={AdapterDateFns}
+                                    dateAdapter={AdapterDayjs}
                                 >
                                     <DateTimePicker
                                         {...field}
                                         className="mt-8 mb-16"
                                         id="date_request"
-                                        error={!!errors.date_request}
                                         required
-                                        helperText={
-                                            errors?.date_request?.message
-                                        }
-                                        inputFormat="dd/MM/yyyy HH:mm"
                                         label="On Change"
-                                        renderInput={(params) => (
-                                            <TextField {...params} fullWidth />
-                                        )}
                                     />
                                 </LocalizationProvider>
                             )}
@@ -182,18 +221,18 @@ function MaintenanceApReport() {
                     </Grid>
                     <Grid item xs={3}>
                         <Controller
-                            name="qty"
+                            name="item_qty"
                             control={control}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
                                     className="mt-8 mb-16"
-                                    error={!!errors.qty}
+                                    error={!!errors.item_qty}
                                     required
-                                    helperText={errors?.qty?.message}
+                                    helperText={errors?.item_qty?.message}
                                     label="Item qty"
                                     autoFocus
-                                    id="qty"
+                                    id="item_qty"
                                     variant="outlined"
                                     fullWidth
                                 />
@@ -202,18 +241,18 @@ function MaintenanceApReport() {
                     </Grid>
                     <Grid item xs={3}>
                         <Controller
-                            name="uom"
+                            name="item_uom"
                             control={control}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
                                     className="mt-8 mb-16"
-                                    error={!!errors.uom}
+                                    error={!!errors.item_uom}
                                     required
-                                    helperText={errors?.uom?.message}
+                                    helperText={errors?.item_uom?.message}
                                     label="Item uom"
                                     autoFocus
-                                    id="uom"
+                                    id="item_uom"
                                     variant="outlined"
                                     fullWidth
                                 />
@@ -221,11 +260,30 @@ function MaintenanceApReport() {
                         />
                     </Grid>
                 </Grid>
+                <Grid container spacing={2}>
+                    <Grid item xs={4}>
+                        <Button
+                            className="whitespace-nowrap mb-16"
+                            variant="contained"
+                            color="secondary"
+                            disabled={valid()}
+                            onClick={handleSave}
+                        >
+                            Save
+                        </Button>
+                    </Grid>
+                </Grid>
             </Box>
-            <Box sx={{ height: 400 }}>
+
+            <Box
+                sx={{
+                    width: '100%',
+                    height: 400,
+                }}
+            >
                 <TableIndex params={{ row: fields, columns: columns }} />
             </Box>
-        </Box>
+        </div>
     )
 }
 

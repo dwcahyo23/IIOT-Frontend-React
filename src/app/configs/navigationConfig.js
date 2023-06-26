@@ -16,28 +16,12 @@ const navigationConfig = [
         translate: 'APPLICATIONS',
         children: [
             {
-                id: 'apps.sparepart',
+                id: 'apps.maintenanceSystem',
                 title: 'Maintenance',
-                type: 'collapse',
+                type: 'item',
                 icon: 'heroicons-outline:desktop-computer',
-                translate: 'Maintenance',
-                children: [
-                    {
-                        id: 'sparepart-mch',
-                        title: 'Home',
-                        type: 'item',
-                        url: '/apps/maintenanceSystem',
-                        end: true,
-                    },
-                    {
-                        id: 'sparepart-new-address',
-                        title: 'New address',
-                        type: 'item',
-                        url: 'apps/maintenanceSystem/sparepart/new',
-                    },
-                ],
+                url: '/apps/maintenanceSystem',
             },
-
             {
                 id: 'apps.modbus',
                 title: 'Maintenance System',

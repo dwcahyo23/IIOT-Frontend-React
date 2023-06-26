@@ -17,13 +17,28 @@ export const getMaintenanceSystem = createAsyncThunk(
 
 export const saveMaintenanceSystem = createAsyncThunk(
     'maintenanceSystem/machineChildren/saveMaintenanceSystem',
-    async (sparepartData, { dispatch, getState }) => {
+    async (row, { dispatch, getState }) => {
         try {
             const response = await axios.post(
                 `http://localhost:5000/maintenanceReport`,
-                sparepartData
+                row
             )
-            console.log(response)
+            const data = await response.data
+            return data
+        } catch (error) {
+            console.log(error)
+        }
+    }
+)
+
+export const saveMaintenanceSystemRequest = createAsyncThunk(
+    'maintenanceSystem/machineChildren/saveMaintenanceSystemRequest',
+    async (row, { dispatch, getState }) => {
+        try {
+            const response = await axios.post(
+                `http://localhost:5000/maintenanceRequest`,
+                row
+            )
             const data = await response.data
             return data
         } catch (error) {
@@ -51,25 +66,19 @@ const machineChildrenSlice = createSlice({
                     mch_prod: '',
                     mch_maker: '',
                     MaintenanceSpareparts: [],
+                    request: {
+                        id_request: '',
+                    },
                 },
             }),
         },
     },
-    extraReducers: (builder) => {
-        builder
-            .addCase(
-                getMaintenanceSystem.fulfilled,
-                (state, action) => action.payload
-            )
-            .addCase(
-                saveMaintenanceSystem.fulfilled,
-                (state, action) => action.payload
-            )
+    extraReducers: {
+        [getMaintenanceSystem.fulfilled]: (state, action) => action.payload,
+        [saveMaintenanceSystem.fulfilled]: (state, action) => action.payload,
+        [saveMaintenanceSystemRequest.fulfilled]: (state, action) =>
+            action.payload,
     },
-    // extraReducers: {
-    //     [getMaintenanceSystem.fulfilled]: (state, action) => action.payload,
-    //     [saveMaintenanceSystem.fulfilled]: (state, action) => action.payload,
-    // },
 })
 
 export const { newMachineChildren, resetMachineChildren } =

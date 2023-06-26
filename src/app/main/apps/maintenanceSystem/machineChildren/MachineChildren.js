@@ -40,24 +40,18 @@ const schema = yup.object().shape({
         .required('Require machine ap-sheet')
         .min(11)
         .max(11),
+    item_name: yup.string().required('Require item name'),
+    item_qty: yup.number().positive().required('Require item qty'),
+    item_uom: yup.string().required('Require item uom').min(3).max(3),
 
     id_report: yup
         .string()
         .required('Require machine ap-sheet')
         .min(11)
         .max(11),
-
     chronological: yup.string().required('Require machine chronological'),
     corrective: yup.string().required('Require machine corrective'),
     prevention: yup.string().required('Require machine prevention'),
-})
-
-const shchema2 = yup.object().shape({
-    id_report: yup
-        .string()
-        .required('Require machine ap-sheet')
-        .min(11)
-        .max(11),
 })
 
 function MachineChildren(props) {
@@ -73,16 +67,8 @@ function MachineChildren(props) {
         resolver: yupResolver(schema),
     })
 
-    const methods2 = useForm({
-        mode: 'onChange',
-        defaultValues: {},
-        resolver: yupResolver(shchema2),
-    })
-
     const { reset, watch, control, onChange, formState, getFieldState } =
         methods
-
-    // const { formState } = methods2
 
     const form = watch()
 
