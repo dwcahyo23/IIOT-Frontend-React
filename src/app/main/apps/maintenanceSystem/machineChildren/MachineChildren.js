@@ -1,7 +1,7 @@
 import FuseLoading from '@fuse/core/FuseLoading'
 import FusePageCarded from '@fuse/core/FusePageCarded'
 import { useDeepCompareEffect, useThemeMediaQuery } from '@fuse/hooks'
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Button, Typography, Badge } from '@mui/material'
 //
 import Tab from '@mui/material/Tab'
 import TabContext from '@mui/lab/TabContext'
@@ -25,16 +25,19 @@ import {
     resetMachineChildren,
 } from '../store/machineChildren/machineChildrenSlice'
 
+import {
+    getMachineStock,
+    selectStock,
+} from '../store/machineChildren/machineStock'
+
 import MachineChildrenHeader from './machineChildrenHeader'
 import MaintenanceMachine from '../machineTab/MaintenanceMachine'
 import MaintenanceApsheet from '../machineTab/MaintenanceApsheet'
 import MaintenanceApReport from '../machineTab/MaintenanceApReport'
 import MaintenanceApInventory from '../machineTab/MaintenanceApInventory'
+import MaintenanceGenba from '../machineTab/MaintenanceGenba'
 
 const schema = yup.object().shape({
-    // mch_code: yup.string().required('Require machine code').min(8).max(8),
-    // mch_name: yup.string().required('Require machine name').min(6).max(25),
-    // mch_com: yup.string().required('Require machine com'),
     id_request: yup
         .string()
         .required('Require machine ap-sheet')
@@ -57,6 +60,7 @@ const schema = yup.object().shape({
 function MachineChildren(props) {
     const dispatch = useDispatch()
     const machineChildren = useSelector(selectMachineChildren)
+    // const machineStock = useSelector(selectStock)
     const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'))
     const routeParams = useParams()
     const [tabValue, setTabValue] = useState('1')
@@ -76,9 +80,10 @@ function MachineChildren(props) {
         function updateMachineChildrenState() {
             const { uuid } = routeParams
             if (uuid === 'new') {
-                dispatch(newMachineChildren())
+                // dispatch(newMachineChildren())
             } else {
                 dispatch(getMaintenanceSystem(uuid)).then((action) => {
+                    dispatch(getMachineStock())
                     if (!action.payload) {
                         setNoMachineChildren(true)
                     }
@@ -93,6 +98,7 @@ function MachineChildren(props) {
         if (!machineChildren) {
             return
         }
+        console.log(data)
         reset(data)
     }, [machineChildren, reset])
 
@@ -153,9 +159,67 @@ function MachineChildren(props) {
                                 >
                                     <Tab label="Machine" value="1" />
                                     <Tab label="Sparepart" value="2" />
-                                    <Tab label="AP-Sheet" value="3" />
-                                    <Tab label="AP-Report" value="4" />
-                                    <Tab label="AP-Inventory" value="5" />
+                                    <Tab
+                                        label={
+                                            <Badge
+                                                badgeContent={
+                                                    machineChildren.mow.filter(
+                                                        function (v) {
+                                                            return (
+                                                                v.chk_mark ==
+                                                                'N'
+                                                            )
+                                                        }
+                                                    ).length
+                                                }
+                                                color="error"
+                                            >
+                                                AP-Sheet
+                                            </Badge>
+                                        }
+                                        value="3"
+                                    />
+                                    <Tab
+                                        label={
+                                            <Badge
+                                                badgeContent={
+                                                    machineChildren.report.filter(
+                                                        function (v) {
+                                                            return (
+                                                                v.audit_report ==
+                                                                'N'
+                                                            )
+                                                        }
+                                                    ).length
+                                                }
+                                                color="error"
+                                            >
+                                                AP-Report
+                                            </Badge>
+                                        }
+                                        value="4"
+                                    />
+                                    <Tab
+                                        label={
+                                            <Badge
+                                                badgeContent={
+                                                    machineChildren.request.filter(
+                                                        function (v) {
+                                                            return (
+                                                                v.audit_request ==
+                                                                'N'
+                                                            )
+                                                        }
+                                                    ).length
+                                                }
+                                                color="error"
+                                            >
+                                                AP-Request
+                                            </Badge>
+                                        }
+                                        value="5"
+                                    />
+                                    <Tab label="Genba" value="6" />
                                 </TabList>
                             </Box>
                             <TabPanel value="1">
@@ -181,6 +245,11 @@ function MachineChildren(props) {
                             <TabPanel value="5">
                                 <div style={{ width: '100%', height: 500 }}>
                                     <MaintenanceApInventory />
+                                </div>
+                            </TabPanel>
+                            <TabPanel value="6">
+                                <div style={{ width: '100%', height: 500 }}>
+                                    <MaintenanceGenba />
                                 </div>
                             </TabPanel>
                         </TabContext>

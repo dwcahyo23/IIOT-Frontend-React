@@ -1,5 +1,7 @@
 import Typography from '@mui/material/Typography'
 import clsx from 'clsx'
+import StatusColor from '../machineTab/utils/StatusColor'
+import _ from 'lodash'
 
 function MachineInfo({ params, className }) {
     if (!params) {
@@ -52,6 +54,8 @@ function MachineInfo({ params, className }) {
             >
                 Production : {params.mch_prod}
             </Typography>
+
+            {_}
         </div>
     )
 }

@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import withReducer from 'app/store/withReducer'
 import { getMachinesCom } from './store/machineParent/machinesComSlice'
 import { getMachinesProcess } from './store/machineParent/machinesProcessSlice'
+// import { getAp } from './store/machineParent/machineApSlice'
 import reducer from './store'
 
 function MaintenanceSystem() {
@@ -12,6 +13,7 @@ function MaintenanceSystem() {
     useEffect(() => {
         dispatch(getMachinesProcess())
         dispatch(getMachinesCom())
+        // dispatch(getAp())
     }, [dispatch])
 
     return <Outlet />

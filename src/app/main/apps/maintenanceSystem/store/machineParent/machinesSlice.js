@@ -9,7 +9,7 @@ export const getMachines = createAsyncThunk(
     'maintenanceSystem/machines/getMachines',
     async () => {
         const response = await axios.get(
-            'http://192.168.192.7:5000/maintenanceMachine'
+            'http://localhost:5000/maintenanceMachine'
         )
         const data = await response.data
         return data

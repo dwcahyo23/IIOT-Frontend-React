@@ -1,22 +1,30 @@
 import React from 'react'
-import { TextField, Button, Grid, Box } from '@mui/material'
+import { TextField, Button, Grid, Box, MenuItem } from '@mui/material'
 import { Controller, useFormContext, useFieldArray } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { format } from 'date-fns'
+import dayjs from 'dayjs'
 import TableIndex from './TableIndex'
 import { showMessage } from 'app/store/fuse/messageSlice'
 import {
     getMaintenanceSystem,
     saveMaintenanceSystemRequest,
 } from '../store/machineChildren/machineChildrenSlice'
+import { selectUser } from 'app/store/userSlice'
+import { selectStock } from '../store/machineChildren/machineStock'
+import VirtualizedData from './utils/VirtualizedData'
+import StatusColor from './utils/StatusColor'
 
 function MaintenanceApReport() {
     const dispatch = useDispatch()
     const methods = useFormContext()
-    const { control, formState, watch, getValues, getFieldState } = methods
+    const user = useSelector(selectUser)
+    const stock = useSelector(selectStock)
+    const { control, formState, setValue, watch, getValues, getFieldState } =
+        methods
     const { errors } = formState
     const { fields, remove, append } = useFieldArray({
         name: 'request',
@@ -53,6 +61,8 @@ function MaintenanceApReport() {
         })
     }
 
+    const isAdmin = user.role == 'admin' ? true : false
+
     const columns = [
         {
             field: 'sheet_no',
@@ -70,16 +80,32 @@ function MaintenanceApReport() {
         },
         {
             field: 'date_request',
-            headerName: 'Date',
+            headerName: 'Target',
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
             width: 120,
             valueFormatter: (params) =>
-                format(new Date(params.value), 'dd/MM/yy HH:mm'),
+                dayjs(params.value).format('DD/MM/YY HH:mm'),
+        },
+        {
+            field: 'audit_request',
+            headerName: 'Audit',
+            headerClassName: 'super-app-theme--header',
+            headerAlign: 'center',
+            width: 90,
+            align: 'center',
+            renderCell: (params) => <StatusColor id={params.value} />,
+        },
+        {
+            field: 'item_stock',
+            headerName: 'Sparepart',
+            flex: 1,
+            headerClassName: 'super-app-theme--header',
+            headerAlign: 'center',
         },
         {
             field: 'item_name',
-            headerName: 'Item sparepart',
+            headerName: 'Remarks',
             flex: 1,
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
@@ -87,18 +113,29 @@ function MaintenanceApReport() {
         {
             field: 'item_qty',
             headerName: 'Qty',
-            flex: 1,
+            width: 50,
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
         },
         {
             field: 'item_uom',
             headerName: 'Uom',
-            flex: 1,
+            width: 50,
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
         },
     ]
+
+    const tableIndex = (data) => {
+        // console.log(data)
+        setValue('id_request', data.row.sheet_no, { shouldDirty: true })
+        setValue('date_request', dayjs(data.row.date_request), {
+            shouldDirty: true,
+        })
+        setValue('item_name', data.row.item_name, { shouldDirty: true })
+        setValue('item_qty', data.row.item_qty, { shouldDirty: true })
+        setValue('item_uom', data.row.item_uom, { shouldDirty: true })
+    }
 
     return (
         <div>
@@ -114,6 +151,7 @@ function MaintenanceApReport() {
                         <Controller
                             name="id_request"
                             control={control}
+                            defaultValue=""
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -134,6 +172,7 @@ function MaintenanceApReport() {
                         <Controller
                             name="date_request"
                             control={control}
+                            defaultValue={dayjs()}
                             render={({ field }) => (
                                 <LocalizationProvider
                                     dateAdapter={AdapterDayjs}
@@ -143,7 +182,9 @@ function MaintenanceApReport() {
                                         className="mt-8 mb-16"
                                         id="date_request"
                                         required
-                                        label="On Change"
+                                        label="Target"
+                                        sx={{ width: '100%' }}
+                                        minDate={dayjs()}
                                     />
                                 </LocalizationProvider>
                             )}
@@ -197,9 +238,22 @@ function MaintenanceApReport() {
                     </Grid>
                 </Grid>
                 <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <Controller
+                            name="item_stock"
+                            defaultValue="Other"
+                            control={control}
+                            render={({ field }) => (
+                                <VirtualizedData field={field} data={stock} />
+                            )}
+                        />
+                    </Grid>
+                </Grid>
+                <Grid container spacing={2}>
                     <Grid item xs={4}>
                         <Controller
                             name="item_name"
+                            defaultValue=""
                             control={control}
                             render={({ field }) => (
                                 <TextField
@@ -208,7 +262,7 @@ function MaintenanceApReport() {
                                     error={!!errors.item_name}
                                     required
                                     helperText={errors?.item_name?.message}
-                                    label="Item name"
+                                    label="Remarks"
                                     autoFocus
                                     id="item_name"
                                     variant="outlined"
@@ -219,9 +273,10 @@ function MaintenanceApReport() {
                             )}
                         />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={2}>
                         <Controller
                             name="item_qty"
+                            defaultValue=""
                             control={control}
                             render={({ field }) => (
                                 <TextField
@@ -239,9 +294,10 @@ function MaintenanceApReport() {
                             )}
                         />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={2}>
                         <Controller
                             name="item_uom"
+                            defaultValue=""
                             control={control}
                             render={({ field }) => (
                                 <TextField
@@ -259,7 +315,57 @@ function MaintenanceApReport() {
                             )}
                         />
                     </Grid>
+                    <Grid item xs={2}>
+                        <Controller
+                            name="user_req1"
+                            defaultValue={user.data.displayName}
+                            control={control}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    className="mt-8 mb-16"
+                                    error={!!errors.user_req1}
+                                    required
+                                    helperText={errors?.user_req1?.message}
+                                    label="User"
+                                    autoFocus
+                                    id="user_req1"
+                                    variant="outlined"
+                                    fullWidth
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                />
+                            )}
+                        />
+                    </Grid>
                 </Grid>
+                {isAdmin && (
+                    <Grid container spacing={2}>
+                        <Grid item xs={2}>
+                            <Controller
+                                name="audit_request"
+                                defaultValue="N"
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        className="mt-8 mb-16"
+                                        label="Audit"
+                                        select
+                                        autoFocus
+                                        id="audit_request"
+                                        fullWidth
+                                    >
+                                        <MenuItem value="Y">Audit</MenuItem>
+                                        <MenuItem value="N">n.audit</MenuItem>
+                                    </TextField>
+                                )}
+                            />
+                        </Grid>
+                    </Grid>
+                )}
+
                 <Grid container spacing={2}>
                     <Grid item xs={4}>
                         <Button
@@ -281,7 +387,10 @@ function MaintenanceApReport() {
                     height: 400,
                 }}
             >
-                <TableIndex params={{ row: fields, columns: columns }} />
+                <TableIndex
+                    params={{ row: fields, columns: columns }}
+                    tableIndex={tableIndex}
+                />
             </Box>
         </div>
     )

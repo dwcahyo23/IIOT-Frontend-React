@@ -1,10 +1,9 @@
 import React from 'react'
 import { Box } from '@mui/material'
-import { format } from 'date-fns'
+import dayjs from 'dayjs'
 import { useFormContext, useFieldArray } from 'react-hook-form'
 import TableIndex from './TableIndex'
 import StatusColor from './utils/StatusColor'
-import clsx from 'clsx'
 
 function MaintenanceApsheet() {
     const methods = useFormContext()
@@ -54,9 +53,9 @@ function MaintenanceApsheet() {
             headerName: 'Stop',
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
-            width: 120,
+            width: 150,
             valueFormatter: (params) =>
-                format(new Date(params.value), 'dd/MM/yy HH:mm'),
+                dayjs(params.value).format('DD/MM/YYYY HH:mm'),
         },
         {
             field: 'memo',
@@ -74,15 +73,20 @@ function MaintenanceApsheet() {
         },
     ]
 
+    const tableIndex = (data) => {
+        console.log(data.row)
+    }
+
     return (
         <Box
             sx={{
-                height: 400,
+                height: 600,
                 width: '100%',
             }}
         >
             <TableIndex
                 params={{ row: fields, columns: columns, id: fields.sheet_no }}
+                tableIndex={tableIndex}
             />
         </Box>
     )
