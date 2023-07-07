@@ -9,7 +9,7 @@ export const getCategories = createAsyncThunk(
     'modbusApp/categories/getCategories',
     async () => {
         const response = await axios.get(
-            'http://192.168.129.7:5000/getCategoryAddress'
+            'http://192.168.192.7:5000/getCategoryAddress'
         )
         const data = await response.data
 
