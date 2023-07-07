@@ -1,8 +1,8 @@
 import { combineReducers } from '@reduxjs/toolkit'
-import ap from './apSlice'
+import APPG from './apSlice'
 
 const reducer = combineReducers({
-    ap,
+    APPG,
 })
 
 export default reducer

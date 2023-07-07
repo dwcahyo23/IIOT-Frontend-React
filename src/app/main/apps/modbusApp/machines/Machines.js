@@ -242,8 +242,6 @@ function Machines(props) {
                                 <Tab value="GM2" label="GM2" />
                                 <Tab value="GM3" label="GM3" />
                                 <Tab value="GM5" label="GM5" />
-                                <Tab value="GMU" label="GMU" />
-                                <Tab value="GMX" label="GMX" />
                             </Tabs>
                         </div>
                     </div>

@@ -108,7 +108,7 @@ function Machines() {
                                 color="inherit"
                                 className="text-18 font-semibold"
                             >
-                                Computerized Maintenance Management System
+                                Maintenance System
                             </Typography>
                         </motion.div>
                         <motion.div
@@ -119,9 +119,8 @@ function Machines() {
                                 color="inherit"
                                 className="text-16 sm:text-20 mt-16 sm:mt-24 opacity-75 tracking-tight max-w-md text-center"
                             >
-                                CMMS is application that centralizes maintenance
-                                information and facilitates the processes of
-                                maintenance operations in Garuda Metalindo.
+                                Application and information of processes
+                                maintenance operations in Garuda Metalindo Tbk.
                             </Typography>
                         </motion.div>
                     </div>

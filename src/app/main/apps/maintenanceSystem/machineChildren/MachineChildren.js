@@ -36,6 +36,7 @@ import MaintenanceApsheet from '../machineTab/MaintenanceApsheet'
 import MaintenanceApReport from '../machineTab/MaintenanceApReport'
 import MaintenanceApInventory from '../machineTab/MaintenanceApInventory'
 import MaintenanceGenba from '../machineTab/MaintenanceGenba'
+import MaintenanceSparepart from '../machineTab/MaintenanceSparepart'
 
 const schema = yup.object().shape({
     id_request: yup
@@ -228,9 +229,10 @@ function MachineChildren(props) {
                                 </div>
                             </TabPanel>
                             <TabPanel value="2">
-                                <div
-                                    style={{ width: '100%', height: 500 }}
-                                ></div>
+                                <div style={{ width: '100%', height: 500 }}>
+                                    {' '}
+                                    <MaintenanceSparepart />
+                                </div>
                             </TabPanel>
                             <TabPanel value="3">
                                 <div style={{ width: '100%', height: 500 }}>

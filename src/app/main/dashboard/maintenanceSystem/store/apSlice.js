@@ -6,9 +6,11 @@ import {
 import axios from 'axios'
 
 export const getApSlice = createAsyncThunk(
-    'maintenanceSystem/ap/getApSlice',
+    'dashboard/APPG/getApSlice',
     async () => {
-        const response = await axios.get('http://localhost:5000/pgMaintenance')
+        const response = await axios.get(
+            'http://192.168.129.7:5000/pgMaintenance'
+        )
         const data = await response.data
         return data
     }
@@ -19,10 +21,10 @@ const apAdapter = createEntityAdapter({
 })
 
 export const { selectAll: selectAp, selectById: selectApById } =
-    apAdapter.getSelectors((state) => state.maintenanceSystem.ap)
+    apAdapter.getSelectors((state) => state.dashboard.APPG)
 
 const apSlice = createSlice({
-    name: 'maintenanceSystem/ap',
+    name: 'dashboard/APPG',
     initialState: apAdapter.getInitialState({}),
     reducers: {},
     extraReducers: {

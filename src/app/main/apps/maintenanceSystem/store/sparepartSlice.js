@@ -6,7 +6,7 @@ export const getSparepart = createAsyncThunk(
     'maintenanceSystem/sparepart/getSparepart',
     async (sparepartId) => {
         const response = await axios.get(
-            `http://localhost:5000/findItemBy/${addressId}`
+            `http://192.168.129.7:5000/findItemBy/${addressId}`
         )
 
         const data = await response.data
@@ -19,7 +19,7 @@ export const saveSparepart = createAsyncThunk(
     'maintenanceSystem/sparepart/saveSaparepart',
     async (sparepartData, { dipatch, getState }) => {
         const response = await axios.post(
-            `http://localhost:5000/insItem`,
+            `http://192.168.129.7:5000/insItem`,
             sparepartData
         )
         const data = await response.data

@@ -9,7 +9,7 @@ export const getMachines = createAsyncThunk(
     'modbusApp/machines/getMachines',
     async () => {
         const response = await axios.get(
-            'http://localhost:5000/getResultAddress'
+            'http://192.168.129.7:5000/getResultAddress'
         )
         const data = await response.data
         return data

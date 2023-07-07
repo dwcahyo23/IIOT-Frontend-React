@@ -6,7 +6,7 @@ export const getAddress = createAsyncThunk(
     'maintenanceApp/item/getAddress',
     async (addressId) => {
         const response = await axios.get(
-            `http://localhost:5000/getResultBy/${addressId}`
+            `http://192.168.129.7:5000/getResultBy/${addressId}`
         )
         const data = await response.data
         _.map(data, (val, key) => {
@@ -36,7 +36,7 @@ export const saveAddress = createAsyncThunk(
         console.log(addressData)
 
         const response = await axios.post(
-            `http://localhost:5000/insAddress`,
+            `http://192.168.129.7:5000/insAddress`,
             addressData
         )
         const data = await response.data

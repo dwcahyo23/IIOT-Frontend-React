@@ -234,7 +234,7 @@ function TableIndex({ params, tableIndex }) {
             getRowHeight={() => 'auto'}
             getRowId={params.id}
             onRowDoubleClick={(data) => tableIndex(data)}
-            // checkboxSelection
+            checkboxSelection
             density="compact"
             slots={{ toolbar: CustomToolbar }}
             slotProps={{ toolbar: { rows, column } }}

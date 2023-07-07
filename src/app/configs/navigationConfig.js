@@ -2,12 +2,33 @@
 // import ar from './navigation-i18n/ar'
 // import en from './navigation-i18n/en'
 // import tr from './navigation-i18n/tr'
+import { authRoles } from '../auth'
 
 // i18next.addResourceBundle('en', 'navigation', en)
 // i18next.addResourceBundle('tr', 'navigation', tr)
 // i18next.addResourceBundle('ar', 'navigation', ar)
 
 const navigationConfig = [
+    {
+        id: 'dashboards',
+        title: 'Dashboards',
+        type: 'group',
+        icon: 'heroicons-outline:home',
+        translate: 'DASHBOARDS',
+        children: [
+            {
+                id: 'dashboards.project',
+                title: 'Maintenance',
+                type: 'item',
+                icon: 'heroicons-outline:clipboard-check',
+                url: '/dashboards/maintenance',
+            },
+        ],
+    },
+    {
+        type: 'divider',
+        id: 'divider-2',
+    },
     {
         id: 'apps',
         title: 'Applications',
@@ -20,6 +41,7 @@ const navigationConfig = [
                 title: 'Maintenance',
                 type: 'item',
                 icon: 'heroicons-outline:desktop-computer',
+                auth: authRoles.admin,
                 url: '/apps/maintenanceSystem',
             },
             {

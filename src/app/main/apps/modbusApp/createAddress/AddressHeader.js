@@ -1,21 +1,25 @@
 import { Button, useTheme, Typography } from '@mui/material'
 import { motion } from 'framer-motion'
 import { useFormContext } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import _ from '@lodash'
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon'
 import { showMessage } from 'app/store/fuse/messageSlice'
 import { saveAddress } from '../store/addressSlice'
+import { selectUser } from 'app/store/userSlice'
 
 function AddressHeader(props) {
     const dispatch = useDispatch()
+    const user = useSelector(selectUser)
     const methods = useFormContext()
     const { formState, watch, getValues } = methods
     const { isValid, dirtyFields, isSubmitSuccessful } = formState
     const name = watch('mch_code')
     const theme = useTheme()
     const navigate = useNavigate
+
+    const isAdmin = user.role == 'admin' ? true : false
 
     function handleSaveAddress() {
         dispatch(saveAddress(getValues()))
@@ -67,7 +71,7 @@ function AddressHeader(props) {
                     className="whitespace-nowrap mx-4"
                     variant="contained"
                     color="secondary"
-                    disabled={_.isEmpty(dirtyFields) || !isValid}
+                    disabled={_.isEmpty(dirtyFields) || !isValid || !isAdmin}
                     onClick={handleSaveAddress}
                 >
                     Save

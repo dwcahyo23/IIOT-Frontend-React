@@ -1,6 +1,7 @@
 import { lazy } from 'react'
 import { Navigate } from 'react-router-dom'
 import ModbusApp from './ModbusApp'
+import authRoles from '../../../auth/authRoles'
 
 const Address = lazy(() => import('./createAddress/Address'))
 const Machines = lazy(() => import('./machines/Machines'))

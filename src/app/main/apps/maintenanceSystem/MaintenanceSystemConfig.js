@@ -1,5 +1,6 @@
 import { lazy } from 'react'
 import { Navigate } from 'react-router-dom'
+import authRoles from '../../../auth/authRoles'
 import MaintenanceSystem from './MaintenanceSystem'
 
 const Sparepart = lazy(() => import('./sparepart/Sparepart'))
@@ -11,6 +12,7 @@ const MaintenanceSystemConfig = {
     settings: {
         layout: {},
     },
+    auth: authRoles.admin,
     routes: [
         {
             path: 'apps/MaintenanceSystem',

@@ -8,9 +8,13 @@ import SignUpConfig from '../main/sign-up/SignUpConfig'
 import SignOutConfig from '../main/sign-out/SignOutConfig'
 import Error404Page from '../main/404/Error404Page'
 import ExampleConfig from '../main/example/ExampleConfig'
+import AuthRoleConfig from '../main/auth/AuthRoleConfig'
+import dashboardsConfigs from '../main/dashboard/dashboardsConfigs'
 
 const routeConfigs = [
     ...appsConfig,
+    // ...AuthRoleConfig,
+    ...dashboardsConfigs,
     ExampleConfig,
     SignOutConfig,
     SignInConfig,
@@ -24,7 +28,7 @@ const routes = [
     ),
     {
         path: '/',
-        element: <Navigate to="/apps/maintenanceSystem" />,
+        element: <Navigate to="/dashboards/maintenance" />,
         auth: settingsConfig.defaultAuth,
     },
     {
