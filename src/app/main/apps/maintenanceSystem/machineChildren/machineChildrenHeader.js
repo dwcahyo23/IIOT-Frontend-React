@@ -32,7 +32,8 @@ function MachineChildrenHeader(props) {
                         className="flex items-center sm:mb-12"
                         component={Link}
                         role="button"
-                        to="/apps/maintenanceSystem"
+                        // to="/apps/maintenanceSystem"
+                        to={-1}
                         color="inherit"
                     >
                         <FuseSvgIcon size={20}>

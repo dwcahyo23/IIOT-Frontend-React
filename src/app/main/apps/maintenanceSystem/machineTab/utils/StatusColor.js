@@ -19,7 +19,7 @@ export const status = [
     {
         id: '03',
         name: 'Preventive',
-        color: 'warning',
+        color: 'primary',
         icon: 'heroicons-outline:exclamation-circle',
     },
     {

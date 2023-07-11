@@ -13,7 +13,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Box } from '@mui/system'
 import FusePageSimple from '@fuse/core/FusePageSimple'
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery'
-
 import {
     getMachines,
     selectMachines,
@@ -21,7 +20,6 @@ import {
 import { selectCom } from '../store/machineParent/machinesComSlice'
 import { selectProcess } from '../store/machineParent/machinesProcessSlice'
 import MachineCard from './MachineCard'
-import React from 'react'
 
 function Machines() {
     const dispatch = useDispatch()
@@ -33,8 +31,7 @@ function Machines() {
 
     const [filteredData, setFilteredData] = useState(null)
     const [searchText, setSearchText] = useState('')
-    const [selectedProcessType, setSelectedProcessType] =
-        useState('METAL FORMING')
+    const [selectedProcessType, setSelectedProcessType] = useState('FORMING')
     const [searchComTab, setSearchComTab] = useState('GM1')
 
     useEffect(() => {
@@ -167,14 +164,15 @@ function Machines() {
                                         <em> All </em>
                                     </MenuItem> */}
 
-                                    {process_type.map((data) => (
-                                        <MenuItem
-                                            value={data.mch_process_type}
-                                            key={data.uuid}
-                                        >
-                                            {data.mch_process_type}
-                                        </MenuItem>
-                                    ))}
+                                    {process_type &&
+                                        process_type.map((data) => (
+                                            <MenuItem
+                                                value={data.mch_process_type}
+                                                key={data.uuid}
+                                            >
+                                                {data.mch_process_type}
+                                            </MenuItem>
+                                        ))}
                                 </Select>
                             </FormControl>
 
@@ -206,13 +204,14 @@ function Machines() {
                                 scrollButtons="auto"
                                 classes={{ root: 'w-full h-16 border-b-1' }}
                             >
-                                {com.map((data) => (
-                                    <Tab
-                                        value={data.mch_com}
-                                        key={data.uuid}
-                                        label={data.mch_com}
-                                    />
-                                ))}
+                                {com &&
+                                    com.map((data) => (
+                                        <Tab
+                                            value={data.mch_com}
+                                            key={data.uuid}
+                                            label={data.mch_com}
+                                        />
+                                    ))}
                             </Tabs>
                         </div>
                     </div>

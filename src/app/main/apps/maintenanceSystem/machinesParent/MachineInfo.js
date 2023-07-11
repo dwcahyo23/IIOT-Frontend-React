@@ -28,7 +28,13 @@ function MachineInfo({ params, className }) {
                 className="text-13 mt-2 line-clamp-2"
                 color="text.secondary"
             >
-                Process Code : {params.mch_process}
+                Power HP : {params.mch_hp}
+            </Typography>
+            <Typography
+                className="text-13 mt-2 line-clamp-2"
+                color="text.secondary"
+            >
+                Dept no : {params.dep_no}
             </Typography>
             <Typography
                 className="text-13 mt-2 line-clamp-2"
@@ -40,22 +46,22 @@ function MachineInfo({ params, className }) {
                 className="text-13 mt-2 line-clamp-2"
                 color="text.secondary"
             >
-                Company : {params.mch_com}
-            </Typography>
-            <Typography
-                className="text-13 mt-2 line-clamp-2"
-                color="text.secondary"
-            >
-                Maker : {params.mch_maker}
-            </Typography>
-            <Typography
-                className="text-13 mt-2 line-clamp-2"
-                color="text.secondary"
-            >
-                Production : {params.mch_prod}
+                AP-Sheet : {params.sheet && params.sheet.sheet_no}
             </Typography>
 
-            {_}
+            <div className="flex">
+                <Typography className="text-13 mt-2 line-clamp-2">
+                    Status :
+                </Typography>
+                {params.sheet && <StatusColor id={params.sheet.pri_no} />}
+            </div>
+
+            <div className="flex">
+                <Typography className="text-13 mt-2 line-clamp-2">
+                    Audit :
+                </Typography>
+                {params.sheet && <StatusColor id={params.sheet.chk_mark} />}
+            </div>
         </div>
     )
 }

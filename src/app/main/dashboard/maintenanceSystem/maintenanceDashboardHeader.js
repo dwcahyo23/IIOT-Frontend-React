@@ -8,9 +8,17 @@ import _ from '@lodash'
 import Button from '@mui/material/Button'
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon'
 import { selectUser } from 'app/store/userSlice'
+import { getMachinesCom } from '../../apps/maintenanceSystem/store/machineParent/machinesComSlice'
+import { getMachinesProcess } from '../../apps/maintenanceSystem/store/machineParent/machinesProcessSlice'
 
 function maintenanceDashboardHeader(props) {
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(getMachinesProcess())
+        dispatch(getMachinesCom())
+    }, [dispatch])
+
     const user = useSelector(selectUser)
 
     return (

@@ -31,35 +31,93 @@ function MnGM1() {
         'PDPU1',
     ]
 
-    const monthName = (params) => dayjs(params.s_ymd).format('MMM')
+    const raw =
+        data &&
+        _.chain(data)
+            .filter((val) => _.includes(selectDep_no, val.dep_no))
+            .value()
 
-    const filterData = _.chain(data)
-        .filter((val) => _.includes(selectDep_no, val.dep_no))
-        .groupBy(monthName)
-        .mapValues((items) => {
-            return {
-                breakdown: _.countBy(items, (val) =>
-                    val.com_no == '01' && val.pri_no == '01' ? 'pass' : 'fail'
-                ),
-                audit: _.countBy(items, (val) =>
-                    val.com_no == '01' &&
-                    val.pri_no == '01' &&
-                    val.chk_mark == 'Y'
-                        ? 'pass'
-                        : 'fail'
-                ),
-            }
-        })
-        .value()
+    const monthName = (params) => dayjs(params.ymd).format('MMM')
+    const filterData =
+        data &&
+        _.chain(data)
+            .filter((val) => _.includes(selectDep_no, val.dep_no))
+            .groupBy(monthName)
+            .mapValues((items) => {
+                return {
+                    breakdown: _.countBy(items, (val) =>
+                        val.com_no == '01' && val.pri_no == '01'
+                            ? 'pass'
+                            : 'fail'
+                    ),
+                    still_run: _.countBy(items, (val) =>
+                        val.com_no == '01' && val.pri_no == '02'
+                            ? 'pass'
+                            : 'fail'
+                    ),
+                    preventive: _.countBy(items, (val) =>
+                        val.com_no == '01' && val.pri_no == '03'
+                            ? 'pass'
+                            : 'fail'
+                    ),
+                    workshop: _.countBy(items, (val) =>
+                        val.com_no == '01' && val.pri_no == '04'
+                            ? 'pass'
+                            : 'fail'
+                    ),
+                    work_order: _.countBy(items, (val) =>
+                        val.com_no == '01' ? 'pass' : 'fail'
+                    ),
+                    audit: _.countBy(items, (val) =>
+                        val.com_no == '01' && val.chk_mark == 'Y'
+                            ? 'pass'
+                            : 'fail'
+                    ),
+                    breakdown_audit: _.countBy(items, (val) =>
+                        val.com_no == '01' &&
+                        val.pri_no == '01' &&
+                        val.chk_mark == 'Y'
+                            ? 'pass'
+                            : 'fail'
+                    ),
+                    still_run_audit: _.countBy(items, (val) =>
+                        val.com_no == '01' &&
+                        val.pri_no == '02' &&
+                        val.chk_mark == 'Y'
+                            ? 'pass'
+                            : 'fail'
+                    ),
+                    preventive_audit: _.countBy(items, (val) =>
+                        val.com_no == '01' &&
+                        val.pri_no == '03' &&
+                        val.chk_mark == 'Y'
+                            ? 'pass'
+                            : 'fail'
+                    ),
+                    workshop_audit: _.countBy(items, (val) =>
+                        val.com_no == '01' &&
+                        val.pri_no == '04' &&
+                        val.chk_mark == 'Y'
+                            ? 'pass'
+                            : 'fail'
+                    ),
+                }
+            })
+            .value()
 
-    const listItem = _.chain(data)
-        .filter((val) => _.includes(selectDep_no, val.dep_no))
-        .groupBy((val) => dayjs().isSame(val.s_ymd, 'month'))
-        .value()
+    console.log(filterData)
 
-    const listItemFiltered = listItem.true || {}
+    const filterDataMonth = filterData[dayjs().format('MMM')] || {}
+    const filterDataLastMonth =
+        filterData[dayjs().subtract(1, 'month').format('MMM')] || {}
 
-    useEffect(() => {}, [data])
+    const listItemMonth =
+        data &&
+        _.chain(data)
+            .filter((val) => _.includes(selectDep_no, val.dep_no))
+            .filter(['com_no', '01'])
+            .groupBy(monthName)
+            .value()
 
     const container = {
         show: {
@@ -84,27 +142,14 @@ function MnGM1() {
             <motion.div variants={item}>
                 <SummaryWo
                     data={{
-                        count: _.countBy(data, (val) =>
-                            val.com_no == '01' &&
-                            dayjs().isSame(val.s_ymd, 'month')
-                                ? 'pass'
-                                : 'fail'
-                        ),
+                        count: filterDataMonth.work_order || {},
                         title: 'Workorder',
                         name: 'AP Sheet',
                         colorHg: colors.blue[400],
                         colorLw: colors.blue[300],
                         extra: {
-                            name: 'Last month',
-                            count: _.countBy(data, (val) =>
-                                val.com_no == '01' &&
-                                dayjs(val.s_ymd).isSame(
-                                    dayjs().subtract(1, 'month'),
-                                    'month'
-                                )
-                                    ? 'pass'
-                                    : 'fail'
-                            ),
+                            name: 'Total AP Last month',
+                            count: filterDataLastMonth.work_order || {},
                         },
                     }}
                 />
@@ -113,27 +158,14 @@ function MnGM1() {
             <motion.div variants={item}>
                 <SummaryWo
                     data={{
-                        count: _.countBy(data, (val) =>
-                            val.com_no == '01' &&
-                            val.pri_no == '01' &&
-                            dayjs().isSame(val.s_ymd, 'month')
-                                ? 'pass'
-                                : 'fail'
-                        ),
+                        count: filterDataMonth.breakdown || {},
                         title: 'Breakdown',
                         name: 'AP Sheet',
                         colorHg: colors.red[400],
                         colorLw: colors.red[300],
                         extra: {
                             name: 'Total Audit',
-                            count: _.countBy(data, (val) =>
-                                val.com_no == '01' &&
-                                val.pri_no == '01' &&
-                                val.chk_mark == 'Y' &&
-                                dayjs().isSame(val.s_ymd, 'month')
-                                    ? 'pass'
-                                    : 'fail'
-                            ),
+                            count: filterDataMonth.breakdown_audit || {},
                         },
                     }}
                 />
@@ -142,28 +174,14 @@ function MnGM1() {
             <motion.div variants={item}>
                 <SummaryWo
                     data={{
-                        count: _.countBy(data, (val) =>
-                            val.com_no == '01' &&
-                            val.pri_no == '02' &&
-                            dayjs().isSame(val.s_ymd, 'month')
-                                ? 'pass'
-                                : 'fail'
-                        ),
-
+                        count: filterDataMonth.still_run || {},
                         title: 'Still Run',
                         name: 'AP Sheet',
                         colorHg: colors.orange[400],
                         colorLw: colors.orange[300],
                         extra: {
                             name: 'Total Audit',
-                            count: _.countBy(data, (val) =>
-                                val.com_no == '01' &&
-                                val.pri_no == '02' &&
-                                val.chk_mark == 'Y' &&
-                                dayjs().isSame(val.s_ymd, 'month')
-                                    ? 'pass'
-                                    : 'fail'
-                            ),
+                            count: filterDataMonth.still_run_audit || {},
                         },
                     }}
                 />
@@ -172,28 +190,14 @@ function MnGM1() {
             <motion.div variants={item}>
                 <SummaryWo
                     data={{
-                        count: _.countBy(data, (val) =>
-                            val.com_no == '01' &&
-                            val.pri_no == '03' &&
-                            dayjs().isSame(val.s_ymd, 'month')
-                                ? 'pass'
-                                : 'fail'
-                        ),
-
+                        count: filterDataMonth.preventive || {},
                         title: 'Preventive',
                         name: 'AP Sheet',
                         colorHg: colors.green[400],
                         colorLw: colors.green[300],
                         extra: {
                             name: 'Total Audit',
-                            count: _.countBy(data, (val) =>
-                                val.com_no == '01' &&
-                                val.pri_no == '03' &&
-                                val.chk_mark == 'Y' &&
-                                dayjs().isSame(val.s_ymd, 'month')
-                                    ? 'pass'
-                                    : 'fail'
-                            ),
+                            count: filterDataMonth.preventive_audit || {},
                         },
                     }}
                 />
@@ -202,28 +206,14 @@ function MnGM1() {
             <motion.div variants={item}>
                 <SummaryWo
                     data={{
-                        count: _.countBy(data, (val) =>
-                            val.com_no == '01' &&
-                            val.pri_no == '04' &&
-                            dayjs().isSame(val.s_ymd, 'month')
-                                ? 'pass'
-                                : 'fail'
-                        ),
-
+                        count: filterDataMonth.workshop || {},
                         title: 'Workshop',
                         name: 'AP Sheet',
                         colorHg: colors.brown[400],
                         colorLw: colors.brown[300],
                         extra: {
                             name: 'Total Audit',
-                            count: _.countBy(data, (val) =>
-                                val.com_no == '01' &&
-                                val.pri_no == '04' &&
-                                val.chk_mark == 'Y' &&
-                                dayjs().isSame(val.s_ymd, 'month')
-                                    ? 'pass'
-                                    : 'fail'
-                            ),
+                            count: filterDataMonth.workshop_audit || {},
                         },
                     }}
                 />
@@ -240,7 +230,7 @@ function MnGM1() {
                 variants={item}
                 className="sm:col-span-2 md:col-span-4 lg:col-span-2"
             >
-                <LastAp listItem={listItemFiltered} />
+                <LastAp data={{ listItemMonth, raw }} />
             </motion.div>
         </motion.div>
     )
