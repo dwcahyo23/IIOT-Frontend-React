@@ -52,7 +52,7 @@ function Machines() {
             return _.filter(machines, (data) => {
                 if (
                     // selectedProcessType !== 'all' &&
-                    data.mch_process_type !== selectedProcessType
+                    data.mch_process !== selectedProcessType
                 ) {
                     return false
                 }
@@ -167,10 +167,10 @@ function Machines() {
                                     {process_type &&
                                         process_type.map((data) => (
                                             <MenuItem
-                                                value={data.mch_process_type}
+                                                value={data.mch_process}
                                                 key={data.uuid}
                                             >
-                                                {data.mch_process_type}
+                                                {data.mch_process}
                                             </MenuItem>
                                         ))}
                                 </Select>

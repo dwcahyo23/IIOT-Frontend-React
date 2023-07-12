@@ -132,6 +132,7 @@ function MaintenanceApReport() {
         setValue('date_request', dayjs(data.row.date_request), {
             shouldDirty: true,
         })
+        setValue('uuid_request', data.row.uuid_request)
         setValue('item_name', data.row.item_name, { shouldDirty: true })
         setValue('item_qty', data.row.item_qty, { shouldDirty: true })
         setValue('item_uom', data.row.item_uom, { shouldDirty: true })

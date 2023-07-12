@@ -9,6 +9,7 @@ import dayjs from 'dayjs'
 import SummaryWo from './widget/SummaryWo'
 import ChartWo from './widget/ChartWo'
 import LastAp from './widget/LastAp'
+import LastReq from './widget/LastReq'
 
 function MnGM1() {
     const dispatch = useDispatch()
@@ -105,8 +106,6 @@ function MnGM1() {
             })
             .value()
 
-    console.log(filterData)
-
     const filterDataMonth = filterData[dayjs().format('MMM')] || {}
     const filterDataLastMonth =
         filterData[dayjs().subtract(1, 'month').format('MMM')] || {}
@@ -118,6 +117,17 @@ function MnGM1() {
             .filter(['com_no', '01'])
             .groupBy(monthName)
             .value()
+
+    const listReqestMonth =
+        data &&
+        _.chain(data)
+            .filter((val) => {
+                if (val.request && val.request.length > 0) return true
+            })
+            .filter(['com_no', '01'])
+            .groupBy(monthName)
+            .value()
+    console.log(listReqestMonth)
 
     const container = {
         show: {
@@ -231,6 +241,16 @@ function MnGM1() {
                 className="sm:col-span-2 md:col-span-4 lg:col-span-2"
             >
                 <LastAp data={{ listItemMonth, raw }} />
+            </motion.div>
+            <motion.div
+                variants={item}
+                className="sm:col-span-2 md:col-span-4 lg:col-span-3"
+            ></motion.div>
+            <motion.div
+                variants={item}
+                className="sm:col-span-2 md:col-span-4 lg:col-span-2"
+            >
+                <LastReq data={{ listReqestMonth }} />
             </motion.div>
         </motion.div>
     )
