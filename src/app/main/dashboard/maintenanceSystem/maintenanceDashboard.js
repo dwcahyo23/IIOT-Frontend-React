@@ -14,6 +14,7 @@ import MnGM1 from './tabs/MnGM1'
 import MnGM2 from './tabs/MnGM2'
 import MnGM3 from './tabs/MnGM3'
 import MnGM5 from './tabs/MnGM5'
+import Inventory from './tabs/Inventory'
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
     '& .FusePageSimple-header': {
@@ -81,11 +82,17 @@ function maintenanceDashboard(props) {
                             disableRipple
                             label="GM5"
                         />
+                        <Tab
+                            className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
+                            disableRipple
+                            label="Inventory MN"
+                        />
                     </Tabs>
                     {tabValue === 0 && <MnGM1 />}
                     {tabValue === 1 && <MnGM2 />}
                     {tabValue === 2 && <MnGM3 />}
                     {tabValue === 3 && <MnGM5 />}
+                    {tabValue === 4 && <Inventory />}
                 </div>
             }
         />

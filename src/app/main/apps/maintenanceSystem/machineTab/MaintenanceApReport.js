@@ -14,7 +14,7 @@ import {
 } from '../store/machineChildren/machineChildrenSlice'
 import { selectUser } from 'app/store/userSlice'
 import StatusColor from './utils/StatusColor'
-import { width } from '@mui/system'
+import axios from 'axios'
 
 function MaintenanceApReport() {
     const dispatch = useDispatch()
@@ -51,6 +51,17 @@ function MaintenanceApReport() {
         }
 
         return true
+    }
+
+    const sendMsg = async (params) => {
+        await axios({
+            method: 'post',
+            url: 'http://192.168.192.7:5010/send-message',
+            data: {
+                number: params.number,
+                message: params.msg,
+            },
+        })
     }
 
     function handleSave() {

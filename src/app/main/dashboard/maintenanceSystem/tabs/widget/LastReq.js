@@ -52,7 +52,6 @@ function LastReq({ data }) {
                         } ${filteredItem[index].mch_no}`}
                     />
                     <StatusColor id={filteredItem[index].pri_no} />
-                    <StatusColor id={filteredItem[index].chk_mark} />
                 </ListItemButton>
             </ListItem>
         )

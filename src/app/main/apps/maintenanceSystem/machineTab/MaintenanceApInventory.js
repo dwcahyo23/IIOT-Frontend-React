@@ -17,6 +17,7 @@ import { selectUser } from 'app/store/userSlice'
 import { selectStock } from '../store/machineChildren/machineStock'
 import VirtualizedData from './utils/VirtualizedData'
 import StatusColor from './utils/StatusColor'
+import axios from 'axios'
 
 function MaintenanceApReport() {
     const dispatch = useDispatch()
@@ -50,13 +51,41 @@ function MaintenanceApReport() {
         return true
     }
 
+    const sendMsg = async (params) => {
+        await axios({
+            method: 'post',
+            url: 'http://192.168.192.7:5010/send-message',
+            data: {
+                number: params.number,
+                message: params.msg,
+            },
+        })
+    }
+
     function handleSave() {
+        console.log(getValues('item_name'))
         dispatch(saveMaintenanceSystemRequest(getValues())).then((action) => {
             if (action.payload) {
                 dispatch(getMaintenanceSystem(action.payload.uuid))
                 dispatch(
                     showMessage({ message: 'Data has been saved successfully' })
                 )
+                sendMsg({
+                    number: '082124610363',
+                    msg: `*AP Request Maintenance*\n\n*Sheet:* ${getValues(
+                        'id_request'
+                    )}\n*Sparepart:* ${getValues(
+                        'item_stock'
+                    )}\n*Remarks:* ${getValues(
+                        'item_name'
+                    )}\n*Qty:* ${getValues('item_qty')}${getValues(
+                        'item_uom'
+                    )}\n*Machine:* ${getValues('mch_code')} ${getValues(
+                        'mch_name'
+                    )}\n*Com:* ${getValues('mch_com')}\n*User:* ${getValues(
+                        'user_req1'
+                    )}`,
+                })
             }
         })
     }

@@ -242,16 +242,6 @@ function MnGM1() {
             >
                 <LastAp data={{ listItemMonth, raw }} />
             </motion.div>
-            <motion.div
-                variants={item}
-                className="sm:col-span-2 md:col-span-4 lg:col-span-3"
-            ></motion.div>
-            <motion.div
-                variants={item}
-                className="sm:col-span-2 md:col-span-4 lg:col-span-2"
-            >
-                <LastReq data={{ listReqestMonth }} />
-            </motion.div>
         </motion.div>
     )
 }

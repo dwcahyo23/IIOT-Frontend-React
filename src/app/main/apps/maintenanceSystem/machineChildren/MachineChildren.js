@@ -99,7 +99,7 @@ function MachineChildren(props) {
         if (!machineChildren) {
             return
         }
-        console.log(data)
+        // console.log(data)
         reset(data)
     }, [machineChildren, reset])
 
