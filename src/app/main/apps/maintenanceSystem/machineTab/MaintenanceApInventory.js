@@ -70,21 +70,37 @@ function MaintenanceApReport() {
                 dispatch(
                     showMessage({ message: 'Data has been saved successfully' })
                 )
+                let msg = `*AP Request Maintenance*\n\n*Sheet:* ${getValues(
+                    'id_request'
+                )}\n*Sparepart:* ${getValues(
+                    'item_stock'
+                )}\n*Remarks:* ${getValues('item_name')}\n*Qty:* ${getValues(
+                    'item_qty'
+                )}${getValues('item_uom')}\n*Machine:* ${getValues(
+                    'mch_code'
+                )} ${getValues('mch_name')}\n*Com:* ${getValues(
+                    'mch_com'
+                )}\n*User:* ${getValues('user_req1')}\n*MRE:* ${getValues(
+                    'mre_request'
+                )}${
+                    getValues('audit_request') === 'Y' ? '\nAudited by ' : ''
+                }${getValues('user_req2')}`
+
+                sendMsg({
+                    number: '085163121617',
+                    msg: msg,
+                })
                 sendMsg({
                     number: '082124610363',
-                    msg: `*AP Request Maintenance*\n\n*Sheet:* ${getValues(
-                        'id_request'
-                    )}\n*Sparepart:* ${getValues(
-                        'item_stock'
-                    )}\n*Remarks:* ${getValues(
-                        'item_name'
-                    )}\n*Qty:* ${getValues('item_qty')}${getValues(
-                        'item_uom'
-                    )}\n*Machine:* ${getValues('mch_code')} ${getValues(
-                        'mch_name'
-                    )}\n*Com:* ${getValues('mch_com')}\n*User:* ${getValues(
-                        'user_req1'
-                    )}`,
+                    msg: msg,
+                })
+                sendMsg({
+                    number: '081280540525',
+                    msg: msg,
+                })
+                sendMsg({
+                    number: '081382466660',
+                    msg: msg,
                 })
             }
         })
@@ -165,7 +181,17 @@ function MaintenanceApReport() {
         setValue('item_name', data.row.item_name, { shouldDirty: true })
         setValue('item_qty', data.row.item_qty, { shouldDirty: true })
         setValue('item_uom', data.row.item_uom, { shouldDirty: true })
+        setValue('audit_request', data.row.audit_request, { shouldDirty: true })
+        setValue('item_stock', data.row.item_stock, { shouldDirty: true })
+        setValue('mre_request', data.row.mre_request, { shouldDirty: true })
+        setValue('user_req1', data.row.user_req1, { shouldDirty: true })
     }
+
+    useEffect(() => {
+        getValues('audit_request') === 'Y'
+            ? setValue('user_req2', user.data.displayName)
+            : setValue('user_req2', '')
+    })
 
     return (
         <div>
@@ -370,31 +396,74 @@ function MaintenanceApReport() {
                         />
                     </Grid>
                 </Grid>
-                {isAdmin && (
-                    <Grid container spacing={2}>
-                        <Grid item xs={2}>
-                            <Controller
-                                name="audit_request"
-                                defaultValue="N"
-                                control={control}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        className="mt-8 mb-16"
-                                        label="Audit"
-                                        select
-                                        autoFocus
-                                        id="audit_request"
-                                        fullWidth
-                                    >
-                                        <MenuItem value="Y">Audit</MenuItem>
-                                        <MenuItem value="N">n.audit</MenuItem>
-                                    </TextField>
-                                )}
-                            />
-                        </Grid>
+                <Grid container spacing={2}>
+                    <Grid item xs={2}>
+                        <Controller
+                            name="audit_request"
+                            defaultValue="N"
+                            control={control}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    className="mt-8 mb-16"
+                                    label="Audit"
+                                    select
+                                    autoFocus
+                                    id="audit_request"
+                                    fullWidth
+                                >
+                                    <MenuItem value="Y">Audit</MenuItem>
+                                    <MenuItem value="N">n.audit</MenuItem>
+                                </TextField>
+                            )}
+                        />
                     </Grid>
-                )}
+                    <Grid item xs={3}>
+                        <Controller
+                            name="mre_request"
+                            control={control}
+                            defaultValue=""
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    className="mt-8 mb-16"
+                                    error={!!errors.mre_request}
+                                    required
+                                    helperText={errors?.mre_request?.message}
+                                    label="MRE"
+                                    autoFocus
+                                    id="mre_request"
+                                    variant="outlined"
+                                    fullWidth
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={3}>
+                        <Controller
+                            name="user_req2"
+                            control={control}
+                            defaultValue=""
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    className="mt-8 mb-16"
+                                    error={!!errors.mre_request}
+                                    required
+                                    helperText={errors?.mre_request?.message}
+                                    label="Auditor"
+                                    autoFocus
+                                    id="user_req2"
+                                    variant="outlined"
+                                    fullWidth
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                />
+                            )}
+                        />
+                    </Grid>
+                </Grid>
 
                 <Grid container spacing={2}>
                     <Grid item xs={4}>

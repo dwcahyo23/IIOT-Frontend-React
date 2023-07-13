@@ -47,6 +47,7 @@ const schema = yup.object().shape({
     item_name: yup.string().required('Require item name'),
     item_qty: yup.number().positive().required('Require item qty'),
     item_uom: yup.string().required('Require item uom').min(3).max(3),
+    mre_request: yup.string(),
 
     id_report: yup
         .string()
