@@ -9,10 +9,9 @@ import dayjs from 'dayjs'
 import SummaryWo from './widget/SummaryWo'
 import ChartWo from './widget/ChartWo'
 import LastAp from './widget/LastAp'
-import LastReq from './widget/LastReq'
+import LastApUser from './widget/LastApUser'
 
 function MnGM1() {
-    const dispatch = useDispatch()
     const data = useSelector(selectAp)
 
     const selectDep_no = [
@@ -31,6 +30,12 @@ function MnGM1() {
         'PDTR1',
         'PDPU1',
     ]
+
+    const eko = ['PDHD1', 'PDHD2', 'PDHD3', 'PDHD4', 'PDRL1', 'PDRL2']
+
+    const didi = ['PDMC1', 'PDMC3', 'PDMR1', 'PDNC1', 'PDNT1', 'PDHB1']
+
+    const ahri = ['PDTR1', 'PDPU1']
 
     const raw =
         data &&
@@ -118,16 +123,29 @@ function MnGM1() {
             .groupBy(monthName)
             .value()
 
-    const listReqestMonth =
+    const listItemEko =
         data &&
         _.chain(data)
-            .filter((val) => {
-                if (val.request && val.request.length > 0) return true
-            })
-            .filter(['com_no', '01'])
+            .filter((val) => _.includes(eko, val.dep_no))
+            .filter({ com_no: '01', chk_mark: 'N' })
             .groupBy(monthName)
             .value()
-    console.log(listReqestMonth)
+
+    const listItemAhri =
+        data &&
+        _.chain(data)
+            .filter((val) => _.includes(ahri, val.dep_no))
+            .filter({ com_no: '01', chk_mark: 'N' })
+            .groupBy(monthName)
+            .value()
+
+    const listItemDidi =
+        data &&
+        _.chain(data)
+            .filter((val) => _.includes(didi, val.dep_no))
+            .filter({ com_no: '01', chk_mark: 'N' })
+            .groupBy(monthName)
+            .value()
 
     const container = {
         show: {
@@ -144,12 +162,12 @@ function MnGM1() {
 
     return (
         <motion.div
-            className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-16 w-full min-w-0 p-24"
+            className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-16 w-full min-w-0 p-24"
             variants={container}
             initial="hidden"
             animate="show"
         >
-            <motion.div variants={item}>
+            <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
                 <SummaryWo
                     data={{
                         count: filterDataMonth.work_order || {},
@@ -231,7 +249,7 @@ function MnGM1() {
 
             <motion.div
                 variants={item}
-                className="sm:col-span-2 md:col-span-4 lg:col-span-3"
+                className="sm:col-span-2 md:col-span-4 lg:col-span-4"
             >
                 <ChartWo data={{ filterData }} />
             </motion.div>
@@ -241,6 +259,22 @@ function MnGM1() {
                 className="sm:col-span-2 md:col-span-4 lg:col-span-2"
             >
                 <LastAp data={{ listItemMonth, raw }} />
+            </motion.div>
+
+            <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
+                <LastApUser
+                    data={{ listItemMonth: { ...listItemEko }, user: 4 }}
+                />
+            </motion.div>
+            <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
+                <LastApUser
+                    data={{ listItemMonth: { ...listItemAhri }, user: 7 }}
+                />
+            </motion.div>
+            <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
+                <LastApUser
+                    data={{ listItemMonth: { ...listItemDidi }, user: 6 }}
+                />
             </motion.div>
         </motion.div>
     )

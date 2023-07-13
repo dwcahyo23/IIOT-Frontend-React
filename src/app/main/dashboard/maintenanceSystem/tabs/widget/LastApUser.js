@@ -8,86 +8,22 @@ import {
     Tab,
     Tabs,
     Button,
+    Avatar,
 } from '@mui/material'
 import { memo, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
 import { FixedSizeList } from 'react-window'
 import StatusColor from 'src/app/main/apps/maintenanceSystem/machineTab/utils/StatusColor'
-import { Workbook } from 'exceljs'
-import { saveAs } from 'file-saver-es'
-import DownloadIcon from '@mui/icons-material/Download'
 import dayjs from 'dayjs'
+import { useSelector } from 'react-redux'
+import { selectApUser, selectApUserById } from '../../store/userSlice'
 
-function CustomToolbar({ props }) {
-    const handleExportExcell = () => {
-        const { rows } = props
-        const workbook = new Workbook()
-        const worksheet = workbook.addWorksheet('ERP')
-        try {
-            const columnXlsx = []
-            _.map(_.keys(rows[0]), (val) => {
-                columnXlsx.push({
-                    header: val.toLocaleUpperCase(),
-                    key: val,
-                    width: 25,
-                })
-            })
-            worksheet.columns = columnXlsx
-
-            _.forEach(rows, (val, index) => {
-                worksheet.addRow({
-                    ...val,
-                    unit_id: dayjs(val.ymd).format('MMM'),
-                    s_ymd: dayjs(val.ymd).format('YYYY-MM-DD HH:mm:ss'),
-                    s_ymd: dayjs(val.s_ymd).format('YYYY-MM-DD HH:mm:ss'),
-                    mch_index: '',
-                })
-            })
-
-            worksheet.columns.forEach((column, columNumber) => {
-                worksheet.getCell(`${column.letter}1`).fill = {
-                    type: 'pattern',
-                    pattern: 'solid',
-                    fgColor: { argb: '96C8FB' },
-                    bgColor: { argb: '96C8FB' },
-                }
-            })
-
-            worksheet.eachRow((row, rowNumber) => {
-                _.forEach(row.model.cells, (val) => {
-                    worksheet.getCell(val.address).border = {
-                        top: { style: 'thin' },
-                        left: { style: 'thin' },
-                        bottom: { style: 'thin' },
-                        right: { style: 'thin' },
-                    }
-                })
-            })
-
-            workbook.xlsx.writeBuffer().then((buffer) => {
-                saveAs(
-                    new Blob([buffer], { type: 'application/octet-stream' }),
-                    'AP_Sheet.xlsx'
-                )
-            })
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    return (
-        <Button
-            color="primary"
-            startIcon={<DownloadIcon />}
-            onClick={handleExportExcell}
-        >
-            Excell
-        </Button>
+function LastApUser({ data }) {
+    const user = useSelector((selectApUser) =>
+        selectApUserById(selectApUser, data.user)
     )
-}
-
-function LastAp({ data }) {
+    console.log(user)
     const listItem = data && data.listItemMonth
     const [tabValue, setTabValue] = useState(0)
     const currentRange = Object.keys(listItem)[tabValue]
@@ -119,7 +55,7 @@ function LastAp({ data }) {
                             filteredItem[index].sheet_no
                         } ${filteredItem[index].mch_no}`}
                     />
-                    <StatusColor id={filteredItem[index].chk_mark} />
+                    <StatusColor id={filteredItem[index].pri_no} />
                 </ListItemButton>
             </ListItem>
         )
@@ -127,12 +63,21 @@ function LastAp({ data }) {
 
     return (
         <Paper className="flex flex-col flex-auto p-24 shadow rounded-2xl overflow-hidden h-full">
-            <div className="flex flex-col sm:flex-row items-start justify-between">
-                <Typography className="text-lg font-small tracking-tight leading-6 truncate">
-                    List AP Sheet
-                </Typography>
-                {data && <CustomToolbar props={{ rows: data.raw }} />}
+            <div className="flex flex-auto items-center min-w-0">
+                <Avatar
+                    className="flex-0 w-64 h-64"
+                    alt="user photo"
+                    src={user?.photoURL}
+                >
+                    {user?.displayName[0]}
+                </Avatar>
+                <div className="flex flex-col sm:flex-row items-start justify-between">
+                    <Typography className="text-lg font-small tracking-tight leading-6 truncate">
+                        AP Sheet Leader {user?.displayName}
+                    </Typography>
+                </div>
             </div>
+
             <div className="grid grid-cols-1 lg:grid-cols-1 grid-flow-row gap-24 w-full">
                 <Tabs
                     value={tabValue}
@@ -165,4 +110,4 @@ function LastAp({ data }) {
     )
 }
 
-export default memo(LastAp)
+export default memo(LastApUser)
