@@ -12,6 +12,7 @@ function MaintenanceMachine() {
                 <Grid item xs={4}>
                     <Controller
                         name="mch_code"
+                        defaultValue=""
                         control={control}
                         render={({ field }) => (
                             <TextField
@@ -35,6 +36,7 @@ function MaintenanceMachine() {
                 <Grid item xs={4}>
                     <Controller
                         name="mch_name"
+                        defaultValue=""
                         control={control}
                         render={({ field }) => (
                             <TextField
@@ -58,6 +60,7 @@ function MaintenanceMachine() {
                 <Grid item xs={4}>
                     <Controller
                         name="mch_com"
+                        defaultValue=""
                         control={control}
                         render={({ field }) => (
                             <TextField
@@ -83,6 +86,7 @@ function MaintenanceMachine() {
                 <Grid item xs={2}>
                     <Controller
                         name="mch_process"
+                        defaultValue=""
                         control={control}
                         render={({ field }) => (
                             <TextField
@@ -106,6 +110,7 @@ function MaintenanceMachine() {
                 <Grid item xs={4}>
                     <Controller
                         name="mch_process_type"
+                        defaultValue=""
                         control={control}
                         render={({ field }) => (
                             <TextField
@@ -129,6 +134,7 @@ function MaintenanceMachine() {
                 <Grid item xs={4}>
                     <Controller
                         name="mch_maker"
+                        defaultValue=""
                         control={control}
                         render={({ field }) => (
                             <TextField
@@ -152,6 +158,7 @@ function MaintenanceMachine() {
                 <Grid item xs={2}>
                     <Controller
                         name="mch_prod"
+                        defaultValue=""
                         control={control}
                         render={({ field }) => (
                             <TextField

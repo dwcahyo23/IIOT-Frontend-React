@@ -1,7 +1,12 @@
 import React from 'react'
 import { TextField, Button, Grid, Box, MenuItem } from '@mui/material'
-import { Controller, useFormContext, useFieldArray } from 'react-hook-form'
-import { useEffect } from 'react'
+import {
+    Controller,
+    useFormContext,
+    useFieldArray,
+    useWatch,
+} from 'react-hook-form'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -18,19 +23,163 @@ import { selectStock } from '../store/machineChildren/machineStock'
 import VirtualizedData from './utils/VirtualizedData'
 import StatusColor from './utils/StatusColor'
 import axios from 'axios'
+import _ from 'lodash'
+
+const sendMsg = async (params) => {
+    await axios({
+        method: 'post',
+        url: 'http://192.168.192.7:5010/send-message',
+        data: {
+            number: params.number,
+            message: params.msg,
+        },
+    })
+}
+
+const columns = [
+    {
+        field: 'sheet_no',
+        headerName: 'AP-Sheet',
+        headerClassName: 'super-app-theme--header',
+        headerAlign: 'center',
+        width: 120,
+    },
+    {
+        field: 'mch_code',
+        headerName: 'Machine',
+        headerClassName: 'super-app-theme--header',
+        headerAlign: 'center',
+        width: 90,
+    },
+    {
+        field: 'date_request',
+        headerName: 'Target',
+        headerClassName: 'super-app-theme--header',
+        headerAlign: 'center',
+        width: 120,
+        valueFormatter: (params) =>
+            dayjs(params.value).format('DD/MM/YY HH:mm'),
+    },
+    {
+        field: 'audit_request',
+        headerName: 'Audit',
+        headerClassName: 'super-app-theme--header',
+        headerAlign: 'center',
+        width: 90,
+        align: 'center',
+        renderCell: (params) => <StatusColor id={params.value} />,
+    },
+    {
+        field: 'item_stock',
+        headerName: 'Sparepart',
+        flex: 1,
+        headerClassName: 'super-app-theme--header',
+        headerAlign: 'center',
+    },
+    {
+        field: 'item_name',
+        headerName: 'Remarks',
+        flex: 1,
+        headerClassName: 'super-app-theme--header',
+        headerAlign: 'center',
+    },
+    {
+        field: 'item_qty',
+        headerName: 'Qty',
+        width: 50,
+        headerClassName: 'super-app-theme--header',
+        headerAlign: 'center',
+    },
+    {
+        field: 'item_uom',
+        headerName: 'Uom',
+        width: 50,
+        headerClassName: 'super-app-theme--header',
+        headerAlign: 'center',
+    },
+]
 
 function MaintenanceApReport() {
     const dispatch = useDispatch()
     const methods = useFormContext()
     const user = useSelector(selectUser)
     const stock = useSelector(selectStock)
+    const [hidSparepart, setHidSparepart] = useState(false)
     const { control, formState, setValue, watch, getValues, getFieldState } =
         methods
     const { errors } = formState
-    const { fields, remove, append } = useFieldArray({
+    const { fields: request } = useFieldArray({
         name: 'request',
         control,
     })
+
+    const { fields: userMn } = useFieldArray({
+        name: 'user',
+        control,
+    })
+
+    function handleSave() {
+        dispatch(saveMaintenanceSystemRequest(getValues())).then((action) => {
+            if (action.payload) {
+                dispatch(getMaintenanceSystem(action.payload.uuid))
+                dispatch(
+                    showMessage({ message: 'Data has been saved successfully' })
+                )
+                let msg = `*AP Request Maintenance*\n\n*Sheet:* ${getValues(
+                    'id_request'
+                )} | ${getValues('category_request')}\n*Sparepart:* ${getValues(
+                    'item_stock'
+                )}\n*Remarks:* ${getValues('item_name')}\n*Qty:* ${getValues(
+                    'item_qty'
+                )}${getValues('item_uom')}\n*Machine:* ${getValues(
+                    'mch_code'
+                )} ${getValues('mch_name')}\n*Com:* ${getValues(
+                    'mch_com'
+                )}\n*User:* ${getValues('user_req1')}\n*MRE:* ${getValues(
+                    'mre_request'
+                )}\n*Item Ready:* ${getValues('item_ready')}${
+                    getValues('audit_request') === 'Y' ? '\nAudited by ' : ''
+                }${getValues('user_req2')}`
+
+                sendMsg({
+                    number: user.data.userNumber,
+                    msg: msg,
+                })
+
+                _.forEach(userMn, (val) => {
+                    if (
+                        val.displayName === 'Benyamin' ||
+                        val.displayName === 'Ahmad Suryadi' ||
+                        val.displayName === 'Achmad Maulana'
+                    ) {
+                        _.isNil(val.userNumber)
+                            ? ''
+                            : sendMsg({ number: val.userNumber, msg: msg })
+                    }
+                })
+            }
+        })
+    }
+
+    const tableIndex = (data) => {
+        // console.log(data)
+        setValue('id_request', data.row.sheet_no, { shouldDirty: true })
+        setValue('date_request', dayjs(data.row.date_request), {
+            shouldDirty: true,
+        })
+        setValue('uuid_request', data.row.uuid_request)
+        setValue('item_name', data.row.item_name, { shouldDirty: true })
+        setValue('item_qty', data.row.item_qty, { shouldDirty: true })
+        setValue('item_uom', data.row.item_uom, { shouldDirty: true })
+        setValue('audit_request', data.row.audit_request, { shouldDirty: true })
+        setValue('item_stock', data.row.item_stock, { shouldDirty: true })
+        setValue('mre_request', data.row.mre_request, { shouldDirty: true })
+        setValue('user_req1', data.row.user_req1, { shouldDirty: true })
+        setValue('item_ready', data.row.item_ready, { shouldDirty: true })
+        setValue('category_request', data.row.category_request, {
+            shouldDirty: true,
+        })
+    }
 
     function valid() {
         if (
@@ -47,151 +196,26 @@ function MaintenanceApReport() {
         ) {
             return false
         }
-
         return true
     }
 
-    const sendMsg = async (params) => {
-        await axios({
-            method: 'post',
-            url: 'http://192.168.192.7:5010/send-message',
-            data: {
-                number: params.number,
-                message: params.msg,
-            },
-        })
-    }
-
-    function handleSave() {
-        console.log(getValues('item_name'))
-        dispatch(saveMaintenanceSystemRequest(getValues())).then((action) => {
-            if (action.payload) {
-                dispatch(getMaintenanceSystem(action.payload.uuid))
-                dispatch(
-                    showMessage({ message: 'Data has been saved successfully' })
-                )
-                let msg = `*AP Request Maintenance*\n\n*Sheet:* ${getValues(
-                    'id_request'
-                )}\n*Sparepart:* ${getValues(
-                    'item_stock'
-                )}\n*Remarks:* ${getValues('item_name')}\n*Qty:* ${getValues(
-                    'item_qty'
-                )}${getValues('item_uom')}\n*Machine:* ${getValues(
-                    'mch_code'
-                )} ${getValues('mch_name')}\n*Com:* ${getValues(
-                    'mch_com'
-                )}\n*User:* ${getValues('user_req1')}\n*MRE:* ${getValues(
-                    'mre_request'
-                )}${
-                    getValues('audit_request') === 'Y' ? '\nAudited by ' : ''
-                }${getValues('user_req2')}`
-
-                sendMsg({
-                    number: '085163121617',
-                    msg: msg,
-                })
-                sendMsg({
-                    number: '082124610363',
-                    msg: msg,
-                })
-                sendMsg({
-                    number: '081280540525',
-                    msg: msg,
-                })
-                sendMsg({
-                    number: '081382466660',
-                    msg: msg,
-                })
-            }
-        })
-    }
-
-    const isAdmin = user.role == 'admin' ? true : false
-
-    const columns = [
-        {
-            field: 'sheet_no',
-            headerName: 'AP-Sheet',
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-            width: 120,
-        },
-        {
-            field: 'mch_code',
-            headerName: 'Machine',
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-            width: 90,
-        },
-        {
-            field: 'date_request',
-            headerName: 'Target',
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-            width: 120,
-            valueFormatter: (params) =>
-                dayjs(params.value).format('DD/MM/YY HH:mm'),
-        },
-        {
-            field: 'audit_request',
-            headerName: 'Audit',
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-            width: 90,
-            align: 'center',
-            renderCell: (params) => <StatusColor id={params.value} />,
-        },
-        {
-            field: 'item_stock',
-            headerName: 'Sparepart',
-            flex: 1,
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-        },
-        {
-            field: 'item_name',
-            headerName: 'Remarks',
-            flex: 1,
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-        },
-        {
-            field: 'item_qty',
-            headerName: 'Qty',
-            width: 50,
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-        },
-        {
-            field: 'item_uom',
-            headerName: 'Uom',
-            width: 50,
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-        },
-    ]
-
-    const tableIndex = (data) => {
-        // console.log(data)
-        setValue('id_request', data.row.sheet_no, { shouldDirty: true })
-        setValue('date_request', dayjs(data.row.date_request), {
-            shouldDirty: true,
-        })
-        setValue('uuid_request', data.row.uuid_request)
-        setValue('item_name', data.row.item_name, { shouldDirty: true })
-        setValue('item_qty', data.row.item_qty, { shouldDirty: true })
-        setValue('item_uom', data.row.item_uom, { shouldDirty: true })
-        setValue('audit_request', data.row.audit_request, { shouldDirty: true })
-        setValue('item_stock', data.row.item_stock, { shouldDirty: true })
-        setValue('mre_request', data.row.mre_request, { shouldDirty: true })
-        setValue('user_req1', data.row.user_req1, { shouldDirty: true })
-    }
-
-    useEffect(() => {
-        getValues('audit_request') === 'Y'
-            ? setValue('user_req2', user.data.displayName)
-            : setValue('user_req2', '')
+    const [audit_request, item_stock] = useWatch({
+        name: ['audit_request', 'item_stock'],
+        defaultValue: { audit_request: 'N', item_stock: '#0 ADD NEW ITEM' },
     })
+    useEffect(() => {
+        audit_request === 'Y'
+            ? setTimeout(() => {
+                  setValue('user_req2', user.data.displayName)
+              }, 500)
+            : setTimeout(() => {
+                  setValue('user_req2', '')
+              }, 500)
+
+        item_stock === '#0 ADD NEW ITEM' || _.isUndefined(item_stock)
+            ? setHidSparepart(false)
+            : setHidSparepart(true)
+    }, [audit_request, item_stock, hidSparepart])
 
     return (
         <div>
@@ -226,29 +250,43 @@ function MaintenanceApReport() {
                     </Grid>
                     <Grid item xs={3}>
                         <Controller
-                            name="date_request"
+                            name="category_request"
+                            defaultValue="Reguler"
                             control={control}
-                            defaultValue={dayjs()}
                             render={({ field }) => (
-                                <LocalizationProvider
-                                    dateAdapter={AdapterDayjs}
+                                <TextField
+                                    {...field}
+                                    className="mt-8 mb-16"
+                                    required
+                                    label="Target"
+                                    select
+                                    autoFocus
+                                    id="category_request"
+                                    fullWidth
                                 >
-                                    <DateTimePicker
-                                        {...field}
-                                        className="mt-8 mb-16"
-                                        id="date_request"
-                                        required
-                                        label="Target"
-                                        sx={{ width: '100%' }}
-                                        minDate={dayjs()}
-                                    />
-                                </LocalizationProvider>
+                                    <MenuItem value="Emergency">
+                                        Emergency(10H)
+                                    </MenuItem>
+                                    <MenuItem value="Express">
+                                        Flash(3D)
+                                    </MenuItem>
+                                    <MenuItem value="Express">
+                                        Express(7D)
+                                    </MenuItem>
+                                    <MenuItem value="Reguler">
+                                        Reguler(14D)
+                                    </MenuItem>
+                                    <MenuItem value="Indent">
+                                        Indent(30D)
+                                    </MenuItem>
+                                </TextField>
                             )}
                         />
                     </Grid>
                     <Grid item xs={3}>
                         <Controller
                             name="mch_code"
+                            defaultValue=""
                             control={control}
                             render={({ field }) => (
                                 <TextField
@@ -272,6 +310,7 @@ function MaintenanceApReport() {
                     <Grid item xs={3}>
                         <Controller
                             name="mch_com"
+                            defaultValue=""
                             control={control}
                             render={({ field }) => (
                                 <TextField
@@ -297,13 +336,36 @@ function MaintenanceApReport() {
                     <Grid item xs={12}>
                         <Controller
                             name="item_stock"
-                            defaultValue="Other"
+                            defaultValue="#0 ADD NEW ITEM"
                             control={control}
                             render={({ field }) => (
                                 <VirtualizedData field={field} data={stock} />
                             )}
                         />
                     </Grid>
+                    {!hidSparepart && (
+                        <Grid item xs={12}>
+                            <Controller
+                                name="new_sparepart"
+                                control={control}
+                                defaultValue=""
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        className="mt-8 mb-16"
+                                        error={!!errors.id_request}
+                                        required
+                                        helperText={errors?.id_request?.message}
+                                        label="New Sparepart"
+                                        autoFocus
+                                        id="new_sparepart"
+                                        variant="outlined"
+                                        fullWidth
+                                    />
+                                )}
+                            />
+                        </Grid>
+                    )}
                 </Grid>
                 <Grid container spacing={2}>
                     <Grid item xs={4}>
@@ -441,6 +503,28 @@ function MaintenanceApReport() {
                     </Grid>
                     <Grid item xs={3}>
                         <Controller
+                            name="item_ready"
+                            defaultValue="N"
+                            control={control}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    className="mt-8 mb-16"
+                                    label="Item Ready"
+                                    select
+                                    autoFocus
+                                    id="item_ready"
+                                    fullWidth
+                                >
+                                    <MenuItem value="Y">Ready</MenuItem>
+                                    <MenuItem value="N">Not Yet</MenuItem>
+                                </TextField>
+                            )}
+                        />
+                    </Grid>
+
+                    <Grid item xs={3}>
+                        <Controller
                             name="user_req2"
                             control={control}
                             defaultValue=""
@@ -487,7 +571,7 @@ function MaintenanceApReport() {
                 }}
             >
                 <TableIndex
-                    params={{ row: fields, columns: columns }}
+                    params={{ row: request, columns: columns }}
                     tableIndex={tableIndex}
                 />
             </Box>

@@ -93,7 +93,7 @@ function MaintenanceApReport() {
             width: 100,
         },
         {
-            field: 'date_start',
+            field: 'date_report',
             headerName: 'Start',
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
@@ -219,6 +219,7 @@ function MaintenanceApReport() {
                                 >
                                     <DateTimePicker
                                         {...field}
+                                        ampm={false}
                                         className="mt-8 mb-16"
                                         id="date_report"
                                         label="Start"
@@ -240,6 +241,7 @@ function MaintenanceApReport() {
                                 >
                                     <DateTimePicker
                                         {...field}
+                                        ampm={false}
                                         className="mt-8 mb-16"
                                         id="date_target"
                                         label="Target"
@@ -253,6 +255,7 @@ function MaintenanceApReport() {
                     <Grid item xs={2}>
                         <Controller
                             name="mch_code"
+                            defaultValue=""
                             control={control}
                             render={({ field }) => (
                                 <TextField
@@ -274,6 +277,7 @@ function MaintenanceApReport() {
                     <Grid item xs={2}>
                         <Controller
                             name="mch_com"
+                            defaultValue=""
                             control={control}
                             render={({ field }) => (
                                 <TextField
@@ -465,6 +469,7 @@ function MaintenanceApReport() {
                                 >
                                     <DateTimePicker
                                         {...field}
+                                        ampm={false}
                                         className="mt-8 mb-16"
                                         id="date_finish"
                                         label="Finish"

@@ -23,7 +23,6 @@ function LastApUser({ data }) {
     const user = useSelector((selectApUser) =>
         selectApUserById(selectApUser, data.user)
     )
-    console.log(user)
     const listItem = data && data.listItemMonth
     const [tabValue, setTabValue] = useState(0)
     const currentRange = Object.keys(listItem)[tabValue]
