@@ -120,6 +120,7 @@ function LastAp({ data }) {
                         } ${filteredItem[index].mch_no}`}
                     />
                     <StatusColor id={filteredItem[index].chk_mark} />
+                    <StatusColor id={filteredItem[index].pri_no} />
                 </ListItemButton>
             </ListItem>
         )
@@ -152,7 +153,7 @@ function LastAp({ data }) {
                 <div className="flex flex-col flex-auto">
                     <FixedSizeList
                         height={300}
-                        width={350}
+                        width={400}
                         itemCount={itemLength}
                         itemSize={35}
                         className="py-0 mt-8 divide-y"

@@ -53,8 +53,9 @@ function LastApUser({ data }) {
                     <ListItemText
                         primary={`${index + 1}. ${
                             filteredItem?.data[index].sheet_no
-                        } ${filteredItem?.data[index].mch_no}`}
+                        }`}
                     />
+                    <StatusColor id={filteredItem?.data[index].chk_mark} />
                     <StatusColor id={filteredItem?.data[index].pri_no} />
                 </ListItemButton>
             </ListItem>
@@ -82,7 +83,7 @@ function LastApUser({ data }) {
                 <div className="flex flex-col sm:flex-row ml-16 items-end justify-between">
                     <div className="w-full">
                         <Typography className="text-13 mt-2 line-clamp-2">
-                            Leader: Forming-Rolling
+                            Leader: {data?.leader}
                         </Typography>
                         <Typography className="text-13 mt-2 line-clamp-2">
                             Breakdown: {filteredItem.breakdown?.pass || 0}

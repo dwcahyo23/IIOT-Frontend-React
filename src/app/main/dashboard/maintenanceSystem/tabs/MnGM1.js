@@ -43,15 +43,14 @@ function MnGM1() {
         data &&
         _.chain(data)
             .filter((val) => {
-                return {
-                    chk_mark: _.includes(['Y', 'N'], val.chk_mark),
+                if (val.chk_mark != 'C' && val.com_no == '01') {
+                    return val
                 }
             })
             .groupBy((val) => dayjs(val.ymd).format('MMM'))
             .mapValues((items) => {
                 return {
                     breakdown: _.countBy(items, (val) =>
-                        val.com_no == '01' &&
                         val.pri_no == '01' &&
                         _.includes(selectDep_no, val.dep_no) &&
                         val.mch_no != '-' &&
@@ -60,7 +59,6 @@ function MnGM1() {
                             : 'fail'
                     ),
                     still_run: _.countBy(items, (val) =>
-                        val.com_no == '01' &&
                         val.pri_no == '02' &&
                         _.includes(selectDep_no, val.dep_no) &&
                         val.mch_no != '-' &&
@@ -69,7 +67,6 @@ function MnGM1() {
                             : 'fail'
                     ),
                     preventive: _.countBy(items, (val) =>
-                        val.com_no == '01' &&
                         val.pri_no == '03' &&
                         _.includes(selectDep_no, val.dep_no) &&
                         val.mch_no != '-' &&
@@ -78,22 +75,15 @@ function MnGM1() {
                             : 'fail'
                     ),
                     workshop: _.countBy(items, (val) =>
-                        val.com_no == '01' && val.pri_no == '04'
-                            ? 'pass'
-                            : 'fail'
+                        val.pri_no == '04' ? 'pass' : 'fail'
                     ),
                     work_order: _.countBy(items, (val) =>
-                        val.com_no == '01' && val.com_no == '01'
-                            ? 'pass'
-                            : 'fail'
+                        val ? 'pass' : 'fail'
                     ),
                     audit: _.countBy(items, (val) =>
-                        val.com_no == '01' && val.chk_mark == 'Y'
-                            ? 'pass'
-                            : 'fail'
+                        val.chk_mark == 'Y' ? 'pass' : 'fail'
                     ),
                     breakdown_audit: _.countBy(items, (val) =>
-                        val.com_no == '01' &&
                         val.pri_no == '01' &&
                         val.chk_mark == 'Y' &&
                         _.includes(selectDep_no, val.dep_no) &&
@@ -103,7 +93,6 @@ function MnGM1() {
                             : 'fail'
                     ),
                     still_run_audit: _.countBy(items, (val) =>
-                        val.com_no == '01' &&
                         val.pri_no == '02' &&
                         val.chk_mark == 'Y' &&
                         _.includes(selectDep_no, val.dep_no) &&
@@ -113,7 +102,6 @@ function MnGM1() {
                             : 'fail'
                     ),
                     preventive_audit: _.countBy(items, (val) =>
-                        val.com_no == '01' &&
                         val.pri_no == '03' &&
                         val.chk_mark == 'Y' &&
                         _.includes(selectDep_no, val.dep_no) &&
@@ -123,9 +111,7 @@ function MnGM1() {
                             : 'fail'
                     ),
                     workshop_audit: _.countBy(items, (val) =>
-                        val.com_no == '01' &&
-                        val.pri_no == '04' &&
-                        val.chk_mark == 'Y'
+                        val.pri_no == '04' && val.chk_mark == 'Y'
                             ? 'pass'
                             : 'fail'
                     ),
@@ -138,8 +124,11 @@ function MnGM1() {
     const listItemMonth =
         data &&
         _.chain(data)
-            .filter((val) => _.includes(selectDep_no, val.dep_no))
-            .filter({ com_no: '01', chk_mark: 'Y' })
+            .filter((val) => {
+                if (val.com_no == '01' && val.chk_mark != 'C') {
+                    return val
+                }
+            })
             .groupBy((val) => dayjs(val.ymd).format('MMM'))
             .value()
 
@@ -147,7 +136,13 @@ function MnGM1() {
         data &&
         _.chain(data)
             .filter((val) => {
-                if (_.includes(didi, val.dep_no) && val.com_no == '01') {
+                if (
+                    _.includes(didi, val.dep_no) &&
+                    val.com_no == '01' &&
+                    val.mch_no != '-' &&
+                    !_.isNull(val.mch_no) &&
+                    val.chk_mark != 'C'
+                ) {
                     return val
                 }
             })
@@ -155,30 +150,18 @@ function MnGM1() {
             .mapValues((items) => {
                 return {
                     data: _.filter(items, (val) => {
-                        if (val.chk_mark == 'N') {
+                        if (val.chk_mark == 'N' || val.chk_mark == 'Y') {
                             return val
                         }
                     }),
                     breakdown: _.countBy(items, (val) =>
-                        val.pri_no == '01' &&
-                        val.mch_no != '-' &&
-                        !_.isNull(val.mch_no)
-                            ? 'pass'
-                            : 'fail'
+                        val.pri_no == '01' ? 'pass' : 'fail'
                     ),
                     still_run: _.countBy(items, (val) =>
-                        val.pri_no == '02' &&
-                        val.mch_no != '-' &&
-                        !_.isNull(val.mch_no)
-                            ? 'pass'
-                            : 'fail'
+                        val.pri_no == '02' ? 'pass' : 'fail'
                     ),
                     preventive: _.countBy(items, (val) =>
-                        val.pri_no == '03' &&
-                        val.mch_no != '-' &&
-                        !_.isNull(val.mch_no)
-                            ? 'pass'
-                            : 'fail'
+                        val.pri_no == '03' ? 'pass' : 'fail'
                     ),
                 }
             })
@@ -188,7 +171,13 @@ function MnGM1() {
         data &&
         _.chain(data)
             .filter((val) => {
-                if (_.includes(ahri, val.dep_no) && val.com_no == '01') {
+                if (
+                    _.includes(ahri, val.dep_no) &&
+                    val.com_no == '01' &&
+                    val.mch_no != '-' &&
+                    !_.isNull(val.mch_no) &&
+                    val.chk_mark != 'C'
+                ) {
                     return val
                 }
             })
@@ -196,30 +185,18 @@ function MnGM1() {
             .mapValues((items) => {
                 return {
                     data: _.filter(items, (val) => {
-                        if (val.chk_mark == 'N') {
+                        if (val.chk_mark == 'N' || val.chk_mark == 'Y') {
                             return val
                         }
                     }),
                     breakdown: _.countBy(items, (val) =>
-                        val.pri_no == '01' &&
-                        val.mch_no != '-' &&
-                        !_.isNull(val.mch_no)
-                            ? 'pass'
-                            : 'fail'
+                        val.pri_no == '01' ? 'pass' : 'fail'
                     ),
                     still_run: _.countBy(items, (val) =>
-                        val.pri_no == '02' &&
-                        val.mch_no != '-' &&
-                        !_.isNull(val.mch_no)
-                            ? 'pass'
-                            : 'fail'
+                        val.pri_no == '02' ? 'pass' : 'fail'
                     ),
                     preventive: _.countBy(items, (val) =>
-                        val.pri_no == '03' &&
-                        val.mch_no != '-' &&
-                        !_.isNull(val.mch_no)
-                            ? 'pass'
-                            : 'fail'
+                        val.pri_no == '03' ? 'pass' : 'fail'
                     ),
                 }
             })
@@ -229,7 +206,13 @@ function MnGM1() {
         data &&
         _.chain(data)
             .filter((val) => {
-                if (_.includes(eko, val.dep_no) && val.com_no == '01') {
+                if (
+                    _.includes(eko, val.dep_no) &&
+                    val.com_no == '01' &&
+                    val.mch_no != '-' &&
+                    !_.isNull(val.mch_no) &&
+                    val.chk_mark != 'C'
+                ) {
                     return val
                 }
             })
@@ -237,30 +220,18 @@ function MnGM1() {
             .mapValues((items) => {
                 return {
                     data: _.filter(items, (val) => {
-                        if (val.chk_mark == 'N') {
+                        if (val.chk_mark == 'N' || val.chk_mark == 'Y') {
                             return val
                         }
                     }),
                     breakdown: _.countBy(items, (val) =>
-                        val.pri_no == '01' &&
-                        val.mch_no != '-' &&
-                        !_.isNull(val.mch_no)
-                            ? 'pass'
-                            : 'fail'
+                        val.pri_no == '01' ? 'pass' : 'fail'
                     ),
                     still_run: _.countBy(items, (val) =>
-                        val.pri_no == '02' &&
-                        val.mch_no != '-' &&
-                        !_.isNull(val.mch_no)
-                            ? 'pass'
-                            : 'fail'
+                        val.pri_no == '02' ? 'pass' : 'fail'
                     ),
                     preventive: _.countBy(items, (val) =>
-                        val.pri_no == '03' &&
-                        val.mch_no != '-' &&
-                        !_.isNull(val.mch_no)
-                            ? 'pass'
-                            : 'fail'
+                        val.pri_no == '03' ? 'pass' : 'fail'
                     ),
                 }
             })
@@ -386,13 +357,31 @@ function MnGM1() {
             </motion.div>
 
             <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
-                <LastApUser data={{ listItemMonth: listItemEko, user: 4 }} />
+                <LastApUser
+                    data={{
+                        listItemMonth: listItemEko,
+                        user: 4,
+                        leader: 'Forming - Rolling',
+                    }}
+                />
             </motion.div>
             <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
-                <LastApUser data={{ listItemMonth: listItemAhri, user: 7 }} />
+                <LastApUser
+                    data={{
+                        listItemMonth: listItemAhri,
+                        user: 7,
+                        leader: 'HT - Turret',
+                    }}
+                />
             </motion.div>
             <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
-                <LastApUser data={{ listItemMonth: listItemDidi, user: 6 }} />
+                <LastApUser
+                    data={{
+                        listItemMonth: listItemDidi,
+                        user: 6,
+                        leader: 'MC - CNC -HB',
+                    }}
+                />
             </motion.div>
         </motion.div>
     )
