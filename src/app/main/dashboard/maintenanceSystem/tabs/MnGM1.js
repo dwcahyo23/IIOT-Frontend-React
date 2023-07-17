@@ -252,7 +252,7 @@ function MnGM1() {
 
     return (
         <motion.div
-            className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-16 w-full min-w-0 p-24"
+            className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-6 lg:grid-cols-6 gap-16 w-full min-w-0 p-24"
             variants={container}
             initial="hidden"
             animate="show"
@@ -342,17 +342,11 @@ function MnGM1() {
                 />
             </motion.div>
 
-            <motion.div
-                variants={item}
-                className="sm:col-span-2 md:col-span-4 lg:col-span-4"
-            >
+            <motion.div variants={item} className="sm:col-span-2 md:col-span-4">
                 <ChartWo data={{ filterData }} />
             </motion.div>
 
-            <motion.div
-                variants={item}
-                className="sm:col-span-2 md:col-span-4 lg:col-span-2"
-            >
+            <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
                 <LastAp data={{ listItemMonth, raw }} />
             </motion.div>
 

@@ -155,7 +155,7 @@ function LastAp({ data }) {
                         height={300}
                         width={400}
                         itemCount={itemLength}
-                        itemSize={35}
+                        itemSize={50}
                         className="py-0 mt-8 divide-y"
                     >
                         {RowList}
