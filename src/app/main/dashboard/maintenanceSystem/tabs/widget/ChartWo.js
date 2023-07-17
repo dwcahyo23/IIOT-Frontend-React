@@ -120,22 +120,22 @@ function ChartWo({ data }) {
                     Breakdown Summary
                 </Typography>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-1 grid-flow-row gap-24 w-full mt-32 sm:mt-16">
+            <div className="grid grid-cols-1 lg:grid-cols-1 grid-flow-row gap-24 w-full mt-32 mb-16 sm:mt-16">
                 <div className="flex flex-col flex-auto">
                     <Typography
-                        className="font-medium mt-2 mb-2"
+                        className="font-medium mt-2 mb-8"
                         color="text.secondary"
                     >
                         Breakdown vs Audit
                     </Typography>
                     <Typography
-                        className="text-xs mt-2 mb-2"
+                        className="text-xs mt-2 mb-8"
                         color="text.secondary"
                     >
                         PDHD1 PDHD2 PDHD3 PDHD4 PDRL1 PDRL2 PDMC1 PDMC3 PDMR1
                         PDNC1 PDNT1 PDHB1 PDTR1 PDPU1
                     </Typography>
-                    <div className="flex flex-col flex-auto">
+                    <div className="flex flex-col flex-auto mt-2 mb-8">
                         <Chart
                             className="flex-auto w-full"
                             options={chartOptions}
@@ -144,25 +144,6 @@ function ChartWo({ data }) {
                         />
                     </div>
                 </div>
-                {/* <div className="flex flex-col flex-auto">
-                    <List className="py-0 mt-8 divide-y">
-                        {_.takeRight(listItem, 20).map((val, i) => (
-                            <ListItemText
-                                classes={{
-                                    root: 'px-8',
-                                    primary: 'font-medium',
-                                }}
-                                key={val.sheet_no}
-                                primary={val.sheet_no}
-                                secondary={
-                                    <span className="flex flex-col sm:flex-row sm:items-center -ml-2 mt-8 sm:mt-4 space-y-4 sm:space-y-0 sm:space-x-12">
-                                        <span className="flex items-center"></span>
-                                    </span>
-                                }
-                            />
-                        ))}
-                    </List>
-                </div> */}
             </div>
         </Paper>
     )

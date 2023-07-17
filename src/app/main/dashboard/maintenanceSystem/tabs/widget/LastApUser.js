@@ -18,6 +18,77 @@ import StatusColor from 'src/app/main/apps/maintenanceSystem/machineTab/utils/St
 import dayjs from 'dayjs'
 import { useSelector } from 'react-redux'
 import { selectApUser, selectApUserById } from '../../store/userSlice'
+import { Workbook } from 'exceljs'
+import { saveAs } from 'file-saver-es'
+import DownloadIcon from '@mui/icons-material/Download'
+
+function CustomToolbar({ props }) {
+    const handleExportExcell = () => {
+        const { rows } = props
+        const workbook = new Workbook()
+        const worksheet = workbook.addWorksheet('ERP')
+        try {
+            const columnXlsx = []
+            _.map(_.keys(rows[0]), (val) => {
+                columnXlsx.push({
+                    header: val.toLocaleUpperCase(),
+                    key: val,
+                    width: 25,
+                })
+            })
+            worksheet.columns = columnXlsx
+
+            _.forEach(rows, (val, index) => {
+                worksheet.addRow({
+                    ...val,
+                    unit_id: dayjs(val.ymd).format('MMM'),
+                    s_ymd: dayjs(val.ymd).format('YYYY-MM-DD HH:mm:ss'),
+                    s_ymd: dayjs(val.s_ymd).format('YYYY-MM-DD HH:mm:ss'),
+                    mch_index: '',
+                })
+            })
+
+            worksheet.columns.forEach((column, columNumber) => {
+                worksheet.getCell(`${column.letter}1`).fill = {
+                    type: 'pattern',
+                    pattern: 'solid',
+                    fgColor: { argb: '96C8FB' },
+                    bgColor: { argb: '96C8FB' },
+                }
+            })
+
+            worksheet.eachRow((row, rowNumber) => {
+                _.forEach(row.model.cells, (val) => {
+                    worksheet.getCell(val.address).border = {
+                        top: { style: 'thin' },
+                        left: { style: 'thin' },
+                        bottom: { style: 'thin' },
+                        right: { style: 'thin' },
+                    }
+                })
+            })
+
+            workbook.xlsx.writeBuffer().then((buffer) => {
+                saveAs(
+                    new Blob([buffer], { type: 'application/octet-stream' }),
+                    'AP_Sheet.xlsx'
+                )
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    return (
+        <Button
+            color="primary"
+            startIcon={<DownloadIcon />}
+            onClick={handleExportExcell}
+        >
+            Excell
+        </Button>
+    )
+}
 
 function LastApUser({ data }) {
     const user = useSelector((selectApUser) =>
@@ -96,6 +167,7 @@ function LastApUser({ data }) {
                         </Typography>
                     </div>
                 </div>
+                {data && <CustomToolbar props={{ rows: filteredItem?.data }} />}
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-1 grid-flow-row gap-24 w-full">

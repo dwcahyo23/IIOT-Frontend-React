@@ -29,15 +29,14 @@ function MnGM1() {
         'PDHB1',
         'PDTR1',
         'PDPU1',
+        'PCGD1',
     ]
 
     const eko = ['PDHD1', 'PDHD2', 'PDHD3', 'PDHD4', 'PDRL1', 'PDRL2']
 
     const didi = ['PDMC1', 'PDMC3', 'PDMR1', 'PDNC1', 'PDNT1', 'PDHB1']
 
-    const ahri = ['PDTR1', 'PDPU1']
-
-    const raw = data && _.chain(data).filter({ com_no: '01' }).value()
+    const ahri = ['PDTR1', 'PDPU1', 'PCGD1']
 
     const filterData =
         data &&
@@ -119,17 +118,42 @@ function MnGM1() {
             })
             .value()
 
-    // console.log(filterData)
-
-    const listItemMonth =
+    const listItemBenyamin =
         data &&
         _.chain(data)
             .filter((val) => {
-                if (val.com_no == '01' && val.chk_mark != 'C') {
+                if (
+                    _.includes(selectDep_no, val.dep_no) &&
+                    val.com_no == '01' &&
+                    val.mch_no != '-' &&
+                    !_.isNull(val.mch_no) &&
+                    val.chk_mark != 'C'
+                ) {
                     return val
                 }
             })
             .groupBy((val) => dayjs(val.ymd).format('MMM'))
+            .mapValues((items) => {
+                return {
+                    data: _.filter(items, (val) => {
+                        if (val.chk_mark == 'N' || val.chk_mark == 'Y') {
+                            return val
+                        }
+                    }),
+                    breakdown: _.countBy(items, (val) =>
+                        val.pri_no == '01' ? 'pass' : 'fail'
+                    ),
+                    still_run: _.countBy(items, (val) =>
+                        val.pri_no == '02' ? 'pass' : 'fail'
+                    ),
+                    preventive: _.countBy(items, (val) =>
+                        val.pri_no == '03' ? 'pass' : 'fail'
+                    ),
+                    workshop: _.countBy(items, (val) =>
+                        val.pri_no == '04' ? 'pass' : 'fail'
+                    ),
+                }
+            })
             .value()
 
     const listItemDidi =
@@ -201,6 +225,41 @@ function MnGM1() {
                 }
             })
             .value()
+
+    const listItemSutaryo =
+        data &&
+        _.chain(data)
+            .filter((val) => {
+                if (
+                    val.com_no == '01' &&
+                    val.mch_no == '-' &&
+                    !_.isNull(val.mch_no) &&
+                    val.chk_mark != 'C'
+                ) {
+                    return val
+                }
+            })
+            .groupBy((val) => dayjs(val.ymd).format('MMM'))
+            .mapValues((items) => {
+                return {
+                    data: _.filter(items, (val) => {
+                        if (val.chk_mark == 'N' || val.chk_mark == 'Y') {
+                            return val
+                        }
+                    }),
+                    breakdown: _.countBy(items, (val) =>
+                        val.pri_no == '01' ? 'pass' : 'fail'
+                    ),
+                    still_run: _.countBy(items, (val) =>
+                        val.pri_no == '02' ? 'pass' : 'fail'
+                    ),
+                    preventive: _.countBy(items, (val) =>
+                        val.pri_no == '03' ? 'pass' : 'fail'
+                    ),
+                }
+            })
+            .value()
+    console.log(listItemSutaryo)
 
     const listItemEko =
         data &&
@@ -342,12 +401,19 @@ function MnGM1() {
                 />
             </motion.div>
 
-            <motion.div variants={item} className="sm:col-span-2 md:col-span-4">
-                <ChartWo data={{ filterData }} />
+            <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
+                {/* <LastAp data={{ listItemMonth, raw }} /> */}
+                <LastApUser
+                    data={{
+                        listItemMonth: listItemBenyamin,
+                        user: 5,
+                        leader: 'Kasie Maintenance',
+                    }}
+                />
             </motion.div>
 
-            <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
-                <LastAp data={{ listItemMonth, raw }} />
+            <motion.div variants={item} className="sm:col-span-2 md:col-span-4">
+                <ChartWo data={{ filterData }} />
             </motion.div>
 
             <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
@@ -355,7 +421,7 @@ function MnGM1() {
                     data={{
                         listItemMonth: listItemEko,
                         user: 4,
-                        leader: 'Forming - Rolling',
+                        leader: 'TL Forming - Rolling',
                     }}
                 />
             </motion.div>
@@ -364,7 +430,7 @@ function MnGM1() {
                     data={{
                         listItemMonth: listItemAhri,
                         user: 7,
-                        leader: 'HT - Turret',
+                        leader: 'TL HT - Turret',
                     }}
                 />
             </motion.div>
@@ -373,7 +439,17 @@ function MnGM1() {
                     data={{
                         listItemMonth: listItemDidi,
                         user: 6,
-                        leader: 'MC - CNC -HB',
+                        leader: 'TL MC - CNC - HB',
+                    }}
+                />
+            </motion.div>
+
+            <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
+                <LastApUser
+                    data={{
+                        listItemMonth: listItemSutaryo,
+                        user: 16,
+                        leader: 'TL MC - CNC - HB',
                     }}
                 />
             </motion.div>

@@ -119,7 +119,6 @@ function LastAp({ data }) {
                             filteredItem[index].sheet_no
                         } ${filteredItem[index].mch_no}`}
                     />
-                    <StatusColor id={filteredItem[index].chk_mark} />
                     <StatusColor id={filteredItem[index].pri_no} />
                 </ListItemButton>
             </ListItem>
@@ -155,7 +154,7 @@ function LastAp({ data }) {
                         height={300}
                         width={400}
                         itemCount={itemLength}
-                        itemSize={50}
+                        itemSize={35}
                         className="py-0 mt-8 divide-y"
                     >
                         {RowList}
