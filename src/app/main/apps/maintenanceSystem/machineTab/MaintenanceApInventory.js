@@ -128,7 +128,9 @@ function MaintenanceApReport() {
                 )
                 let msg = `*AP Request Maintenance*\n\n*Sheet:* ${getValues(
                     'id_request'
-                )} | ${getValues('category_request')}\n*Sparepart:* ${getValues(
+                )} | ${getValues('category_request')}\n*Target:* ${getValues(
+                    'date_request'
+                )}\n*Sparepart:* ${getValues(
                     'item_stock'
                 )}\n*Remarks:* ${getValues('item_name')}\n*Qty:* ${getValues(
                     'item_qty'
