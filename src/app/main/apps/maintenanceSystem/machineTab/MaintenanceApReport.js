@@ -245,7 +245,6 @@ function MaintenanceApReport() {
                                         className="mt-8 mb-16"
                                         id="date_target"
                                         label="Target"
-                                        minDate={dayjs()}
                                         sx={{ width: '100%' }}
                                     />
                                 </LocalizationProvider>
@@ -473,7 +472,6 @@ function MaintenanceApReport() {
                                         className="mt-8 mb-16"
                                         id="date_finish"
                                         label="Finish"
-                                        maxDate={dayjs()}
                                         sx={{ width: '100%' }}
                                     />
                                 </LocalizationProvider>

@@ -189,10 +189,6 @@ function MaintenanceApReport() {
         if (
             getFieldState('id_request').isDirty &&
             !getFieldState('id_request').invalid &&
-            getFieldState('item_name').isDirty &&
-            !getFieldState('item_name').invalid &&
-            getFieldState('date_request').isDirty &&
-            !getFieldState('date_request').invalid &&
             getFieldState('item_qty').isDirty &&
             !getFieldState('item_qty').invalid &&
             getFieldState('item_uom').isDirty &&

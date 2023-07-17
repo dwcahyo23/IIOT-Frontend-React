@@ -23,20 +23,24 @@ function LastApUser({ data }) {
     const user = useSelector((selectApUser) =>
         selectApUserById(selectApUser, data.user)
     )
-    const listItem = data && data.listItemMonth
+    const listItem = data?.listItemMonth
+    const lastTab = Object.keys(listItem).length - 1
     const [tabValue, setTabValue] = useState(0)
     const currentRange = Object.keys(listItem)[tabValue]
     const [filteredItem, setFilteredItem] = useState([])
     const [itemLength, setItemLength] = useState(0)
 
     useEffect(() => {
-        if (data && listItem && listItem[currentRange]) {
-            setItemLength(listItem[currentRange].length)
+        if (data && listItem[currentRange]) {
+            setItemLength(listItem[currentRange]?.data.length)
             setFilteredItem(listItem[currentRange])
         }
     })
 
-    useEffect(() => {}, [itemLength, filteredItem])
+    useEffect(() => {
+        // console.log(filteredItem)
+        // console.log(lastTab)
+    }, [itemLength, filteredItem, lastTab])
 
     const RowList = (props) => {
         const { index, style } = props
@@ -44,17 +48,14 @@ function LastApUser({ data }) {
             <ListItem key={index} style={style} component="div" disablePadding>
                 <ListItemButton
                     component={Link}
-                    to={`/apps/maintenanceSystem/machines/${
-                        filteredItem[index].mch_index &&
-                        filteredItem[index].mch_index.uuid
-                    }`}
+                    to={`/apps/maintenanceSystem/machines/${filteredItem?.data[index].mch_index?.uuid}`}
                 >
                     <ListItemText
                         primary={`${index + 1}. ${
-                            filteredItem[index].sheet_no
-                        } ${filteredItem[index].mch_no}`}
+                            filteredItem?.data[index].sheet_no
+                        } ${filteredItem?.data[index].mch_no}`}
                     />
-                    <StatusColor id={filteredItem[index].pri_no} />
+                    <StatusColor id={filteredItem?.data[index].pri_no} />
                 </ListItemButton>
             </ListItem>
         )
@@ -63,17 +64,36 @@ function LastApUser({ data }) {
     return (
         <Paper className="flex flex-col flex-auto p-24 shadow rounded-2xl overflow-hidden h-full">
             <div className="flex flex-auto items-center min-w-0">
-                <Avatar
-                    className="flex-0 w-64 h-64"
-                    alt="user photo"
-                    src={user?.photoURL}
-                >
-                    {user?.displayName[0]}
-                </Avatar>
                 <div className="flex flex-col sm:flex-row items-start justify-between">
-                    <Typography className="text-lg font-small tracking-tight leading-6 truncate">
-                        AP Sheet Leader {user?.displayName}
-                    </Typography>
+                    <div className="w-full">
+                        <Avatar
+                            className="flex-0 w-64 h-64"
+                            alt="user photo"
+                            src={user?.photoURL}
+                        >
+                            {user?.displayName[0]}
+                        </Avatar>
+                        <Typography className="text-14 font-medium">
+                            {user?.displayName}
+                        </Typography>
+                    </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row ml-16 items-end justify-between">
+                    <div className="w-full">
+                        <Typography className="text-13 mt-2 line-clamp-2">
+                            Leader: Forming-Rolling
+                        </Typography>
+                        <Typography className="text-13 mt-2 line-clamp-2">
+                            Breakdown: {filteredItem.breakdown?.pass || 0}
+                        </Typography>
+                        <Typography className="text-13 mt-2 line-clamp-2">
+                            Still Run: {filteredItem.still_run?.pass || 0}
+                        </Typography>
+                        <Typography className="text-13 mt-2 line-clamp-2">
+                            Preventive: {filteredItem.preventive?.pass || 0}
+                        </Typography>
+                    </div>
                 </div>
             </div>
 

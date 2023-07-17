@@ -27,7 +27,7 @@ function SummaryWo({ data }) {
                     className="text-7xl sm:text-8xl font-bold tracking-tight leading-none"
                     color={data.colorHg}
                 >
-                    {data.count.pass || 0}
+                    {data.count?.pass || 0}
                 </Typography>
                 <Typography
                     className="text-lg font-medium"
@@ -42,7 +42,7 @@ function SummaryWo({ data }) {
                         color="text.secondary"
                     >
                         <span className="truncate">{data.extra.name}</span>:
-                        <b className="px-8">{data.extra.count.pass || 0}</b>
+                        <b className="px-8">{data.extra.count?.pass || 0}</b>
                     </Typography>
                 ) : (
                     <Typography></Typography>
