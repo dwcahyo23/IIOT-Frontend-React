@@ -24,6 +24,7 @@ import VirtualizedData from './utils/VirtualizedData'
 import StatusColor from './utils/StatusColor'
 import axios from 'axios'
 import _ from 'lodash'
+import categoriesSlice from '../../modbusApp/store/categoriesSlice'
 
 const sendMsg = async (params) => {
     await axios({
@@ -141,22 +142,23 @@ function MaintenanceApReport() {
                     getValues('audit_request') === 'Y' ? '\nAudited by ' : ''
                 }${getValues('user_req2')}`
 
-                sendMsg({
-                    number: user.data.userNumber,
-                    msg: msg,
-                })
-
-                _.forEach(userMn, (val) => {
-                    if (
-                        val.displayName === 'Benyamin' ||
-                        val.displayName === 'Ahmad Suryadi' ||
-                        val.displayName === 'Achmad Maulana'
-                    ) {
-                        _.isNil(val.userNumber)
-                            ? ''
-                            : sendMsg({ number: val.userNumber, msg: msg })
-                    }
-                })
+                _.isNil(user.data.userNumber)
+                    ? ''
+                    : sendMsg({
+                          number: user.data.userNumber,
+                          msg: msg,
+                      })
+                // _.forEach(userMn, (val) => {
+                //     if (
+                //         val.displayName === 'Benyamin' ||
+                //         val.displayName === 'Ahmad Suryadi' ||
+                //         val.displayName === 'Achmad Maulana'
+                //     ) {
+                //         _.isNil(val.userNumber)
+                //             ? ''
+                //             : sendMsg({ number: val.userNumber, msg: msg })
+                //     }
+                // })
             }
         })
     }
@@ -199,8 +201,8 @@ function MaintenanceApReport() {
         return true
     }
 
-    const [audit_request, item_stock] = useWatch({
-        name: ['audit_request', 'item_stock'],
+    const [audit_request, item_stock, category_request] = useWatch({
+        name: ['audit_request', 'item_stock', 'category_request'],
         defaultValue: { audit_request: 'N', item_stock: '#0 ADD NEW ITEM' },
     })
     useEffect(() => {
@@ -215,7 +217,29 @@ function MaintenanceApReport() {
         item_stock === '#0 ADD NEW ITEM' || _.isUndefined(item_stock)
             ? setHidSparepart(false)
             : setHidSparepart(true)
-    }, [audit_request, item_stock, hidSparepart])
+
+        if (category_request === 'Emergency') {
+            setTimeout(() => {
+                setValue('date_request', dayjs().add(10, 'h'))
+            }, 500)
+        } else if (category_request === 'Flash') {
+            setTimeout(() => {
+                setValue('date_request', dayjs().add(3, 'd'))
+            }, 500)
+        } else if (category_request === 'Express') {
+            setTimeout(() => {
+                setValue('date_request', dayjs().add(7, 'd'))
+            }, 500)
+        } else if (category_request === 'Reguler') {
+            setTimeout(() => {
+                setValue('date_request', dayjs().add(14, 'd'))
+            }, 500)
+        } else if (category_request === 'Indent') {
+            setTimeout(() => {
+                setValue('date_request', dayjs().add(1, 'M'))
+            }, 500)
+        }
+    }, [audit_request, item_stock, hidSparepart, category_request])
 
     return (
         <div>
@@ -283,6 +307,7 @@ function MaintenanceApReport() {
                             )}
                         />
                     </Grid>
+
                     <Grid item xs={3}>
                         <Controller
                             name="mch_code"
