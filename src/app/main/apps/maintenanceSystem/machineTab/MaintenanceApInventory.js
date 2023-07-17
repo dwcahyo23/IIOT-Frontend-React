@@ -144,23 +144,23 @@ function MaintenanceApReport() {
                     getValues('audit_request') === 'Y' ? '\nAudited by ' : ''
                 }${getValues('user_req2')}`
 
-                _.isNil(user.data.userNumber)
-                    ? ''
-                    : sendMsg({
-                          number: user.data.userNumber,
-                          msg: msg,
-                      })
-                _.forEach(userMn, (val) => {
-                    if (
-                        val.displayName === 'Benyamin' ||
-                        val.displayName === 'Ahmad Suryadi' ||
-                        val.displayName === 'Achmad Maulana'
-                    ) {
-                        _.isNil(val.userNumber)
-                            ? ''
-                            : sendMsg({ number: val.userNumber, msg: msg })
-                    }
-                })
+                // _.isNil(user.data.userNumber)
+                //     ? ''
+                //     : sendMsg({
+                //           number: user.data.userNumber,
+                //           msg: msg,
+                //       })
+                // _.forEach(userMn, (val) => {
+                //     if (
+                //         val.displayName === 'Benyamin' ||
+                //         val.displayName === 'Ahmad Suryadi' ||
+                //         val.displayName === 'Achmad Maulana'
+                //     ) {
+                //         _.isNil(val.userNumber)
+                //             ? ''
+                //             : sendMsg({ number: val.userNumber, msg: msg })
+                //     }
+                // })
             }
         })
     }
