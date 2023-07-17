@@ -148,17 +148,17 @@ function MaintenanceApReport() {
                           number: user.data.userNumber,
                           msg: msg,
                       })
-                // _.forEach(userMn, (val) => {
-                //     if (
-                //         val.displayName === 'Benyamin' ||
-                //         val.displayName === 'Ahmad Suryadi' ||
-                //         val.displayName === 'Achmad Maulana'
-                //     ) {
-                //         _.isNil(val.userNumber)
-                //             ? ''
-                //             : sendMsg({ number: val.userNumber, msg: msg })
-                //     }
-                // })
+                _.forEach(userMn, (val) => {
+                    if (
+                        val.displayName === 'Benyamin' ||
+                        val.displayName === 'Ahmad Suryadi' ||
+                        val.displayName === 'Achmad Maulana'
+                    ) {
+                        _.isNil(val.userNumber)
+                            ? ''
+                            : sendMsg({ number: val.userNumber, msg: msg })
+                    }
+                })
             }
         })
     }
