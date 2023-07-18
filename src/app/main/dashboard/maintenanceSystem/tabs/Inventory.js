@@ -78,6 +78,13 @@ function Inventory() {
                             ? 'pass'
                             : 'fail'
                     ),
+                    request_mre_audit: _.countBy(items, (val) =>
+                        val.mre_request.length > 0 &&
+                        val.item_ready == 'Y' &&
+                        val.audit_request == 'Y'
+                            ? 'pass'
+                            : 'fail'
+                    ),
                     request_ready: _.countBy(items, (val) =>
                         val.mre_request.length > 0 &&
                         val.item_ready == 'Y' &&
@@ -85,11 +92,41 @@ function Inventory() {
                             ? 'pass'
                             : 'fail'
                     ),
+                    request_ready_audit: _.countBy(items, (val) =>
+                        val.mre_request.length > 0 &&
+                        val.item_ready == 'Y' &&
+                        val.audit_request == 'Y'
+                            ? 'pass'
+                            : 'fail'
+                    ),
                     data: _.filter(items, (val) => val),
                 }
             })
             .value()
-    console.log(filterSparepart)
+
+    const listItemMaulana =
+        sparepart &&
+        _.chain(sparepart)
+            .filter((val) => {
+                if (val.mch_com == 'GM1' && val.audit_request != 'C') {
+                    return val
+                }
+            })
+            .sortBy(['sheet_no'])
+            .groupBy((val) => dayjs(val.date_request).format('MMM'))
+            .mapValues((items) => {
+                return {
+                    data: _.filter(items, (val) => {
+                        if (
+                            val.audit_request == 'N' ||
+                            val.audit_request == 'Y'
+                        ) {
+                            return val
+                        }
+                    }),
+                }
+            })
+            .value()
 
     const container = {
         show: {
@@ -159,7 +196,7 @@ function Inventory() {
                         extra: {
                             name: 'Total Audit',
                             count: filterSparepart[dayjs().format('MMM')]
-                                ?.request_audit_Y,
+                                ?.request_mre_audit,
                         },
                     }}
                 />
@@ -169,7 +206,7 @@ function Inventory() {
                 <SummaryWo
                     data={{
                         count: filterSparepart[dayjs().format('MMM')]
-                            ?.request_mre,
+                            ?.request_ready,
                         title: 'Ready Sparepart',
                         name: 'MRE',
                         colorHg: colors.orange[400],
@@ -177,22 +214,21 @@ function Inventory() {
                         extra: {
                             name: 'Total Audit',
                             count: filterSparepart[dayjs().format('MMM')]
-                                ?.request_audit_Y,
+                                ?.request_ready_audit,
                         },
                     }}
                 />
             </motion.div>
 
-            {/* <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
+            <motion.div variants={item} className="sm:col-span-2 md:col-span-5">
                 <LastApUser
                     data={{
-                        listItemMonth:
-                            filterSparepart[dayjs().format('MMM')]?.data,
+                        listItemMonth: listItemMaulana,
                         user: 20,
                         leader: 'Inventory',
                     }}
                 />
-            </motion.div> */}
+            </motion.div>
         </motion.div>
     )
 }

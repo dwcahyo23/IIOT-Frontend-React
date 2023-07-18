@@ -21,6 +21,7 @@ import { selectApUser, selectApUserById } from '../../store/userSlice'
 import { Workbook } from 'exceljs'
 import { saveAs } from 'file-saver-es'
 import DownloadIcon from '@mui/icons-material/Download'
+import AutoSizer from 'react-virtualized-auto-sizer'
 
 function CustomToolbar({ props }) {
     const handleExportExcell = () => {
@@ -117,27 +118,60 @@ function LastApUser({ data }) {
         const { index, style } = props
         return (
             <ListItem key={index} style={style} component="div" disablePadding>
-                <ListItemButton
-                    component={Link}
-                    to={`/apps/maintenanceSystem/machines/${filteredItem?.data[index].mch_index?.uuid}`}
-                >
-                    <ListItemText
-                        primary={`${index + 1}. ${
-                            filteredItem?.data[index].sheet_no
-                        } | ${filteredItem?.data[index].mch_no}`}
-                    />
-                    <StatusColor id={filteredItem?.data[index].chk_mark} />
-                    <StatusColor id={filteredItem?.data[index].pri_no} />
-                </ListItemButton>
+                {data?.leader == 'Inventory' ? (
+                    <ListItemButton
+                        component={Link}
+                        to={`/apps/maintenanceSystem/machines/${filteredItem?.data[index].mch_index?.uuid}`}
+                    >
+                        <ListItemText>
+                            <Typography className="text-13 mt-2 line-clamp-2">
+                                {`${index + 1}. ${
+                                    filteredItem?.data[index].sheet_no
+                                }|${
+                                    _.isNull(
+                                        filteredItem?.data[index].item_stock
+                                    )
+                                        ? filteredItem?.data[index].item_name
+                                        : filteredItem?.data[index].item_stock
+                                }`}
+                            </Typography>
+                        </ListItemText>
+                        <StatusColor
+                            id={filteredItem?.data[index].audit_request}
+                        />
+                        {filteredItem?.data[index].mre_request.length > 0 && (
+                            <StatusColor id="MRE" />
+                        )}
+                        {filteredItem?.data[index].item_ready == 'Y' &&
+                            filteredItem?.data[index].audit_request == 'N' && (
+                                <StatusColor id="Ready" />
+                            )}
+                    </ListItemButton>
+                ) : (
+                    <ListItemButton
+                        component={Link}
+                        to={`/apps/maintenanceSystem/machines/${filteredItem?.data[index].mch_index?.uuid}`}
+                    >
+                        <ListItemText>
+                            <Typography className="text-13 mt-2 line-clamp-2">
+                                {`${index + 1}. ${
+                                    filteredItem?.data[index].sheet_no
+                                }|${filteredItem?.data[index].mch_no}`}
+                            </Typography>
+                        </ListItemText>
+                        <StatusColor id={filteredItem?.data[index].chk_mark} />
+                        <StatusColor id={filteredItem?.data[index].pri_no} />
+                    </ListItemButton>
+                )}
             </ListItem>
         )
     }
 
     return (
-        <Paper className="flex flex-col flex-auto p-24 shadow rounded-2xl overflow-hidden h-full">
+        <Paper className="flex flex-col flex-auto p-8 shadow rounded-2xl overflow-hidden h-full">
             <div className="flex flex-auto items-center min-w-0">
                 <div className="flex flex-col sm:flex-row items-start justify-between">
-                    <div className="w-full">
+                    <div className="w-full items-center">
                         <Avatar
                             className="flex-0 w-64 h-64"
                             alt="user photo"
@@ -187,15 +221,19 @@ function LastApUser({ data }) {
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-1 grid-flow-row gap-24 w-full mt-32 sm:mt-16">
                 <div className="flex flex-col flex-auto">
-                    <FixedSizeList
-                        height={300}
-                        width={430}
-                        itemCount={itemLength}
-                        itemSize={35}
-                        className="py-0 mt-8 divide-y"
-                    >
-                        {RowList}
-                    </FixedSizeList>
+                    <AutoSizer disableHeight>
+                        {({ width }) => (
+                            <FixedSizeList
+                                width={width}
+                                height={300}
+                                itemCount={itemLength}
+                                itemSize={40}
+                                className="py-0 mt-8 divide-y"
+                            >
+                                {RowList}
+                            </FixedSizeList>
+                        )}
+                    </AutoSizer>
                 </div>
             </div>
         </Paper>

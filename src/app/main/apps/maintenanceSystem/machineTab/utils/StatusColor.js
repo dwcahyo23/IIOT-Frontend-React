@@ -41,6 +41,24 @@ export const status = [
         icon: 'heroicons-outline:x',
     },
     {
+        id: 'C',
+        name: 'Cancel',
+        color: 'error',
+        icon: 'heroicons-outline:exclamation-circle',
+    },
+    {
+        id: 'MRE',
+        name: 'MRE',
+        color: 'warning',
+        icon: 'heroicons-outline:exclamation-circle',
+    },
+    {
+        id: 'Ready',
+        name: 'Ready',
+        color: 'warning',
+        icon: 'heroicons-outline:exclamation-circle',
+    },
+    {
         id: 'N/Y',
         name: 'NOT YET',
         color: 'error',

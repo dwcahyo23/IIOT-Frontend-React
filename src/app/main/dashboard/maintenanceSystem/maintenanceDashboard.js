@@ -44,7 +44,7 @@ function maintenanceDashboard(props) {
         <Root
             header={<MaintenanceDashboardHeader />}
             content={
-                <div className="w-full p-12 pt-16 sm:pt-24 lg:ltr:pr-0 lg:rtl:pl-0">
+                <div className="w-full p-12 pt-8 sm:pt-24 lg:ltr:pr-0 lg:rtl:pl-0">
                     <Tabs
                         value={tabValue}
                         onChange={handleChangeTab}
