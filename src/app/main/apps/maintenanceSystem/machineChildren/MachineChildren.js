@@ -70,6 +70,8 @@ function MachineChildren(props) {
     const [tabValue, setTabValue] = useState('1')
     const [filter, setFilter] = useState('')
     const [noMachineChildren, setNoMachineChildren] = useState(false)
+    const [foHeader, setFoHeader] = useState('')
+    const [foSubHeader, setFoSubHeader] = useState('')
 
     const methods = useForm({
         mode: 'onChange',
@@ -117,6 +119,25 @@ function MachineChildren(props) {
 
     function handleTabChange(ev, val) {
         setTabValue(val)
+        if (val == 3) {
+            setFoHeader('Work Order Maintenance')
+            setFoSubHeader('FO-03-04-01')
+        } else if (val == 1) {
+            setFoHeader('Machine Info')
+            setFoSubHeader('')
+        } else if (val == 2) {
+            setFoHeader('Monitoring Live Time Sparepart')
+            setFoSubHeader('')
+        } else if (val == 4) {
+            setFoHeader('Report Maintenance')
+            setFoSubHeader('FO-03-03-07')
+        } else if (val == 5) {
+            setFoHeader('Request Sparepart')
+            setFoSubHeader('IK-03-03-11')
+        } else {
+            setFoHeader('')
+            setFoSubHeader('')
+        }
     }
 
     if (noMachineChildren) {
@@ -152,7 +173,11 @@ function MachineChildren(props) {
     return (
         <FormProvider {...methods}>
             <FusePageCarded
-                header={<MachineChildrenHeader />}
+                header={
+                    <MachineChildrenHeader
+                        data={{ header: foHeader, subHeader: foSubHeader }}
+                    />
+                }
                 content={
                     <>
                         <TabContext value={tabValue}>
@@ -225,7 +250,8 @@ function MachineChildren(props) {
                                         }
                                         value="5"
                                     />
-                                    <Tab label="Genba" value="6" />
+                                    <Tab label="AP-History" value="6" />
+                                    <Tab label="Genba" value="7" />
                                 </TabList>
                             </Box>
                             <TabPanel value="1">
@@ -266,6 +292,12 @@ function MachineChildren(props) {
                                 </div>
                             </TabPanel>
                             <TabPanel value="6">
+                                <div style={{ width: '100%', height: 500 }}>
+                                    {/* <MaintenanceGenba /> */}
+                                </div>
+                            </TabPanel>
+
+                            <TabPanel value="7">
                                 <div style={{ width: '100%', height: 500 }}>
                                     <MaintenanceGenba />
                                 </div>

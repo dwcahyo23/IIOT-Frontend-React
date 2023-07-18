@@ -8,7 +8,7 @@ import FuseSvgIcon from '@fuse/core/FuseSvgIcon'
 import { showMessage } from 'app/store/fuse/messageSlice'
 import { saveMaintenanceSystem } from '../store/machineChildren/machineChildrenSlice'
 
-function MachineChildrenHeader(props) {
+function MachineChildrenHeader({ data }) {
     const dispatch = useDispatch()
     const methods = useFormContext()
     const { formState, watch, getValues } = methods
@@ -44,6 +44,20 @@ function MachineChildrenHeader(props) {
                         <span className="flex mx-4 font-medium">Back</span>
                     </Typography>
                 </motion.div>
+                <div className="flex items-center max-w-full">
+                    <motion.div
+                        className="flex flex-col items-center sm:items-start min-w-0 mx-8 sm:mx-16"
+                        initial={{ x: -20 }}
+                        animate={{ x: 0, transition: { delay: 0.3 } }}
+                    >
+                        <Typography className="text-16 sm:text-20 truncate font-semibold">
+                            {data?.header || ''}
+                        </Typography>
+                        <Typography variant="caption" className="font-medium">
+                            {data?.subHeader || ''}
+                        </Typography>
+                    </motion.div>
+                </div>
             </div>
             <div className="flex items-center max-w-full">
                 <motion.div
@@ -52,7 +66,7 @@ function MachineChildrenHeader(props) {
                     animate={{ x: 0, transition: { delay: 0.3 } }}
                 >
                     <Typography className="text-16 sm:text-20 truncate font-semibold">
-                        {code || 'New'} {name || ''}
+                        {code || ''} {name || ''}
                     </Typography>
                 </motion.div>
             </div>

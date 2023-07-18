@@ -38,7 +38,7 @@ const navigationConfig = [
         children: [
             {
                 id: 'apps.maintenanceSystem',
-                title: 'Maintenance',
+                title: 'Maintenance Machine',
                 type: 'item',
                 icon: 'heroicons-outline:desktop-computer',
                 auth: authRoles.admin,
