@@ -103,7 +103,7 @@ const columns = [
     },
 ]
 
-function MaintenanceApReport() {
+function MaintenanceApReport({ data }) {
     const dispatch = useDispatch()
     const methods = useFormContext()
     const user = useSelector(selectUser)
@@ -598,7 +598,11 @@ function MaintenanceApReport() {
                 }}
             >
                 <TableIndex
-                    params={{ row: request, columns: columns }}
+                    params={{
+                        row: request,
+                        columns: columns,
+                        filter: data?.filter,
+                    }}
                     tableIndex={tableIndex}
                 />
             </Box>

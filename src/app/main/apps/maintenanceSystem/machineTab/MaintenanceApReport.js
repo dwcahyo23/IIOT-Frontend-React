@@ -16,7 +16,7 @@ import { selectUser } from 'app/store/userSlice'
 import StatusColor from './utils/StatusColor'
 import axios from 'axios'
 
-function MaintenanceApReport() {
+function MaintenanceApReport({ data }) {
     const dispatch = useDispatch()
 
     const user = useSelector(selectUser)
@@ -506,6 +506,7 @@ function MaintenanceApReport() {
                         row: fields,
                         columns: columns,
                         id: fields.sheet_no,
+                        filter: data?.filter,
                     }}
                     tableIndex={tableIndex}
                 />

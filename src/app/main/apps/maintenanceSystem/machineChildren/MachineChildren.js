@@ -68,7 +68,9 @@ function MachineChildren(props) {
     const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'))
     const routeParams = useParams()
     const [tabValue, setTabValue] = useState('1')
+    const [filter, setFilter] = useState('')
     const [noMachineChildren, setNoMachineChildren] = useState(false)
+
     const methods = useForm({
         mode: 'onChange',
         defaultValues: {},
@@ -83,16 +85,16 @@ function MachineChildren(props) {
     useDeepCompareEffect(() => {
         function updateMachineChildrenState() {
             const { uuid } = routeParams
-            if (uuid === 'new') {
-                // dispatch(newMachineChildren())
-            } else {
-                dispatch(getMaintenanceSystem(uuid)).then((action) => {
-                    dispatch(getMachineStock())
-                    if (!action.payload) {
-                        setNoMachineChildren(true)
-                    }
-                })
-            }
+            dispatch(getMaintenanceSystem(uuid)).then((action) => {
+                dispatch(getMachineStock())
+                if (routeParams?.sheet_no) {
+                    setTabValue('3')
+                    setFilter(routeParams.sheet_no)
+                }
+                if (!action.payload) {
+                    setNoMachineChildren(true)
+                }
+            })
         }
         updateMachineChildrenState()
     }, [dispatch, routeParams])
@@ -233,23 +235,34 @@ function MachineChildren(props) {
                             </TabPanel>
                             <TabPanel value="2">
                                 <div style={{ width: '100%', height: 500 }}>
-                                    {' '}
                                     <MaintenanceSparepart />
                                 </div>
                             </TabPanel>
                             <TabPanel value="3">
                                 <div style={{ width: '100%', height: 500 }}>
-                                    <MaintenanceApsheet />
+                                    <MaintenanceApsheet
+                                        data={{
+                                            filter: filter,
+                                        }}
+                                    />
                                 </div>
                             </TabPanel>
                             <TabPanel value="4">
                                 <div style={{ width: '100%', height: 500 }}>
-                                    <MaintenanceApReport />
+                                    <MaintenanceApReport
+                                        data={{
+                                            filter: filter,
+                                        }}
+                                    />
                                 </div>
                             </TabPanel>
                             <TabPanel value="5">
                                 <div style={{ width: '100%', height: 500 }}>
-                                    <MaintenanceApInventory />
+                                    <MaintenanceApInventory
+                                        data={{
+                                            filter: filter,
+                                        }}
+                                    />
                                 </div>
                             </TabPanel>
                             <TabPanel value="6">

@@ -1,10 +1,11 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import {
     DataGrid,
     GridToolbarContainer,
     GridToolbarExportContainer,
     GridCsvExportMenuItem,
+    GridToolbarQuickFilter,
 } from '@mui/x-data-grid'
 import { Button } from '@mui/material'
 import WhatsAppIcon from '@mui/icons-material/WhatsApp'
@@ -153,6 +154,7 @@ function CustomToolbar(props) {
 
     return (
         <GridToolbarContainer {...props}>
+            <GridToolbarQuickFilter />
             <Button
                 color="primary"
                 startIcon={<DownloadIcon />}
@@ -227,6 +229,14 @@ function TableIndex({ params, tableIndex }) {
     if (!params) {
         return null
     }
+    const [filter, setFilter] = useState('')
+
+    useEffect(() => {
+        if (params.filter) {
+            setFilter(params.filter)
+        }
+    }, [params])
+
     return (
         <StyledDataGrid
             rows={params.row}
@@ -239,6 +249,18 @@ function TableIndex({ params, tableIndex }) {
             slots={{ toolbar: CustomToolbar }}
             slotProps={{ toolbar: { rows, column } }}
             autoPageSize
+            filterModel={{
+                items: [],
+                quickFilterValues: [filter],
+            }}
+            // initialState={{
+            //     filter: {
+            //         filterModel: {
+            //             items: [],
+            //             quickFilterValues: [filter],
+            //         },
+            //     },
+            // }}
         />
     )
 }

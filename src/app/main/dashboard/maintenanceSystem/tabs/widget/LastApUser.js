@@ -121,7 +121,7 @@ function LastApUser({ data }) {
                 {data?.leader == 'Inventory' ? (
                     <ListItemButton
                         component={Link}
-                        to={`/apps/maintenanceSystem/machines/${filteredItem?.data[index].mch_index?.uuid}`}
+                        to={`/apps/maintenanceSystem/machines/${filteredItem?.data[index].mch_index?.uuid}/${filteredItem?.data[index].sheet_no}`}
                     >
                         <ListItemText>
                             <Typography className="text-13 mt-2 line-clamp-2">
@@ -150,7 +150,7 @@ function LastApUser({ data }) {
                 ) : (
                     <ListItemButton
                         component={Link}
-                        to={`/apps/maintenanceSystem/machines/${filteredItem?.data[index].mch_index?.uuid}`}
+                        to={`/apps/maintenanceSystem/machines/${filteredItem?.data[index].mch_index?.uuid}/${filteredItem?.data[index].sheet_no}`}
                     >
                         <ListItemText>
                             <Typography className="text-13 mt-2 line-clamp-2">

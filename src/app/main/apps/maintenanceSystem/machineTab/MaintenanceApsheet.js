@@ -5,7 +5,7 @@ import { useFormContext, useFieldArray } from 'react-hook-form'
 import TableIndex from './TableIndex'
 import StatusColor from './utils/StatusColor'
 
-function MaintenanceApsheet() {
+function MaintenanceApsheet({ data }) {
     const methods = useFormContext()
     const { control, watch } = methods
     const { fields, remove, append } = useFieldArray({
@@ -85,7 +85,12 @@ function MaintenanceApsheet() {
             }}
         >
             <TableIndex
-                params={{ row: fields, columns: columns, id: fields.sheet_no }}
+                params={{
+                    row: fields,
+                    columns: columns,
+                    id: fields.sheet_no,
+                    filter: data?.filter,
+                }}
                 tableIndex={tableIndex}
             />
         </Box>

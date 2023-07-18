@@ -133,7 +133,7 @@ function MaintenanceMachine() {
                 </Grid>
                 <Grid item xs={4}>
                     <Controller
-                        name="mch_maker"
+                        name="mch_hp"
                         defaultValue=""
                         control={control}
                         render={({ field }) => (
@@ -143,9 +143,9 @@ function MaintenanceMachine() {
                                 error={!!errors.mch_maker}
                                 required
                                 helperText={errors?.mch_maker?.message}
-                                label="Machine maker"
+                                label="Machine Power HP"
                                 autoFocus
-                                id="mch_maker"
+                                id="mch_hp"
                                 variant="outlined"
                                 fullWidth
                                 InputProps={{

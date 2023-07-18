@@ -29,6 +29,11 @@ const MaintenanceSystemConfig = {
                     path: 'machines/:uuid',
                     element: <MachineChild />,
                 },
+
+                {
+                    path: 'machines/:uuid/:sheet_no',
+                    element: <MachineChild />,
+                },
             ],
         },
     ],
