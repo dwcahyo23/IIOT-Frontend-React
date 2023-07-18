@@ -19,7 +19,10 @@ import {
     saveMaintenanceSystemRequest,
 } from '../store/machineChildren/machineChildrenSlice'
 import { selectUser } from 'app/store/userSlice'
-import { selectStock } from '../store/machineChildren/machineStock'
+import {
+    getMachineStock,
+    selectStock,
+} from '../store/machineChildren/machineStock'
 import VirtualizedData from './utils/VirtualizedData'
 import StatusColor from './utils/StatusColor'
 import axios from 'axios'
@@ -123,26 +126,27 @@ function MaintenanceApReport() {
         dispatch(saveMaintenanceSystemRequest(getValues())).then((action) => {
             if (action.payload) {
                 dispatch(getMaintenanceSystem(action.payload.uuid))
+                dispatch(getMachineStock())
                 dispatch(
                     showMessage({ message: 'Data has been saved successfully' })
                 )
-                let msg = `*AP Request Maintenance*\n\n*Sheet:* ${getValues(
-                    'id_request'
-                )} | ${getValues('category_request')}\n*Target:* ${getValues(
-                    'date_request'
-                )}\n*Sparepart:* ${getValues(
-                    'item_stock'
-                )}\n*Remarks:* ${getValues('item_name')}\n*Qty:* ${getValues(
-                    'item_qty'
-                )}${getValues('item_uom')}\n*Machine:* ${getValues(
-                    'mch_code'
-                )} ${getValues('mch_name')}\n*Com:* ${getValues(
-                    'mch_com'
-                )}\n*User:* ${getValues('user_req1')}\n*MRE:* ${getValues(
-                    'mre_request'
-                )}\n*Item Ready:* ${getValues('item_ready')}${
-                    getValues('audit_request') === 'Y' ? '\nAudited by ' : ''
-                }${getValues('user_req2')}`
+                // let msg = `*AP Request Maintenance*\n\n*Sheet:* ${getValues(
+                //     'id_request'
+                // )} | ${getValues('category_request')}\n*Target:* ${getValues(
+                //     'date_request'
+                // )}\n*Sparepart:* ${getValues(
+                //     'item_stock'
+                // )}\n*Remarks:* ${getValues('item_name')}\n*Qty:* ${getValues(
+                //     'item_qty'
+                // )}${getValues('item_uom')}\n*Machine:* ${getValues(
+                //     'mch_code'
+                // )} ${getValues('mch_name')}\n*Com:* ${getValues(
+                //     'mch_com'
+                // )}\n*User:* ${getValues('user_req1')}\n*MRE:* ${getValues(
+                //     'mre_request'
+                // )}\n*Item Ready:* ${getValues('item_ready')}${
+                //     getValues('audit_request') === 'Y' ? '\nAudited by ' : ''
+                // }${getValues('user_req2')}`
 
                 // _.isNil(user.data.userNumber)
                 //     ? ''

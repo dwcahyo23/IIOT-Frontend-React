@@ -124,7 +124,7 @@ function LastApUser({ data }) {
                     <ListItemText
                         primary={`${index + 1}. ${
                             filteredItem?.data[index].sheet_no
-                        }`}
+                        } | ${filteredItem?.data[index].mch_no}`}
                     />
                     <StatusColor id={filteredItem?.data[index].chk_mark} />
                     <StatusColor id={filteredItem?.data[index].pri_no} />
@@ -189,7 +189,7 @@ function LastApUser({ data }) {
                 <div className="flex flex-col flex-auto">
                     <FixedSizeList
                         height={300}
-                        width={350}
+                        width={430}
                         itemCount={itemLength}
                         itemSize={35}
                         className="py-0 mt-8 divide-y"

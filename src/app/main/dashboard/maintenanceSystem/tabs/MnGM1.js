@@ -3,6 +3,7 @@ import _, { result } from 'lodash'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectAp } from '../store/apSlice'
+import { selectApReq } from '../store/mnReqSlice'
 import { colors } from '@mui/material'
 import dayjs from 'dayjs'
 
@@ -259,7 +260,6 @@ function MnGM1() {
                 }
             })
             .value()
-    console.log(listItemSutaryo)
 
     const listItemEko =
         data &&
@@ -444,15 +444,15 @@ function MnGM1() {
                 />
             </motion.div>
 
-            <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
+            {/* <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
                 <LastApUser
                     data={{
                         listItemMonth: listItemSutaryo,
                         user: 16,
-                        leader: 'TL MC - CNC - HB',
+                        leader: 'TL Utility',
                     }}
                 />
-            </motion.div>
+            </motion.div> */}
         </motion.div>
     )
 }

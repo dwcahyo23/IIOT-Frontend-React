@@ -11,6 +11,7 @@ import MaintenanceDashboardHeader from './maintenanceDashboardHeader'
 import reducer from './store'
 import { getApSlice, selectAp } from './store/apSlice'
 import { getUserSlice } from './store/userSlice'
+import { getMnReqSlice } from './store/mnReqSlice'
 import MnGM1 from './tabs/MnGM1'
 import MnGM2 from './tabs/MnGM2'
 import MnGM3 from './tabs/MnGM3'
@@ -32,6 +33,7 @@ function maintenanceDashboard(props) {
     useEffect(() => {
         dispatch(getApSlice())
         dispatch(getUserSlice())
+        dispatch(getMnReqSlice())
     }, [dispatch])
 
     function handleChangeTab(event, value) {
