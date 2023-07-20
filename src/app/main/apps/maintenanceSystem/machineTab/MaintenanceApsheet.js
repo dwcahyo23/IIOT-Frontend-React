@@ -58,6 +58,17 @@ function MaintenanceApsheet({ data }) {
                 dayjs(params.value).format('DD/MM/YYYY HH:mm'),
         },
         {
+            field: 'm_ymd',
+            headerName: 'Target',
+            headerClassName: 'super-app-theme--header',
+            headerAlign: 'center',
+            width: 150,
+            valueFormatter: (params) =>
+                params.value
+                    ? dayjs(params.value).format('DD/MM/YYYY HH:mm')
+                    : '',
+        },
+        {
             field: 'memo',
             headerName: 'Problem',
             flex: 1,
