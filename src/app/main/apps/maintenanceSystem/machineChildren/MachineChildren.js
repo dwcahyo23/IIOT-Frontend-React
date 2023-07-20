@@ -121,22 +121,22 @@ function MachineChildren(props) {
     function handleTabChange(ev, val) {
         setTabValue(val)
         if (val == 3) {
-            setFoHeader('Work Order Maintenance')
+            setFoHeader('Maintenance Work Order')
             setFoSubHeader('FO-03-04-01')
         } else if (val == 1) {
-            setFoHeader('Machine Info')
+            setFoHeader('Info Mesin')
             setFoSubHeader('')
         } else if (val == 2) {
-            setFoHeader('Monitoring Live Time Sparepart')
+            setFoHeader('Monitoring Live Time Spare Part')
             setFoSubHeader('')
         } else if (val == 4) {
-            setFoHeader('Report Maintenance')
+            setFoHeader('Laporan Maintenance')
             setFoSubHeader('FO-03-03-07')
         } else if (val == 5) {
-            setFoHeader('Request Sparepart')
+            setFoHeader('Penanganan Spare Part Maintenance')
             setFoSubHeader('IK-03-03-11')
         } else if (val == 6) {
-            setFoHeader('History Machine')
+            setFoHeader('Riwayat Mesin')
             setFoSubHeader('FO-03-04-03')
         } else {
             setFoHeader('')

@@ -153,7 +153,7 @@ function Machines() {
                                 animate={{ x: 0, transition: { delay: 0.3 } }}
                             >
                                 <Typography className="text-16 sm:text-20 truncate font-semibold">
-                                    Machine List
+                                    Daftar Mesin
                                 </Typography>
                                 <Typography
                                     variant="caption"
