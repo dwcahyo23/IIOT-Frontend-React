@@ -4,6 +4,7 @@ import dayjs from 'dayjs'
 import { useFormContext, useFieldArray } from 'react-hook-form'
 import TableIndex from './TableIndex'
 import StatusColor from './utils/StatusColor'
+import _ from 'lodash'
 
 function MainteannceApHistory({ data }) {
     const methods = useFormContext()
@@ -23,7 +24,18 @@ function MainteannceApHistory({ data }) {
         control,
     })
 
-    // console.log(fields)
+    const joinData = _.chain(report)
+        .filter({ audit_report: 'Y' })
+        .map((val) => {
+            return {
+                ...val,
+                sheet: _.find(mow, { sheet_no: val.sheet_no }),
+                request: _.filter(request, { sheet_no: val.sheet_no }),
+            }
+        })
+        .value()
+
+    console.log(joinData)
 
     const columns = [
         {
@@ -34,52 +46,70 @@ function MainteannceApHistory({ data }) {
             width: 120,
         },
         {
-            field: 'mch_no',
+            field: 'mch_code',
             headerName: 'Machine',
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
             width: 90,
         },
         {
-            field: 'pri_no',
-            headerName: 'Status',
+            field: 'sheet.ymd',
+            headerName: 'Date',
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
             width: 120,
-            align: 'center',
-            renderCell: (params) => <StatusColor id={params.value} />,
-        },
-        {
-            field: 'chk_mark',
-            headerName: 'Audit',
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-            width: 90,
-            align: 'center',
-            renderCell: (params) => <StatusColor id={params.value} />,
-        },
-        {
-            field: 's_ymd',
-            headerName: 'Stop',
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-            width: 150,
+            valueGetter: (params) => params.row.sheet?.ymd,
             valueFormatter: (params) =>
-                dayjs(params.value).format('DD/MM/YYYY HH:mm'),
+                dayjs(params.value).format('DD/MM/YY HH:mm'),
         },
         {
-            field: 'memo',
+            field: 'sheet.memo',
             headerName: 'Problem',
             flex: 1,
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
+            valueGetter: (params) => params.row.sheet?.memo,
         },
         {
-            field: 's_memo',
+            field: 'sheet.s_memo',
             headerName: 'Remarks',
             flex: 1,
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
+            valueGetter: (params) => params.row.sheet?.s_memo,
+        },
+        {
+            field: 'chronological',
+            headerName: 'Chronological',
+            flex: 1,
+            headerClassName: 'super-app-theme--header',
+            headerAlign: 'center',
+        },
+        {
+            field: 'corrective',
+            headerName: 'Corrective',
+            flex: 1,
+            headerClassName: 'super-app-theme--header',
+            headerAlign: 'center',
+        },
+        {
+            field: 'prevention',
+            headerName: 'Prevention',
+            flex: 1,
+            headerClassName: 'super-app-theme--header',
+            headerAlign: 'center',
+        },
+        {
+            field: 'request',
+            headerName: 'Sparepart',
+            flex: 1,
+            headerClassName: 'super-app-theme--header',
+            headerAlign: 'center',
+            valueGetter: (params) =>
+                _.map(
+                    params.row.request,
+                    (val) => val.item_name || val.item_stock
+                ),
         },
     ]
 
@@ -96,9 +126,9 @@ function MainteannceApHistory({ data }) {
         >
             <TableIndex
                 params={{
-                    row: fields,
+                    row: joinData,
                     columns: columns,
-                    id: fields.sheet_no,
+                    id: joinData.sheet_no,
                     filter: data?.filter,
                 }}
                 tableIndex={tableIndex}

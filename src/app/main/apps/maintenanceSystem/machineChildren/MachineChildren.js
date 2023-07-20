@@ -39,6 +39,7 @@ import MaintenanceApReport from '../machineTab/MaintenanceApReport'
 import MaintenanceApInventory from '../machineTab/MaintenanceApInventory'
 import MaintenanceGenba from '../machineTab/MaintenanceGenba'
 import MaintenanceSparepart from '../machineTab/MaintenanceSparepart'
+import MainteannceApHistory from '../machineTab/MaintenanceApHistory'
 
 const schema = yup.object().shape({
     id_request: yup
@@ -134,6 +135,9 @@ function MachineChildren(props) {
         } else if (val == 5) {
             setFoHeader('Request Sparepart')
             setFoSubHeader('IK-03-03-11')
+        } else if (val == 6) {
+            setFoHeader('History Machine')
+            setFoSubHeader('FO-03-04-03')
         } else {
             setFoHeader('')
             setFoSubHeader('')
@@ -293,7 +297,11 @@ function MachineChildren(props) {
                             </TabPanel>
                             <TabPanel value="6">
                                 <div style={{ width: '100%', height: 500 }}>
-                                    {/* <MaintenanceGenba /> */}
+                                    <MainteannceApHistory
+                                        data={{
+                                            filter: filter,
+                                        }}
+                                    />
                                 </div>
                             </TabPanel>
 

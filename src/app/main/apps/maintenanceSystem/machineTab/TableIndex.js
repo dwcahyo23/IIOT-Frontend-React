@@ -63,31 +63,32 @@ function customCheckbox(theme) {
 
 const csvOptions = { delimiter: ';' }
 
-const sendMsgGroup = async (params) => {
-    await axios({
-        method: 'post',
-        url: 'http://192.168.192.7:5010/send-message-group',
-        data: {
-            name: params.name,
-            message: params.msg,
-        },
-    })
-}
+// const sendMsgGroup = async (params) => {
+//     await axios({
+//         method: 'post',
+//         url: 'http://192.168.192.7:5010/send-message-group',
+//         data: {
+//             name: params.name,
+//             message: params.msg,
+//         },
+//     })
+// }
 
-const sendMsg = async (params) => {
-    await axios({
-        method: 'post',
-        url: 'http://192.168.192.7:5010/send-message',
-        data: {
-            number: params.number,
-            message: params.msg,
-        },
-    })
-}
+// const sendMsg = async (params) => {
+//     await axios({
+//         method: 'post',
+//         url: 'http://192.168.192.7:5010/send-message',
+//         data: {
+//             number: params.number,
+//             message: params.msg,
+//         },
+//     })
+// }
 
 function CustomToolbar(props) {
     const handleExportExcell = () => {
         const { rows, column } = props
+        console.log({ ...rows })
         const workbook = new Workbook()
         const worksheet = workbook.addWorksheet('Main sheet')
         try {
