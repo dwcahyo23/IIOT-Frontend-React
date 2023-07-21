@@ -41,8 +41,24 @@ function MnGM1SubHeaderMachinery() {
         data &&
         _.chain(data)
             .filter((val) => {
-                if (val.chk_mark != 'C' && val.com_no == '01') {
-                    return val
+                if (
+                    _.includes(selectDep_no, val.dep_no) &&
+                    val.com_no == '01' &&
+                    val.chk_mark != 'C'
+                ) {
+                    if (
+                        _.includes(val.mch_no, 'GS') ||
+                        _.includes(val.mch_no, 'HS') ||
+                        _.includes(val.mch_no, 'CR') ||
+                        _.includes(val.mch_no, 'AD') ||
+                        _.includes(val.mch_no, 'KM') ||
+                        _.includes(val.mch_no, 'LS') ||
+                        val.mch_no == '-' ||
+                        _.isNull(val.mch_no)
+                    ) {
+                    } else {
+                        return val
+                    }
                 }
             })
             .sortBy(['s_ymd'])
@@ -50,28 +66,13 @@ function MnGM1SubHeaderMachinery() {
             .mapValues((items) => {
                 return {
                     breakdown: _.countBy(items, (val) =>
-                        val.pri_no == '01' &&
-                        _.includes(selectDep_no, val.dep_no) &&
-                        val.mch_no != '-' &&
-                        !_.isNull(val.mch_no)
-                            ? 'pass'
-                            : 'fail'
+                        val.pri_no == '01' ? 'pass' : 'fail'
                     ),
                     still_run: _.countBy(items, (val) =>
-                        val.pri_no == '02' &&
-                        _.includes(selectDep_no, val.dep_no) &&
-                        val.mch_no != '-' &&
-                        !_.isNull(val.mch_no)
-                            ? 'pass'
-                            : 'fail'
+                        val.pri_no == '02' ? 'pass' : 'fail'
                     ),
                     preventive: _.countBy(items, (val) =>
-                        val.pri_no == '03' &&
-                        _.includes(selectDep_no, val.dep_no) &&
-                        val.mch_no != '-' &&
-                        !_.isNull(val.mch_no)
-                            ? 'pass'
-                            : 'fail'
+                        val.pri_no == '03' ? 'pass' : 'fail'
                     ),
                     workshop: _.countBy(items, (val) =>
                         val.pri_no == '04' ? 'pass' : 'fail'
@@ -83,29 +84,17 @@ function MnGM1SubHeaderMachinery() {
                         val.chk_mark == 'Y' ? 'pass' : 'fail'
                     ),
                     breakdown_audit: _.countBy(items, (val) =>
-                        val.pri_no == '01' &&
-                        val.chk_mark == 'Y' &&
-                        _.includes(selectDep_no, val.dep_no) &&
-                        val.mch_no != '-' &&
-                        !_.isNull(val.mch_no)
+                        val.pri_no == '01' && val.chk_mark == 'Y'
                             ? 'pass'
                             : 'fail'
                     ),
                     still_run_audit: _.countBy(items, (val) =>
-                        val.pri_no == '02' &&
-                        val.chk_mark == 'Y' &&
-                        _.includes(selectDep_no, val.dep_no) &&
-                        val.mch_no != '-' &&
-                        !_.isNull(val.mch_no)
+                        val.pri_no == '02' && val.chk_mark == 'Y'
                             ? 'pass'
                             : 'fail'
                     ),
                     preventive_audit: _.countBy(items, (val) =>
-                        val.pri_no == '03' &&
-                        val.chk_mark == 'Y' &&
-                        _.includes(selectDep_no, val.dep_no) &&
-                        val.mch_no != '-' &&
-                        !_.isNull(val.mch_no)
+                        val.pri_no == '03' && val.chk_mark == 'Y'
                             ? 'pass'
                             : 'fail'
                     ),
@@ -125,11 +114,21 @@ function MnGM1SubHeaderMachinery() {
                 if (
                     _.includes(selectDep_no, val.dep_no) &&
                     val.com_no == '01' &&
-                    val.mch_no != '-' &&
-                    !_.isNull(val.mch_no) &&
                     val.chk_mark != 'C'
                 ) {
-                    return val
+                    if (
+                        _.includes(val.mch_no, 'GS') ||
+                        _.includes(val.mch_no, 'HS') ||
+                        _.includes(val.mch_no, 'CR') ||
+                        _.includes(val.mch_no, 'AD') ||
+                        _.includes(val.mch_no, 'KM') ||
+                        _.includes(val.mch_no, 'LS') ||
+                        val.mch_no == '-' ||
+                        _.isNull(val.mch_no)
+                    ) {
+                    } else {
+                        return val
+                    }
                 }
             })
             .groupBy((val) => dayjs(val.ymd).format('MMMM'))
