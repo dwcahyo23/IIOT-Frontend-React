@@ -107,6 +107,24 @@ function ChartWo({ data }) {
                 },
             },
         },
+        annotations: {
+            yaxis: [
+                {
+                    y: 100,
+                    borderColor: '#00ce06',
+                    borderWidth: 2,
+                    strokeDashArray: 0,
+                    label: {
+                        borderColor: '#00ce06',
+                        style: {
+                            color: '#fff',
+                            background: '#00ce06',
+                        },
+                        text: 'KPI 100',
+                    },
+                },
+            ],
+        },
     }
 
     if (awaitRender) {
