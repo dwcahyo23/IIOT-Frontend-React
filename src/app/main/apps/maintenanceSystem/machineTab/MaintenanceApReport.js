@@ -145,6 +145,14 @@ function MaintenanceApReport({ data }) {
             headerAlign: 'center',
         },
         {
+            field: 'analyzed',
+            headerName: 'Analyzed',
+            flex: 1,
+            headerClassName: 'super-app-theme--header',
+            headerAlign: 'center',
+        },
+
+        {
             field: 'corrective',
             headerName: 'Corrective',
             flex: 1,
@@ -174,6 +182,7 @@ function MaintenanceApReport({ data }) {
         setValue('kind', data.row.kind, { shouldDirty: true })
         setValue('audit_report', data.row.audit_report, { shouldDirty: true })
         setValue('chronological', data.row.chronological, { shouldDirty: true })
+        setValue('analyzed', data.row.analyzed, { shouldDirty: true })
         setValue('corrective', data.row.corrective, { shouldDirty: true })
         setValue('prevention', data.row.prevention, { shouldDirty: true })
         setValue('user_rep2', data.row.user_rep2, { shouldDirty: true })
@@ -297,7 +306,28 @@ function MaintenanceApReport({ data }) {
                     </Grid>
                 </Grid>
                 <Grid container spacing={2}>
-                    <Grid item xs={4}>
+                    <Grid item xs={3}>
+                        <Controller
+                            name="analyzed"
+                            defaultValue=""
+                            control={control}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    className="mt-8 mb-16"
+                                    error={!!errors.analyzed}
+                                    helperText={errors?.analyzed?.message}
+                                    label="Analyze"
+                                    id="analyzed"
+                                    variant="outlined"
+                                    fullWidth
+                                    multiline
+                                    rows={4}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={3}>
                         <Controller
                             name="chronological"
                             defaultValue=""
@@ -318,7 +348,7 @@ function MaintenanceApReport({ data }) {
                             )}
                         />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={3}>
                         <Controller
                             name="corrective"
                             defaultValue=""
@@ -339,7 +369,7 @@ function MaintenanceApReport({ data }) {
                             )}
                         />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={3}>
                         <Controller
                             name="prevention"
                             defaultValue=""
