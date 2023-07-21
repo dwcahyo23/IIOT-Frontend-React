@@ -9,6 +9,7 @@ import {
     Tabs,
     Button,
     Avatar,
+    Badge,
 } from '@mui/material'
 import { memo, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
@@ -101,6 +102,7 @@ function LastApUser({ data }) {
     const currentRange = Object.keys(listItem)[tabValue]
     const [filteredItem, setFilteredItem] = useState([])
     const [itemLength, setItemLength] = useState(0)
+    const [countNaudit, setCountNaudt] = useState(0)
 
     useEffect(() => {
         if (data && listItem[currentRange]) {
@@ -110,7 +112,7 @@ function LastApUser({ data }) {
     })
 
     useEffect(() => {
-        // console.log(filteredItem)
+        console.log(listItem)
         // console.log(lastTab)
     }, [itemLength, filteredItem, lastTab])
 
@@ -168,7 +170,7 @@ function LastApUser({ data }) {
     }
 
     return (
-        <Paper className="flex flex-col flex-auto p-8 shadow rounded-2xl overflow-hidden h-full">
+        <Paper className="flex flex-col flex-auto p-10 shadow rounded-2xl overflow-hidden h-full">
             <div className="flex flex-auto items-center min-w-0">
                 <div className="flex flex-col sm:flex-row items-start justify-between">
                     <div className="w-full items-center">
@@ -204,28 +206,65 @@ function LastApUser({ data }) {
                 {data && <CustomToolbar props={{ rows: filteredItem?.data }} />}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-1 grid-flow-row gap-24 w-full">
-                <Tabs
-                    value={tabValue}
-                    onChange={(ev, value) => setTabValue(value)}
-                    indicatorColor="secondary"
-                    textColor="inherit"
-                    variant="scrollable"
-                    scrollButtons="auto"
-                    classes={{ root: 'w-full h-16 border-b-1' }}
-                >
-                    {Object.entries(listItem).map(([key, value]) => (
-                        <Tab disableRipple key={key} label={key} />
-                    ))}
-                </Tabs>
-            </div>
+            {data?.leader == 'Inventory' ? (
+                <div className="grid grid-cols-1 lg:grid-cols-1 grid-flow-row gap-24 w-full">
+                    <Tabs
+                        value={tabValue}
+                        onChange={(ev, value) => setTabValue(value)}
+                        indicatorColor="secondary"
+                        textColor="inherit"
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        classes={{ root: 'w-full h-16 border-b-1' }}
+                    >
+                        {Object.entries(listItem).map(([key, value]) => (
+                            <Tab disableRipple key={key} label={key} />
+                        ))}
+                    </Tabs>
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 lg:grid-cols-1 grid-flow-row gap-24 w-full">
+                    <Tabs
+                        value={tabValue}
+                        onChange={(ev, value) => setTabValue(value)}
+                        indicatorColor="secondary"
+                        textColor="inherit"
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        classes={{ root: 'w-full h-16 border-b-1' }}
+                    >
+                        {Object.entries(listItem).map(([key, value]) => (
+                            <Tab
+                                disableRipple
+                                key={key}
+                                label={
+                                    <Badge
+                                        badgeContent={
+                                            _.filter(
+                                                listItem[key]?.data,
+                                                (val) => {
+                                                    return val.chk_mark == 'N'
+                                                }
+                                            ).length
+                                        }
+                                        color="error"
+                                    >
+                                        {key}
+                                    </Badge>
+                                }
+                            />
+                        ))}
+                    </Tabs>
+                </div>
+            )}
+
             <div className="grid grid-cols-1 lg:grid-cols-1 grid-flow-row gap-24 w-full mt-32 sm:mt-16">
                 <div className="flex flex-col flex-auto">
                     <AutoSizer disableHeight>
                         {({ width }) => (
                             <FixedSizeList
                                 width={width}
-                                height={300}
+                                height={280}
                                 itemCount={itemLength}
                                 itemSize={40}
                                 className="py-0 mt-8 divide-y"

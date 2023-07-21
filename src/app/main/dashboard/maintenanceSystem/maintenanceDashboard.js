@@ -17,6 +17,7 @@ import MnGM2 from './tabs/MnGM2'
 import MnGM3 from './tabs/MnGM3'
 import MnGM5 from './tabs/MnGM5'
 import Inventory from './tabs/Inventory'
+import MnGM1Header from './header/MnGM1Header'
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
     '& .FusePageSimple-header': {
@@ -42,9 +43,9 @@ function maintenanceDashboard(props) {
 
     return (
         <Root
-            header={<MaintenanceDashboardHeader />}
+            // header={<MaintenanceDashboardHeader />}
             content={
-                <div className="w-full p-12 pt-8 sm:pt-24 lg:ltr:pr-0 lg:rtl:pl-0">
+                <div className="w-full p-10 pt-8 sm:pt-24 lg:ltr:pr-0 lg:rtl:pl-0">
                     <Tabs
                         value={tabValue}
                         onChange={handleChangeTab}
@@ -92,7 +93,8 @@ function maintenanceDashboard(props) {
                             label="Inventory MN"
                         />
                     </Tabs>
-                    {tabValue === 0 && <MnGM1 />}
+                    {/* {tabValue === 0 && <MnGM1 />} */}
+                    {tabValue === 0 && <MnGM1Header />}
                     {tabValue === 1 && <MnGM2 />}
                     {tabValue === 2 && <MnGM3 />}
                     {tabValue === 3 && <MnGM5 />}

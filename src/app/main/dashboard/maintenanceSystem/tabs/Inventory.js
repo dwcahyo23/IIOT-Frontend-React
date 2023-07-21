@@ -61,7 +61,7 @@ function Inventory() {
                     return val
                 }
             })
-            .groupBy((val) => dayjs(val.date_request).format('MMM'))
+            .groupBy((val) => dayjs(val.createdAt).format('MMM'))
             .mapValues((items) => {
                 return {
                     request: _.countBy(items, (val) => (val ? 'pass' : 'fail')),
@@ -112,8 +112,7 @@ function Inventory() {
                     return val
                 }
             })
-            .sortBy(['sheet_no'])
-            .groupBy((val) => dayjs(val.date_request).format('MMM'))
+            .groupBy((val) => dayjs(val.createdAt).format('MMM'))
             .mapValues((items) => {
                 return {
                     data: _.filter(items, (val) => {
