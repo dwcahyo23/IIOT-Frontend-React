@@ -119,7 +119,7 @@ function Machines(props) {
                                 color="inherit"
                                 className="text-18 font-semibold"
                             >
-                                IIOT SYSTEM
+                                IOT SYSTEM
                             </Typography>
                         </motion.div>
                         <motion.div
@@ -130,7 +130,7 @@ function Machines(props) {
                                 color="inherit"
                                 className="text-16 sm:text-20 mt-16 sm:mt-24 opacity-75 tracking-tight max-w-md text-center"
                             >
-                                IIOT is a network of intelligent devices
+                                IOT is a network of intelligent devices
                                 connected to form systems that monitor, collect,
                                 exchange and analyze data.
                             </Typography>

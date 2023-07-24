@@ -20,6 +20,7 @@ const navigationConfig = [
                 id: 'dashboards.project',
                 title: 'Maintenance',
                 type: 'item',
+                auth: authRoles.admin,
                 icon: 'heroicons-outline:clipboard-check',
                 url: '/dashboards/maintenance',
             },
@@ -45,11 +46,20 @@ const navigationConfig = [
                 url: '/apps/maintenanceSystem',
             },
             {
+                id: 'apps.acipSystem',
+                title: 'Genba Acip',
+                type: 'item',
+                icon: 'heroicons-outline:desktop-computer',
+                auth: authRoles.acip,
+                url: '/apps/acipSystem',
+            },
+            {
                 id: 'apps.modbus',
                 title: 'Maintenance System',
                 type: 'collapse',
+                auth: authRoles.admin,
                 icon: 'heroicons-outline:status-online',
-                translate: 'IIOT',
+                translate: 'IOT',
                 children: [
                     {
                         id: 'modbusApp-mch',

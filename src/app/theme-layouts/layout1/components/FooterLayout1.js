@@ -26,7 +26,7 @@ function FooterLayout1(props) {
                 }}
             >
                 {/* <Toolbar className="min-h-48 md:min-h-64 px-8 sm:px-12 py-0 flex items-center overflow-x-auto">
-          ©{year} IIOT Garuda Metalindo
+          ©{year} IOT Garuda Metalindo
         </Toolbar> */}
             </AppBar>
         </ThemeProvider>

@@ -13,8 +13,10 @@ export const setUser = createAsyncThunk(
         /*
     You can redirect the logged-in user to a specific route depending on his role
     */
+        // settingsConfig.loginRedirectUrl = '/apps/maintenanceSystem'
         if (user.loginRedirectUrl) {
             settingsConfig.loginRedirectUrl = user.loginRedirectUrl // for example 'apps/academy'
+            // settingsConfig.loginRedirectUrl = '/apps/maintenanceSystem'
         }
 
         return user
@@ -90,6 +92,7 @@ const initialState = {
         displayName: null,
         photoURL: null,
         email: null,
+        loginRedirectUrl: null,
         shortcuts: [
             'apps.calendar',
             'apps.mailbox',

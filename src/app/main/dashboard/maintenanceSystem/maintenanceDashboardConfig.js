@@ -1,4 +1,5 @@
 import { lazy } from 'react'
+import { authRoles } from 'src/app/auth'
 
 const MaintenanceDashboard = lazy(() => import('./maintenanceDashboard'))
 
@@ -8,6 +9,7 @@ const MaintenanceDashboardConfig = {
             config: {},
         },
     },
+    // auth: authRoles.admin,
     routes: [
         {
             path: 'dashboards/maintenance',
