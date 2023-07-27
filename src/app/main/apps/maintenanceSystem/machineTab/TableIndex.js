@@ -243,17 +243,18 @@ function TableIndex({ params, tableIndex }) {
             rows={params.row}
             columns={params.columns}
             getRowHeight={() => 'auto'}
-            getRowId={params.id}
+            // getRowId={params.id}
+            getRowId={(row) => row.uuid || row.uuid_request || row.sheet_no}
             onRowDoubleClick={(data) => tableIndex(data)}
             checkboxSelection
             density="compact"
             slots={{ toolbar: CustomToolbar }}
             slotProps={{ toolbar: { rows, column } }}
             autoPageSize
-            filterModel={{
-                items: [],
-                quickFilterValues: [filter],
-            }}
+            // filterModel={{
+            //     items: [],
+            //     quickFilterValues: [],
+            // }}
             // initialState={{
             //     filter: {
             //         filterModel: {

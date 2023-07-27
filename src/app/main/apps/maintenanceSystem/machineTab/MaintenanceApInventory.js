@@ -117,6 +117,9 @@ function MaintenanceApReport({ data }) {
         control,
     })
 
+    console.log(typeof request)
+    console.log(request)
+
     const { fields: userMn } = useFieldArray({
         name: 'user',
         control,
@@ -130,41 +133,6 @@ function MaintenanceApReport({ data }) {
                 dispatch(
                     showMessage({ message: 'Data has been saved successfully' })
                 )
-                // let msg = `*AP Request Maintenance*\n\n*Sheet:* ${getValues(
-                //     'id_request'
-                // )} | ${getValues('category_request')}\n*Target:* ${getValues(
-                //     'date_request'
-                // )}\n*Sparepart:* ${getValues(
-                //     'item_stock'
-                // )}\n*Remarks:* ${getValues('item_name')}\n*Qty:* ${getValues(
-                //     'item_qty'
-                // )}${getValues('item_uom')}\n*Machine:* ${getValues(
-                //     'mch_code'
-                // )} ${getValues('mch_name')}\n*Com:* ${getValues(
-                //     'mch_com'
-                // )}\n*User:* ${getValues('user_req1')}\n*MRE:* ${getValues(
-                //     'mre_request'
-                // )}\n*Item Ready:* ${getValues('item_ready')}${
-                //     getValues('audit_request') === 'Y' ? '\nAudited by ' : ''
-                // }${getValues('user_req2')}`
-
-                // _.isNil(user.data.userNumber)
-                //     ? ''
-                //     : sendMsg({
-                //           number: user.data.userNumber,
-                //           msg: msg,
-                //       })
-                // _.forEach(userMn, (val) => {
-                //     if (
-                //         val.displayName === 'Benyamin' ||
-                //         val.displayName === 'Ahmad Suryadi' ||
-                //         val.displayName === 'Achmad Maulana'
-                //     ) {
-                //         _.isNil(val.userNumber)
-                //             ? ''
-                //             : sendMsg({ number: val.userNumber, msg: msg })
-                //     }
-                // })
             }
         })
     }
@@ -291,19 +259,19 @@ function MaintenanceApReport({ data }) {
                                     fullWidth
                                 >
                                     <MenuItem value="Emergency">
-                                        Emergency(10H)
+                                        Emergency(1 Day)
+                                    </MenuItem>
+                                    <MenuItem value="Flash">
+                                        Flash(3 Day)
                                     </MenuItem>
                                     <MenuItem value="Express">
-                                        Flash(3D)
-                                    </MenuItem>
-                                    <MenuItem value="Express">
-                                        Express(7D)
+                                        Express(7 Day)
                                     </MenuItem>
                                     <MenuItem value="Reguler">
-                                        Reguler(14D)
+                                        Reguler(14 Day)
                                     </MenuItem>
                                     <MenuItem value="Indent">
-                                        Indent(30D)
+                                        Indent(30 Day)
                                     </MenuItem>
                                 </TextField>
                             )}
@@ -502,6 +470,7 @@ function MaintenanceApReport({ data }) {
                                     fullWidth
                                 >
                                     <MenuItem value="Y">Audit</MenuItem>
+                                    <MenuItem value="C">Cancel</MenuItem>
                                     <MenuItem value="N">n.audit</MenuItem>
                                 </TextField>
                             )}

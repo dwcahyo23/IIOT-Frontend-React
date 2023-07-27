@@ -1,160 +1,133 @@
 import _ from '@lodash'
 import { useDeepCompareEffect, useThemeMediaQuery } from '@fuse/hooks'
+import FuseLoading from '@fuse/core/FuseLoading/FuseLoading'
 import FusePageCarded from '@fuse/core/FusePageCarded/FusePageCarded'
 import {
     Box,
     Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    TextField,
+    Typography,
     Button,
+    AppBar,
+    Toolbar,
+    Slide,
+    Grid,
+    IconButton,
+    TextField,
+    MenuItem,
 } from '@mui/material'
-import { useEffect, useMemo, useState } from 'react'
+import { motion } from 'framer-motion'
+import { SaveAs } from '@mui/icons-material'
+import { useEffect, useMemo, useState, forwardRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getGenbaAcip, selectGenbaAcip } from '../store/genba/genbaAcipSlice'
-import TableIndex from '../../maintenanceSystem/machineTab/TableIndex'
 import dayjs from 'dayjs'
+import { Controller, useForm, FormProvider } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+
+import {
+    getGenbaAcip,
+    selectGenbaAcip,
+    saveGenbaAcip,
+    resetGenbaAcip,
+} from '../store/genba/genbaAcipSlice'
 
 import AcipHeader from './AcipHeader'
+import AcipFormulir from './AcipFormulir'
+
+const schema = yup.object().shape({
+    dept: yup.string().required('Require dept name').min(3).max(11),
+})
 
 function Acip() {
+    const dispatch = useDispatch()
     const genba = useSelector(selectGenbaAcip)
     const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'))
-    const [open, setOpen] = useState(false)
+    const [isNoGenba, setIsNoGenba] = useState(false)
 
-    console.log(genba)
+    useDeepCompareEffect(() => {
+        function updateGenba() {
+            dispatch(getGenbaAcip()).then((action) => {
+                if (!action.payload) {
+                    setIsNoGenba(true)
+                }
+            })
+        }
+        updateGenba()
+    }, [dispatch])
 
-    const columns = [
-        {
-            field: 'dept',
-            headerName: 'Dept',
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-            width: 100,
-        },
-        {
-            field: 'area',
-            headerName: 'Area',
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-            width: 100,
-        },
-        {
-            field: 'createdAt',
-            headerName: 'Date',
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-            width: 120,
-            align: 'center',
-            valueFormatter: (params) =>
-                dayjs(params.value).format('DD/MM/YY HH:mm'),
-        },
-        {
-            field: 'images1',
-            headerName: 'Before',
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-            width: 150,
-            renderCell: (params) => <img src={params.value} />,
-        },
-        {
-            field: 'images2',
-            headerName: 'After',
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-            width: 150,
-            renderCell: (params) => <img src={params.value} />,
-        },
-        {
-            field: 'case',
-            headerName: 'Case',
-            flex: 1,
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-        },
-        {
-            field: 'improvement',
-            headerName: 'Improvement',
-            flex: 1,
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-        },
-    ]
+    const methods = useForm({
+        mode: 'onChange',
+        defaultValues: {},
+        resolver: yupResolver(schema),
+    })
 
-    const tableIndex = (data) => {
-        console.log(data.row)
-        setOpen(true)
-    }
+    const {
+        control,
+        formState,
+        watch,
+        getValues,
+        setValue,
+        getFieldState,
+        reset,
+    } = methods
+
+    const form = watch()
 
     useEffect(() => {
-        // if (tableIndex) {
-        //     setOpen(true)
-        // }
-    }, [tableIndex])
+        const data = genba
+        if (!genba) {
+            return
+        }
+        reset(data)
+    }, [genba, reset])
 
-    const handleClickOpen = () => {
-        setOpen(true)
-    }
+    useEffect(() => {
+        return () => {
+            dispatch(resetGenbaAcip())
+            setIsNoGenba(false)
+        }
+    }, [dispatch])
 
-    const handleClose = () => {
-        setOpen(false)
-    }
-
-    if (genba) {
+    if (isNoGenba) {
         return (
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1, transition: { delay: 0.1 } }}
+                className="flex flex-col flex-1 items-center justify-center h-full"
+            >
+                <Typography color="text.secondary" varian="h5">
+                    There is no such data!
+                </Typography>
+                <Button
+                    className="mt-24"
+                    component={Link}
+                    variant="outlined"
+                    to="/apps/madbusApp/address"
+                    color="inherit"
+                >
+                    Go to Address Page
+                </Button>
+            </motion.div>
+        )
+    }
+
+    if (_.isEmpty(form) || !genba) {
+        return <FuseLoading />
+    }
+
+    return (
+        <FormProvider {...methods}>
             <FusePageCarded
                 header={<AcipHeader />}
                 content={
                     <>
-                        <Box
-                            sx={{
-                                width: '100%',
-                                height: 600,
-                            }}
-                        >
-                            <div className="flex flex-col flex-auto p-24 shadow rounded-2xl overflow-hidden h-full">
-                                <TableIndex
-                                    params={{
-                                        row: genba,
-                                        columns: columns,
-                                        id: genba.id,
-                                    }}
-                                    tableIndex={tableIndex}
-                                />
-                            </div>
-                            <div className="flex flex-col flex-auto p-24 shadow rounded-2xl overflow-hidden h-full">
-                                <Dialog open={open} onClose={handleClose}>
-                                    <DialogTitle>Update</DialogTitle>
-                                    <DialogContent>
-                                        <TextField
-                                            autoFocus
-                                            margin="dense"
-                                            id="name"
-                                            label="Email Address"
-                                            type="email"
-                                            fullWidth
-                                            variant="standard"
-                                        />
-                                    </DialogContent>
-                                    <DialogActions>
-                                        <Button onClick={handleClose}>
-                                            Cancel
-                                        </Button>
-                                        <Button onClick={handleClose}>
-                                            Subscribe
-                                        </Button>
-                                    </DialogActions>
-                                </Dialog>
-                            </div>
-                        </Box>
+                        <AcipFormulir />
                     </>
                 }
                 scroll={isMobile ? 'normal' : 'content'}
             />
-        )
-    }
+        </FormProvider>
+    )
 }
 
 export default Acip

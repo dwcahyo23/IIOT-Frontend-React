@@ -64,6 +64,18 @@ export const status = [
         color: 'error',
         icon: 'heroicons-outline:exclamation',
     },
+    {
+        id: 'Open',
+        name: 'Open',
+        color: 'success',
+        icon: 'heroicons-outline:check',
+    },
+    {
+        id: 'Close',
+        name: 'Close',
+        color: 'error',
+        icon: 'heroicons-outline:x',
+    },
 ]
 
 function StatusColor(props) {

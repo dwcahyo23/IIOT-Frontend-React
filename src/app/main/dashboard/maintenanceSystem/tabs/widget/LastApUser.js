@@ -10,19 +10,28 @@ import {
     Button,
     Avatar,
     Badge,
+    AppBar,
+    Toolbar,
+    Slide,
+    Dialog,
+    IconButton,
 } from '@mui/material'
-import { memo, useState, useEffect } from 'react'
+import { memo, useState, useEffect, forwardRef } from 'react'
 import { Link } from 'react-router-dom'
-import _ from 'lodash'
-import { FixedSizeList } from 'react-window'
-import StatusColor from 'src/app/main/apps/maintenanceSystem/machineTab/utils/StatusColor'
+import _, { get } from 'lodash'
 import dayjs from 'dayjs'
 import { useSelector } from 'react-redux'
-import { selectApUser, selectApUserById } from '../../store/userSlice'
 import { Workbook } from 'exceljs'
 import { saveAs } from 'file-saver-es'
-import DownloadIcon from '@mui/icons-material/Download'
+import { SaveAs, Cancel, Download } from '@mui/icons-material'
+import { FixedSizeList } from 'react-window'
 import AutoSizer from 'react-virtualized-auto-sizer'
+import { useDispatch } from 'react-redux'
+
+import { getMnOne } from '../../store/mnOneSlice'
+import { selectApUser, selectApUserById } from '../../store/userSlice'
+import StatusColor from 'src/app/main/apps/maintenanceSystem/machineTab/utils/StatusColor'
+import OpenDialog from './OpenDialog'
 
 function CustomToolbar({ props }) {
     const handleExportExcell = () => {
@@ -84,7 +93,7 @@ function CustomToolbar({ props }) {
     return (
         <Button
             color="primary"
-            startIcon={<DownloadIcon />}
+            startIcon={<Download />}
             onClick={handleExportExcell}
         >
             Excell
@@ -92,7 +101,12 @@ function CustomToolbar({ props }) {
     )
 }
 
+const Transition = forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />
+})
+
 function LastApUser({ data }) {
+    const dispatch = useDispatch()
     const user = useSelector((selectApUser) =>
         selectApUserById(selectApUser, data.user)
     )
@@ -103,6 +117,9 @@ function LastApUser({ data }) {
     const [filteredItem, setFilteredItem] = useState([])
     const [itemLength, setItemLength] = useState(0)
     const [countNaudit, setCountNaudt] = useState(0)
+    const [open, setOpen] = useState(false)
+    const [selectData, setSelectData] = useState(null)
+    const [toolBarHeader, setToolBarHeader] = useState('Update')
 
     useEffect(() => {
         if (data && listItem[currentRange]) {
@@ -111,10 +128,31 @@ function LastApUser({ data }) {
         }
     })
 
+    // useEffect(() => {
+    //     if (_.isNull(selectData) == false) {
+    //         dispatch(
+    //             getMnOne(selectData.mch_index.uuid).then((action) => {
+    //                 console.log(action.payload)
+    //             })
+    //         )
+    //     }
+    // }, [dispatch, selectData])
+
     useEffect(() => {
-        console.log(listItem)
+        // console.log(selectData)
         // console.log(lastTab)
-    }, [itemLength, filteredItem, lastTab])
+    }, [itemLength, filteredItem, lastTab, selectData])
+
+    const handleClose = (event, reason) => {
+        if (reason !== 'backdropClick' && reason !== 'escapeKeyDown') {
+            setOpen(false)
+        }
+    }
+
+    const header = (data) => {
+        setToolBarHeader(data)
+        // console.log(data)
+    }
 
     const RowList = (props) => {
         const { index, style } = props
@@ -122,8 +160,13 @@ function LastApUser({ data }) {
             <ListItem key={index} style={style} component="div" disablePadding>
                 {data?.leader == 'Inventory' ? (
                     <ListItemButton
-                        component={Link}
-                        to={`/apps/maintenanceSystem/machines/${filteredItem?.data[index].mch_index?.uuid}/${filteredItem?.data[index].sheet_no}`}
+                        onClick={() => {
+                            setOpen(true)
+                            setSelectData(filteredItem?.data[index])
+                            console.log(filteredItem?.data[index])
+                        }}
+                        // component={Link}
+                        // to={`/apps/maintenanceSystem/machines/${filteredItem?.data[index].mch_index?.uuid}/${filteredItem?.data[index].sheet_no}`}
                     >
                         <ListItemText>
                             <Typography className="text-13 mt-2 line-clamp-2">
@@ -151,8 +194,12 @@ function LastApUser({ data }) {
                     </ListItemButton>
                 ) : (
                     <ListItemButton
-                        component={Link}
-                        to={`/apps/maintenanceSystem/machines/${filteredItem?.data[index].mch_index?.uuid}/${filteredItem?.data[index].sheet_no}`}
+                        onClick={() => {
+                            setOpen(true)
+                            setSelectData(filteredItem?.data[index])
+                        }}
+                        // component={Link}
+                        // to={`/apps/maintenanceSystem/machines/${filteredItem?.data[index].mch_index?.uuid}/${filteredItem?.data[index].sheet_no}`}
                     >
                         <ListItemText>
                             <Typography className="text-13 mt-2 line-clamp-2">
@@ -170,112 +217,141 @@ function LastApUser({ data }) {
     }
 
     return (
-        <Paper className="flex flex-col flex-auto p-10 shadow rounded-2xl overflow-hidden h-full">
-            <div className="flex flex-auto items-center min-w-0">
-                <div className="flex flex-col sm:flex-row items-start justify-between">
-                    <div className="w-full items-center">
-                        <Avatar
-                            className="flex-0 w-64 h-64"
-                            alt="user photo"
-                            src={user?.photoURL}
-                        >
-                            {user?.displayName[0]}
-                        </Avatar>
-                        <Typography className="text-14 font-medium">
-                            {user?.displayName}
-                        </Typography>
-                    </div>
-                </div>
-
-                <div className="flex flex-col sm:flex-row ml-16 items-end justify-between">
-                    <div className="w-full">
-                        <Typography className="text-13 mt-2 line-clamp-2">
-                            Leader: {data?.leader}
-                        </Typography>
-                        <Typography className="text-13 mt-2 line-clamp-2">
-                            Breakdown: {filteredItem.breakdown?.pass || 0}
-                        </Typography>
-                        <Typography className="text-13 mt-2 line-clamp-2">
-                            Still Run: {filteredItem.still_run?.pass || 0}
-                        </Typography>
-                        <Typography className="text-13 mt-2 line-clamp-2">
-                            Preventive: {filteredItem.preventive?.pass || 0}
-                        </Typography>
-                    </div>
-                </div>
-                {data && <CustomToolbar props={{ rows: filteredItem?.data }} />}
-            </div>
-
-            {data?.leader == 'Inventory' ? (
-                <div className="grid grid-cols-1 lg:grid-cols-1 grid-flow-row gap-24 w-full">
-                    <Tabs
-                        value={tabValue}
-                        onChange={(ev, value) => setTabValue(value)}
-                        indicatorColor="secondary"
-                        textColor="inherit"
-                        variant="scrollable"
-                        scrollButtons="auto"
-                        classes={{ root: 'w-full h-16 border-b-1' }}
-                    >
-                        {Object.entries(listItem).map(([key, value]) => (
-                            <Tab disableRipple key={key} label={key} />
-                        ))}
-                    </Tabs>
-                </div>
-            ) : (
-                <div className="grid grid-cols-1 lg:grid-cols-1 grid-flow-row gap-24 w-full">
-                    <Tabs
-                        value={tabValue}
-                        onChange={(ev, value) => setTabValue(value)}
-                        indicatorColor="secondary"
-                        textColor="inherit"
-                        variant="scrollable"
-                        scrollButtons="auto"
-                        classes={{ root: 'w-full h-16 border-b-1' }}
-                    >
-                        {Object.entries(listItem).map(([key, value]) => (
-                            <Tab
-                                disableRipple
-                                key={key}
-                                label={
-                                    <Badge
-                                        badgeContent={
-                                            _.filter(
-                                                listItem[key]?.data,
-                                                (val) => {
-                                                    return val.chk_mark == 'N'
-                                                }
-                                            ).length
-                                        }
-                                        color="error"
-                                    >
-                                        {key}
-                                    </Badge>
-                                }
-                            />
-                        ))}
-                    </Tabs>
-                </div>
-            )}
-
-            <div className="grid grid-cols-1 lg:grid-cols-1 grid-flow-row gap-24 w-full mt-32 sm:mt-16">
-                <div className="flex flex-col flex-auto">
-                    <AutoSizer disableHeight>
-                        {({ width }) => (
-                            <FixedSizeList
-                                width={width}
-                                height={280}
-                                itemCount={itemLength}
-                                itemSize={40}
-                                className="py-0 mt-8 divide-y"
+        <div>
+            <Paper className="flex flex-col flex-auto p-10 shadow rounded-2xl overflow-hidden h-full">
+                <div className="flex flex-auto items-center min-w-0">
+                    <div className="flex flex-col sm:flex-row items-start justify-between">
+                        <div className="w-full items-center">
+                            <Avatar
+                                className="flex-0 w-64 h-64"
+                                alt="user photo"
+                                src={user?.photoURL}
                             >
-                                {RowList}
-                            </FixedSizeList>
-                        )}
-                    </AutoSizer>
+                                {user?.displayName[0]}
+                            </Avatar>
+                            <Typography className="text-14 font-medium">
+                                {user?.displayName}
+                            </Typography>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row ml-16 items-end justify-between">
+                        <div className="w-full">
+                            <Typography className="text-13 mt-2 line-clamp-2">
+                                Leader: {data?.leader}
+                            </Typography>
+                            <Typography className="text-13 mt-2 line-clamp-2">
+                                Breakdown: {filteredItem.breakdown?.pass || 0}
+                            </Typography>
+                            <Typography className="text-13 mt-2 line-clamp-2">
+                                Still Run: {filteredItem.still_run?.pass || 0}
+                            </Typography>
+                            <Typography className="text-13 mt-2 line-clamp-2">
+                                Preventive: {filteredItem.preventive?.pass || 0}
+                            </Typography>
+                        </div>
+                    </div>
+                    {data && (
+                        <CustomToolbar props={{ rows: filteredItem?.data }} />
+                    )}
                 </div>
-            </div>
-        </Paper>
+
+                {data?.leader == 'Inventory' ? (
+                    <div className="grid grid-cols-1 lg:grid-cols-1 grid-flow-row gap-24 w-full">
+                        <Tabs
+                            value={tabValue}
+                            onChange={(ev, value) => setTabValue(value)}
+                            indicatorColor="secondary"
+                            textColor="inherit"
+                            variant="scrollable"
+                            scrollButtons="auto"
+                            classes={{ root: 'w-full h-16 border-b-1' }}
+                        >
+                            {Object.entries(listItem).map(([key, value]) => (
+                                <Tab disableRipple key={key} label={key} />
+                            ))}
+                        </Tabs>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 lg:grid-cols-1 grid-flow-row gap-24 w-full">
+                        <Tabs
+                            value={tabValue}
+                            onChange={(ev, value) => setTabValue(value)}
+                            indicatorColor="secondary"
+                            textColor="inherit"
+                            variant="scrollable"
+                            scrollButtons="auto"
+                            classes={{ root: 'w-full h-16 border-b-1' }}
+                        >
+                            {Object.entries(listItem).map(([key, value]) => (
+                                <Tab
+                                    disableRipple
+                                    key={key}
+                                    label={
+                                        <Badge
+                                            badgeContent={
+                                                _.filter(
+                                                    listItem[key]?.data,
+                                                    (val) => {
+                                                        return (
+                                                            val.chk_mark == 'N'
+                                                        )
+                                                    }
+                                                ).length
+                                            }
+                                            color="error"
+                                        >
+                                            {key}
+                                        </Badge>
+                                    }
+                                />
+                            ))}
+                        </Tabs>
+                    </div>
+                )}
+
+                <div className="grid grid-cols-1 lg:grid-cols-1 grid-flow-row gap-24 w-full mt-32 sm:mt-16">
+                    <div className="flex flex-col flex-auto">
+                        <AutoSizer disableHeight>
+                            {({ width }) => (
+                                <FixedSizeList
+                                    width={width}
+                                    height={280}
+                                    itemCount={itemLength}
+                                    itemSize={40}
+                                    className="py-0 mt-8 divide-y"
+                                >
+                                    {RowList}
+                                </FixedSizeList>
+                            )}
+                        </AutoSizer>
+                    </div>
+                </div>
+            </Paper>
+            <Dialog
+                open={open}
+                maxWidth={'xl'}
+                onClose={handleClose}
+                TransitionComponent={Transition}
+            >
+                <AppBar sx={{ position: 'relative' }}>
+                    <Toolbar>
+                        <Typography
+                            sx={{ ml: 2, flex: 1 }}
+                            variant="h6"
+                            component="div"
+                        >
+                            {toolBarHeader}
+                        </Typography>
+
+                        <Button autoFocus color="inherit" onClick={handleClose}>
+                            Close
+                        </Button>
+                    </Toolbar>
+                </AppBar>
+                <OpenDialog data={{ selectData }} header={header} />
+            </Dialog>
+        </div>
     )
 }
 

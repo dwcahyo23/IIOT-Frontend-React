@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import _ from 'lodash'
 
-export const getMaintenanceSystem = createAsyncThunk(
-    'maintenanceSystem/machineChildren/getMaintenanceSystem',
+export const getMnOne = createAsyncThunk(
+    'dashboard/MnOne/getMnOne',
     async (uuid) => {
         const response = await axios.get(
             `http://localhost:5000/maintenanceMachine/${uuid}`
@@ -15,8 +15,8 @@ export const getMaintenanceSystem = createAsyncThunk(
     }
 )
 
-export const saveMaintenanceSystem = createAsyncThunk(
-    'maintenanceSystem/machineChildren/saveMaintenanceSystem',
+export const saveMnOne = createAsyncThunk(
+    'dashboard/MnOne/saveMnOne',
     async (row, { dispatch, getState }) => {
         try {
             const response = await axios.post(
@@ -31,8 +31,8 @@ export const saveMaintenanceSystem = createAsyncThunk(
     }
 )
 
-export const saveMaintenanceSystemRequest = createAsyncThunk(
-    'maintenanceSystem/machineChildren/saveMaintenanceSystemRequest',
+export const saveMnOneRequest = createAsyncThunk(
+    'dashboard/MnOne/saveMnOneRequest',
     async (row, { dispatch, getState }) => {
         try {
             const response = await axios.post(
@@ -47,12 +47,12 @@ export const saveMaintenanceSystemRequest = createAsyncThunk(
     }
 )
 
-const machineChildrenSlice = createSlice({
-    name: 'maintenanceSystem/machineChildren',
+const mnOneSlice = createSlice({
+    name: 'dashboard/MnOne',
     initialState: null,
     reducers: {
-        resetMachineChildren: () => null,
-        newMachineChildren: {
+        resetMnOne: () => null,
+        newMnOne: {
             reducer: (state, action) => action.payload,
             prepare: (event) => ({
                 payload: {
@@ -74,17 +74,14 @@ const machineChildrenSlice = createSlice({
         },
     },
     extraReducers: {
-        [getMaintenanceSystem.fulfilled]: (state, action) => action.payload,
-        [saveMaintenanceSystem.fulfilled]: (state, action) => action.payload,
-        [saveMaintenanceSystemRequest.fulfilled]: (state, action) =>
-            action.payload,
+        [getMnOne.fulfilled]: (state, action) => action.payload,
+        [saveMnOne.fulfilled]: (state, action) => action.payload,
+        [saveMnOneRequest.fulfilled]: (state, action) => action.payload,
     },
 })
 
-export const { newMachineChildren, resetMachineChildren } =
-    machineChildrenSlice.actions
+export const { newMnOne, resetMnOne } = mnOneSlice.actions
 
-export const selectMachineChildren = ({ maintenanceSystem }) =>
-    maintenanceSystem.machineChildren
+export const selectMnOne = ({ dashboard }) => dashboard.MnOne
 
-export default machineChildrenSlice.reducer
+export default mnOneSlice.reducer

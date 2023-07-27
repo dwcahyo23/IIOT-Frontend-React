@@ -82,6 +82,7 @@ function MachineChildren(props) {
 
     const { reset, watch, control, onChange, formState, getFieldState } =
         methods
+    const { errors, isValid } = formState
 
     const form = watch()
 
