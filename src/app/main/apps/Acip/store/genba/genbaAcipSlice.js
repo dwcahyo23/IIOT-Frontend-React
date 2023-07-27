@@ -5,7 +5,7 @@ import _ from 'lodash'
 export const getGenbaAcip = createAsyncThunk(
     'genbaAcip/genba/getGenbaAcip',
     async () => {
-        const response = await axios.get(`http://localhost:5000/genbaAcip`)
+        const response = await axios.get(`http://192.168.192.7:5000/genbaAcip`)
 
         const data = await response.data
 
@@ -18,7 +18,7 @@ export const saveGenbaAcip = createAsyncThunk(
     async (row, { dispatch, getState }) => {
         try {
             const response = await axios.post(
-                `http://localhost:5000/genbaAcip`,
+                `http://192.168.192.7:5000/genbaAcip`,
                 row
             )
             const data = await response.data
