@@ -172,12 +172,18 @@ function LastApUser({ data }) {
                             <Typography className="text-13 mt-2 line-clamp-2">
                                 {`${index + 1}. ${
                                     filteredItem?.data[index].sheet_no
-                                }|${
+                                } || ${filteredItem?.data[index].mch_code} || ${
+                                    filteredItem?.data[index].mch_com
+                                } || ${
+                                    filteredItem?.data[index].user_req1
+                                } || ${
                                     _.isNull(
                                         filteredItem?.data[index].item_stock
                                     )
                                         ? filteredItem?.data[index].item_name
                                         : filteredItem?.data[index].item_stock
+                                } || ${filteredItem?.data[index].item_qty}  ${
+                                    filteredItem?.data[index].item_uom
                                 }`}
                             </Typography>
                         </ListItemText>
