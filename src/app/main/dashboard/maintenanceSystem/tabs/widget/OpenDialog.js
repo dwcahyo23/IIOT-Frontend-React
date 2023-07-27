@@ -264,8 +264,10 @@ function OpenDialog({ data, header }) {
         } else if (val == 2) {
             header('Maintenance Work Order FO-03-04-01')
         } else if (val == 3) {
-            header('Laporan Maintenanc FO-03-03-07')
+            header('Laporan Maintenance FO-03-03-07')
         } else if (val == 4) {
+            header('Penanganan Spare Part Maintenance IK-03-03-11')
+        } else if (val == 5) {
             header('Penanganan Spare Part Maintenance IK-03-03-11')
         }
     }
