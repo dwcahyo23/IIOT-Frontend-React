@@ -103,7 +103,7 @@ function maintenanceDashboard(props) {
                     {tabValue === 1 && <MnGM2Header />}
                     {/* {tabValue === 2 && <MnGM3 />}
                     {tabValue === 3 && <MnGM5 />} */}
-                    {tabValue === 4 && <Inventory />}
+                    {tabValue === 3 && <Inventory />}
                 </div>
             }
         />
