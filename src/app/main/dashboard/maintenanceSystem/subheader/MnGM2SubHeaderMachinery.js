@@ -11,42 +11,52 @@ import ChartWo from '../tabs/widget/ChartWo'
 import LastApUser from '../tabs/widget/LastApUser'
 import SummaryWo from '../tabs/widget/SummaryWo'
 
-function MnGM1SubHeaderMachinery() {
+function MnGM2SubHeaderMachinery() {
     const data = useSelector(selectAp)
 
     const selectDep_no = [
         'PDHD1',
         'PDHD2',
         'PDHD3',
-        'PDHD4',
-        'PDRL1',
-        'PDRL2',
-        'PDMC1',
-        'PDMC3',
+        'PDHD4,',
         'PDMR1',
-        'PDNC1',
         'PDNT1',
-        'PDHB1',
-        'PDTR1',
-        'PDPU1',
-        'PCGD1',
-        'MNAD1',
-    ]
-
-    const eko = [
-        'PDHD1',
-        'PDHD2',
-        'PDHD3',
-        'PDHD4',
         'PDRL1',
         'PDRL2',
-        'MNAD1',
+        'PDTM1',
+        'PDUB1',
         'PCGD1',
+        'PCGD4',
+        'PCTD2',
+        'PDMC1',
+        'PDNC1',
+        'PDPU1',
+        'PDTR1',
+        'QAQC1',
+        'TDAD4',
+        'MNAD1',
+        'MNAD3',
+        'MNAD4',
     ]
 
-    const didi = ['PDMC1', 'PDMC3', 'PDMR1', 'PDNC1', 'PDNT1', 'PDHB1', 'MNAD1']
+    const muslih = ['PDHD1', 'PDHD2', 'PDHD3', 'PDHD4,', 'PDMR1', 'MNAD1']
 
-    const ahri = ['PDTR1', 'PDPU1', 'PCGD1', 'MNAD1']
+    const teguh = ['PDNT1', 'PDRL1', 'PDRL2', 'PDTM1', 'PDUB1', 'MNAD1']
+
+    const aris = [
+        'PCGD1',
+        'PCGD4',
+        'PCTD2',
+        'PDMC1',
+        'PDNC1',
+        'PDPU1',
+        'PDTR1',
+        'QAQC1',
+        'TDAD4',
+        'MNAD1',
+        'MNAD3',
+        'MNAD4',
+    ]
 
     const filterData =
         data &&
@@ -54,19 +64,10 @@ function MnGM1SubHeaderMachinery() {
             .filter((val) => {
                 if (
                     _.includes(selectDep_no, val.dep_no) &&
-                    val.com_no == '01' &&
+                    val.com_no == '02' &&
                     val.chk_mark != 'C'
                 ) {
-                    if (
-                        _.includes(val.mch_no, 'GS') ||
-                        _.includes(val.mch_no, 'HS') ||
-                        _.includes(val.mch_no, 'CR') ||
-                        _.includes(val.mch_no, 'AD') ||
-                        _.includes(val.mch_no, 'KM') ||
-                        _.includes(val.mch_no, 'LS') ||
-                        val.mch_no == '-' ||
-                        _.isNull(val.mch_no)
-                    ) {
+                    if (_.isNull(val.mch_no)) {
                     } else {
                         return val
                     }
@@ -118,26 +119,17 @@ function MnGM1SubHeaderMachinery() {
             })
             .value()
 
-    const listItemBenyamin =
+    const listItem1 =
         data &&
         _.chain(data)
             .filter((val) => {
                 if (
                     _.includes(selectDep_no, val.dep_no) &&
-                    val.com_no == '01' &&
+                    val.com_no == '02' &&
                     val.chk_mark != 'C' &&
                     val.pri_no != '04'
                 ) {
-                    if (
-                        _.includes(val.mch_no, 'GS') ||
-                        _.includes(val.mch_no, 'HS') ||
-                        _.includes(val.mch_no, 'CR') ||
-                        _.includes(val.mch_no, 'AD') ||
-                        _.includes(val.mch_no, 'KM') ||
-                        _.includes(val.mch_no, 'LS') ||
-                        val.mch_no == '-' ||
-                        _.isNull(val.mch_no)
-                    ) {
+                    if (_.isNull(val.mch_no)) {
                     } else {
                         return val
                     }
@@ -163,130 +155,136 @@ function MnGM1SubHeaderMachinery() {
             })
             .value()
 
-    const listItemDidi =
+    const listItem2 =
         data &&
         _.chain(data)
             .filter((val) => {
                 if (
-                    _.includes(didi, val.dep_no) &&
-                    val.com_no == '01' &&
+                    _.includes(muslih, val.dep_no) &&
+                    val.com_no == '02' &&
                     val.chk_mark != 'C' &&
                     val.pri_no != '04'
                 ) {
                     if (
-                        _.includes(val.mch_no, 'AS') ||
-                        _.includes(val.mch_no, 'BG') ||
-                        _.includes(val.mch_no, 'BR') ||
-                        _.includes(val.mch_no, 'CM') ||
-                        _.includes(val.mch_no, 'CN') ||
-                        _.includes(val.mch_no, 'DR') ||
-                        _.includes(val.mch_no, 'FR') ||
-                        _.includes(val.mch_no, 'FT') ||
-                        _.includes(val.mch_no, 'MC') ||
-                        _.includes(val.mch_no, 'NT') ||
-                        _.includes(val.mch_no, 'PC') ||
-                        _.includes(val.mch_no, 'PS') ||
-                        _.includes(val.mch_no, 'RL') ||
-                        _.includes(val.mch_no, 'SH') ||
-                        _.includes(val.mch_no, 'SL') ||
-                        _.includes(val.mch_no, 'TU') ||
-                        _.includes(val.mch_no, 'VT')
-                    ) {
-                        return val
-                    }
-                }
-            })
-            .groupBy((val) => dayjs(val.ymd).format('MMMM'))
-            .mapValues((items) => {
-                return {
-                    data: items,
-                    breakdown: _.countBy(items, (val) =>
-                        val.pri_no == '01' ? 'pass' : 'fail'
-                    ),
-                    still_run: _.countBy(items, (val) =>
-                        val.pri_no == '02' ? 'pass' : 'fail'
-                    ),
-                    preventive: _.countBy(items, (val) =>
-                        val.pri_no == '03' ? 'pass' : 'fail'
-                    ),
-                    naudit: _.countBy(items, (val) =>
-                        val.chk_mark == 'N' ? 'pass' : 'fail'
-                    ),
-                }
-            })
-            .value()
-
-    const listItemAhri =
-        data &&
-        _.chain(data)
-            .filter((val) => {
-                if (
-                    _.includes(ahri, val.dep_no) &&
-                    val.com_no == '01' &&
-                    val.chk_mark != 'C' &&
-                    val.pri_no != '04'
-                ) {
-                    if (
-                        _.includes(val.mch_no, 'AS') ||
-                        _.includes(val.mch_no, 'BR') ||
-                        _.includes(val.mch_no, 'CM') ||
-                        _.includes(val.mch_no, 'CN') ||
-                        _.includes(val.mch_no, 'CT') ||
-                        _.includes(val.mch_no, 'DR') ||
-                        _.includes(val.mch_no, 'FT') ||
-                        _.includes(val.mch_no, 'GG') ||
-                        _.includes(val.mch_no, 'OD') ||
-                        _.includes(val.mch_no, 'PS') ||
-                        _.includes(val.mch_no, 'QU') ||
-                        _.includes(val.mch_no, 'SB') ||
-                        _.includes(val.mch_no, 'SH') ||
-                        _.includes(val.mch_no, 'TE') ||
-                        _.includes(val.mch_no, 'TU')
-                    ) {
-                        return val
-                    }
-                }
-            })
-            .groupBy((val) => dayjs(val.ymd).format('MMMM'))
-            .mapValues((items) => {
-                return {
-                    data: items,
-                    breakdown: _.countBy(items, (val) =>
-                        val.pri_no == '01' ? 'pass' : 'fail'
-                    ),
-                    still_run: _.countBy(items, (val) =>
-                        val.pri_no == '02' ? 'pass' : 'fail'
-                    ),
-                    preventive: _.countBy(items, (val) =>
-                        val.pri_no == '03' ? 'pass' : 'fail'
-                    ),
-                    naudit: _.countBy(items, (val) =>
-                        val.chk_mark == 'N' ? 'pass' : 'fail'
-                    ),
-                }
-            })
-            .value()
-
-    const listItemEko =
-        data &&
-        _.chain(data)
-            .filter((val) => {
-                if (
-                    _.includes(eko, val.dep_no) &&
-                    val.com_no == '01' &&
-                    val.chk_mark != 'C' &&
-                    val.pri_no != '04'
-                ) {
-                    if (
-                        _.includes(val.mch_no, 'BF') ||
-                        _.includes(val.mch_no, 'CM') ||
                         _.includes(val.mch_no, 'PF') ||
-                        _.includes(val.mch_no, 'HR') ||
+                        _.includes(val.mch_no, 'BM') ||
+                        _.includes(val.mch_no, 'BF') ||
+                        _.includes(val.mch_no, 'HD') ||
                         _.includes(val.mch_no, 'LH') ||
-                        _.includes(val.mch_no, 'OD') ||
+                        _.includes(val.mch_no, 'TH') ||
+                        _.includes(val.mch_no, 'TF') ||
+                        _.includes(val.mch_no, 'NF')
+                    ) {
+                        return val
+                    }
+                }
+            })
+            .groupBy((val) => dayjs(val.ymd).format('MMMM'))
+            .mapValues((items) => {
+                return {
+                    data: items,
+                    breakdown: _.countBy(items, (val) =>
+                        val.pri_no == '01' ? 'pass' : 'fail'
+                    ),
+                    still_run: _.countBy(items, (val) =>
+                        val.pri_no == '02' ? 'pass' : 'fail'
+                    ),
+                    preventive: _.countBy(items, (val) =>
+                        val.pri_no == '03' ? 'pass' : 'fail'
+                    ),
+                    naudit: _.countBy(items, (val) =>
+                        val.chk_mark == 'N' ? 'pass' : 'fail'
+                    ),
+                }
+            })
+            .value()
+
+    const listItem3 =
+        data &&
+        _.chain(data)
+            .filter((val) => {
+                if (
+                    _.includes(teguh, val.dep_no) &&
+                    val.com_no == '02' &&
+                    val.chk_mark != 'C' &&
+                    val.pri_no != '04'
+                ) {
+                    if (
                         _.includes(val.mch_no, 'PR') ||
+                        _.includes(val.mch_no, 'OD') ||
                         _.includes(val.mch_no, 'RR') ||
-                        _.includes(val.mch_no, 'CH')
+                        _.includes(val.mch_no, 'TM') ||
+                        _.includes(val.mch_no, 'ST') ||
+                        _.includes(val.mch_no, 'SL') ||
+                        _.includes(val.mch_no, 'SH') ||
+                        _.includes(val.mch_no, 'CM') ||
+                        _.includes(val.mch_no, 'PC') ||
+                        _.includes(val.mch_no, 'RL') ||
+                        _.includes(val.mch_no, 'NT') ||
+                        _.includes(val.mch_no, 'BL')
+                    ) {
+                        return val
+                    }
+                }
+            })
+            .groupBy((val) => dayjs(val.ymd).format('MMMM'))
+            .mapValues((items) => {
+                return {
+                    data: items,
+                    breakdown: _.countBy(items, (val) =>
+                        val.pri_no == '01' ? 'pass' : 'fail'
+                    ),
+                    still_run: _.countBy(items, (val) =>
+                        val.pri_no == '02' ? 'pass' : 'fail'
+                    ),
+                    preventive: _.countBy(items, (val) =>
+                        val.pri_no == '03' ? 'pass' : 'fail'
+                    ),
+                    naudit: _.countBy(items, (val) =>
+                        val.chk_mark == 'N' ? 'pass' : 'fail'
+                    ),
+                }
+            })
+            .value()
+
+    const listItem4 =
+        data &&
+        _.chain(data)
+            .filter((val) => {
+                if (
+                    _.includes(aris, val.dep_no) &&
+                    val.com_no == '02' &&
+                    val.chk_mark != 'C' &&
+                    val.pri_no != '04'
+                ) {
+                    if (
+                        _.includes(val.mch_no, 'CN') ||
+                        _.includes(val.mch_no, 'PL') ||
+                        _.includes(val.mch_no, 'GG') ||
+                        _.includes(val.mch_no, 'QU') ||
+                        _.includes(val.mch_no, 'TE') ||
+                        _.includes(val.mch_no, 'AN') ||
+                        _.includes(val.mch_no, 'CM') ||
+                        _.includes(val.mch_no, 'OD') ||
+                        _.includes(val.mch_no, 'BG') ||
+                        _.includes(val.mch_no, 'SB') ||
+                        _.includes(val.mch_no, 'PW') ||
+                        _.includes(val.mch_no, 'PC') ||
+                        _.includes(val.mch_no, 'DR') ||
+                        _.includes(val.mch_no, 'RL') ||
+                        _.includes(val.mch_no, 'GR') ||
+                        _.includes(val.mch_no, 'GP') ||
+                        _.includes(val.mch_no, 'SK') ||
+                        _.includes(val.mch_no, 'FR') ||
+                        _.includes(val.mch_no, 'VC') ||
+                        _.includes(val.mch_no, 'PS') ||
+                        _.includes(val.mch_no, 'GD') ||
+                        _.includes(val.mch_no, 'BR') ||
+                        _.includes(val.mch_no, 'BU') ||
+                        _.includes(val.mch_no, 'CT') ||
+                        _.includes(val.mch_no, 'LS') ||
+                        _.includes(val.mch_no, 'GT') ||
+                        _.includes(val.mch_no, 'CP')
                     ) {
                         return val
                     }
@@ -384,18 +382,18 @@ function MnGM1SubHeaderMachinery() {
             </motion.div>
 
             <motion.div variants={item} className="sm:col-span-2 md:col-span-6">
-                <Typography className="text-md" color="text.secondary">
+                {/* <Typography className="text-md" color="text.secondary">
                     PDHD1 PDHD2 PDHD3 PDHD4 PDRL1 PDRL2 PDMC1 PDMC3 PDMR1 PDNC1
                     PDNT1 PDHB1 PDTR1 PDPU1
-                </Typography>
+                </Typography> */}
             </motion.div>
 
             <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
                 <LastApUser
                     data={{
-                        listItemMonth: listItemBenyamin,
-                        user: 5,
-                        leader: 'Kasie MN GM1',
+                        listItemMonth: listItem1,
+                        user: 8,
+                        leader: 'Kasie MN GM2',
                     }}
                 />
             </motion.div>
@@ -407,27 +405,27 @@ function MnGM1SubHeaderMachinery() {
             <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
                 <LastApUser
                     data={{
-                        listItemMonth: listItemEko,
-                        user: 4,
-                        leader: 'Forming - Rolling',
+                        listItemMonth: listItem2,
+                        user: 29,
+                        leader: 'Forming - Nut Former',
                     }}
                 />
             </motion.div>
             <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
                 <LastApUser
                     data={{
-                        listItemMonth: listItemAhri,
-                        user: 7,
-                        leader: 'HT - Turret',
+                        listItemMonth: listItem3,
+                        user: 32,
+                        leader: 'Rolling - Nut Tapping, Oil Dryer',
                     }}
                 />
             </motion.div>
             <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
                 <LastApUser
                     data={{
-                        listItemMonth: listItemDidi,
-                        user: 6,
-                        leader: 'MC - CNC - HB',
+                        listItemMonth: listItem4,
+                        user: 30,
+                        leader: 'CNC - Turret - HT - Packing - QC - Tooling - Workshop - Nut Welding',
                     }}
                 />
             </motion.div>
@@ -435,4 +433,4 @@ function MnGM1SubHeaderMachinery() {
     )
 }
 
-export default MnGM1SubHeaderMachinery
+export default MnGM2SubHeaderMachinery

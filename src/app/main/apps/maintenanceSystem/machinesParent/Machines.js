@@ -183,14 +183,18 @@ function Machines() {
                                     </MenuItem> */}
 
                                     {process_type &&
-                                        process_type.map((data) => (
-                                            <MenuItem
-                                                value={data.mch_process}
-                                                key={data.uuid}
-                                            >
-                                                {data.mch_process}
-                                            </MenuItem>
-                                        ))}
+                                        process_type.map(
+                                            (data) =>
+                                                data.mch_com ==
+                                                    searchComTab && (
+                                                    <MenuItem
+                                                        value={data.mch_process}
+                                                        key={data.uuid}
+                                                    >
+                                                        {data.mch_process}
+                                                    </MenuItem>
+                                                )
+                                        )}
                                 </Select>
                             </FormControl>
 

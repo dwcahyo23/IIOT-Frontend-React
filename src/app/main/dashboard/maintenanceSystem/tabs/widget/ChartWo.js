@@ -31,8 +31,10 @@ function ChartWo({ data }) {
     ]
 
     _.forEach(data.filterData, (val, i) => {
-        series[0].data.push(val.breakdown.pass || val.workshop.pass)
-        series[1].data.push(val.breakdown_audit.pass || val.workshop.pass)
+        series[0].data.push(val.breakdown?.pass || val.workshop?.pass || 0)
+        series[1].data.push(
+            val.breakdown_audit?.pass || val.workshop?.pass || 0
+        )
     })
 
     const chartOptions = {

@@ -4,12 +4,19 @@ import dayjs from 'dayjs'
 import { useFormContext, useFieldArray } from 'react-hook-form'
 import TableIndex from './TableIndex'
 import StatusColor from './utils/StatusColor'
+import _ from 'lodash'
 
 function MaintenanceApsheet({ data }) {
     const methods = useFormContext()
     const { control, watch } = methods
-    const { fields, remove, append } = useFieldArray({
+
+    const { fields: sheet_no } = useFieldArray({
         name: 'mow',
+        control,
+    })
+
+    const { fields: report } = useFieldArray({
+        name: 'report',
         control,
     })
 
@@ -24,13 +31,6 @@ function MaintenanceApsheet({ data }) {
             width: 120,
         },
         {
-            field: 'mch_no',
-            headerName: 'Machine',
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-            width: 90,
-        },
-        {
             field: 'pri_no',
             headerName: 'Status',
             headerClassName: 'super-app-theme--header',
@@ -41,12 +41,32 @@ function MaintenanceApsheet({ data }) {
         },
         {
             field: 'chk_mark',
-            headerName: 'Audit',
+            headerName: 'Audit AP-Sheet',
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
-            width: 90,
+            width: 120,
             align: 'center',
             renderCell: (params) => <StatusColor id={params.value} />,
+        },
+        {
+            field: 'report',
+            headerName: 'Audit AP-Report',
+            headerClassName: 'super-app-theme--header',
+            headerAlign: 'center',
+            width: 120,
+            align: 'center',
+            renderCell: (params) => {
+                const res = _.find(report && report, {
+                    sheet_no: params.row.sheet_no,
+                })
+                return _.isUndefined(res) ? (
+                    <StatusColor id="R" />
+                ) : _.isUndefined(res) == false && res.audit_report == 'N' ? (
+                    <StatusColor id="N" />
+                ) : (
+                    <StatusColor id="Y" />
+                )
+            },
         },
         {
             field: 's_ymd',
@@ -63,10 +83,16 @@ function MaintenanceApsheet({ data }) {
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
             width: 150,
-            valueFormatter: (params) =>
-                params.value
-                    ? dayjs(params.value).format('DD/MM/YYYY HH:mm')
-                    : '',
+            renderCell: (params) => {
+                const res = _.find(report && report, {
+                    sheet_no: params.row.sheet_no,
+                })
+                return _.isUndefined(res) ? (
+                    <StatusColor id="T" />
+                ) : (
+                    dayjs(res.date_target).format('DD/MM/YYYY HH:mm')
+                )
+            },
         },
         {
             field: 'memo',
@@ -97,9 +123,9 @@ function MaintenanceApsheet({ data }) {
         >
             <TableIndex
                 params={{
-                    row: fields,
+                    row: sheet_no,
                     columns: columns,
-                    id: fields.sheet_no,
+                    id: sheet_no.sheet_no,
                     filter: data?.filter,
                 }}
                 tableIndex={tableIndex}

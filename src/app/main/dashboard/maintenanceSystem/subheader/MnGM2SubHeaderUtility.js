@@ -10,7 +10,7 @@ import ChartWo from '../tabs/widget/ChartWo'
 import LastApUser from '../tabs/widget/LastApUser'
 import SummaryWo from '../tabs/widget/SummaryWo'
 
-function MnGM1SubHeaderUtility() {
+function MnGM2SubHeaderUtility() {
     const data = useSelector(selectAp)
 
     const filterData =
@@ -18,15 +18,18 @@ function MnGM1SubHeaderUtility() {
         _.chain(data)
             .filter((val) => {
                 if (
-                    val.com_no == '01' &&
+                    val.com_no == '02' &&
                     val.pri_no != '04' &&
                     !_.isNull(val.mch_no) &&
-                    (_.includes(val.mch_no, 'GS') ||
-                        _.includes(val.mch_no, 'HS') ||
-                        _.includes(val.mch_no, 'CR') ||
+                    (_.includes(val.mch_no, 'KM') ||
+                        _.includes(val.mch_no, 'GS') ||
                         _.includes(val.mch_no, 'AD') ||
-                        _.includes(val.mch_no, 'KM') ||
-                        _.includes(val.mch_no, 'LS') ||
+                        _.includes(val.mch_no, 'HS') ||
+                        _.includes(val.mch_no, 'SM') ||
+                        _.includes(val.mch_no, 'BL') ||
+                        _.includes(val.mch_no, 'CT') ||
+                        _.includes(val.mch_no, 'CL') ||
+                        _.includes(val.mch_no, 'GF') ||
                         val.mch_no == '-') &&
                     val.chk_mark != 'C'
                 ) {
@@ -46,10 +49,10 @@ function MnGM1SubHeaderUtility() {
                     preventive: _.countBy(items, (val) =>
                         val.pri_no == '03' ? 'pass' : 'fail'
                     ),
-                    work_order: _.countBy(items, (val) =>
-                        val ? 'pass' : 'fail'
-                    ),
                     audit: _.countBy(items, (val) =>
+                        val.chk_mark == 'Y' ? 'pass' : 'fail'
+                    ),
+                    utility: _.countBy(items, (val) =>
                         val.chk_mark == 'Y' ? 'pass' : 'fail'
                     ),
                     breakdown_audit: _.countBy(items, (val) =>
@@ -76,22 +79,23 @@ function MnGM1SubHeaderUtility() {
             })
             .value()
 
-    const d = 'a'
-    d.includes
     const listItemUt =
         data &&
         _.chain(data)
             .filter((val) => {
                 if (
-                    val.com_no == '01' &&
+                    val.com_no == '02' &&
                     val.pri_no != '04' &&
                     !_.isNull(val.mch_no) &&
-                    (_.includes(val.mch_no, 'GS') ||
-                        _.includes(val.mch_no, 'HS') ||
-                        _.includes(val.mch_no, 'CR') ||
+                    (_.includes(val.mch_no, 'KM') ||
+                        _.includes(val.mch_no, 'GS') ||
                         _.includes(val.mch_no, 'AD') ||
-                        _.includes(val.mch_no, 'KM') ||
-                        _.includes(val.mch_no, 'LS') ||
+                        _.includes(val.mch_no, 'HS') ||
+                        _.includes(val.mch_no, 'SM') ||
+                        _.includes(val.mch_no, 'BL') ||
+                        _.includes(val.mch_no, 'CT') ||
+                        _.includes(val.mch_no, 'CL') ||
+                        _.includes(val.mch_no, 'GF') ||
                         val.mch_no == '-') &&
                     val.chk_mark != 'C'
                 ) {
@@ -206,8 +210,8 @@ function MnGM1SubHeaderUtility() {
                 <LastApUser
                     data={{
                         listItemMonth: listItemUt,
-                        user: 16,
-                        leader: 'Utility',
+                        user: 31,
+                        leader: 'KM - HS - SM - CT - CH - GS',
                     }}
                 />
             </motion.div>
@@ -219,4 +223,4 @@ function MnGM1SubHeaderUtility() {
     )
 }
 
-export default MnGM1SubHeaderUtility
+export default MnGM2SubHeaderUtility

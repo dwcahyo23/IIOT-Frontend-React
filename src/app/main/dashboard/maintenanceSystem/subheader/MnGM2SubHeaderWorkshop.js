@@ -10,7 +10,7 @@ import ChartWo from '../tabs/widget/ChartWo'
 import LastApUser from '../tabs/widget/LastApUser'
 import SummaryWo from '../tabs/widget/SummaryWo'
 
-function MnGM1SubHeaderUtility() {
+function MnGM2SubHeaderWorkshop() {
     const data = useSelector(selectAp)
 
     const filterData =
@@ -18,16 +18,8 @@ function MnGM1SubHeaderUtility() {
         _.chain(data)
             .filter((val) => {
                 if (
-                    val.com_no == '01' &&
-                    val.pri_no != '04' &&
-                    !_.isNull(val.mch_no) &&
-                    (_.includes(val.mch_no, 'GS') ||
-                        _.includes(val.mch_no, 'HS') ||
-                        _.includes(val.mch_no, 'CR') ||
-                        _.includes(val.mch_no, 'AD') ||
-                        _.includes(val.mch_no, 'KM') ||
-                        _.includes(val.mch_no, 'LS') ||
-                        val.mch_no == '-') &&
+                    val.com_no == '02' &&
+                    val.pri_no == '04' &&
                     val.chk_mark != 'C'
                 ) {
                     return val
@@ -45,6 +37,9 @@ function MnGM1SubHeaderUtility() {
                     ),
                     preventive: _.countBy(items, (val) =>
                         val.pri_no == '03' ? 'pass' : 'fail'
+                    ),
+                    workshop: _.countBy(items, (val) =>
+                        val.pri_no == '04' ? 'pass' : 'fail'
                     ),
                     work_order: _.countBy(items, (val) =>
                         val ? 'pass' : 'fail'
@@ -75,24 +70,13 @@ function MnGM1SubHeaderUtility() {
                 }
             })
             .value()
-
-    const d = 'a'
-    d.includes
-    const listItemUt =
+    const listItemWS =
         data &&
         _.chain(data)
             .filter((val) => {
                 if (
-                    val.com_no == '01' &&
-                    val.pri_no != '04' &&
-                    !_.isNull(val.mch_no) &&
-                    (_.includes(val.mch_no, 'GS') ||
-                        _.includes(val.mch_no, 'HS') ||
-                        _.includes(val.mch_no, 'CR') ||
-                        _.includes(val.mch_no, 'AD') ||
-                        _.includes(val.mch_no, 'KM') ||
-                        _.includes(val.mch_no, 'LS') ||
-                        val.mch_no == '-') &&
+                    val.com_no == '02' &&
+                    val.pri_no == '04' &&
                     val.chk_mark != 'C'
                 ) {
                     return val
@@ -148,49 +132,15 @@ function MnGM1SubHeaderUtility() {
             <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
                 <SummaryWo
                     data={{
-                        count: filterData[dayjs().format('MMMM')]?.breakdown,
-                        title: `Utility ${dayjs().format('MMMM')}`,
-                        name: `AP Sheet Breakdown`,
-                        colorHg: colors.red[400],
-                        colorLw: colors.red[300],
+                        count: filterData[dayjs().format('MMMM')]?.workshop,
+                        title: `Workshop ${dayjs().format('MMMM')}`,
+                        name: `AP Sheet Workshop`,
+                        colorHg: colors.brown[400],
+                        colorLw: colors.brown[300],
                         extra: {
                             name: 'Total Audit',
                             count: filterData[dayjs().format('MMMM')]
-                                ?.breakdown_audit,
-                        },
-                    }}
-                />
-            </motion.div>
-
-            <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
-                <SummaryWo
-                    data={{
-                        count: filterData[dayjs().format('MMMM')]?.still_run,
-                        title: `Utility ${dayjs().format('MMMM')}`,
-                        name: `AP Sheet Still Run`,
-                        colorHg: colors.orange[400],
-                        colorLw: colors.orange[300],
-                        extra: {
-                            name: 'Total Audit',
-                            count: filterData[dayjs().format('MMMM')]
-                                ?.still_run,
-                        },
-                    }}
-                />
-            </motion.div>
-
-            <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
-                <SummaryWo
-                    data={{
-                        count: filterData[dayjs().format('MMMM')]?.preventive,
-                        title: `Utility ${dayjs().format('MMMM')}`,
-                        name: `AP Sheet Preventive`,
-                        colorHg: colors.green[400],
-                        colorLw: colors.green[300],
-                        extra: {
-                            name: 'Total Audit',
-                            count: filterData[dayjs().format('MMMM')]
-                                ?.preventive_audit,
+                                ?.workshop_audit,
                         },
                     }}
                 />
@@ -198,16 +148,16 @@ function MnGM1SubHeaderUtility() {
 
             <motion.div variants={item} className="sm:col-span-2 md:col-span-6">
                 <Typography className="text-md" color="text.secondary">
-                    HS GS KM AD ASRS UTILITY ELECTRIC
+                    WORKSHOP MN
                 </Typography>
             </motion.div>
 
             <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
                 <LastApUser
                     data={{
-                        listItemMonth: listItemUt,
-                        user: 16,
-                        leader: 'Utility',
+                        listItemMonth: listItemWS,
+                        user: 33,
+                        leader: 'Workshop - Weld',
                     }}
                 />
             </motion.div>
@@ -219,4 +169,4 @@ function MnGM1SubHeaderUtility() {
     )
 }
 
-export default MnGM1SubHeaderUtility
+export default MnGM2SubHeaderWorkshop
