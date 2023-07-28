@@ -57,7 +57,7 @@ function Inventory() {
         sparepart &&
         _.chain(sparepart)
             .filter((val) => {
-                if (val.mch_com == 'GM1') {
+                if (val.mch_com == 'GM1' && val.audit_request != 'C') {
                     return val
                 }
             })
@@ -86,16 +86,12 @@ function Inventory() {
                             : 'fail'
                     ),
                     request_ready: _.countBy(items, (val) =>
-                        val.mre_request.length > 0 &&
-                        val.item_ready == 'Y' &&
-                        val.audit_request == 'N'
+                        val.item_ready == 'Y' && val.audit_request == 'N'
                             ? 'pass'
                             : 'fail'
                     ),
                     request_ready_audit: _.countBy(items, (val) =>
-                        val.mre_request.length > 0 &&
-                        val.item_ready == 'Y' &&
-                        val.audit_request == 'Y'
+                        val.item_ready == 'Y' && val.audit_request == 'Y'
                             ? 'pass'
                             : 'fail'
                     ),
@@ -207,7 +203,7 @@ function Inventory() {
                         count: filterSparepart[dayjs().format('MMM')]
                             ?.request_ready,
                         title: 'Ready Sparepart',
-                        name: 'MRE',
+                        name: 'Ready',
                         colorHg: colors.orange[400],
                         colorLw: colors.orange[300],
                         extra: {

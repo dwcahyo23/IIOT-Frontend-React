@@ -46,9 +46,6 @@ function MnGM1SubHeaderUtility() {
                     preventive: _.countBy(items, (val) =>
                         val.pri_no == '03' ? 'pass' : 'fail'
                     ),
-                    workshop: _.countBy(items, (val) =>
-                        val.pri_no == '04' ? 'pass' : 'fail'
-                    ),
                     work_order: _.countBy(items, (val) =>
                         val ? 'pass' : 'fail'
                     ),

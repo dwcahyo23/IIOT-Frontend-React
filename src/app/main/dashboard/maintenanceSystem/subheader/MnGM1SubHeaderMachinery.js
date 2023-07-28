@@ -3,6 +3,7 @@ import _ from 'lodash'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectAp } from '../store/apSlice'
+import { selectApRep, selectApRepById } from '../store/mnRepSlice'
 import dayjs from 'dayjs'
 import { Typography, colors } from '@mui/material'
 
@@ -29,13 +30,23 @@ function MnGM1SubHeaderMachinery() {
         'PDTR1',
         'PDPU1',
         'PCGD1',
+        'MNAD1',
     ]
 
-    const eko = ['PDHD1', 'PDHD2', 'PDHD3', 'PDHD4', 'PDRL1', 'PDRL2']
+    const eko = [
+        'PDHD1',
+        'PDHD2',
+        'PDHD3',
+        'PDHD4',
+        'PDRL1',
+        'PDRL2',
+        'MNAD1',
+        'PCGD1',
+    ]
 
-    const didi = ['PDMC1', 'PDMC3', 'PDMR1', 'PDNC1', 'PDNT1', 'PDHB1']
+    const didi = ['PDMC1', 'PDMC3', 'PDMR1', 'PDNC1', 'PDNT1', 'PDHB1', 'MNAD1']
 
-    const ahri = ['PDTR1', 'PDPU1', 'PCGD1']
+    const ahri = ['PDTR1', 'PDPU1', 'PCGD1', 'MNAD1']
 
     const filterData =
         data &&
@@ -114,7 +125,8 @@ function MnGM1SubHeaderMachinery() {
                 if (
                     _.includes(selectDep_no, val.dep_no) &&
                     val.com_no == '01' &&
-                    val.chk_mark != 'C'
+                    val.chk_mark != 'C' &&
+                    val.pri_no != '04'
                 ) {
                     if (
                         _.includes(val.mch_no, 'GS') ||
@@ -134,11 +146,7 @@ function MnGM1SubHeaderMachinery() {
             .groupBy((val) => dayjs(val.ymd).format('MMMM'))
             .mapValues((items) => {
                 return {
-                    data: _.filter(items, (val) => {
-                        if (val.chk_mark == 'N' || val.chk_mark == 'Y') {
-                            return val
-                        }
-                    }),
+                    data: items,
                     breakdown: _.countBy(items, (val) =>
                         val.pri_no == '01' ? 'pass' : 'fail'
                     ),
@@ -147,9 +155,6 @@ function MnGM1SubHeaderMachinery() {
                     ),
                     preventive: _.countBy(items, (val) =>
                         val.pri_no == '03' ? 'pass' : 'fail'
-                    ),
-                    workshop: _.countBy(items, (val) =>
-                        val.pri_no == '04' ? 'pass' : 'fail'
                     ),
                     naudit: _.countBy(items, (val) =>
                         val.chk_mark == 'N' ? 'pass' : 'fail'
@@ -165,21 +170,36 @@ function MnGM1SubHeaderMachinery() {
                 if (
                     _.includes(didi, val.dep_no) &&
                     val.com_no == '01' &&
-                    val.mch_no != '-' &&
-                    !_.isNull(val.mch_no) &&
-                    val.chk_mark != 'C'
+                    val.chk_mark != 'C' &&
+                    val.pri_no != '04'
                 ) {
-                    return val
+                    if (
+                        _.includes(val.mch_no, 'AS') ||
+                        _.includes(val.mch_no, 'BG') ||
+                        _.includes(val.mch_no, 'BR') ||
+                        _.includes(val.mch_no, 'CM') ||
+                        _.includes(val.mch_no, 'CN') ||
+                        _.includes(val.mch_no, 'DR') ||
+                        _.includes(val.mch_no, 'FR') ||
+                        _.includes(val.mch_no, 'FT') ||
+                        _.includes(val.mch_no, 'MC') ||
+                        _.includes(val.mch_no, 'NT') ||
+                        _.includes(val.mch_no, 'PC') ||
+                        _.includes(val.mch_no, 'PS') ||
+                        _.includes(val.mch_no, 'RL') ||
+                        _.includes(val.mch_no, 'SH') ||
+                        _.includes(val.mch_no, 'SL') ||
+                        _.includes(val.mch_no, 'TU') ||
+                        _.includes(val.mch_no, 'VT')
+                    ) {
+                        return val
+                    }
                 }
             })
             .groupBy((val) => dayjs(val.ymd).format('MMMM'))
             .mapValues((items) => {
                 return {
-                    data: _.filter(items, (val) => {
-                        if (val.chk_mark == 'N' || val.chk_mark == 'Y') {
-                            return val
-                        }
-                    }),
+                    data: items,
                     breakdown: _.countBy(items, (val) =>
                         val.pri_no == '01' ? 'pass' : 'fail'
                     ),
@@ -203,21 +223,34 @@ function MnGM1SubHeaderMachinery() {
                 if (
                     _.includes(ahri, val.dep_no) &&
                     val.com_no == '01' &&
-                    val.mch_no != '-' &&
-                    !_.isNull(val.mch_no) &&
-                    val.chk_mark != 'C'
+                    val.chk_mark != 'C' &&
+                    val.pri_no != '04'
                 ) {
-                    return val
+                    if (
+                        _.includes(val.mch_no, 'AS') ||
+                        _.includes(val.mch_no, 'BR') ||
+                        _.includes(val.mch_no, 'CM') ||
+                        _.includes(val.mch_no, 'CN') ||
+                        _.includes(val.mch_no, 'CT') ||
+                        _.includes(val.mch_no, 'DR') ||
+                        _.includes(val.mch_no, 'FT') ||
+                        _.includes(val.mch_no, 'GG') ||
+                        _.includes(val.mch_no, 'OD') ||
+                        _.includes(val.mch_no, 'PS') ||
+                        _.includes(val.mch_no, 'QU') ||
+                        _.includes(val.mch_no, 'SB') ||
+                        _.includes(val.mch_no, 'SH') ||
+                        _.includes(val.mch_no, 'TE') ||
+                        _.includes(val.mch_no, 'TU')
+                    ) {
+                        return val
+                    }
                 }
             })
             .groupBy((val) => dayjs(val.ymd).format('MMMM'))
             .mapValues((items) => {
                 return {
-                    data: _.filter(items, (val) => {
-                        if (val.chk_mark == 'N' || val.chk_mark == 'Y') {
-                            return val
-                        }
-                    }),
+                    data: items,
                     breakdown: _.countBy(items, (val) =>
                         val.pri_no == '01' ? 'pass' : 'fail'
                     ),
@@ -241,21 +274,28 @@ function MnGM1SubHeaderMachinery() {
                 if (
                     _.includes(eko, val.dep_no) &&
                     val.com_no == '01' &&
-                    val.mch_no != '-' &&
-                    !_.isNull(val.mch_no) &&
-                    val.chk_mark != 'C'
+                    val.chk_mark != 'C' &&
+                    val.pri_no != '04'
                 ) {
-                    return val
+                    if (
+                        _.includes(val.mch_no, 'BF') ||
+                        _.includes(val.mch_no, 'CM') ||
+                        _.includes(val.mch_no, 'PF') ||
+                        _.includes(val.mch_no, 'HR') ||
+                        _.includes(val.mch_no, 'LH') ||
+                        _.includes(val.mch_no, 'OD') ||
+                        _.includes(val.mch_no, 'PR') ||
+                        _.includes(val.mch_no, 'RR') ||
+                        _.includes(val.mch_no, 'CH')
+                    ) {
+                        return val
+                    }
                 }
             })
             .groupBy((val) => dayjs(val.ymd).format('MMMM'))
             .mapValues((items) => {
                 return {
-                    data: _.filter(items, (val) => {
-                        if (val.chk_mark == 'N' || val.chk_mark == 'Y') {
-                            return val
-                        }
-                    }),
+                    data: items,
                     breakdown: _.countBy(items, (val) =>
                         val.pri_no == '01' ? 'pass' : 'fail'
                     ),

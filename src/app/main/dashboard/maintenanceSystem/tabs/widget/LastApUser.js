@@ -30,6 +30,7 @@ import { useDispatch } from 'react-redux'
 
 import { getMnOne } from '../../store/mnOneSlice'
 import { selectApUser, selectApUserById } from '../../store/userSlice'
+import { selectApRep } from '../../store/mnRepSlice'
 import StatusColor from 'src/app/main/apps/maintenanceSystem/machineTab/utils/StatusColor'
 import OpenDialog from './OpenDialog'
 
@@ -110,6 +111,7 @@ function LastApUser({ data }) {
     const user = useSelector((selectApUser) =>
         selectApUserById(selectApUser, data.user)
     )
+    const data_report = useSelector(selectApRep)
     const listItem = data?.listItemMonth
     const lastTab = Object.keys(listItem).length - 1
     const [tabValue, setTabValue] = useState(0)
@@ -128,18 +130,8 @@ function LastApUser({ data }) {
         }
     })
 
-    // useEffect(() => {
-    //     if (_.isNull(selectData) == false) {
-    //         dispatch(
-    //             getMnOne(selectData.mch_index.uuid).then((action) => {
-    //                 console.log(action.payload)
-    //             })
-    //         )
-    //     }
-    // }, [dispatch, selectData])
-
     useEffect(() => {
-        // console.log(selectData)
+        // console.log(filteredItem)
         // console.log(lastTab)
     }, [itemLength, filteredItem, lastTab, selectData])
 
@@ -151,7 +143,11 @@ function LastApUser({ data }) {
 
     const header = (data) => {
         setToolBarHeader(data)
-        // console.log(data)
+    }
+
+    const findReport = (data) => {
+        const id = _.find(data_report, { sheet_no: data })
+        return _.isUndefined(id) == false ? id.audit_report : 'N'
     }
 
     const RowList = (props) => {
@@ -214,8 +210,24 @@ function LastApUser({ data }) {
                                 }|${filteredItem?.data[index].mch_no}`}
                             </Typography>
                         </ListItemText>
-                        <StatusColor id={filteredItem?.data[index].chk_mark} />
-                        <StatusColor id={filteredItem?.data[index].pri_no} />
+
+                        {findReport(filteredItem?.data[index].sheet_no) ==
+                            'N' && <StatusColor id="R" />}
+
+                        {filteredItem?.data[index].chk_mark == 'N' ? (
+                            <StatusColor
+                                id={
+                                    filteredItem?.data[index].appe_user !=
+                                    'DESYRUS'
+                                        ? filteredItem?.data[index].pri_no
+                                        : '031'
+                                }
+                            />
+                        ) : (
+                            <StatusColor
+                                id={filteredItem?.data[index].chk_mark}
+                            />
+                        )}
                     </ListItemButton>
                 )}
             </ListItem>

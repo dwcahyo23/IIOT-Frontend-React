@@ -18,7 +18,13 @@ export const status = [
     },
     {
         id: '03',
-        name: 'Preventive',
+        name: 'E.Preventive',
+        color: 'primary',
+        icon: 'heroicons-outline:exclamation-circle',
+    },
+    {
+        id: '031',
+        name: 'I.Preventive',
         color: 'primary',
         icon: 'heroicons-outline:exclamation-circle',
     },
@@ -71,6 +77,12 @@ export const status = [
         icon: 'heroicons-outline:check',
     },
     {
+        id: 'R',
+        name: 'n.Report',
+        color: 'error',
+        icon: 'heroicons-outline:x',
+    },
+    {
         id: 'Close',
         name: 'Close',
         color: 'error',
@@ -81,27 +93,19 @@ export const status = [
 function StatusColor(props) {
     return (
         <div>
-            <Chip
-                icon={
-                    <FuseSvgIcon size={12}>
-                        {_.isUndefined(_.find(status, { id: props.id }))
-                            ? 'heroicons-outline:x'
-                            : _.find(status, { id: props.id }).icon}
-                    </FuseSvgIcon>
-                }
-                variant="outlined"
-                size="small"
-                label={
-                    _.isUndefined(_.find(status, { id: props.id }))
-                        ? 'undefined'
-                        : _.find(status, { id: props.id }).name
-                }
-                color={
-                    _.isUndefined(_.find(status, { id: props.id }))
-                        ? 'error'
-                        : _.find(status, { id: props.id }).color
-                }
-            />
+            {_.isUndefined(_.find(status, { id: props.id })) == false && (
+                <Chip
+                    icon={
+                        <FuseSvgIcon size={12}>
+                            {_.find(status, { id: props.id }).icon}
+                        </FuseSvgIcon>
+                    }
+                    variant="outlined"
+                    size="small"
+                    label={_.find(status, { id: props.id }).name}
+                    color={_.find(status, { id: props.id }).color}
+                />
+            )}
         </div>
     )
 }
