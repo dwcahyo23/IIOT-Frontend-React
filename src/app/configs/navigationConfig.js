@@ -18,7 +18,7 @@ const navigationConfig = [
         children: [
             {
                 id: 'dashboards.project',
-                title: 'Maintenance',
+                title: 'Maintenance System',
                 type: 'item',
                 auth: authRoles.admin,
                 icon: 'heroicons-outline:clipboard-check',

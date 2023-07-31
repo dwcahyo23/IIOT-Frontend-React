@@ -68,6 +68,7 @@ function Machines() {
         }
         if (machines) {
             setFilteredData(getFilteredArray())
+            // console.log(getFilteredArray())
         }
     }, [machines, searchText, searchComTab, selectedProcessType])
 

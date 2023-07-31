@@ -13,15 +13,17 @@ import { getApSlice, selectAp } from './store/apSlice'
 import { getUserSlice } from './store/userSlice'
 import { getMnReqSlice } from './store/mnReqSlice'
 import { getMnRepSlice } from './store/mnRepSlice'
+import { getMnControllStock } from './store/mnControllStockSlice'
 
 import MnGM1 from './tabs/MnGM1'
 import MnGM2 from './tabs/MnGM2'
 import MnGM3 from './tabs/MnGM3'
 import MnGM5 from './tabs/MnGM5'
-import Inventory from './tabs/Inventory'
+import Inventory from './subheader/InventoryRequestSparepart'
 
 import MnGM1Header from './header/MnGM1Header'
 import MnGM2Header from './header/MnGM2Header'
+import MnInventory from './header/MnInventory'
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
     '& .FusePageSimple-header': {
@@ -40,6 +42,7 @@ function maintenanceDashboard(props) {
         dispatch(getUserSlice())
         dispatch(getMnReqSlice())
         dispatch(getMnRepSlice())
+        dispatch(getMnControllStock())
     }, [dispatch])
 
     function handleChangeTab(event, value) {
@@ -103,7 +106,7 @@ function maintenanceDashboard(props) {
                     {tabValue === 1 && <MnGM2Header />}
                     {/* {tabValue === 2 && <MnGM3 />}
                     {tabValue === 3 && <MnGM5 />} */}
-                    {tabValue === 2 && <Inventory />}
+                    {tabValue === 2 && <MnInventory />}
                 </div>
             }
         />

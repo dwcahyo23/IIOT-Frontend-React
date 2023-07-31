@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import _, { result } from 'lodash'
+import _ from 'lodash'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectAp } from '../store/apSlice'
@@ -7,13 +7,13 @@ import { selectApReq } from '../store/mnReqSlice'
 import { colors } from '@mui/material'
 import dayjs from 'dayjs'
 
-import SummaryWo from './widget/SummaryWo'
-import ChartWo from './widget/ChartWo'
-import LastAp from './widget/LastAp'
-import LastReq from './widget/LastReq'
-import LastApUser from './widget/LastApUser'
+import SummaryWo from '../tabs/widget/SummaryWo'
+import ChartWo from '../tabs/widget/ChartWo'
+import LastAp from '../tabs/widget/LastAp'
+import LastReq from '../tabs/widget/LastReq'
+import LastApUser from '../tabs/widget/LastApUser'
 
-function Inventory() {
+function InventoryRequestSparepart() {
     const dispatch = useDispatch()
     const data = useSelector(selectAp)
     const sparepart = useSelector(selectApReq)
@@ -228,4 +228,4 @@ function Inventory() {
     )
 }
 
-export default Inventory
+export default InventoryRequestSparepart

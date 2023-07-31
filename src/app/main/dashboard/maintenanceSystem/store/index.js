@@ -4,6 +4,7 @@ import APUser from './userSlice'
 import MNReq from './mnReqSlice'
 import MNRep from './mnRepSlice'
 import MnOne from './mnOneSlice'
+import MnControllStock from './mnControllStockSlice'
 
 const reducer = combineReducers({
     APPG,
@@ -11,6 +12,7 @@ const reducer = combineReducers({
     MNReq,
     MNRep,
     MnOne,
+    MnControllStock,
 })
 
 export default reducer

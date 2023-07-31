@@ -147,7 +147,7 @@ function ChartWo({ data }) {
                             className="flex-auto w-full"
                             options={chartOptions}
                             series={series}
-                            height={320}
+                            height={385}
                         />
                     </div>
                 </div>

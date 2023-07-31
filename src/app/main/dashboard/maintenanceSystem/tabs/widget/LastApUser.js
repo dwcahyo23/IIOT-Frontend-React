@@ -2,7 +2,6 @@ import {
     ListItemButton,
     ListItem,
     ListItemText,
-    Box,
     Paper,
     Typography,
     Tab,
@@ -14,21 +13,19 @@ import {
     Toolbar,
     Slide,
     Dialog,
-    IconButton,
+    TextField,
 } from '@mui/material'
 import { memo, useState, useEffect, forwardRef } from 'react'
-import { Link } from 'react-router-dom'
-import _, { get } from 'lodash'
+import _ from 'lodash'
 import dayjs from 'dayjs'
 import { useSelector } from 'react-redux'
 import { Workbook } from 'exceljs'
 import { saveAs } from 'file-saver-es'
-import { SaveAs, Cancel, Download } from '@mui/icons-material'
-import { FixedSizeList } from 'react-window'
+import { Download } from '@mui/icons-material'
 import AutoSizer from 'react-virtualized-auto-sizer'
+import { List } from 'react-virtualized'
 import { useDispatch } from 'react-redux'
 
-import { getMnOne } from '../../store/mnOneSlice'
 import { selectApUser, selectApUserById } from '../../store/userSlice'
 import { selectApRep } from '../../store/mnRepSlice'
 import StatusColor from 'src/app/main/apps/maintenanceSystem/machineTab/utils/StatusColor'
@@ -117,23 +114,40 @@ function LastApUser({ data }) {
     const [tabValue, setTabValue] = useState(0)
     const currentRange = Object.keys(listItem)[tabValue]
     const [filteredItem, setFilteredItem] = useState([])
-    const [itemLength, setItemLength] = useState(0)
-    const [countNaudit, setCountNaudt] = useState(0)
+    const [filteredText, setFilteredText] = useState(null)
     const [open, setOpen] = useState(false)
     const [selectData, setSelectData] = useState(null)
     const [toolBarHeader, setToolBarHeader] = useState('Update')
 
+    const [searchText, setSearchText] = useState('')
+
     useEffect(() => {
         if (data && listItem[currentRange]) {
-            setItemLength(listItem[currentRange]?.data.length)
             setFilteredItem(listItem[currentRange])
         }
     })
 
     useEffect(() => {
-        // console.log(filteredItem)
-        // console.log(lastTab)
-    }, [itemLength, filteredItem, lastTab, selectData])
+        const filter = _.filter(filteredItem?.data, (val) => {
+            if (
+                (!_.isUndefined(val.sheet_no) &&
+                    val.sheet_no.includes(searchText)) ||
+                (!_.isUndefined(val.mch_no) &&
+                    val.mch_no.includes(searchText)) ||
+                (!_.isUndefined(val.mch_code) &&
+                    val.mch_code.includes(searchText)) ||
+                (!_.isUndefined(val.user_req1) &&
+                    val.user_req1.includes(searchText))
+            ) {
+                return val
+            }
+        })
+        setFilteredText(filter)
+    }, [searchText, filteredItem])
+
+    const handleSearchText = (event) => {
+        setSearchText(event.target.value)
+    }
 
     const handleClose = (event, reason) => {
         if (reason !== 'backdropClick' && reason !== 'escapeKeyDown') {
@@ -150,47 +164,128 @@ function LastApUser({ data }) {
         return _.isUndefined(id) == false ? id.audit_report : 'N'
     }
 
-    const RowList = (props) => {
-        const { index, style } = props
+    // const RowList = (props) => {
+    //     const { index, style } = props
+    //     return (
+    //         <ListItem key={index} style={style} component="div" disablePadding>
+    //             {data?.leader == 'Inventory' ? (
+    //                 <ListItemButton
+    //                     onClick={() => {
+    //                         setOpen(true)
+    //                         setSelectData(filteredItem?.data[index])
+    //                         console.log(filteredItem?.data[index])
+    //                     }}
+    //                     // component={Link}
+    //                     // to={`/apps/maintenanceSystem/machines/${filteredItem?.data[index].mch_index?.uuid}/${filteredItem?.data[index].sheet_no}`}
+    //                 >
+    //                     <ListItemText>
+    //                         <Typography className="text-13 mt-2 line-clamp-2">
+    //                             {`${index + 1}. ${
+    //                                 filteredItem?.data[index].sheet_no
+    //                             } || ${filteredItem?.data[index].mch_code} || ${
+    //                                 filteredItem?.data[index].mch_com
+    //                             } || ${
+    //                                 filteredItem?.data[index].user_req1
+    //                             } || ${
+    //                                 _.isNull(
+    //                                     filteredItem?.data[index].item_stock
+    //                                 )
+    //                                     ? filteredItem?.data[index].item_name
+    //                                     : filteredItem?.data[index].item_stock
+    //                             } || ${filteredItem?.data[index].item_qty}  ${
+    //                                 filteredItem?.data[index].item_uom
+    //                             }`}
+    //                         </Typography>
+    //                     </ListItemText>
+    //                     <StatusColor
+    //                         id={filteredItem?.data[index].audit_request}
+    //                     />
+    //                     {filteredItem?.data[index].mre_request.length > 0 && (
+    //                         <StatusColor id="MRE" />
+    //                     )}
+    //                     {filteredItem?.data[index].item_ready == 'Y' &&
+    //                         filteredItem?.data[index].audit_request == 'N' && (
+    //                             <StatusColor id="Ready" />
+    //                         )}
+    //                 </ListItemButton>
+    //             ) : (
+    //                 <ListItemButton
+    //                     onClick={() => {
+    //                         setOpen(true)
+    //                         setSelectData(filteredItem?.data[index])
+    //                     }}
+    //                     // component={Link}
+    //                     // to={`/apps/maintenanceSystem/machines/${filteredItem?.data[index].mch_index?.uuid}/${filteredItem?.data[index].sheet_no}`}
+    //                 >
+    //                     <ListItemText>
+    //                         <Typography className="text-13 mt-2 line-clamp-2">
+    //                             {`${index + 1}. ${
+    //                                 filteredItem?.data[index].sheet_no
+    //                             }|${filteredItem?.data[index].mch_no}`}
+    //                         </Typography>
+    //                     </ListItemText>
+
+    //                     {findReport(filteredItem?.data[index].sheet_no) ==
+    //                         'N' && <StatusColor id="R" />}
+
+    //                     {filteredItem?.data[index].chk_mark == 'N' ? (
+    //                         <StatusColor
+    //                             id={
+    //                                 filteredItem?.data[index].appe_user !=
+    //                                 'DESYRUS'
+    //                                     ? filteredItem?.data[index].pri_no
+    //                                     : '031'
+    //                             }
+    //                         />
+    //                     ) : (
+    //                         <StatusColor
+    //                             id={filteredItem?.data[index].chk_mark}
+    //                         />
+    //                     )}
+    //                 </ListItemButton>
+    //             )}
+    //         </ListItem>
+    //     )
+    // }
+
+    function rowRenderer({
+        key, // Unique key within array of rows
+        index, // Index of row within collection
+        isScrolling, // The List is currently being scrolled
+        isVisible, // This row is visible within the List (eg it is not an overscanned row)
+        style, // Style object to be applied to row (to position it)
+    }) {
         return (
             <ListItem key={index} style={style} component="div" disablePadding>
                 {data?.leader == 'Inventory' ? (
                     <ListItemButton
                         onClick={() => {
                             setOpen(true)
-                            setSelectData(filteredItem?.data[index])
-                            console.log(filteredItem?.data[index])
+                            setSelectData(filteredText[index])
+                            console.log(filteredText[index])
                         }}
-                        // component={Link}
-                        // to={`/apps/maintenanceSystem/machines/${filteredItem?.data[index].mch_index?.uuid}/${filteredItem?.data[index].sheet_no}`}
                     >
                         <ListItemText>
                             <Typography className="text-13 mt-2 line-clamp-2">
                                 {`${index + 1}. ${
-                                    filteredItem?.data[index].sheet_no
-                                } || ${filteredItem?.data[index].mch_code} || ${
-                                    filteredItem?.data[index].mch_com
-                                } || ${
-                                    filteredItem?.data[index].user_req1
-                                } || ${
-                                    _.isNull(
-                                        filteredItem?.data[index].item_stock
-                                    )
-                                        ? filteredItem?.data[index].item_name
-                                        : filteredItem?.data[index].item_stock
-                                } || ${filteredItem?.data[index].item_qty}  ${
-                                    filteredItem?.data[index].item_uom
+                                    filteredText[index].sheet_no
+                                } || ${filteredText[index].mch_code} || ${
+                                    filteredText[index].mch_com
+                                } || ${filteredText[index].user_req1} || ${
+                                    _.isNull(filteredText[index].item_stock)
+                                        ? filteredText[index].item_name
+                                        : filteredText[index].item_stock
+                                } || ${filteredText[index].item_qty}  ${
+                                    filteredText[index].item_uom
                                 }`}
                             </Typography>
                         </ListItemText>
-                        <StatusColor
-                            id={filteredItem?.data[index].audit_request}
-                        />
-                        {filteredItem?.data[index].mre_request.length > 0 && (
+                        <StatusColor id={filteredText[index].audit_request} />
+                        {filteredText[index].mre_request.length > 0 && (
                             <StatusColor id="MRE" />
                         )}
-                        {filteredItem?.data[index].item_ready == 'Y' &&
-                            filteredItem?.data[index].audit_request == 'N' && (
+                        {filteredText[index].item_ready == 'Y' &&
+                            filteredText[index].audit_request == 'N' && (
                                 <StatusColor id="Ready" />
                             )}
                     </ListItemButton>
@@ -198,35 +293,35 @@ function LastApUser({ data }) {
                     <ListItemButton
                         onClick={() => {
                             setOpen(true)
-                            setSelectData(filteredItem?.data[index])
+                            setSelectData(filteredText[index])
                         }}
                         // component={Link}
-                        // to={`/apps/maintenanceSystem/machines/${filteredItem?.data[index].mch_index?.uuid}/${filteredItem?.data[index].sheet_no}`}
+                        // to={`/apps/maintenanceSystem/machines/${filteredText[index].mch_index?.uuid}/${filteredText[index].sheet_no}`}
                     >
                         <ListItemText>
                             <Typography className="text-13 mt-2 line-clamp-2">
                                 {`${index + 1}. ${
-                                    filteredItem?.data[index].sheet_no
-                                }|${filteredItem?.data[index].mch_no}`}
+                                    filteredText[index].sheet_no
+                                }|${filteredText[index].mch_no}`}
                             </Typography>
                         </ListItemText>
 
-                        {findReport(filteredItem?.data[index].sheet_no) ==
-                            'N' && <StatusColor id="R" />}
+                        {findReport(filteredText[index].sheet_no) == 'N' && (
+                            <StatusColor id="R" />
+                        )}
 
-                        {filteredItem?.data[index].chk_mark == 'N' ? (
+                        {filteredText[index].chk_mark == 'N' ? (
                             <StatusColor
                                 id={
-                                    filteredItem?.data[index].appe_user !=
-                                    'DESYRUS'
-                                        ? filteredItem?.data[index].pri_no
+                                    filteredText[index].appe_user !=
+                                        'DESYRUS' &&
+                                    filteredText[index].appe_user != 'desyrus'
+                                        ? filteredText[index].pri_no
                                         : '031'
                                 }
                             />
                         ) : (
-                            <StatusColor
-                                id={filteredItem?.data[index].chk_mark}
-                            />
+                            <StatusColor id={filteredText[index].chk_mark} />
                         )}
                     </ListItemButton>
                 )}
@@ -269,13 +364,37 @@ function LastApUser({ data }) {
                             </Typography>
                         </div>
                     </div>
+                </div>
+
+                <div className="flex flex-auto items-center min-w-0">
+                    <div className="flex flex-col sm:flex-row items-start justify-between">
+                        <TextField
+                            label="Search"
+                            placeholder="Enter a keyword..."
+                            className="flex w-full sm:w-256 m-8"
+                            value={searchText}
+                            inputProps={{
+                                'aria-label': 'Search',
+                            }}
+                            onChange={handleSearchText}
+                            variant="outlined"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                    </div>
+
                     {data && (
-                        <CustomToolbar props={{ rows: filteredItem?.data }} />
+                        <div className="flex flex-col sm:flex-row ml-16 items-end justify-between">
+                            <CustomToolbar
+                                props={{ rows: filteredItem?.data }}
+                            />
+                        </div>
                     )}
                 </div>
 
                 {data?.leader == 'Inventory' ? (
-                    <div className="grid grid-cols-1 lg:grid-cols-1 grid-flow-row gap-24 w-full">
+                    <div className="flex flex-auto items-center min-w-0">
                         <Tabs
                             value={tabValue}
                             onChange={(ev, value) => setTabValue(value)}
@@ -291,7 +410,7 @@ function LastApUser({ data }) {
                         </Tabs>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 lg:grid-cols-1 grid-flow-row gap-24 w-full">
+                    <div className="flex flex-auto items-center min-w-0">
                         <Tabs
                             value={tabValue}
                             onChange={(ev, value) => setTabValue(value)}
@@ -328,22 +447,20 @@ function LastApUser({ data }) {
                     </div>
                 )}
 
-                <div className="grid grid-cols-1 lg:grid-cols-1 grid-flow-row gap-24 w-full mt-32 sm:mt-16">
-                    <div className="flex flex-col flex-auto">
+                <div className="flex flex-col flex-auto">
+                    {filteredText && filteredText.length > 0 && (
                         <AutoSizer disableHeight>
                             {({ width }) => (
-                                <FixedSizeList
+                                <List
                                     width={width}
-                                    height={280}
-                                    itemCount={itemLength}
-                                    itemSize={40}
-                                    className="py-0 mt-8 divide-y"
-                                >
-                                    {RowList}
-                                </FixedSizeList>
+                                    height={300}
+                                    rowCount={filteredText.length}
+                                    rowHeight={40}
+                                    rowRenderer={rowRenderer}
+                                />
                             )}
                         </AutoSizer>
-                    </div>
+                    )}
                 </div>
             </Paper>
             <Dialog
