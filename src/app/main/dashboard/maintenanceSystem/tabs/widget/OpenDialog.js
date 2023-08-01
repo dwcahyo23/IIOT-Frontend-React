@@ -83,6 +83,33 @@ const columnsRequest = [
             dayjs(params.value).format('DD/MM/YY HH:mm'),
     },
     {
+        field: 'date_ready_request',
+        headerName: 'Ready',
+        headerClassName: 'super-app-theme--header',
+        headerAlign: 'center',
+        width: 120,
+        valueFormatter: (params) =>
+            params.value ? dayjs(params.value).format('DD/MM/YY HH:mm') : '',
+    },
+    {
+        field: 'date_mre_request',
+        headerName: 'MRE',
+        headerClassName: 'super-app-theme--header',
+        headerAlign: 'center',
+        width: 120,
+        valueFormatter: (params) =>
+            params.value ? dayjs(params.value).format('DD/MM/YY HH:mm') : '',
+    },
+    {
+        field: 'date_audit_request',
+        headerName: 'Audit',
+        headerClassName: 'super-app-theme--header',
+        headerAlign: 'center',
+        width: 120,
+        valueFormatter: (params) =>
+            params.value ? dayjs(params.value).format('DD/MM/YY HH:mm') : '',
+    },
+    {
         field: 'audit_request',
         headerName: 'Audit',
         headerClassName: 'super-app-theme--header',
@@ -94,6 +121,7 @@ const columnsRequest = [
     {
         field: 'item_stock',
         headerName: 'Sparepart',
+        minWidth: 150,
         flex: 1,
         headerClassName: 'super-app-theme--header',
         headerAlign: 'center',
@@ -101,6 +129,7 @@ const columnsRequest = [
     {
         field: 'item_name',
         headerName: 'Remarks',
+        minWidth: 150,
         flex: 1,
         headerClassName: 'super-app-theme--header',
         headerAlign: 'center',
@@ -207,10 +236,18 @@ function OpenDialog({ data, header }) {
         reset({ ...ap_sheet })
     }, [data, reset])
 
-    const [item_stock, category_request, audit_request] = watch([
+    const [
+        item_stock,
+        category_request,
+        audit_request,
+        item_ready,
+        mre_request,
+    ] = watch([
         'item_stock',
         'category_request',
         'audit_request',
+        'item_ready',
+        'mre_request',
     ])
 
     useEffect(() => {
@@ -247,11 +284,52 @@ function OpenDialog({ data, header }) {
         audit_request === 'Y'
             ? setTimeout(() => {
                   setValue('user_req2', user.data.displayName)
+                  setValue(
+                      'date_audit_request',
+                      dayjs().format('YYYY-MM-DD HH:mm:ss'),
+                      {
+                          shouldDirty: true,
+                          shouldTouch: true,
+                      }
+                  )
               }, 500)
             : setTimeout(() => {
                   setValue('user_req2', '')
               }, 500)
-    }, [item_stock, hidSparepart, category_request, audit_request])
+
+        item_ready === 'Y'
+            ? setTimeout(() => {
+                  setValue(
+                      'date_ready_request',
+                      dayjs().format('YYYY-MM-DD HH:mm:ss'),
+                      {
+                          shouldDirty: true,
+                          shouldTouch: true,
+                      }
+                  )
+              }, 500)
+            : ''
+
+        mre_request && mre_request.length > 3
+            ? setTimeout(() => {
+                  setValue(
+                      'date_mre_request',
+                      dayjs().format('YYYY-MM-DD HH:mm:ss'),
+                      {
+                          shouldDirty: true,
+                          shouldTouch: true,
+                      }
+                  )
+              }, 500)
+            : ''
+    }, [
+        item_stock,
+        hidSparepart,
+        category_request,
+        audit_request,
+        item_ready,
+        mre_request,
+    ])
 
     // useEffect(() => {
     //     console.log(tableRequest)
@@ -311,7 +389,9 @@ function OpenDialog({ data, header }) {
                     val == 'createdAt' ||
                     val == 'updatedAt' ||
                     val == 'date_request' ||
-                    val == 'date_audit_request'
+                    val == 'date_audit_request' ||
+                    val == 'date_ready_request' ||
+                    val == 'date_mre_request'
                 ) {
                     setValue(val, dayjs(data.row[val]), {
                         shouldDirty: true,
@@ -1362,7 +1442,6 @@ function OpenDialog({ data, header }) {
                                 <Controller
                                     name="user_req2"
                                     control={control}
-                                    defaultValue=""
                                     render={({ field }) => (
                                         <TextField
                                             {...field}

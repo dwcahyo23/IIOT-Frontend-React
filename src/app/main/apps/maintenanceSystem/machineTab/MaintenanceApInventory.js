@@ -171,8 +171,8 @@ function MaintenanceApReport({ data }) {
         return true
     }
 
-    const [audit_request, item_stock, category_request] = useWatch({
-        name: ['audit_request', 'item_stock', 'category_request'],
+    const [audit_request, item_stock, category_request, item_ready] = useWatch({
+        name: ['audit_request', 'item_stock', 'category_request', 'item_ready'],
         defaultValue: { audit_request: 'N', item_stock: '#0 ADD NEW ITEM' },
     })
     useEffect(() => {
