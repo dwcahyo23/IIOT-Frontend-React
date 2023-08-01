@@ -57,7 +57,12 @@ function InventoryRequestSparepart() {
         sparepart &&
         _.chain(sparepart)
             .filter((val) => {
-                if (val.mch_com == 'GM1' && val.audit_request != 'C') {
+                if (
+                    (val.mch_com == 'GM1' ||
+                        val.mch_com == 'GM3' ||
+                        val.mch_com == 'GM5') &&
+                    val.audit_request != 'C'
+                ) {
                     return val
                 }
             })
@@ -104,7 +109,12 @@ function InventoryRequestSparepart() {
         sparepart &&
         _.chain(sparepart)
             .filter((val) => {
-                if (val.mch_com == 'GM1' && val.audit_request != 'C') {
+                if (
+                    (val.mch_com == 'GM1' ||
+                        val.mch_com == 'GM3' ||
+                        val.mch_com == 'GM5') &&
+                    val.audit_request != 'C'
+                ) {
                     return val
                 }
             })

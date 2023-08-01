@@ -901,29 +901,6 @@ function OpenDialog({ data, header }) {
                             <Grid container spacing={2}>
                                 <Grid item xs={3}>
                                     <Controller
-                                        name="analyzed"
-                                        defaultValue=""
-                                        control={control}
-                                        render={({ field }) => (
-                                            <TextField
-                                                {...field}
-                                                className="mt-8 mb-16"
-                                                error={!!errors.analyzed}
-                                                helperText={
-                                                    errors?.analyzed?.message
-                                                }
-                                                label="Analyze"
-                                                id="analyzed"
-                                                variant="outlined"
-                                                fullWidth
-                                                multiline
-                                                rows={6}
-                                            />
-                                        )}
-                                    />
-                                </Grid>
-                                <Grid item xs={3}>
-                                    <Controller
                                         name="chronological"
                                         defaultValue=""
                                         control={control}
@@ -938,6 +915,29 @@ function OpenDialog({ data, header }) {
                                                 }
                                                 label="Chronological"
                                                 id="chronological"
+                                                variant="outlined"
+                                                fullWidth
+                                                multiline
+                                                rows={6}
+                                            />
+                                        )}
+                                    />
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <Controller
+                                        name="analyzed"
+                                        defaultValue=""
+                                        control={control}
+                                        render={({ field }) => (
+                                            <TextField
+                                                {...field}
+                                                className="mt-8 mb-16"
+                                                error={!!errors.analyzed}
+                                                helperText={
+                                                    errors?.analyzed?.message
+                                                }
+                                                label="Analyze"
+                                                id="analyzed"
                                                 variant="outlined"
                                                 fullWidth
                                                 multiline
