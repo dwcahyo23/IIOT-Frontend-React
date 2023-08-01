@@ -8,6 +8,7 @@ import dayjs from 'dayjs'
 import { styled } from '@mui/material/styles'
 
 import InventoryRequestSparepart from '../subheader/InventoryRequestSparepart'
+import InventoryGM2RequestSparepart from '../subheader/InventoryGM2RequestSparepart'
 import InventorySafetyStock from '../subheader/InventorySafetyStock'
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
@@ -53,7 +54,12 @@ function MnInventory() {
                         <Tab
                             className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
                             disableRipple
-                            label="Request Sparepart"
+                            label="Request Sparepart GM1"
+                        />
+                        <Tab
+                            className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
+                            disableRipple
+                            label="Request Sparepart GM2"
                         />
                         <Tab
                             className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
@@ -62,8 +68,8 @@ function MnInventory() {
                         />
                     </Tabs>
                     {tabValue === 0 && <InventoryRequestSparepart />}
-                    {tabValue === 1 && <InventorySafetyStock />}
-                    {/* {tabValue === 1 && <MnGM2SubHeaderUtility />} */}
+                    {tabValue === 1 && <InventoryGM2RequestSparepart />}
+                    {tabValue === 2 && <InventorySafetyStock />}
                 </div>
             }
         ></Root>

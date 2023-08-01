@@ -83,31 +83,11 @@ const columnsRequest = [
             dayjs(params.value).format('DD/MM/YY HH:mm'),
     },
     {
-        field: 'date_ready_request',
-        headerName: 'Ready',
-        headerClassName: 'super-app-theme--header',
-        headerAlign: 'center',
-        width: 120,
-        valueFormatter: (params) =>
-            params.value ? dayjs(params.value).format('DD/MM/YY HH:mm') : '',
-    },
-    {
-        field: 'date_mre_request',
+        field: 'mre_request',
         headerName: 'MRE',
         headerClassName: 'super-app-theme--header',
         headerAlign: 'center',
-        width: 120,
-        valueFormatter: (params) =>
-            params.value ? dayjs(params.value).format('DD/MM/YY HH:mm') : '',
-    },
-    {
-        field: 'date_audit_request',
-        headerName: 'Audit',
-        headerClassName: 'super-app-theme--header',
-        headerAlign: 'center',
-        width: 120,
-        valueFormatter: (params) =>
-            params.value ? dayjs(params.value).format('DD/MM/YY HH:mm') : '',
+        minWidth: 130,
     },
     {
         field: 'audit_request',
@@ -117,6 +97,16 @@ const columnsRequest = [
         width: 90,
         align: 'center',
         renderCell: (params) => <StatusColor id={params.value} />,
+    },
+    {
+        field: 'item_ready',
+        headerName: 'Ready',
+        headerClassName: 'super-app-theme--header',
+        headerAlign: 'center',
+        width: 90,
+        align: 'center',
+        renderCell: (params) =>
+            params.value === 'Y' ? <StatusColor id="Ready" /> : '',
     },
     {
         field: 'item_stock',
@@ -147,6 +137,33 @@ const columnsRequest = [
         width: 50,
         headerClassName: 'super-app-theme--header',
         headerAlign: 'center',
+    },
+    {
+        field: 'date_ready_request',
+        headerName: 'Ready',
+        headerClassName: 'super-app-theme--header',
+        headerAlign: 'center',
+        width: 120,
+        valueFormatter: (params) =>
+            params.value ? dayjs(params.value).format('DD/MM/YY HH:mm') : '',
+    },
+    {
+        field: 'date_mre_request',
+        headerName: 'MRE',
+        headerClassName: 'super-app-theme--header',
+        headerAlign: 'center',
+        width: 120,
+        valueFormatter: (params) =>
+            params.value ? dayjs(params.value).format('DD/MM/YY HH:mm') : '',
+    },
+    {
+        field: 'date_audit_request',
+        headerName: 'Audit',
+        headerClassName: 'super-app-theme--header',
+        headerAlign: 'center',
+        width: 120,
+        valueFormatter: (params) =>
+            params.value ? dayjs(params.value).format('DD/MM/YY HH:mm') : '',
     },
 ]
 

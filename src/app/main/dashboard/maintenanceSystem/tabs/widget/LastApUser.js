@@ -137,7 +137,9 @@ function LastApUser({ data }) {
                 (!_.isUndefined(val.mch_code) &&
                     val.mch_code.includes(searchText)) ||
                 (!_.isUndefined(val.user_req1) &&
-                    val.user_req1.includes(searchText))
+                    val.user_req1.includes(searchText)) ||
+                (!_.isUndefined(val.mre_request) &&
+                    val.mre_request.includes(searchText))
             ) {
                 return val
             }
@@ -193,7 +195,7 @@ function LastApUser({ data }) {
                                         : filteredText[index].item_stock
                                 } || ${filteredText[index].item_qty}  ${
                                     filteredText[index].item_uom
-                                }`}
+                                } ${filteredText[index].mre_request}`}
                             </Typography>
                         </ListItemText>
                         <StatusColor id={filteredText[index].audit_request} />
