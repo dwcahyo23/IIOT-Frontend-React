@@ -164,90 +164,6 @@ function LastApUser({ data }) {
         return _.isUndefined(id) == false ? id.audit_report : 'N'
     }
 
-    // const RowList = (props) => {
-    //     const { index, style } = props
-    //     return (
-    //         <ListItem key={index} style={style} component="div" disablePadding>
-    //             {data?.leader == 'Inventory' ? (
-    //                 <ListItemButton
-    //                     onClick={() => {
-    //                         setOpen(true)
-    //                         setSelectData(filteredItem?.data[index])
-    //                         console.log(filteredItem?.data[index])
-    //                     }}
-    //                     // component={Link}
-    //                     // to={`/apps/maintenanceSystem/machines/${filteredItem?.data[index].mch_index?.uuid}/${filteredItem?.data[index].sheet_no}`}
-    //                 >
-    //                     <ListItemText>
-    //                         <Typography className="text-13 mt-2 line-clamp-2">
-    //                             {`${index + 1}. ${
-    //                                 filteredItem?.data[index].sheet_no
-    //                             } || ${filteredItem?.data[index].mch_code} || ${
-    //                                 filteredItem?.data[index].mch_com
-    //                             } || ${
-    //                                 filteredItem?.data[index].user_req1
-    //                             } || ${
-    //                                 _.isNull(
-    //                                     filteredItem?.data[index].item_stock
-    //                                 )
-    //                                     ? filteredItem?.data[index].item_name
-    //                                     : filteredItem?.data[index].item_stock
-    //                             } || ${filteredItem?.data[index].item_qty}  ${
-    //                                 filteredItem?.data[index].item_uom
-    //                             }`}
-    //                         </Typography>
-    //                     </ListItemText>
-    //                     <StatusColor
-    //                         id={filteredItem?.data[index].audit_request}
-    //                     />
-    //                     {filteredItem?.data[index].mre_request.length > 0 && (
-    //                         <StatusColor id="MRE" />
-    //                     )}
-    //                     {filteredItem?.data[index].item_ready == 'Y' &&
-    //                         filteredItem?.data[index].audit_request == 'N' && (
-    //                             <StatusColor id="Ready" />
-    //                         )}
-    //                 </ListItemButton>
-    //             ) : (
-    //                 <ListItemButton
-    //                     onClick={() => {
-    //                         setOpen(true)
-    //                         setSelectData(filteredItem?.data[index])
-    //                     }}
-    //                     // component={Link}
-    //                     // to={`/apps/maintenanceSystem/machines/${filteredItem?.data[index].mch_index?.uuid}/${filteredItem?.data[index].sheet_no}`}
-    //                 >
-    //                     <ListItemText>
-    //                         <Typography className="text-13 mt-2 line-clamp-2">
-    //                             {`${index + 1}. ${
-    //                                 filteredItem?.data[index].sheet_no
-    //                             }|${filteredItem?.data[index].mch_no}`}
-    //                         </Typography>
-    //                     </ListItemText>
-
-    //                     {findReport(filteredItem?.data[index].sheet_no) ==
-    //                         'N' && <StatusColor id="R" />}
-
-    //                     {filteredItem?.data[index].chk_mark == 'N' ? (
-    //                         <StatusColor
-    //                             id={
-    //                                 filteredItem?.data[index].appe_user !=
-    //                                 'DESYRUS'
-    //                                     ? filteredItem?.data[index].pri_no
-    //                                     : '031'
-    //                             }
-    //                         />
-    //                     ) : (
-    //                         <StatusColor
-    //                             id={filteredItem?.data[index].chk_mark}
-    //                         />
-    //                     )}
-    //                 </ListItemButton>
-    //             )}
-    //         </ListItem>
-    //     )
-    // }
-
     function rowRenderer({
         key, // Unique key within array of rows
         index, // Index of row within collection
@@ -295,8 +211,6 @@ function LastApUser({ data }) {
                             setOpen(true)
                             setSelectData(filteredText[index])
                         }}
-                        // component={Link}
-                        // to={`/apps/maintenanceSystem/machines/${filteredText[index].mch_index?.uuid}/${filteredText[index].sheet_no}`}
                     >
                         <ListItemText>
                             <Typography className="text-13 mt-2 line-clamp-2">
@@ -427,13 +341,14 @@ function LastApUser({ data }) {
                                     label={
                                         <Badge
                                             badgeContent={
-                                                _.filter(
+                                                _.reject(
                                                     listItem[key]?.data,
-                                                    (val) => {
-                                                        return (
-                                                            val.chk_mark == 'N'
-                                                        )
-                                                    }
+                                                    (item) =>
+                                                        _.find(data_report, {
+                                                            sheet_no:
+                                                                item.sheet_no,
+                                                            audit_report: 'Y',
+                                                        })
                                                 ).length
                                             }
                                             color="error"
