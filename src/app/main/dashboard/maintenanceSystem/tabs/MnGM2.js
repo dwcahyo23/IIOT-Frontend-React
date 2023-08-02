@@ -159,7 +159,7 @@ function MnGM2() {
                 <SummaryWo
                     data={{
                         count: filterDataMonth.breakdown || {},
-                        title: 'Breakdown',
+                        title: 'Breakdown Time',
                         name: 'AP Sheet',
                         colorHg: colors.red[400],
                         colorLw: colors.red[300],

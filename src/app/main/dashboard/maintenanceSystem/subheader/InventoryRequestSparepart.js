@@ -199,7 +199,7 @@ function InventoryRequestSparepart() {
                         colorHg: colors.green[400],
                         colorLw: colors.green[300],
                         extra: {
-                            name: 'Total Audit',
+                            name: 'Total Publish MRE',
                             count: filterSparepart[dayjs().format('MMM')]
                                 ?.request_mre_audit,
                         },
@@ -217,7 +217,7 @@ function InventoryRequestSparepart() {
                         colorHg: colors.orange[400],
                         colorLw: colors.orange[300],
                         extra: {
-                            name: 'Total Audit',
+                            name: 'Total Ready',
                             count: filterSparepart[dayjs().format('MMM')]
                                 ?.request_ready_audit,
                         },

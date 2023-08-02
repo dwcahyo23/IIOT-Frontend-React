@@ -6,31 +6,37 @@ import { Chip } from '@mui/material'
 export const status = [
     {
         id: '01',
-        name: 'Breakdown',
+        name: 'BT',
         color: 'error',
         icon: 'heroicons-outline:exclamation',
     },
     {
         id: '02',
-        name: 'Still Run',
+        name: 'SR',
         color: 'warning',
         icon: 'heroicons-outline:exclamation-circle',
     },
     {
         id: '03',
-        name: 'E.Preventive',
+        name: 'EP',
         color: 'primary',
         icon: 'heroicons-outline:exclamation-circle',
     },
     {
         id: '031',
-        name: 'I.Preventive',
+        name: 'IP',
         color: 'primary',
         icon: 'heroicons-outline:exclamation-circle',
     },
     {
         id: '04',
-        name: 'Workshop',
+        name: 'WSR',
+        color: 'warning',
+        icon: 'heroicons-outline:exclamation-circle',
+    },
+    {
+        id: '05',
+        name: 'WBT',
         color: 'warning',
         icon: 'heroicons-outline:exclamation-circle',
     },
@@ -42,7 +48,7 @@ export const status = [
     },
     {
         id: 'N',
-        name: 'n.audit',
+        name: 'unaudit',
         color: 'error',
         icon: 'heroicons-outline:x',
     },
@@ -60,13 +66,13 @@ export const status = [
     },
     {
         id: 'Ready',
-        name: 'Ready',
+        name: 'Rdy',
         color: 'warning',
         icon: 'heroicons-outline:exclamation-circle',
     },
     {
         id: 'N/Y',
-        name: 'NOT YET',
+        name: 'N/Yt',
         color: 'error',
         icon: 'heroicons-outline:exclamation',
     },
@@ -78,13 +84,13 @@ export const status = [
     },
     {
         id: 'R',
-        name: 'n.report',
+        name: 'Report',
         color: 'error',
         icon: 'heroicons-outline:x',
     },
     {
         id: 'T',
-        name: 'n.target',
+        name: 'Target',
         color: 'error',
         icon: 'heroicons-outline:x',
     },

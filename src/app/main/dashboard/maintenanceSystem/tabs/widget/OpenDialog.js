@@ -177,6 +177,7 @@ function OpenDialog({ data, header }) {
     const [tabValue, setTabValue] = useState('1')
     const [hidSparepart, setHidSparepart] = useState(false)
     const [tableRequest, setTableRequest] = useState([])
+    const [disAuditReq, setDisAuditReq] = useState(false)
 
     const methods = useForm({
         mode: 'onChange',
@@ -303,12 +304,9 @@ function OpenDialog({ data, header }) {
                   setValue('user_req2', user.data.displayName)
                   setValue(
                       'date_audit_request',
-                      dayjs().format('YYYY-MM-DD HH:mm:ss'),
-                      {
-                          shouldDirty: true,
-                          shouldTouch: true,
-                      }
+                      dayjs().format('YYYY-MM-DD HH:mm:ss')
                   )
+                  console.log(watch('date_audit_request'))
               }, 500)
             : setTimeout(() => {
                   setValue('user_req2', '')
@@ -318,25 +316,20 @@ function OpenDialog({ data, header }) {
             ? setTimeout(() => {
                   setValue(
                       'date_ready_request',
-                      dayjs().format('YYYY-MM-DD HH:mm:ss'),
-                      {
-                          shouldDirty: true,
-                          shouldTouch: true,
-                      }
+                      dayjs().format('YYYY-MM-DD HH:mm:ss')
                   )
+                  console.log(watch('date_ready_request'))
+                  setDisAuditReq(false)
               }, 500)
-            : ''
+            : setDisAuditReq(true)
 
         mre_request && mre_request.length > 3
             ? setTimeout(() => {
                   setValue(
                       'date_mre_request',
-                      dayjs().format('YYYY-MM-DD HH:mm:ss'),
-                      {
-                          shouldDirty: true,
-                          shouldTouch: true,
-                      }
+                      dayjs().format('YYYY-MM-DD HH:mm:ss')
                   )
+                  console.log(watch('date_mre_request'))
               }, 500)
             : ''
     }, [
@@ -348,9 +341,12 @@ function OpenDialog({ data, header }) {
         mre_request,
     ])
 
-    // useEffect(() => {
-    //     console.log(tableRequest)
-    // }, [tableRequest])
+    useEffect(() => {
+        console.log(MnOne)
+        if (!MnOne) {
+            return
+        }
+    }, [MnOne])
 
     function handleTabChange(ev, val) {
         setTabValue(val)
@@ -764,7 +760,10 @@ function OpenDialog({ data, header }) {
                                                     Preventive
                                                 </MenuItem>
                                                 <MenuItem value="04">
-                                                    Workshop
+                                                    Workshop Stil Run
+                                                </MenuItem>
+                                                <MenuItem value="05">
+                                                    Workshop Breakdown
                                                 </MenuItem>
                                             </TextField>
                                         )}
@@ -1481,7 +1480,6 @@ function OpenDialog({ data, header }) {
                                 />
                             </Grid>
                         </Grid>
-
                         <Grid container spacing={2}>
                             <Grid item xs={4}>
                                 <Button

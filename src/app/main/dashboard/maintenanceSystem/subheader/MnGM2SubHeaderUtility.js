@@ -154,7 +154,7 @@ function MnGM2SubHeaderUtility() {
                     data={{
                         count: filterData[dayjs().format('MMMM')]?.breakdown,
                         title: `Utility ${dayjs().format('MMMM')}`,
-                        name: `AP Sheet Breakdown`,
+                        name: `AP Sheet Breakdown Time`,
                         colorHg: colors.red[400],
                         colorLw: colors.red[300],
                         extra: {

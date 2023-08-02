@@ -73,7 +73,7 @@ function MnGM2SubHeaderMachinery() {
                     }
                 }
             })
-            .sortBy(['s_ymd'])
+            .sortBy(['ymd'])
             .groupBy((val) => dayjs(val.ymd).format('MMMM'))
             .mapValues((items) => {
                 return {
@@ -126,8 +126,7 @@ function MnGM2SubHeaderMachinery() {
                 if (
                     _.includes(selectDep_no, val.dep_no) &&
                     val.com_no == '02' &&
-                    val.chk_mark != 'C' &&
-                    val.pri_no != '04'
+                    val.chk_mark != 'C'
                 ) {
                     if (_.isNull(val.mch_no)) {
                     } else {
@@ -135,6 +134,7 @@ function MnGM2SubHeaderMachinery() {
                     }
                 }
             })
+            .orderBy(['ymd'], ['desc'])
             .groupBy((val) => dayjs(val.ymd).format('MMMM'))
             .mapValues((items) => {
                 return {
@@ -163,7 +163,8 @@ function MnGM2SubHeaderMachinery() {
                     _.includes(muslih, val.dep_no) &&
                     val.com_no == '02' &&
                     val.chk_mark != 'C' &&
-                    val.pri_no != '04'
+                    val.pri_no != '04' &&
+                    val.pri_no != '05'
                 ) {
                     if (
                         _.includes(val.mch_no, 'PF') ||
@@ -179,6 +180,7 @@ function MnGM2SubHeaderMachinery() {
                     }
                 }
             })
+            .orderBy(['ymd'], ['desc'])
             .groupBy((val) => dayjs(val.ymd).format('MMMM'))
             .mapValues((items) => {
                 return {
@@ -207,7 +209,8 @@ function MnGM2SubHeaderMachinery() {
                     _.includes(teguh, val.dep_no) &&
                     val.com_no == '02' &&
                     val.chk_mark != 'C' &&
-                    val.pri_no != '04'
+                    val.pri_no != '04' &&
+                    val.pri_no != '05'
                 ) {
                     if (
                         _.includes(val.mch_no, 'PR') ||
@@ -227,6 +230,7 @@ function MnGM2SubHeaderMachinery() {
                     }
                 }
             })
+            .orderBy(['ymd'], ['desc'])
             .groupBy((val) => dayjs(val.ymd).format('MMMM'))
             .mapValues((items) => {
                 return {
@@ -255,7 +259,8 @@ function MnGM2SubHeaderMachinery() {
                     _.includes(aris, val.dep_no) &&
                     val.com_no == '02' &&
                     val.chk_mark != 'C' &&
-                    val.pri_no != '04'
+                    val.pri_no != '04' &&
+                    val.pri_no != '05'
                 ) {
                     if (
                         _.includes(val.mch_no, 'CN') ||
@@ -290,6 +295,7 @@ function MnGM2SubHeaderMachinery() {
                     }
                 }
             })
+            .orderBy(['ymd'], ['desc'])
             .groupBy((val) => dayjs(val.ymd).format('MMMM'))
             .mapValues((items) => {
                 return {
@@ -335,7 +341,7 @@ function MnGM2SubHeaderMachinery() {
                     data={{
                         count: filterData[dayjs().format('MMMM')]?.breakdown,
                         title: `Machinery ${dayjs().format('MMMM')}`,
-                        name: `AP Sheet Breakdown`,
+                        name: `AP Sheet Breakdown Time`,
                         colorHg: colors.red[400],
                         colorLw: colors.red[300],
                         extra: {

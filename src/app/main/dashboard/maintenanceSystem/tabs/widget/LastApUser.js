@@ -128,6 +128,10 @@ function LastApUser({ data }) {
     })
 
     useEffect(() => {
+        console.log(selectData)
+    }, [selectData])
+
+    useEffect(() => {
         const filter = _.filter(filteredItem?.data, (val) => {
             if (
                 (!_.isUndefined(val.sheet_no) &&
@@ -195,7 +199,7 @@ function LastApUser({ data }) {
                                         : filteredText[index].item_stock
                                 } || ${filteredText[index].item_qty}  ${
                                     filteredText[index].item_uom
-                                } ${filteredText[index].mre_request}`}
+                                } || ${filteredText[index].mre_request}`}
                             </Typography>
                         </ListItemText>
                         <StatusColor id={filteredText[index].audit_request} />
@@ -229,11 +233,15 @@ function LastApUser({ data }) {
                         {filteredText[index].chk_mark == 'N' ? (
                             <StatusColor
                                 id={
-                                    filteredText[index].appe_user !=
-                                        'DESYRUS' &&
-                                    filteredText[index].appe_user != 'desyrus'
-                                        ? filteredText[index].pri_no
-                                        : '031'
+                                    (filteredText[index].appe_user ==
+                                        'DESYRUS' ||
+                                        filteredText[index].appe_user ==
+                                            'desyrus' ||
+                                        filteredText[index].appe_user ==
+                                            'SADRI') &&
+                                    filteredText[index].pri_no == '03'
+                                        ? '031'
+                                        : filteredText[index].pri_no
                                 }
                             />
                         ) : (

@@ -19,50 +19,31 @@ function MnGM1SubHeaderWorkshop() {
             .filter((val) => {
                 if (
                     val.com_no == '01' &&
-                    val.pri_no == '04' &&
+                    (val.pri_no == '04' || val.pri_no == '05') &&
                     val.chk_mark != 'C'
                 ) {
                     return val
                 }
             })
-            .sortBy(['s_ymd'])
+            .sortBy(['ymd'])
             .groupBy((val) => dayjs(val.ymd).format('MMMM'))
             .mapValues((items) => {
                 return {
                     breakdown: _.countBy(items, (val) =>
-                        val.pri_no == '01' ? 'pass' : 'fail'
+                        val.pri_no == '05' ? 'pass' : 'fail'
                     ),
                     still_run: _.countBy(items, (val) =>
-                        val.pri_no == '02' ? 'pass' : 'fail'
-                    ),
-                    preventive: _.countBy(items, (val) =>
-                        val.pri_no == '03' ? 'pass' : 'fail'
-                    ),
-                    workshop: _.countBy(items, (val) =>
                         val.pri_no == '04' ? 'pass' : 'fail'
-                    ),
-                    work_order: _.countBy(items, (val) =>
-                        val ? 'pass' : 'fail'
                     ),
                     audit: _.countBy(items, (val) =>
                         val.chk_mark == 'Y' ? 'pass' : 'fail'
                     ),
                     breakdown_audit: _.countBy(items, (val) =>
-                        val.pri_no == '01' && val.chk_mark == 'Y'
+                        val.pri_no == '05' && val.chk_mark == 'Y'
                             ? 'pass'
                             : 'fail'
                     ),
                     still_run_audit: _.countBy(items, (val) =>
-                        val.pri_no == '02' && val.chk_mark == 'Y'
-                            ? 'pass'
-                            : 'fail'
-                    ),
-                    preventive_audit: _.countBy(items, (val) =>
-                        val.pri_no == '03' && val.chk_mark == 'Y'
-                            ? 'pass'
-                            : 'fail'
-                    ),
-                    workshop_audit: _.countBy(items, (val) =>
                         val.pri_no == '04' && val.chk_mark == 'Y'
                             ? 'pass'
                             : 'fail'
@@ -79,12 +60,13 @@ function MnGM1SubHeaderWorkshop() {
             .filter((val) => {
                 if (
                     val.com_no == '01' &&
-                    val.pri_no == '04' &&
+                    (val.pri_no == '04' || val.pri_no == '05') &&
                     val.chk_mark != 'C'
                 ) {
                     return val
                 }
             })
+            .orderBy(['ymd'], ['desc'])
             .groupBy((val) => dayjs(val.ymd).format('MMMM'))
             .mapValues((items) => {
                 return {
@@ -94,10 +76,10 @@ function MnGM1SubHeaderWorkshop() {
                         }
                     }),
                     breakdown: _.countBy(items, (val) =>
-                        val.pri_no == '01' ? 'pass' : 'fail'
+                        val.pri_no == '05' ? 'pass' : 'fail'
                     ),
                     still_run: _.countBy(items, (val) =>
-                        val.pri_no == '02' ? 'pass' : 'fail'
+                        val.pri_no == '04' ? 'pass' : 'fail'
                     ),
                     preventive: _.countBy(items, (val) =>
                         val.pri_no == '03' ? 'pass' : 'fail'

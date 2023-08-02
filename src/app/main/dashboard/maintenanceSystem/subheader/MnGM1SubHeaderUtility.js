@@ -33,7 +33,7 @@ function MnGM1SubHeaderUtility() {
                     return val
                 }
             })
-            .sortBy(['s_ymd'])
+            .sortBy(['ymd'])
             .groupBy((val) => dayjs(val.ymd).format('MMMM'))
             .mapValues((items) => {
                 return {
@@ -76,8 +76,6 @@ function MnGM1SubHeaderUtility() {
             })
             .value()
 
-    const d = 'a'
-    d.includes
     const listItemUt =
         data &&
         _.chain(data)
@@ -98,6 +96,7 @@ function MnGM1SubHeaderUtility() {
                     return val
                 }
             })
+            .orderBy(['ymd'], ['desc'])
             .groupBy((val) => dayjs(val.ymd).format('MMMM'))
             .mapValues((items) => {
                 return {
@@ -150,7 +149,7 @@ function MnGM1SubHeaderUtility() {
                     data={{
                         count: filterData[dayjs().format('MMMM')]?.breakdown,
                         title: `Utility ${dayjs().format('MMMM')}`,
-                        name: `AP Sheet Breakdown`,
+                        name: `AP Sheet Breakdown Time`,
                         colorHg: colors.red[400],
                         colorLw: colors.red[300],
                         extra: {

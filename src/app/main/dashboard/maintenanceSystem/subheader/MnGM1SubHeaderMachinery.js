@@ -72,7 +72,7 @@ function MnGM1SubHeaderMachinery() {
                     }
                 }
             })
-            .sortBy(['s_ymd'])
+            .sortBy(['ymd'])
             .groupBy((val) => dayjs(val.ymd).format('MMMM'))
             .mapValues((items) => {
                 return {
@@ -143,6 +143,7 @@ function MnGM1SubHeaderMachinery() {
                     }
                 }
             })
+            .orderBy(['ymd'], ['desc'])
             .groupBy((val) => dayjs(val.ymd).format('MMMM'))
             .mapValues((items) => {
                 return {
@@ -196,6 +197,7 @@ function MnGM1SubHeaderMachinery() {
                     }
                 }
             })
+            .orderBy(['ymd'], ['desc'])
             .groupBy((val) => dayjs(val.ymd).format('MMMM'))
             .mapValues((items) => {
                 return {
@@ -247,6 +249,7 @@ function MnGM1SubHeaderMachinery() {
                     }
                 }
             })
+            .orderBy(['ymd'], ['desc'])
             .groupBy((val) => dayjs(val.ymd).format('MMMM'))
             .mapValues((items) => {
                 return {
@@ -292,6 +295,7 @@ function MnGM1SubHeaderMachinery() {
                     }
                 }
             })
+            .orderBy(['ymd'], ['desc'])
             .groupBy((val) => dayjs(val.ymd).format('MMMM'))
             .mapValues((items) => {
                 return {
@@ -337,7 +341,7 @@ function MnGM1SubHeaderMachinery() {
                     data={{
                         count: filterData[dayjs().format('MMMM')]?.breakdown,
                         title: `Machinery ${dayjs().format('MMMM')}`,
-                        name: `AP Sheet Breakdown`,
+                        name: `AP Sheet Breakdown Time`,
                         colorHg: colors.red[400],
                         colorLw: colors.red[300],
                         extra: {

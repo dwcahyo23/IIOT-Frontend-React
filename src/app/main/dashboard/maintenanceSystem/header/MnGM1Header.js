@@ -134,7 +134,7 @@ function MnGM1Header() {
                                 data={{
                                     count: filterData[dayjs().format('MMMM')]
                                         ?.breakdown,
-                                    title: 'Breakdown',
+                                    title: 'Breakdown Time',
                                     name: 'AP Sheet',
                                     colorHg: colors.red[400],
                                     colorLw: colors.red[300],
