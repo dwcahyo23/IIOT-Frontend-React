@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectAp } from '../store/apSlice'
 import { selectApRep, selectApRepById } from '../store/mnRepSlice'
+import { selectApReq } from '../store/mnReqSlice'
 import dayjs from 'dayjs'
 import { Typography, colors } from '@mui/material'
 
@@ -13,6 +14,7 @@ import SummaryWo from '../tabs/widget/SummaryWo'
 
 function MnGM1SubHeaderMachinery() {
     const data = useSelector(selectAp)
+    const sparepart = useSelector(selectApReq)
 
     const selectDep_no = [
         'PDHD1',
@@ -163,6 +165,8 @@ function MnGM1SubHeaderMachinery() {
                 }
             })
             .value()
+
+    console.log(listItemBenyamin)
 
     const listItemDidi =
         data &&

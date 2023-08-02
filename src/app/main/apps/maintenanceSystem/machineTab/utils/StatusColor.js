@@ -84,9 +84,15 @@ export const status = [
     },
     {
         id: 'R',
-        name: 'Report',
+        name: 'REP',
         color: 'error',
         icon: 'heroicons-outline:x',
+    },
+    {
+        id: 'S',
+        name: 'REQ',
+        color: 'error',
+        icon: 'heroicons-outline:exclamation',
     },
     {
         id: 'T',

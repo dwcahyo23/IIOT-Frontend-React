@@ -26,7 +26,6 @@ import AutoSizer from 'react-virtualized-auto-sizer'
 import { List } from 'react-virtualized'
 import { useDispatch } from 'react-redux'
 
-import { selectApReq } from '../../store/mnReqSlice'
 import { selectApUser, selectApUserById } from '../../store/userSlice'
 import { selectApRep } from '../../store/mnRepSlice'
 import StatusColor from 'src/app/main/apps/maintenanceSystem/machineTab/utils/StatusColor'
@@ -104,13 +103,12 @@ const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />
 })
 
-function LastApUser({ data }) {
+function LastApLeader({ data, summary }) {
     const dispatch = useDispatch()
     const user = useSelector((selectApUser) =>
         selectApUserById(selectApUser, data.user)
     )
     const data_report = useSelector(selectApRep)
-    const sparepart = useSelector(selectApReq)
     const listItem = data?.listItemMonth
     const lastTab = Object.keys(listItem).length - 1
     const [tabValue, setTabValue] = useState(0)
@@ -126,25 +124,21 @@ function LastApUser({ data }) {
     useEffect(() => {
         if (data && listItem[currentRange]) {
             setFilteredItem(listItem[currentRange])
+            // summary(_.omit(filteredItem, ['data']))
         }
     })
 
     useEffect(() => {
-        console.log(filteredText)
-    }, [filteredText])
+        // summary({ breakdown: filteredItem.breakdown })
+        summary(filteredItem)
+        // console.log(filteredItem)
+    }, [filteredItem])
 
     useEffect(() => {
         // console.log(selectData)
     }, [selectData])
 
     useEffect(() => {
-        // const map = _.map(filteredItem?.data, (val) => {
-        //     return {
-        //         ...val,
-        //         sp: _.filter(sparepart, { sheet_no: val.sheet_no }),
-        //     }
-        // })
-
         const filter = _.filter(filteredItem?.data, (val) => {
             if (
                 (!_.isUndefined(val.sheet_no) &&
@@ -181,11 +175,6 @@ function LastApUser({ data }) {
     const findReport = (data) => {
         const id = _.find(data_report, { sheet_no: data })
         return _.isUndefined(id) == false ? id.audit_report : 'N'
-    }
-
-    const findRequest = (data) => {
-        const id = _.filter(sparepart, { sheet_no: data })
-        return _.every(id, { audit_request: 'Y' })
     }
 
     function rowRenderer({
@@ -246,10 +235,6 @@ function LastApUser({ data }) {
 
                         {findReport(filteredText[index].sheet_no) == 'N' && (
                             <StatusColor id="R" />
-                        )}
-
-                        {findRequest(filteredText[index].sheet_no) == false && (
-                            <StatusColor id="S" />
                         )}
 
                         {filteredText[index].chk_mark == 'N' ? (
@@ -437,4 +422,4 @@ function LastApUser({ data }) {
     )
 }
 
-export default memo(LastApUser)
+export default memo(LastApLeader)
