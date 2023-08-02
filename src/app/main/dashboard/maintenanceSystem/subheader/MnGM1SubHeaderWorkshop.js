@@ -52,8 +52,6 @@ function MnGM1SubHeaderWorkshop() {
             })
             .value()
 
-    const d = 'a'
-    d.includes
     const listItemWS =
         data &&
         _.chain(data)
