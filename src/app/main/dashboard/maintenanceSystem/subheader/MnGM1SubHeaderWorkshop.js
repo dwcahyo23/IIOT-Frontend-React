@@ -115,15 +115,32 @@ function MnGM1SubHeaderWorkshop() {
             <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
                 <SummaryWo
                     data={{
-                        count: filterData[dayjs().format('MMMM')]?.workshop,
+                        count: filterData[dayjs().format('MMMM')]?.breakdown,
                         title: `Workshop ${dayjs().format('MMMM')}`,
-                        name: `AP Sheet Workshop`,
-                        colorHg: colors.brown[400],
-                        colorLw: colors.brown[300],
+                        name: `AP Sheet Breakdown Time`,
+                        colorHg: colors.red[400],
+                        colorLw: colors.red[300],
                         extra: {
                             name: 'Total Audit',
                             count: filterData[dayjs().format('MMMM')]
-                                ?.workshop_audit,
+                                ?.breakdown_audit,
+                        },
+                    }}
+                />
+            </motion.div>
+
+            <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
+                <SummaryWo
+                    data={{
+                        count: filterData[dayjs().format('MMMM')]?.still_run,
+                        title: `Workshop ${dayjs().format('MMMM')}`,
+                        name: `AP Sheet Still Run`,
+                        colorHg: colors.orange[400],
+                        colorLw: colors.orange[300],
+                        extra: {
+                            name: 'Total Audit',
+                            count: filterData[dayjs().format('MMMM')]
+                                ?.still_run,
                         },
                     }}
                 />
