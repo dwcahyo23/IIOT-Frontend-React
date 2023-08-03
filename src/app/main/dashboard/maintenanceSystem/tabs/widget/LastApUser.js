@@ -220,7 +220,12 @@ function LastApUser({ data }) {
                                 } || ${filteredText[index].mre_request}`}
                             </Typography>
                         </ListItemText>
-                        <StatusColor id={filteredText[index].audit_request} />
+
+                        {filteredText[index].audit_request == 'Y' ? (
+                            <StatusColor id="Y" />
+                        ) : (
+                            <StatusColor id="N" />
+                        )}
                         {filteredText[index].mre_request.length > 0 && (
                             <StatusColor id="MRE" />
                         )}

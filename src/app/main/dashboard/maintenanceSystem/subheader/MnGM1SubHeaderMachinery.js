@@ -16,7 +16,7 @@ import SummaryWo from '../tabs/widget/SummaryWo'
 
 function MnGM1SubHeaderMachinery() {
     const data = useSelector(selectAp)
-    const sparepart = useSelector(selectApReq)
+    // const sparepart = useSelector(selectApReq)
     const machine = useSelector(selectMnMachine)
     const [workOrder, setWorkOrder] = useState([])
 
@@ -56,21 +56,26 @@ function MnGM1SubHeaderMachinery() {
 
     useEffect(() => {
         if (data) {
-            _.filter(data, (val) => {
-                if (
-                    val.com_no == '01' &&
-                    val.chk_mark != 'C' &&
-                    dayjs(val.ymd).year() == dayjs().year()
-                ) {
-                    setWorkOrder(val)
-                }
-            })
+            const res = _(data)
+                .filter((val) => {
+                    if (
+                        val.com_no == '01' &&
+                        val.chk_mark != 'C' &&
+                        dayjs(val.ymd).year() == dayjs().year()
+                    ) {
+                        return val
+                    }
+                })
+                .value()
+            setWorkOrder(res)
         }
     }, [data])
 
     useEffect(() => {
-        console.log(workOrder)
-    }, [workOrder])
+        // if(machine ){
+        //     const res = _(machine).groupBy((val) => )
+        // }
+    }, [workOrder, machine])
 
     const filterData =
         data &&
