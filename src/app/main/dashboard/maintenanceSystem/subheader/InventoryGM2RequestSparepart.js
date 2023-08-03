@@ -72,14 +72,14 @@ function InventoryGM2RequestSparepart() {
                         val.audit_request == 'N' ? 'pass' : 'fail'
                     ),
                     request_mre: _.countBy(items, (val) =>
-                        val.mre_request.length > 0 &&
+                        val.mre_request &&
                         val.item_ready == 'N' &&
                         val.audit_request == 'N'
                             ? 'pass'
                             : 'fail'
                     ),
                     request_mre_audit: _.countBy(items, (val) =>
-                        val.mre_request.length > 0 &&
+                        val.mre_request &&
                         val.item_ready == 'Y' &&
                         val.audit_request == 'Y'
                             ? 'pass'

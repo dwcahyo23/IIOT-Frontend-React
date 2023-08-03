@@ -226,7 +226,7 @@ function LastApUser({ data }) {
                         ) : (
                             <StatusColor id="N" />
                         )}
-                        {filteredText[index].mre_request.length > 0 && (
+                        {filteredText[index].mre_request?.length > 0 && (
                             <StatusColor id="MRE" />
                         )}
                         {filteredText[index].item_ready == 'Y' &&
