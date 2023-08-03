@@ -177,7 +177,7 @@ function OpenDialog({ data, header }) {
     const [tabValue, setTabValue] = useState('1')
     const [hidSparepart, setHidSparepart] = useState(false)
     const [tableRequest, setTableRequest] = useState([])
-    const [disAuditReq, setDisAuditReq] = useState(false)
+    const [disAuditReq, setDisAuditReq] = useState(true)
 
     const methods = useForm({
         mode: 'onChange',
@@ -306,7 +306,7 @@ function OpenDialog({ data, header }) {
                       'date_audit_request',
                       dayjs().format('YYYY-MM-DD HH:mm:ss')
                   )
-                  console.log(watch('date_audit_request'))
+                  //   console.log(watch('date_audit_request'))
               }, 500)
             : setTimeout(() => {
                   setValue('user_req2', '')
@@ -318,7 +318,7 @@ function OpenDialog({ data, header }) {
                       'date_ready_request',
                       dayjs().format('YYYY-MM-DD HH:mm:ss')
                   )
-                  console.log(watch('date_ready_request'))
+                  //   console.log(watch('date_ready_request'))
                   setDisAuditReq(false)
               }, 500)
             : setDisAuditReq(true)
@@ -329,7 +329,7 @@ function OpenDialog({ data, header }) {
                       'date_mre_request',
                       dayjs().format('YYYY-MM-DD HH:mm:ss')
                   )
-                  console.log(watch('date_mre_request'))
+                  //   console.log(watch('date_mre_request'))
               }, 500)
             : ''
     }, [
@@ -341,8 +341,10 @@ function OpenDialog({ data, header }) {
         mre_request,
     ])
 
+    console.log(disAuditReq)
+
     useEffect(() => {
-        console.log(MnOne)
+        // console.log(MnOne)
         if (!MnOne) {
             return
         }
@@ -1395,6 +1397,10 @@ function OpenDialog({ data, header }) {
                                             autoFocus
                                             id="audit_request"
                                             fullWidth
+                                            disabled={disAuditReq}
+                                            // InputProps={{
+                                            //     readOnly: { disAuditReq },
+                                            // }}
                                         >
                                             <MenuItem value="Y">Audit</MenuItem>
                                             <MenuItem value="C">
@@ -1486,7 +1492,7 @@ function OpenDialog({ data, header }) {
                                     className="whitespace-nowrap mb-16"
                                     variant="contained"
                                     color="secondary"
-                                    // disabled={valid()}
+                                    // disabled={valid()
                                     onClick={handleSaveRequest}
                                 >
                                     Save

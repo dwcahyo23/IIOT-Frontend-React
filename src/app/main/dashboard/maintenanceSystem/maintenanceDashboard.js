@@ -14,6 +14,7 @@ import { getUserSlice } from './store/userSlice'
 import { getMnReqSlice } from './store/mnReqSlice'
 import { getMnRepSlice } from './store/mnRepSlice'
 import { getMnControllStock } from './store/mnControllStockSlice'
+import { getMnMachineSlice } from './store/mnMachineSlice'
 
 import MnGM1 from './tabs/MnGM1'
 import MnGM2 from './tabs/MnGM2'
@@ -43,6 +44,7 @@ function maintenanceDashboard(props) {
         dispatch(getMnReqSlice())
         dispatch(getMnRepSlice())
         dispatch(getMnControllStock())
+        dispatch(getMnMachineSlice())
     }, [dispatch])
 
     function handleChangeTab(event, value) {

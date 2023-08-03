@@ -130,7 +130,7 @@ function LastApUser({ data }) {
     })
 
     useEffect(() => {
-        console.log(filteredText)
+        // console.log(filteredText)
     }, [filteredText])
 
     useEffect(() => {
@@ -202,7 +202,7 @@ function LastApUser({ data }) {
                         onClick={() => {
                             setOpen(true)
                             setSelectData(filteredText[index])
-                            console.log(filteredText[index])
+                            // console.log(filteredText[index])
                         }}
                     >
                         <ListItemText>

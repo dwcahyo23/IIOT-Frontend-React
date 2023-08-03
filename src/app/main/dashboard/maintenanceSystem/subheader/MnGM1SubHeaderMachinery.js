@@ -2,11 +2,13 @@ import { motion } from 'framer-motion'
 import _ from 'lodash'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import dayjs from 'dayjs'
+import { Typography, colors } from '@mui/material'
+
 import { selectAp } from '../store/apSlice'
 import { selectApRep, selectApRepById } from '../store/mnRepSlice'
 import { selectApReq } from '../store/mnReqSlice'
-import dayjs from 'dayjs'
-import { Typography, colors } from '@mui/material'
+import { selectMnMachine } from '../store/mnMachineSlice'
 
 import ChartWo from '../tabs/widget/ChartWo'
 import LastApUser from '../tabs/widget/LastApUser'
@@ -15,6 +17,8 @@ import SummaryWo from '../tabs/widget/SummaryWo'
 function MnGM1SubHeaderMachinery() {
     const data = useSelector(selectAp)
     const sparepart = useSelector(selectApReq)
+    const machine = useSelector(selectMnMachine)
+    const [workOrder, setWorkOrder] = useState([])
 
     const selectDep_no = [
         'PDHD1',
@@ -46,9 +50,27 @@ function MnGM1SubHeaderMachinery() {
         'PCGD1',
     ]
 
-    const didi = ['PDMC1', 'PDMC3', 'PDMR1', 'PDNC1', 'PDNT1', 'PDHB1', 'MNAD1']
+    const didi = ['PDMC1', 'PDNC1', 'PDHB1', 'MNAD1']
 
     const ahri = ['PDTR1', 'PDPU1', 'PCGD1', 'MNAD1']
+
+    useEffect(() => {
+        if (data) {
+            _.filter(data, (val) => {
+                if (
+                    val.com_no == '01' &&
+                    val.chk_mark != 'C' &&
+                    dayjs(val.ymd).year() == dayjs().year()
+                ) {
+                    setWorkOrder(val)
+                }
+            })
+        }
+    }, [data])
+
+    useEffect(() => {
+        console.log(workOrder)
+    }, [workOrder])
 
     const filterData =
         data &&
@@ -166,7 +188,7 @@ function MnGM1SubHeaderMachinery() {
             })
             .value()
 
-    console.log(listItemBenyamin)
+    // console.log(listItemBenyamin)
 
     const listItemDidi =
         data &&
