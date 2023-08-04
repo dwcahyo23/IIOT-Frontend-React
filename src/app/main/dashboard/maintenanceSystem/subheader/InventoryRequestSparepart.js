@@ -160,12 +160,12 @@ function InventoryRequestSparepart() {
                         name: 'AP Request',
                         colorHg: colors.blue[400],
                         colorLw: colors.blue[300],
-                        extra: {
-                            name: 'Total AP Last month',
-                            count: filterSparepart[
-                                dayjs().subtract(1, 'month').format('MMM')
-                            ]?.request,
-                        },
+                        // extra: {
+                        //     name: 'Total AP Last month',
+                        //     count: filterSparepart[
+                        //         dayjs().subtract(1, 'month').format('MMM')
+                        //     ]?.request,
+                        // },
                     }}
                 />
             </motion.div>
@@ -179,11 +179,11 @@ function InventoryRequestSparepart() {
                         name: 'AP Request',
                         colorHg: colors.red[400],
                         colorLw: colors.red[300],
-                        extra: {
-                            name: 'Total Audit',
-                            count: filterSparepart[dayjs().format('MMM')]
-                                ?.request_audit_Y,
-                        },
+                        // extra: {
+                        //     name: 'Total Audit',
+                        //     count: filterSparepart[dayjs().format('MMM')]
+                        //         ?.request_audit_Y,
+                        // },
                     }}
                 />
             </motion.div>
@@ -197,11 +197,11 @@ function InventoryRequestSparepart() {
                         name: 'MRE',
                         colorHg: colors.green[400],
                         colorLw: colors.green[300],
-                        extra: {
-                            name: 'Total Publish MRE',
-                            count: filterSparepart[dayjs().format('MMM')]
-                                ?.request_mre_audit,
-                        },
+                        // extra: {
+                        //     name: 'Total Publish MRE',
+                        //     count: filterSparepart[dayjs().format('MMM')]
+                        //         ?.request_mre_audit,
+                        // },
                     }}
                 />
             </motion.div>
@@ -215,11 +215,11 @@ function InventoryRequestSparepart() {
                         name: 'Ready',
                         colorHg: colors.orange[400],
                         colorLw: colors.orange[300],
-                        extra: {
-                            name: 'Total Ready',
-                            count: filterSparepart[dayjs().format('MMM')]
-                                ?.request_ready_audit,
-                        },
+                        // extra: {
+                        //     name: 'Total Ready',
+                        //     count: filterSparepart[dayjs().format('MMM')]
+                        //         ?.request_ready_audit,
+                        // },
                     }}
                 />
             </motion.div>
