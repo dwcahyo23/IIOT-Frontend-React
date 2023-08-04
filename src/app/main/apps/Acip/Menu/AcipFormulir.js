@@ -7,13 +7,9 @@ import {
     AppBar,
     Toolbar,
     Slide,
-    Grid,
-    IconButton,
-    TextField,
-    MenuItem,
+    Paper,
 } from '@mui/material'
-import { SaveAs } from '@mui/icons-material'
-import { Cancel } from '@mui/icons-material'
+
 import _ from 'lodash'
 import { useDispatch, useSelector } from 'react-redux'
 import { useFormContext, useFieldArray, Controller } from 'react-hook-form'
@@ -23,6 +19,7 @@ import TableIndex from '../../maintenanceSystem/machineTab/TableIndex'
 import StatusColor from '../../maintenanceSystem/machineTab/utils/StatusColor'
 import { showMessage } from 'app/store/fuse/messageSlice'
 import { getGenbaAcip, saveGenbaAcip } from '../store/genba/genbaAcipSlice'
+import AcipDialog from './AcipDialog'
 
 const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />
@@ -187,8 +184,9 @@ function AcipFormulir() {
     const { control, formState, watch, getValues, setValue, getFieldState } =
         methods
     const { errors, isValid } = formState
-
+    const [selectData, setSelectData] = useState(null)
     const [open, setOpen] = useState(false)
+    const [toolBarHeader, setToolBarHeader] = useState('Update')
 
     const { fields, remove, append } = useFieldArray({
         name: 'data',
@@ -202,49 +200,26 @@ function AcipFormulir() {
     }
 
     const tableIndex = (data) => {
-        // setSelectData(data.row)
+        setSelectData(data.row)
         setOpen(true)
-
-        setValue('id', data.row.id, { shouldDirty: true })
-        setValue('case', data.row.case, {
-            shouldDirty: true,
-        })
-        setValue('open_date', dayjs().format('DD/MM/YYYY HH:mm'), {
-            shouldDirty: true,
-        })
-        setValue('close_date', dayjs().format('DD/MM/YYYY HH:mm'), {
-            shouldDirty: true,
-        })
-        setValue('due_date', dayjs().format('DD/MM/YYYY HH:mm'), {
-            shouldDirty: true,
-        })
-
-        // _.map(_.keys(data.row), (val) => {
-        //     if (_.isNull(data.row[val])) {
-        //         setValue(val, '', { shouldDirty: true })
-        //     } else if (val == 'createdAt' || val == 'close_date') {
-        //         setValue(val, dayjs(data.row[val]).format('DD/MM/YYYY HH:mm'), {
-        //             shouldDirty: true,
-        //         })
-        //     } else if (val == 'images1' || val == 'images2') {
-        //     } else {
-        //         setValue(val, data.row[val], { shouldDirty: true })
-        //     }
-        // })
     }
 
-    const handleSave = (event) => {
-        console.log(getValues())
-        dispatch(saveGenbaAcip(getValues())).then((action) => {
-            if (action.payload) {
-                dispatch(
-                    showMessage({ message: 'Data has been saved successfully' })
-                )
-                setOpen(false)
-                setSelectData(null)
-            }
-        })
+    const header = (data) => {
+        setToolBarHeader(data)
     }
+
+    // const handleSave = (event) => {
+    //     console.log(getValues())
+    //     dispatch(saveGenbaAcip(getValues())).then((action) => {
+    //         if (action.payload) {
+    //             dispatch(
+    //                 showMessage({ message: 'Data has been saved successfully' })
+    //             )
+    //             setOpen(false)
+    //             setSelectData(null)
+    //         }
+    //     })
+    // }
 
     return (
         <div>
@@ -259,7 +234,6 @@ function AcipFormulir() {
                         params={{
                             row: fields,
                             columns: columns,
-                            id: fields.id,
                         }}
                         tableIndex={tableIndex}
                     />
@@ -273,20 +247,12 @@ function AcipFormulir() {
             >
                 <AppBar sx={{ position: 'relative' }}>
                     <Toolbar>
-                        <IconButton
-                            edge="start"
-                            color="inherit"
-                            onClick={handleSave}
-                            aria-label="close"
-                        >
-                            <SaveAs />
-                        </IconButton>
                         <Typography
                             sx={{ ml: 2, flex: 1 }}
                             variant="h6"
                             component="div"
                         >
-                            Update
+                            {toolBarHeader}
                         </Typography>
 
                         <Button autoFocus color="inherit" onClick={handleClose}>
@@ -294,429 +260,7 @@ function AcipFormulir() {
                         </Button>
                     </Toolbar>
                 </AppBar>
-
-                <Box
-                    sx={{
-                        width: '100%',
-                        padding: 6,
-                    }}
-                >
-                    <div className="flex flex-col">
-                        <Grid container spacing={2}>
-                            <Grid item xs={2}>
-                                <Controller
-                                    name="id"
-                                    //defaultValue=""
-                                    control={control}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            className="mt-8 mb-16"
-                                            label="id"
-                                            id="id"
-                                            variant="outlined"
-                                            fullWidth
-                                            InputProps={{
-                                                readOnly: true,
-                                            }}
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                        </Grid>
-                        <Grid container spacing={2}>
-                            <Grid item xs={2}>
-                                <Controller
-                                    name="dept"
-                                    //defaultValue=""
-                                    control={control}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            className="mt-8 mb-16"
-                                            label="Departement"
-                                            id="dept"
-                                            variant="outlined"
-                                            fullWidth
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Controller
-                                    name="area"
-                                    //defaultValue=""
-                                    control={control}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            className="mt-8 mb-16"
-                                            label="Area"
-                                            id="area"
-                                            variant="outlined"
-                                            fullWidth
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Controller
-                                    name="com"
-                                    control={control}
-                                    //defaultValue=""
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            className="mt-8 mb-16"
-                                            label="Plant"
-                                            id="com"
-                                            variant="outlined"
-                                            fullWidth
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Controller
-                                    name="mch_code"
-                                    control={control}
-                                    //defaultValue=""
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            className="mt-8 mb-16"
-                                            label="Machine Code"
-                                            id="mch_code"
-                                            variant="outlined"
-                                            fullWidth
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Controller
-                                    name="cat"
-                                    //defaultValue=""
-                                    control={control}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            className="mt-8 mb-16"
-                                            label="Category"
-                                            id="cat"
-                                            variant="outlined"
-                                            fullWidth
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Controller
-                                    name="status"
-                                    defaultValue="Open"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            className="mt-8 mb-16"
-                                            label="Status"
-                                            select
-                                            autoFocus
-                                            id="status"
-                                            fullWidth
-                                        >
-                                            <MenuItem value="Open">
-                                                Open
-                                            </MenuItem>
-                                            <MenuItem value="Close">
-                                                Close
-                                            </MenuItem>
-                                        </TextField>
-                                    )}
-                                />
-                            </Grid>
-                        </Grid>
-                        <Typography className="text-lg font-small tracking-tight leading-6 truncate">
-                            Before
-                        </Typography>
-                        <Grid container spacing={2}>
-                            <Grid item xs={2}>
-                                <Controller
-                                    name="createdAt"
-                                    //defaultValue=""
-                                    control={control}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            className="mt-8 mb-16"
-                                            label="Open Finding"
-                                            id="createdAt"
-                                            variant="outlined"
-                                            fullWidth
-                                            InputProps={{
-                                                readOnly: true,
-                                            }}
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Controller
-                                    name="b_r1"
-                                    control={control}
-                                    //defaultValue=""
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            className="mt-8 mb-16"
-                                            label="R1"
-                                            id="R1"
-                                            variant="outlined"
-                                            fullWidth
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Controller
-                                    name="b_r2"
-                                    control={control}
-                                    //defaultValue=""
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            className="mt-8 mb-16"
-                                            label="R2"
-                                            id="R2"
-                                            variant="outlined"
-                                            fullWidth
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Controller
-                                    name="b_r3"
-                                    control={control}
-                                    //defaultValue=""
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            className="mt-8 mb-16"
-                                            label="R3"
-                                            id="R3"
-                                            variant="outlined"
-                                            fullWidth
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Controller
-                                    name="b_r4"
-                                    control={control}
-                                    //defaultValue=""
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            className="mt-8 mb-16"
-                                            label="R4"
-                                            id="R4"
-                                            variant="outlined"
-                                            fullWidth
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Controller
-                                    name="b_r5"
-                                    control={control}
-                                    //defaultValue=""
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            className="mt-8 mb-16"
-                                            label="R5"
-                                            id="R5"
-                                            variant="outlined"
-                                            fullWidth
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                        </Grid>
-                        <Grid container spacing={2}>
-                            <Grid item xs={4}>
-                                <Controller
-                                    name="case"
-                                    //defaultValue=""
-                                    control={control}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            className="mt-8 mb-16"
-                                            label="Case"
-                                            id="case"
-                                            variant="outlined"
-                                            fullWidth
-                                            multiline
-                                            rows={4}
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                            <Grid item xs={4}>
-                                <Controller
-                                    name="improvement"
-                                    //defaultValue=""
-                                    control={control}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            className="mt-8 mb-16"
-                                            label="Improvement Idea"
-                                            id="improvement"
-                                            variant="outlined"
-                                            fullWidth
-                                            multiline
-                                            rows={4}
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                            <Grid item xs={4}>
-                                <Controller
-                                    name="remarks"
-                                    //defaultValue=""
-                                    control={control}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            className="mt-8 mb-16"
-                                            label="Remarks"
-                                            id="Remarks"
-                                            variant="outlined"
-                                            fullWidth
-                                            multiline
-                                            rows={4}
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                        </Grid>
-                        <Typography className="text-lg font-small tracking-tight leading-6 truncate">
-                            After
-                        </Typography>
-                        <Grid container spacing={2}>
-                            <Grid item xs={2}>
-                                <Controller
-                                    name="close_date"
-                                    //defaultValue=""
-                                    control={control}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            className="mt-8 mb-16"
-                                            label="Close Finding"
-                                            id="createdAt"
-                                            variant="outlined"
-                                            fullWidth
-                                            InputProps={{
-                                                readOnly: true,
-                                            }}
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Controller
-                                    name="a_r1"
-                                    control={control}
-                                    //defaultValue=""
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            className="mt-8 mb-16"
-                                            label="R1"
-                                            id="R1"
-                                            variant="outlined"
-                                            fullWidth
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Controller
-                                    name="a_r2"
-                                    control={control}
-                                    //defaultValue=""
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            className="mt-8 mb-16"
-                                            label="R2"
-                                            id="R2"
-                                            variant="outlined"
-                                            fullWidth
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Controller
-                                    name="a_r3"
-                                    control={control}
-                                    //defaultValue=""
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            className="mt-8 mb-16"
-                                            label="R3"
-                                            id="R3"
-                                            variant="outlined"
-                                            fullWidth
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Controller
-                                    name="a_r4"
-                                    control={control}
-                                    //defaultValue=""
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            className="mt-8 mb-16"
-                                            label="R4"
-                                            id="R4"
-                                            variant="outlined"
-                                            fullWidth
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Controller
-                                    name="a_r5"
-                                    control={control}
-                                    //defaultValue=""
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            className="mt-8 mb-16"
-                                            label="R5"
-                                            id="R5"
-                                            variant="outlined"
-                                            fullWidth
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                        </Grid>
-                    </div>
-                </Box>
+                <AcipDialog data={{ selectData }} header={header} />
             </Dialog>
         </div>
     )

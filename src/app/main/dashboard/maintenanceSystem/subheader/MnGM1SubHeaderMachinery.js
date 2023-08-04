@@ -210,7 +210,6 @@ function MnGM1SubHeaderMachinery() {
                         })
                         .value()
                 })
-                // .omit(['null', 'undefined'])
                 .value()
 
             setFilterWorkOrder(grouped)

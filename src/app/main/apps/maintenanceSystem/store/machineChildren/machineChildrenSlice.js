@@ -19,10 +19,9 @@ export const saveMaintenanceSystem = createAsyncThunk(
     'maintenanceSystem/machineChildren/saveMaintenanceSystem',
     async (row, { dispatch, getState }) => {
         try {
-            const response = await axios.post(
-                `http://192.168.192.7:5000/maintenanceReport`,
-                row
-            )
+            const response = await axios
+                .post(`http://192.168.192.7:5000/maintenanceReport`, row)
+                .catch((err) => console.log(err))
             const data = await response.data
             return data
         } catch (error) {

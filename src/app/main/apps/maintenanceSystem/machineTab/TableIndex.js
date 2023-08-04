@@ -244,7 +244,9 @@ function TableIndex({ params, tableIndex }) {
             columns={params.columns}
             getRowHeight={() => 'auto'}
             // getRowId={params.id}
-            getRowId={(row) => row.uuid || row.uuid_request || row.sheet_no}
+            getRowId={(row) =>
+                row.uuid || row.uuid_request || row.sheet_no || row.id
+            }
             onRowDoubleClick={(data) => tableIndex(data)}
             checkboxSelection
             density="compact"
