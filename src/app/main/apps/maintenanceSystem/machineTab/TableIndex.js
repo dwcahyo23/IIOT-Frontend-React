@@ -116,13 +116,21 @@ function CustomToolbar(props) {
             })
 
             worksheet.eachRow((row, rowNumber) => {
+                console.log(row.model)
                 _.forEach(row.model.cells, (val) => {
                     // console.log(val.value)
                     // if (val.value != undefined && val.value.length > 1000) {
-                    if (val.value != undefined) {
+                    if (val.rawValue) {
+                        // console.log(val.value)
+                        const base64 = `data:${val.rawValue?.mimetype};base64,${val.rawValue?.data}`
+                        // console.log(base64)
                         const images = workbook.addImage({
-                            base64: val.value?.data,
-                            extension: val.value?.mimetype,
+                            base64: base64,
+                            extension: 'jpeg',
+
+                            // val.value.substring(
+                            //     val.value.indexOf('base64,') + 7
+                            // ),
                         })
                         worksheet.getCell(val.address).value = null
                         worksheet.getRow(rowNumber).height = 120
