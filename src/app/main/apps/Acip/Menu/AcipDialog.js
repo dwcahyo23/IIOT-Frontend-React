@@ -550,15 +550,15 @@ function AcipDialog({ data, header }) {
                                         <Grid container spacing={2}>
                                             <Grid item xs={12}>
                                                 <Controller
-                                                    name="remarks"
+                                                    name="case"
                                                     defaultValue=""
                                                     control={control}
                                                     render={({ field }) => (
                                                         <TextField
                                                             {...field}
                                                             className="mt-8 mb-16"
-                                                            label="Remarks"
-                                                            id="remarks"
+                                                            label="Case"
+                                                            id="case"
                                                             variant="outlined"
                                                             fullWidth
                                                             multiline
@@ -769,6 +769,27 @@ function AcipDialog({ data, header }) {
                                                                 }}
                                                             />
                                                         </LocalizationProvider>
+                                                    )}
+                                                />
+                                            </Grid>
+                                        </Grid>
+                                        <Grid container spacing={2}>
+                                            <Grid item xs={12}>
+                                                <Controller
+                                                    name="improvement"
+                                                    defaultValue=""
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                        <TextField
+                                                            {...field}
+                                                            className="mt-8 mb-16"
+                                                            label="Idea Improvement"
+                                                            id="improvement"
+                                                            variant="outlined"
+                                                            fullWidth
+                                                            multiline
+                                                            rows={6}
+                                                        />
                                                     )}
                                                 />
                                             </Grid>

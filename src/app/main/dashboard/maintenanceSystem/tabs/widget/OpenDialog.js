@@ -225,7 +225,7 @@ function OpenDialog({ data, header }) {
                                     // setValue(val, dayjs(report[val]), {
                                     //     shouldDirty: true,
                                     // })
-                                    if (_.isNull(genba[val])) {
+                                    if (_.isNull(report[val])) {
                                         setValue(val, dayjs(), {
                                             shouldDirty: true,
                                         })
@@ -350,7 +350,7 @@ function OpenDialog({ data, header }) {
         mre_request,
     ])
 
-    console.log(disAuditReq)
+    // console.log(disAuditReq)
 
     useEffect(() => {
         // console.log(MnOne)

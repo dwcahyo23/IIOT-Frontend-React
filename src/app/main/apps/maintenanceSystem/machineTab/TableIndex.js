@@ -117,12 +117,12 @@ function CustomToolbar(props) {
 
             worksheet.eachRow((row, rowNumber) => {
                 _.forEach(row.model.cells, (val) => {
-                    if (val.value != undefined && val.value.length > 1000) {
+                    // console.log(val.value)
+                    // if (val.value != undefined && val.value.length > 1000) {
+                    if (val.value != undefined) {
                         const images = workbook.addImage({
-                            base64: val.value.substring(
-                                val.value.indexOf('base64,') + 7
-                            ),
-                            extension: 'jpeg',
+                            base64: val.value?.data,
+                            extension: val.value?.mimetype,
                         })
                         worksheet.getCell(val.address).value = null
                         worksheet.getRow(rowNumber).height = 120

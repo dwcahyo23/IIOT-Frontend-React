@@ -233,6 +233,8 @@ function MnGM1SubHeaderMachinery() {
                         _.includes(val.mch_no, 'KM') ||
                         _.includes(val.mch_no, 'LS') ||
                         val.mch_no == '-' ||
+                        val.pri_no == '04' ||
+                        val.pri_no == '05' ||
                         _.isNull(val.mch_no)
                     ) {
                     } else {

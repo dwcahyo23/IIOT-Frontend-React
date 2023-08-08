@@ -15,7 +15,6 @@ import LastApUser from '../tabs/widget/LastApUser'
 
 function InventoryRequestSparepart() {
     const dispatch = useDispatch()
-    const data = useSelector(selectAp)
     const sparepart = useSelector(selectApReq)
 
     const selectDep_no = [
@@ -34,24 +33,6 @@ function InventoryRequestSparepart() {
         'PDTR1',
         'PDPU1',
     ]
-
-    const raw =
-        data &&
-        _.chain(data)
-            .filter((val) => _.includes(selectDep_no, val.dep_no))
-            .value()
-
-    const monthName = (params) => dayjs(params.ymd).format('MMM')
-
-    // const listReqestMonth =
-    //     data &&
-    //     _.chain(data)
-    //         .filter((val) => {
-    //             if (val.request && val.request.length > 0) return true
-    //         })
-    //         .filter(['com_no', '01'])
-    //         .groupBy(monthName)
-    //         .value()
 
     const filterSparepart =
         sparepart &&
@@ -119,18 +100,21 @@ function InventoryRequestSparepart() {
             .groupBy((val) => dayjs(val.createdAt).format('MMM'))
             .mapValues((items) => {
                 return {
-                    data: _.filter(items, (val) => {
-                        if (
-                            val.audit_request == 'N' ||
-                            val.audit_request == 'Y' ||
-                            val.audit_request == 'C'
-                        ) {
-                            return val
-                        }
-                    }),
+                    // data: _.filter(items, (val) => {
+                    //     if (
+                    //         val.audit_request == 'N' ||
+                    //         val.audit_request == 'Y' ||
+                    //         val.audit_request == 'C'
+                    //     ) {
+                    //         return val
+                    //     }
+                    // }),
+                    data: items,
                 }
             })
             .value()
+
+    console.log(listItemMaulana)
 
     const container = {
         show: {
@@ -160,12 +144,6 @@ function InventoryRequestSparepart() {
                         name: 'AP Request',
                         colorHg: colors.blue[400],
                         colorLw: colors.blue[300],
-                        // extra: {
-                        //     name: 'Total AP Last month',
-                        //     count: filterSparepart[
-                        //         dayjs().subtract(1, 'month').format('MMM')
-                        //     ]?.request,
-                        // },
                     }}
                 />
             </motion.div>
@@ -179,11 +157,6 @@ function InventoryRequestSparepart() {
                         name: 'AP Request',
                         colorHg: colors.red[400],
                         colorLw: colors.red[300],
-                        // extra: {
-                        //     name: 'Total Audit',
-                        //     count: filterSparepart[dayjs().format('MMM')]
-                        //         ?.request_audit_Y,
-                        // },
                     }}
                 />
             </motion.div>
@@ -197,11 +170,6 @@ function InventoryRequestSparepart() {
                         name: 'MRE',
                         colorHg: colors.green[400],
                         colorLw: colors.green[300],
-                        // extra: {
-                        //     name: 'Total Publish MRE',
-                        //     count: filterSparepart[dayjs().format('MMM')]
-                        //         ?.request_mre_audit,
-                        // },
                     }}
                 />
             </motion.div>
@@ -215,11 +183,6 @@ function InventoryRequestSparepart() {
                         name: 'Ready',
                         colorHg: colors.orange[400],
                         colorLw: colors.orange[300],
-                        // extra: {
-                        //     name: 'Total Ready',
-                        //     count: filterSparepart[dayjs().format('MMM')]
-                        //         ?.request_ready_audit,
-                        // },
                     }}
                 />
             </motion.div>

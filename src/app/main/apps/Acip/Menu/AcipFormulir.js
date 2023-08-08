@@ -83,7 +83,6 @@ const columns = [
             />
         ),
     },
-
     {
         field: 'case',
         headerName: 'Case',
@@ -141,6 +140,13 @@ const columns = [
                 <img src="assets/images/apps/ecommerce/product-image-placeholder.png" />
             ),
         // images1: `data:${attachmentData.mimetype};base64,${attachmentData.data}`,
+    },
+    {
+        field: 'improvement',
+        headerName: 'Idea Improvement',
+        headerClassName: 'super-app-theme--header',
+        headerAlign: 'center',
+        width: 120,
     },
     {
         field: 'close_date',
