@@ -4,6 +4,7 @@ import authRoles from '../../../auth/authRoles'
 
 import AcipSystem from './AcipSystem'
 const Acip = lazy(() => import('./Menu/Acip'))
+const AcipDashboard = lazy(() => import('./Menu/AcipDashboard'))
 
 const AcipSystemConfig = {
     settings: {
@@ -22,6 +23,10 @@ const AcipSystemConfig = {
                 {
                     path: 'acip',
                     element: <Acip />,
+                },
+                {
+                    path: 'dashboard',
+                    element: <AcipDashboard />,
                 },
             ],
         },

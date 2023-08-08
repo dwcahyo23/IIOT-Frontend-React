@@ -24,6 +24,14 @@ const navigationConfig = [
                 icon: 'heroicons-outline:clipboard-check',
                 url: '/dashboards/maintenance',
             },
+            {
+                id: 'dashboards.projectAcip',
+                title: 'Acip System',
+                type: 'item',
+                auth: authRoles.acip,
+                icon: 'heroicons-outline:clipboard-check',
+                url: '/apps/acipSystem/dashboard',
+            },
         ],
     },
     {
@@ -51,7 +59,7 @@ const navigationConfig = [
                 type: 'item',
                 icon: 'heroicons-outline:desktop-computer',
                 auth: authRoles.acip,
-                url: '/apps/acipSystem',
+                url: '/apps/acipSystem/acip',
             },
             {
                 id: 'apps.modbus',

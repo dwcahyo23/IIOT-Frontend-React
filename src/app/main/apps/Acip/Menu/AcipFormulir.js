@@ -26,16 +26,23 @@ const Transition = forwardRef(function Transition(props, ref) {
 })
 
 const columns = [
+    // {
+    //     field: 'id_genba',
+    //     headerName: 'ID',
+    //     headerClassName: 'super-app-theme--header',
+    //     headerAlign: 'center',
+    //     width: 100,
+    // },
     {
-        field: 'id',
-        headerName: 'ID',
+        field: 'dept',
+        headerName: 'Dept',
         headerClassName: 'super-app-theme--header',
         headerAlign: 'center',
         width: 100,
     },
     {
-        field: 'dept',
-        headerName: 'Dept',
+        field: 'com',
+        headerName: 'Plant',
         headerClassName: 'super-app-theme--header',
         headerAlign: 'center',
         width: 100,
@@ -70,7 +77,11 @@ const columns = [
         headerClassName: 'super-app-theme--header',
         headerAlign: 'center',
         width: 150,
-        renderCell: (params) => <img src={params.value} />,
+        renderCell: (params) => (
+            <img
+                src={`data:${params.value?.mimetype};base64,${params.value?.data}`}
+            />
+        ),
     },
 
     {
@@ -121,7 +132,15 @@ const columns = [
         headerClassName: 'super-app-theme--header',
         headerAlign: 'center',
         width: 150,
-        renderCell: (params) => <img src={params.value} />,
+        renderCell: (params) =>
+            params.value ? (
+                <img
+                    src={`data:${params.value?.mimetype};base64,${params.value?.data}`}
+                />
+            ) : (
+                <img src="assets/images/apps/ecommerce/product-image-placeholder.png" />
+            ),
+        // images1: `data:${attachmentData.mimetype};base64,${attachmentData.data}`,
     },
     {
         field: 'close_date',
@@ -200,6 +219,7 @@ function AcipFormulir() {
     }
 
     const tableIndex = (data) => {
+        console.log(data)
         setSelectData(data.row)
         setOpen(true)
     }

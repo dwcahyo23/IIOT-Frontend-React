@@ -222,9 +222,18 @@ function OpenDialog({ data, header }) {
                                     val == 'createdAt' ||
                                     val == 'updatedAt'
                                 ) {
-                                    setValue(val, dayjs(report[val]), {
-                                        shouldDirty: true,
-                                    })
+                                    // setValue(val, dayjs(report[val]), {
+                                    //     shouldDirty: true,
+                                    // })
+                                    if (_.isNull(genba[val])) {
+                                        setValue(val, dayjs(), {
+                                            shouldDirty: true,
+                                        })
+                                    } else {
+                                        setValue(val, dayjs(report[val]), {
+                                            shouldDirty: true,
+                                        })
+                                    }
                                 } else {
                                     setValue(val, report[val], {
                                         shouldDirty: true,

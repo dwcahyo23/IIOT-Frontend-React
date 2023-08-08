@@ -77,12 +77,6 @@ export const status = [
         icon: 'heroicons-outline:exclamation',
     },
     {
-        id: 'Open',
-        name: 'Open',
-        color: 'success',
-        icon: 'heroicons-outline:check',
-    },
-    {
         id: 'R',
         name: 'REP',
         color: 'error',
@@ -103,6 +97,12 @@ export const status = [
     {
         id: 'Close',
         name: 'Close',
+        color: 'success',
+        icon: 'heroicons-outline:check',
+    },
+    {
+        id: 'Open',
+        name: 'Open',
         color: 'error',
         icon: 'heroicons-outline:x',
     },
