@@ -17,7 +17,7 @@ export const getMnReqSlice = createAsyncThunk(
 )
 
 const reqAdapter = createEntityAdapter({
-    selectId: (data) => data.sheet_no,
+    selectId: (data) => data.uuid_request,
 })
 
 export const { selectAll: selectApReq, selectById: selectApReqById } =
