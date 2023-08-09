@@ -14,7 +14,6 @@ import {
     Slide,
     Dialog,
     TextField,
-    Box,
 } from '@mui/material'
 import { memo, useState, useEffect, forwardRef } from 'react'
 import _ from 'lodash'
@@ -131,9 +130,9 @@ function LastApUser({ data }) {
         }
     })
 
-    // useEffect(() => {
-    //     console.log(filteredItem)
-    // }, [filteredItem])
+    useEffect(() => {
+        // console.log(filteredText)
+    }, [filteredText])
 
     useEffect(() => {
         // console.log(selectData)
@@ -190,106 +189,6 @@ function LastApUser({ data }) {
         return _.every(id, { audit_request: 'Y' })
     }
 
-    // <ListItemButton
-    //                     onClick={() => {
-    //                         setOpen(true)
-    //                         setSelectData(filteredText[index])
-    //                         // console.log(filteredText[index])
-    //                     }}
-    //                 >
-    //                     <ListItemText>
-    //                         <Typography className="text-13 mt-2 line-clamp-2">
-    //                             {`${index + 1}. ${
-    //                                 filteredText[index].sheet_no
-    //                             } || ${filteredText[index].mch_code} || ${
-    //                                 filteredText[index].mch_com
-    //                             } || ${filteredText[index].user_req1} || ${
-    //                                 _.isNull(filteredText[index].item_stock)
-    //                                     ? filteredText[index].item_name
-    //                                     : filteredText[index].item_stock
-    //                             } || ${filteredText[index].item_qty}  ${
-    //                                 filteredText[index].item_uom
-    //                             } || ${filteredText[index].mre_request}`}
-    //                         </Typography>
-    //                     </ListItemText>
-
-    //                     {filteredText[index].audit_request == 'Y' ? (
-    //                         <StatusColor id="Y" />
-    //                     ) : (
-    //                         <StatusColor id="N" />
-    //                     )}
-    //                     {filteredText[index].mre_request?.length > 0 && (
-    //                         <StatusColor id="MRE" />
-    //                     )}
-    //                     {filteredText[index].item_ready == 'Y' &&
-    //                         filteredText[index].audit_request == 'N' && (
-    //                             <StatusColor id="Ready" />
-    //                         )}
-    //                 </ListItemButton>
-
-    const columns = [
-        {
-            field: 'sheet_no',
-            headerName: 'AP-Sheet',
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-            width: 120,
-        },
-        {
-            field: 'mch_code',
-            headerName: 'Machine',
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-            width: 90,
-        },
-        {
-            field: 'date_request',
-            headerName: 'Target',
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-            width: 120,
-            valueFormatter: (params) =>
-                dayjs(params.value).format('DD/MM/YY HH:mm'),
-        },
-        {
-            field: 'audit_request',
-            headerName: 'Audit',
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-            width: 90,
-            align: 'center',
-            renderCell: (params) => <StatusColor id={params.value} />,
-        },
-        {
-            field: 'item_stock',
-            headerName: 'Sparepart',
-            flex: 1,
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-        },
-        {
-            field: 'item_name',
-            headerName: 'Remarks',
-            flex: 1,
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-        },
-        {
-            field: 'item_qty',
-            headerName: 'Qty',
-            width: 50,
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-        },
-        {
-            field: 'item_uom',
-            headerName: 'Uom',
-            width: 50,
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-        },
-    ]
-
     function rowRenderer({
         key, // Unique key within array of rows
         index, // Index of row within collection
@@ -300,49 +199,42 @@ function LastApUser({ data }) {
         return (
             <ListItem key={index} style={style} component="div" disablePadding>
                 {data?.leader == 'Inventory' ? (
-                    <Box
-                        sx={{
-                            width: '100%',
-                            height: 400,
+                    <ListItemButton
+                        onClick={() => {
+                            setOpen(true)
+                            setSelectData(filteredText[index])
+                            // console.log(filteredText[index])
                         }}
                     >
-                        <ListItemButton
-                            onClick={() => {
-                                setOpen(true)
-                                setSelectData(filteredText[index])
-                                // console.log(filteredText[index])
-                            }}
-                        >
-                            <ListItemText>
-                                <Typography className="text-13 mt-2 line-clamp-2">
-                                    {`${index + 1}. ${
-                                        filteredText[index].sheet_no
-                                    } || ${filteredText[index].mch_code} || ${
-                                        filteredText[index].mch_com
-                                    } || ${filteredText[index].user_req1} || ${
-                                        _.isNull(filteredText[index].item_stock)
-                                            ? filteredText[index].item_name
-                                            : filteredText[index].item_stock
-                                    } || ${filteredText[index].item_qty}  ${
-                                        filteredText[index].item_uom
-                                    } || ${filteredText[index].mre_request}`}
-                                </Typography>
-                            </ListItemText>
+                        <ListItemText>
+                            <Typography className="text-13 mt-2 line-clamp-2">
+                                {`${index + 1}. ${
+                                    filteredText[index].sheet_no
+                                } || ${filteredText[index].mch_code} || ${
+                                    filteredText[index].mch_com
+                                } || ${filteredText[index].user_req1} || ${
+                                    _.isNull(filteredText[index].item_stock)
+                                        ? filteredText[index].item_name
+                                        : filteredText[index].item_stock
+                                } || ${filteredText[index].item_qty}  ${
+                                    filteredText[index].item_uom
+                                } || ${filteredText[index].mre_request}`}
+                            </Typography>
+                        </ListItemText>
 
-                            {filteredText[index].audit_request == 'Y' ? (
-                                <StatusColor id="Y" />
-                            ) : (
-                                <StatusColor id="N" />
+                        {filteredText[index].audit_request == 'Y' ? (
+                            <StatusColor id="Y" />
+                        ) : (
+                            <StatusColor id="N" />
+                        )}
+                        {filteredText[index].mre_request?.length > 0 && (
+                            <StatusColor id="MRE" />
+                        )}
+                        {filteredText[index].item_ready == 'Y' &&
+                            filteredText[index].audit_request == 'N' && (
+                                <StatusColor id="Ready" />
                             )}
-                            {filteredText[index].mre_request?.length > 0 && (
-                                <StatusColor id="MRE" />
-                            )}
-                            {filteredText[index].item_ready == 'Y' &&
-                                filteredText[index].audit_request == 'N' && (
-                                    <StatusColor id="Ready" />
-                                )}
-                        </ListItemButton>
-                    </Box>
+                    </ListItemButton>
                 ) : (
                     <ListItemButton
                         onClick={() => {

@@ -217,7 +217,6 @@ function MnGM1SubHeaderMachinery() {
 
             setFilterWorkOrder(grouped)
         }
-        console.log(workOrder)
     }, [workOrder, machine])
 
     const filterData =
