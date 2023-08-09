@@ -41,20 +41,20 @@ function MnGM1SubHeaderMachinery() {
         'MNAD1',
     ]
 
-    const eko = [
-        'PDHD1',
-        'PDHD2',
-        'PDHD3',
-        'PDHD4',
-        'PDRL1',
-        'PDRL2',
-        'MNAD1',
-        'PCGD1',
-    ]
+    // const eko = [
+    //     'PDHD1',
+    //     'PDHD2',
+    //     'PDHD3',
+    //     'PDHD4',
+    //     'PDRL1',
+    //     'PDRL2',
+    //     'MNAD1',
+    //     'PCGD1',
+    // ]
 
-    const didi = ['PDMC1', 'PDNC1', 'PDHB1', 'MNAD1']
+    // const didi = ['PDMC1', 'PDNC1', 'PDHB1', 'MNAD1']
 
-    const ahri = ['PDTR1', 'PDPU1', 'PCGD1', 'MNAD1']
+    // const ahri = ['PDTR1', 'PDPU1', 'PCGD1', 'MNAD1']
 
     useEffect(() => {
         if (data) {
@@ -63,6 +63,9 @@ function MnGM1SubHeaderMachinery() {
                     if (
                         val.com_no == '01' &&
                         val.chk_mark != 'C' &&
+                        (val.pri_no == '01' ||
+                            val.pri_no == '02' ||
+                            val.pri_no == '03') &&
                         dayjs(val.ymd).year() == dayjs().year()
                     ) {
                         return val
@@ -214,6 +217,7 @@ function MnGM1SubHeaderMachinery() {
 
             setFilterWorkOrder(grouped)
         }
+        console.log(workOrder)
     }, [workOrder, machine])
 
     const filterData =
@@ -223,7 +227,8 @@ function MnGM1SubHeaderMachinery() {
                 if (
                     _.includes(selectDep_no, val.dep_no) &&
                     val.com_no == '01' &&
-                    val.chk_mark != 'C'
+                    val.chk_mark != 'C' &&
+                    (val.pri_no != '04' || val.pri_no != '05')
                 ) {
                     if (
                         _.includes(val.mch_no, 'GS') ||
@@ -233,8 +238,6 @@ function MnGM1SubHeaderMachinery() {
                         _.includes(val.mch_no, 'KM') ||
                         _.includes(val.mch_no, 'LS') ||
                         val.mch_no == '-' ||
-                        val.pri_no == '04' ||
-                        val.pri_no == '05' ||
                         _.isNull(val.mch_no)
                     ) {
                     } else {
