@@ -63,9 +63,10 @@ function MnGM2SubHeaderMachinery() {
         _.chain(data)
             .filter((val) => {
                 if (
-                    _.includes(selectDep_no, val.dep_no) &&
+                    // _.includes(selectDep_no, val.dep_no) &&
                     val.com_no == '02' &&
-                    val.chk_mark != 'C'
+                    val.chk_mark != 'C' &&
+                    val.mch_no != '-'
                 ) {
                     if (_.isNull(val.mch_no)) {
                     } else {
@@ -124,9 +125,10 @@ function MnGM2SubHeaderMachinery() {
         _.chain(data)
             .filter((val) => {
                 if (
-                    _.includes(selectDep_no, val.dep_no) &&
+                    // _.includes(selectDep_no, val.dep_no) &&
                     val.com_no == '02' &&
-                    val.chk_mark != 'C'
+                    val.chk_mark != 'C' &&
+                    val.mch_no != '-'
                 ) {
                     if (_.isNull(val.mch_no)) {
                     } else {

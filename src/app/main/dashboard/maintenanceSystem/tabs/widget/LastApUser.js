@@ -136,6 +136,10 @@ function LastApUser({ data }) {
     }, [filteredText])
 
     useEffect(() => {
+        // console.log(filteredItem)
+    }, [filteredItem])
+
+    useEffect(() => {
         // console.log(selectData)
     }, [selectData])
 

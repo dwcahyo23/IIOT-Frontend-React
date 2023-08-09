@@ -12,27 +12,12 @@ import ChartWo from '../tabs/widget/ChartWo'
 import LastAp from '../tabs/widget/LastAp'
 import LastReq from '../tabs/widget/LastReq'
 import LastApUser from '../tabs/widget/LastApUser'
+import LastApLeader from '../tabs/widget/LastApLeader'
 
 function InventoryRequestSparepart() {
     const dispatch = useDispatch()
     const sparepart = useSelector(selectApReq)
-
-    const selectDep_no = [
-        'PDHD1',
-        'PDHD2',
-        'PDHD3',
-        'PDHD4',
-        'PDRL1',
-        'PDRL2',
-        'PDMC1',
-        'PDMC3',
-        'PDMR1',
-        'PDNC1',
-        'PDNT1',
-        'PDHB1',
-        'PDTR1',
-        'PDPU1',
-    ]
+    const [dataSummary, setDataSummary] = useState([])
 
     const filterSparepart =
         sparepart &&
@@ -100,21 +85,46 @@ function InventoryRequestSparepart() {
             .groupBy((val) => dayjs(val.createdAt).format('MMM'))
             .mapValues((items) => {
                 return {
-                    // data: _.filter(items, (val) => {
-                    //     if (
-                    //         val.audit_request == 'N' ||
-                    //         val.audit_request == 'Y' ||
-                    //         val.audit_request == 'C'
-                    //     ) {
-                    //         return val
-                    //     }
-                    // }),
+                    request: _.countBy(items, (val) => (val ? 'pass' : 'fail')),
+                    request_audit_Y: _.countBy(items, (val) =>
+                        val.audit_request == 'Y' ? 'pass' : 'fail'
+                    ),
+                    request_audit_N: _.countBy(items, (val) =>
+                        val.audit_request == 'N' ? 'pass' : 'fail'
+                    ),
+                    request_mre: _.countBy(items, (val) =>
+                        val.mre_request.length > 0 &&
+                        val.item_ready == 'N' &&
+                        val.audit_request == 'N'
+                            ? 'pass'
+                            : 'fail'
+                    ),
+                    request_mre_audit: _.countBy(items, (val) =>
+                        val.mre_request.length > 0 &&
+                        val.item_ready == 'Y' &&
+                        val.audit_request == 'Y'
+                            ? 'pass'
+                            : 'fail'
+                    ),
+                    request_ready: _.countBy(items, (val) =>
+                        val.item_ready == 'Y' && val.audit_request == 'N'
+                            ? 'pass'
+                            : 'fail'
+                    ),
+                    request_ready_audit: _.countBy(items, (val) =>
+                        val.item_ready == 'Y' && val.audit_request == 'Y'
+                            ? 'pass'
+                            : 'fail'
+                    ),
                     data: items,
                 }
             })
             .value()
 
-    console.log(listItemMaulana)
+    const summary = (data) => {
+        setDataSummary(data)
+        console.log(data)
+    }
 
     const container = {
         show: {
@@ -139,11 +149,17 @@ function InventoryRequestSparepart() {
             <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
                 <SummaryWo
                     data={{
-                        count: filterSparepart[dayjs().format('MMM')]?.request,
+                        count: dataSummary?.request,
                         title: 'Inventory',
                         name: 'AP Request',
                         colorHg: colors.blue[400],
                         colorLw: colors.blue[300],
+                        // extra: {
+                        //     name: 'Total AP Last month',
+                        //     count: filterSparepart[
+                        //         dayjs().subtract(1, 'month').format('MMM')
+                        //     ]?.request,
+                        // },
                     }}
                 />
             </motion.div>
@@ -151,12 +167,16 @@ function InventoryRequestSparepart() {
             <motion.div variants={item}>
                 <SummaryWo
                     data={{
-                        count: filterSparepart[dayjs().format('MMM')]
-                            ?.request_audit_N,
+                        count: dataSummary?.request_audit_N,
                         title: 'N.Audit',
                         name: 'AP Request',
                         colorHg: colors.red[400],
                         colorLw: colors.red[300],
+                        // extra: {
+                        //     name: 'Total Audit',
+                        //     count: dataSummary
+                        //         ?.request_audit_Y,
+                        // },
                     }}
                 />
             </motion.div>
@@ -164,12 +184,16 @@ function InventoryRequestSparepart() {
             <motion.div variants={item}>
                 <SummaryWo
                     data={{
-                        count: filterSparepart[dayjs().format('MMM')]
-                            ?.request_mre,
+                        count: dataSummary?.request_mre,
                         title: 'Publish MRE',
                         name: 'MRE',
                         colorHg: colors.green[400],
                         colorLw: colors.green[300],
+                        // extra: {
+                        //     name: 'Total Publish MRE',
+                        //     count: dataSummary
+                        //         ?.request_mre_audit,
+                        // },
                     }}
                 />
             </motion.div>
@@ -177,23 +201,28 @@ function InventoryRequestSparepart() {
             <motion.div variants={item}>
                 <SummaryWo
                     data={{
-                        count: filterSparepart[dayjs().format('MMM')]
-                            ?.request_ready,
+                        count: dataSummary?.request_ready,
                         title: 'Ready Sparepart',
                         name: 'Ready',
                         colorHg: colors.orange[400],
                         colorLw: colors.orange[300],
+                        // extra: {
+                        //     name: 'Total Ready',
+                        //     count: dataSummary
+                        //         ?.request_ready_audit,
+                        // },
                     }}
                 />
             </motion.div>
 
             <motion.div variants={item} className="sm:col-span-2 md:col-span-5">
-                <LastApUser
+                <LastApLeader
                     data={{
                         listItemMonth: listItemMaulana,
                         user: 20,
                         leader: 'Inventory',
                     }}
+                    summary={summary}
                 />
             </motion.div>
         </motion.div>

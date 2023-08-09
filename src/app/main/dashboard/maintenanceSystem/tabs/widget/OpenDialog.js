@@ -256,6 +256,7 @@ function OpenDialog({ data, header }) {
 
     useEffect(() => {
         const ap_sheet = data?.selectData
+        console.log(data)
 
         if (!data) {
             return

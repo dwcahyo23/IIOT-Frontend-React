@@ -26,9 +26,11 @@ import AutoSizer from 'react-virtualized-auto-sizer'
 import { List } from 'react-virtualized'
 import { useDispatch } from 'react-redux'
 
+import { selectApReq } from '../../store/mnReqSlice'
 import { selectApUser, selectApUserById } from '../../store/userSlice'
 import { selectApRep } from '../../store/mnRepSlice'
 import StatusColor from 'src/app/main/apps/maintenanceSystem/machineTab/utils/StatusColor'
+import TableIndex from 'src/app/main/apps/maintenanceSystem/machineTab/TableIndex'
 import OpenDialog from './OpenDialog'
 
 function CustomToolbar({ props }) {
@@ -109,6 +111,7 @@ function LastApLeader({ data, summary }) {
         selectApUserById(selectApUser, data.user)
     )
     const data_report = useSelector(selectApRep)
+    const sparepart = useSelector(selectApReq)
     const listItem = data?.listItemMonth
     const lastTab = Object.keys(listItem).length - 1
     const [tabValue, setTabValue] = useState(0)
@@ -124,13 +127,16 @@ function LastApLeader({ data, summary }) {
     useEffect(() => {
         if (data && listItem[currentRange]) {
             setFilteredItem(listItem[currentRange])
-            // summary(_.omit(filteredItem, ['data']))
+            // console.log(listItem[currentRange])
         }
     })
 
     useEffect(() => {
-        // summary({ breakdown: filteredItem.breakdown })
-        summary(filteredItem)
+        // console.log(filteredText)
+    }, [filteredText])
+
+    useEffect(() => {
+        // summary(filteredItem)
         // console.log(filteredItem)
     }, [filteredItem])
 
@@ -139,23 +145,67 @@ function LastApLeader({ data, summary }) {
     }, [selectData])
 
     useEffect(() => {
-        const filter = _.filter(filteredItem?.data, (val) => {
-            if (
-                (!_.isUndefined(val.sheet_no) &&
-                    val.sheet_no.includes(searchText)) ||
-                (!_.isUndefined(val.mch_no) &&
-                    val.mch_no.includes(searchText)) ||
-                (!_.isUndefined(val.mch_code) &&
-                    val.mch_code.includes(searchText)) ||
-                (!_.isUndefined(val.user_req1) &&
-                    val.user_req1.includes(searchText)) ||
-                (!_.isUndefined(val.mre_request) &&
-                    val.mre_request.includes(searchText))
-            ) {
-                return val
+        function getFilteredArray() {
+            if (searchText.length === 0) {
+                return filteredItem?.data
             }
-        })
-        setFilteredText(filter)
+
+            return _.filter(filteredItem?.data, (val) => {
+                if (
+                    (!_.isUndefined(val.sheet_no) &&
+                        val.sheet_no
+                            .toLowerCase()
+                            .includes(searchText.toLowerCase())) ||
+                    (!_.isUndefined(val.mch_no) &&
+                        val.mch_no
+                            .toLowerCase()
+                            .includes(searchText.toLowerCase())) ||
+                    (!_.isUndefined(val.mch_code) &&
+                        val.mch_code
+                            .toLowerCase()
+                            .includes(searchText.toLowerCase())) ||
+                    (!_.isUndefined(val.user_req1) &&
+                        val.user_req1
+                            .toLowerCase()
+                            .includes(searchText.toLowerCase())) ||
+                    (!_.isUndefined(val.mre_request) &&
+                        val.mre_request
+                            .toLowerCase()
+                            .includes(searchText.toLowerCase()))
+                ) {
+                    return val
+                }
+
+                if (searchText == 'mre' && !_.isUndefined(val.mre_request)) {
+                    return val.mre_request.length > 0
+                }
+
+                if (searchText == 'ready' && !_.isUndefined(val.item_ready)) {
+                    return val.item_ready == 'Y' && val.audit_request == 'N'
+                }
+
+                if (
+                    searchText == 'audit' &&
+                    (!_.isUndefined(val.chk_mark) ||
+                        !_.isUndefined(val.audit_request))
+                ) {
+                    return val.chk_mark == 'Y' || val.audit_request == 'Y'
+                }
+
+                if (
+                    searchText == 'unaudit' &&
+                    (!_.isUndefined(val.chk_mark) ||
+                        !_.isUndefined(val.audit_request))
+                ) {
+                    return val.chk_mark == 'N' || val.audit_request == 'N'
+                }
+            })
+        }
+
+        if (filteredItem?.data) {
+            setFilteredText(getFilteredArray())
+            // console.log(getFilteredArray())
+        }
     }, [searchText, filteredItem])
 
     const handleSearchText = (event) => {
@@ -168,6 +218,12 @@ function LastApLeader({ data, summary }) {
         }
     }
 
+    const handleTabChange = (event, value) => {
+        setTabValue(value)
+        // summary(filteredItem)
+        console.log(filteredItem)
+    }
+
     const header = (data) => {
         setToolBarHeader(data)
     }
@@ -175,6 +231,11 @@ function LastApLeader({ data, summary }) {
     const findReport = (data) => {
         const id = _.find(data_report, { sheet_no: data })
         return _.isUndefined(id) == false ? id.audit_report : 'N'
+    }
+
+    const findRequest = (data) => {
+        const id = _.filter(sparepart, { sheet_no: data })
+        return _.every(id, { audit_request: 'Y' })
     }
 
     function rowRenderer({
@@ -191,7 +252,7 @@ function LastApLeader({ data, summary }) {
                         onClick={() => {
                             setOpen(true)
                             setSelectData(filteredText[index])
-                            console.log(filteredText[index])
+                            // console.log(filteredText[index])
                         }}
                     >
                         <ListItemText>
@@ -209,8 +270,13 @@ function LastApLeader({ data, summary }) {
                                 } || ${filteredText[index].mre_request}`}
                             </Typography>
                         </ListItemText>
-                        <StatusColor id={filteredText[index].audit_request} />
-                        {filteredText[index].mre_request.length > 0 && (
+
+                        {filteredText[index].audit_request == 'Y' ? (
+                            <StatusColor id="Y" />
+                        ) : (
+                            <StatusColor id="N" />
+                        )}
+                        {filteredText[index].mre_request?.length > 0 && (
                             <StatusColor id="MRE" />
                         )}
                         {filteredText[index].item_ready == 'Y' &&
@@ -235,6 +301,10 @@ function LastApLeader({ data, summary }) {
 
                         {findReport(filteredText[index].sheet_no) == 'N' && (
                             <StatusColor id="R" />
+                        )}
+
+                        {findRequest(filteredText[index].sheet_no) == false && (
+                            <StatusColor id="S" />
                         )}
 
                         {filteredText[index].chk_mark == 'N' ? (
@@ -328,7 +398,7 @@ function LastApLeader({ data, summary }) {
                     <div className="flex flex-auto items-center min-w-0">
                         <Tabs
                             value={tabValue}
-                            onChange={(ev, value) => setTabValue(value)}
+                            onChange={handleTabChange}
                             indicatorColor="secondary"
                             textColor="inherit"
                             variant="scrollable"
@@ -344,7 +414,7 @@ function LastApLeader({ data, summary }) {
                     <div className="flex flex-auto items-center min-w-0">
                         <Tabs
                             value={tabValue}
-                            onChange={(ev, value) => setTabValue(value)}
+                            onChange={handleTabChange}
                             indicatorColor="secondary"
                             textColor="inherit"
                             variant="scrollable"

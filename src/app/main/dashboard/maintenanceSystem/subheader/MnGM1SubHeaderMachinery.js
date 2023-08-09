@@ -227,7 +227,9 @@ function MnGM1SubHeaderMachinery() {
                     _.includes(selectDep_no, val.dep_no) &&
                     val.com_no == '01' &&
                     val.chk_mark != 'C' &&
-                    (val.pri_no != '04' || val.pri_no != '05')
+                    (val.pri_no == '01' ||
+                        val.pri_no == '02' ||
+                        val.pri_no == '03')
                 ) {
                     if (
                         _.includes(val.mch_no, 'GS') ||
@@ -298,7 +300,9 @@ function MnGM1SubHeaderMachinery() {
                     _.includes(selectDep_no, val.dep_no) &&
                     val.com_no == '01' &&
                     val.chk_mark != 'C' &&
-                    val.pri_no != '04'
+                    (val.pri_no == '01' ||
+                        val.pri_no == '02' ||
+                        val.pri_no == '03')
                 ) {
                     if (
                         _.includes(val.mch_no, 'GS') ||
