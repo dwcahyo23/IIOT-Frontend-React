@@ -127,6 +127,7 @@ function LastApUser({ data }) {
     useEffect(() => {
         if (data && listItem[currentRange]) {
             setFilteredItem(listItem[currentRange])
+            // console.log(listItem[currentRange])
         }
     })
 
@@ -139,30 +140,67 @@ function LastApUser({ data }) {
     }, [selectData])
 
     useEffect(() => {
-        // const map = _.map(filteredItem?.data, (val) => {
-        //     return {
-        //         ...val,
-        //         sp: _.filter(sparepart, { sheet_no: val.sheet_no }),
-        //     }
-        // })
-
-        const filter = _.filter(filteredItem?.data, (val) => {
-            if (
-                (!_.isUndefined(val.sheet_no) &&
-                    val.sheet_no.includes(searchText)) ||
-                (!_.isUndefined(val.mch_no) &&
-                    val.mch_no.includes(searchText)) ||
-                (!_.isUndefined(val.mch_code) &&
-                    val.mch_code.includes(searchText)) ||
-                (!_.isUndefined(val.user_req1) &&
-                    val.user_req1.includes(searchText)) ||
-                (!_.isUndefined(val.mre_request) &&
-                    val.mre_request.includes(searchText))
-            ) {
-                return val
+        function getFilteredArray() {
+            if (searchText.length === 0) {
+                return filteredItem?.data
             }
-        })
-        setFilteredText(filter)
+
+            return _.filter(filteredItem?.data, (val) => {
+                if (
+                    (!_.isUndefined(val.sheet_no) &&
+                        val.sheet_no
+                            .toLowerCase()
+                            .includes(searchText.toLowerCase())) ||
+                    (!_.isUndefined(val.mch_no) &&
+                        val.mch_no
+                            .toLowerCase()
+                            .includes(searchText.toLowerCase())) ||
+                    (!_.isUndefined(val.mch_code) &&
+                        val.mch_code
+                            .toLowerCase()
+                            .includes(searchText.toLowerCase())) ||
+                    (!_.isUndefined(val.user_req1) &&
+                        val.user_req1
+                            .toLowerCase()
+                            .includes(searchText.toLowerCase())) ||
+                    (!_.isUndefined(val.mre_request) &&
+                        val.mre_request
+                            .toLowerCase()
+                            .includes(searchText.toLowerCase()))
+                ) {
+                    return val
+                }
+
+                if (searchText == 'mre' && !_.isUndefined(val.mre_request)) {
+                    return val.mre_request.length > 0
+                }
+
+                if (searchText == 'ready' && !_.isUndefined(val.item_ready)) {
+                    return val.item_ready == 'Y' && val.audit_request == 'N'
+                }
+
+                if (
+                    searchText == 'audit' &&
+                    (!_.isUndefined(val.chk_mark) ||
+                        !_.isUndefined(val.audit_request))
+                ) {
+                    return val.chk_mark == 'Y' || val.audit_request == 'Y'
+                }
+
+                if (
+                    searchText == 'unaudit' &&
+                    (!_.isUndefined(val.chk_mark) ||
+                        !_.isUndefined(val.audit_request))
+                ) {
+                    return val.chk_mark == 'N' || val.audit_request == 'N'
+                }
+            })
+        }
+
+        if (filteredItem?.data) {
+            setFilteredText(getFilteredArray())
+            // console.log(getFilteredArray())
+        }
     }, [searchText, filteredItem])
 
     const handleSearchText = (event) => {
