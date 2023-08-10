@@ -29,6 +29,11 @@ function MnGM1SubHeaderWorkshop() {
             .groupBy((val) => dayjs(val.ymd).format('MMMM'))
             .mapValues((items) => {
                 return {
+                    data: _.filter(items, (val) => {
+                        if (val.chk_mark == 'N' || val.chk_mark == 'Y') {
+                            return val
+                        }
+                    }),
                     breakdown: _.countBy(items, (val) =>
                         val.pri_no == '05' ? 'pass' : 'fail'
                     ),
@@ -55,45 +60,45 @@ function MnGM1SubHeaderWorkshop() {
             })
             .value()
 
-    const listItemWS =
-        data &&
-        _.chain(data)
-            .filter((val) => {
-                if (
-                    val.com_no == '01' &&
-                    (val.pri_no == '04' || val.pri_no == '05') &&
-                    val.chk_mark != 'C'
-                ) {
-                    return val
-                }
-            })
-            .orderBy(['ymd'], ['desc'])
-            .groupBy((val) => dayjs(val.ymd).format('MMMM'))
-            .mapValues((items) => {
-                return {
-                    data: _.filter(items, (val) => {
-                        if (val.chk_mark == 'N' || val.chk_mark == 'Y') {
-                            return val
-                        }
-                    }),
-                    breakdown: _.countBy(items, (val) =>
-                        val.pri_no == '05' ? 'pass' : 'fail'
-                    ),
-                    still_run: _.countBy(items, (val) =>
-                        val.pri_no == '04' ? 'pass' : 'fail'
-                    ),
-                    preventive: _.countBy(items, (val) =>
-                        val.pri_no == '03' ? 'pass' : 'fail'
-                    ),
-                    workshop: _.countBy(items, (val) =>
-                        val.pri_no == '04' ? 'pass' : 'fail'
-                    ),
-                    naudit: _.countBy(items, (val) =>
-                        val.chk_mark == 'N' ? 'pass' : 'fail'
-                    ),
-                }
-            })
-            .value()
+    // const listItemWS =
+    //     data &&
+    //     _.chain(data)
+    //         .filter((val) => {
+    //             if (
+    //                 val.com_no == '01' &&
+    //                 (val.pri_no == '04' || val.pri_no == '05') &&
+    //                 val.chk_mark != 'C'
+    //             ) {
+    //                 return val
+    //             }
+    //         })
+    //         .orderBy(['ymd'], ['desc'])
+    //         .groupBy((val) => dayjs(val.ymd).format('MMMM'))
+    //         .mapValues((items) => {
+    //             return {
+    //                 data: _.filter(items, (val) => {
+    //                     if (val.chk_mark == 'N' || val.chk_mark == 'Y') {
+    //                         return val
+    //                     }
+    //                 }),
+    //                 breakdown: _.countBy(items, (val) =>
+    //                     val.pri_no == '05' ? 'pass' : 'fail'
+    //                 ),
+    //                 still_run: _.countBy(items, (val) =>
+    //                     val.pri_no == '04' ? 'pass' : 'fail'
+    //                 ),
+    //                 preventive: _.countBy(items, (val) =>
+    //                     val.pri_no == '03' ? 'pass' : 'fail'
+    //                 ),
+    //                 workshop: _.countBy(items, (val) =>
+    //                     val.pri_no == '04' ? 'pass' : 'fail'
+    //                 ),
+    //                 naudit: _.countBy(items, (val) =>
+    //                     val.chk_mark == 'N' ? 'pass' : 'fail'
+    //                 ),
+    //             }
+    //         })
+    //         .value()
 
     const container = {
         show: {
@@ -174,7 +179,7 @@ function MnGM1SubHeaderWorkshop() {
             <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
                 <LastApUser
                     data={{
-                        listItemMonth: listItemWS,
+                        listItemMonth: filterData,
                         user: 17,
                         leader: 'Kasie Workshop',
                     }}

@@ -178,6 +178,7 @@ function OpenDialog({ data, header }) {
     const [hidSparepart, setHidSparepart] = useState(false)
     const [tableRequest, setTableRequest] = useState([])
     const [disAuditReq, setDisAuditReq] = useState(true)
+    const [disRep, setDisRep] = useState(true)
 
     const methods = useForm({
         mode: 'onChange',
@@ -282,9 +283,6 @@ function OpenDialog({ data, header }) {
                                     val == 'createdAt' ||
                                     val == 'updatedAt'
                                 ) {
-                                    // setValue(val, dayjs(report[val]), {
-                                    //     shouldDirty: true,
-                                    // })
                                     if (_.isNull(report[val])) {
                                         setValue(val, dayjs(), {
                                             shouldDirty: true,
@@ -308,6 +306,7 @@ function OpenDialog({ data, header }) {
                     // console.log(request)
                     // _.isUndefined(request) == false && setTableRequest(request)
                     setTableRequest(request)
+                    // console.log(request)
                 }
             })
         }
@@ -424,6 +423,15 @@ function OpenDialog({ data, header }) {
             header('Penanganan Spare Part Maintenance IK-03-03-11')
         }
     }
+
+    useEffect(() => {
+        if (tableRequest.length > 0) {
+            const isAudit = _.every(tableRequest, ['audit_request', 'N'])
+            setDisRep(isAudit)
+        } else {
+            setDisRep(false)
+        }
+    }, [tableRequest])
 
     function handleSaveReport() {
         dispatch(saveMnOne(getValues())).then((action) => {
@@ -864,7 +872,9 @@ function OpenDialog({ data, header }) {
                                     <Controller
                                         name="date_report"
                                         control={control}
-                                        defaultValue={dayjs(data?.ymd)}
+                                        defaultValue={dayjs(
+                                            data?.selectData.ymd
+                                        )}
                                         // defaultValue={dayjs()}
                                         render={({ field }) => (
                                             <LocalizationProvider
@@ -1191,11 +1201,16 @@ function OpenDialog({ data, header }) {
                                     className="whitespace-nowrap mb-16"
                                     variant="contained"
                                     color="secondary"
-                                    // disabled={valid()}
+                                    disabled={disRep}
                                     onClick={handleSaveReport}
                                 >
                                     Save
                                 </Button>
+                                {disRep && (
+                                    <Typography style={{ color: 'red' }}>
+                                        Require Audit AP-Request!
+                                    </Typography>
+                                )}
                             </Grid>
                         </Box>
                     </div>
