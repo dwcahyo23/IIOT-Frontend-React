@@ -198,8 +198,68 @@ function OpenDialog({ data, header }) {
 
     const { errors, isValid } = formState
 
-    useDeepCompareEffect(() => {
-        function updateMnOne() {
+    // useDeepCompareEffect(() => {
+    //     function updateMnOne() {
+    //         const uuid = data?.selectData.mch_index.uuid
+    //         dispatch(getMnOne(uuid)).then((action) => {
+    //             dispatch(getMachineStock())
+
+    //             if (!action.payload) {
+    //                 setNoMnOne(true)
+    //             }
+
+    //             if (action.payload) {
+    //                 const report = _.find(action.payload.report, {
+    //                     sheet_no: data?.selectData.sheet_no,
+    //                 })
+    //                 _.isUndefined(report) == false &&
+    //                     _.map(_.keys(report), (val) => {
+    //                         if (_.isNull(report[val]) == false) {
+    //                             if (
+    //                                 val == 'date_report' ||
+    //                                 val == 'date_target' ||
+    //                                 val == 'date_finish' ||
+    //                                 val == 'createdAt' ||
+    //                                 val == 'updatedAt'
+    //                             ) {
+    //                                 // setValue(val, dayjs(report[val]), {
+    //                                 //     shouldDirty: true,
+    //                                 // })
+    //                                 if (_.isNull(report[val])) {
+    //                                     setValue(val, dayjs(), {
+    //                                         shouldDirty: true,
+    //                                     })
+    //                                 } else {
+    //                                     setValue(val, dayjs(report[val]), {
+    //                                         shouldDirty: true,
+    //                                     })
+    //                                 }
+    //                             } else {
+    //                                 setValue(val, report[val], {
+    //                                     shouldDirty: true,
+    //                                 })
+    //                             }
+    //                         }
+    //                     })
+
+    //                 const request = _.filter(action.payload.request, {
+    //                     sheet_no: data?.selectData.sheet_no,
+    //                 })
+    //                 // console.log(request)
+    //                 // _.isUndefined(request) == false && setTableRequest(request)
+    //                 setTableRequest(request)
+    //             }
+    //         })
+    //     }
+    //     updateMnOne()
+    // }, [dispatch])
+
+    useEffect(() => {
+        const ap_sheet = data?.selectData
+
+        if (!data) {
+            return
+        } else {
             const uuid = data?.selectData.mch_index.uuid
             dispatch(getMnOne(uuid)).then((action) => {
                 dispatch(getMachineStock())
@@ -250,16 +310,6 @@ function OpenDialog({ data, header }) {
                     setTableRequest(request)
                 }
             })
-        }
-        updateMnOne()
-    }, [dispatch])
-
-    useEffect(() => {
-        const ap_sheet = data?.selectData
-        console.log(data)
-
-        if (!data) {
-            return
         }
         reset({ ...ap_sheet })
     }, [data, reset])
@@ -814,7 +864,8 @@ function OpenDialog({ data, header }) {
                                     <Controller
                                         name="date_report"
                                         control={control}
-                                        defaultValue={dayjs()}
+                                        defaultValue={dayjs(data?.ymd)}
+                                        // defaultValue={dayjs()}
                                         render={({ field }) => (
                                             <LocalizationProvider
                                                 dateAdapter={AdapterDayjs}
@@ -913,7 +964,7 @@ function OpenDialog({ data, header }) {
                                 <Grid item xs={3}>
                                     <Controller
                                         name="chronological"
-                                        defaultValue=""
+                                        defaultValue={data?.selectData.memo}
                                         control={control}
                                         render={({ field }) => (
                                             <TextField
@@ -1175,35 +1226,31 @@ function OpenDialog({ data, header }) {
                             <Grid item xs={3}>
                                 <Controller
                                     name="category_request"
-                                    defaultValue="Reguler"
+                                    defaultValue={
+                                        data?.selectData.pri_no == '01'
+                                            ? 'Breakdown'
+                                            : data?.selectData.pri_no == '02'
+                                            ? 'Still Run'
+                                            : data?.selectData.pri_no == '03'
+                                            ? 'Preventive'
+                                            : data?.selectData.pri_no == '04'
+                                            ? 'Workshop Still Run'
+                                            : data?.selectData.pri_no == '05'
+                                            ? 'Workshop Breakdown'
+                                            : ''
+                                    }
                                     control={control}
                                     render={({ field }) => (
                                         <TextField
                                             {...field}
                                             className="mt-8 mb-16"
                                             required
-                                            label="Target"
-                                            select
+                                            label="Category"
                                             autoFocus
                                             id="category_request"
+                                            variant="outlined"
                                             fullWidth
-                                        >
-                                            <MenuItem value="Emergency">
-                                                Emergency(1 Day)
-                                            </MenuItem>
-                                            <MenuItem value="Flash">
-                                                Flash(3 Day)
-                                            </MenuItem>
-                                            <MenuItem value="Express">
-                                                Express(7 Day)
-                                            </MenuItem>
-                                            <MenuItem value="Reguler">
-                                                Reguler(14 Day)
-                                            </MenuItem>
-                                            <MenuItem value="Indent">
-                                                Indent(30 Day)
-                                            </MenuItem>
-                                        </TextField>
+                                        />
                                     )}
                                 />
                             </Grid>
@@ -1322,7 +1369,7 @@ function OpenDialog({ data, header }) {
                             <Grid item xs={2}>
                                 <Controller
                                     name="item_qty"
-                                    defaultValue=""
+                                    defaultValue={0}
                                     control={control}
                                     render={({ field }) => (
                                         <TextField
@@ -1345,7 +1392,7 @@ function OpenDialog({ data, header }) {
                             <Grid item xs={2}>
                                 <Controller
                                     name="item_uom"
-                                    defaultValue=""
+                                    defaultValue="PCS"
                                     control={control}
                                     render={({ field }) => (
                                         <TextField
@@ -1474,6 +1521,7 @@ function OpenDialog({ data, header }) {
                                 <Controller
                                     name="user_req2"
                                     control={control}
+                                    defaultValue=""
                                     render={({ field }) => (
                                         <TextField
                                             {...field}

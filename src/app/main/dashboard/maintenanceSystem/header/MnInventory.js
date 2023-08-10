@@ -7,7 +7,7 @@ import { Box, colors, Tabs, Tab } from '@mui/material'
 import dayjs from 'dayjs'
 import { styled } from '@mui/material/styles'
 
-import InventoryRequestSparepart from '../subheader/InventoryRequestSparepart'
+import InventoryGM1RequestSparepart from '../subheader/InventoryGM1RequestSparepart'
 import InventoryGM2RequestSparepart from '../subheader/InventoryGM2RequestSparepart'
 import InventorySafetyStock from '../subheader/InventorySafetyStock'
 
@@ -67,7 +67,7 @@ function MnInventory() {
                             label="Safety Stock"
                         />
                     </Tabs>
-                    {tabValue === 0 && <InventoryRequestSparepart />}
+                    {tabValue === 0 && <InventoryGM1RequestSparepart />}
                     {tabValue === 1 && <InventoryGM2RequestSparepart />}
                     {tabValue === 2 && <InventorySafetyStock />}
                 </div>

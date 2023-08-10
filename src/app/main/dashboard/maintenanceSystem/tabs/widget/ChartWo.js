@@ -13,6 +13,10 @@ function ChartWo({ data }) {
     const [tabValue, setTabValue] = useState(0)
     const labels = Object.keys(data.filterData)
 
+    const [label, setLabel] = useState([])
+    const [breakdown, setBreakdown] = useState([])
+    const [audit, setAudit] = useState([])
+
     useEffect(() => {
         setAwaitRender(false)
     }, [])
@@ -30,7 +34,23 @@ function ChartWo({ data }) {
         },
     ]
 
-    _.forEach(data.filterData, (val, i) => {
+    // // let ordered = {}
+    // Object.keys(data?.filterData)
+    //     .sort(
+    //         (a, b) =>
+    //             new Date(`${a} 1, 2023 12:00:00`).getMonth() -
+    //             new Date(`${b} 1, 2023 12:00:00`).getMonth()
+    //     )
+    //     .forEach((key) => {
+    //         // ordered[key] = data.filterData[key]
+    //         console.log(data.filterData[key])
+    //         series[0].data.push(data.filterData[key].breakdown?.pass || 0)
+    //         series[1].data.push(data.filterData[key].breakdown_audit?.pass || 0)
+    //     })
+
+    // console.log(series)
+
+    _.forEach(data?.filterData, (val, i) => {
         series[0].data.push(val.breakdown?.pass || 0)
         series[1].data.push(val.breakdown_audit?.pass || 0)
     })

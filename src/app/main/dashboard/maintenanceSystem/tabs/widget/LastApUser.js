@@ -112,6 +112,7 @@ function LastApUser({ data }) {
     )
     const data_report = useSelector(selectApRep)
     const sparepart = useSelector(selectApReq)
+
     const listItem = data?.listItemMonth
     const lastTab = Object.keys(listItem).length - 1
     const [tabValue, setTabValue] = useState(0)
@@ -127,7 +128,6 @@ function LastApUser({ data }) {
     useEffect(() => {
         if (data && listItem[currentRange]) {
             setFilteredItem(listItem[currentRange])
-            // console.log(listItem[currentRange])
         }
     })
 
@@ -464,7 +464,7 @@ function LastApUser({ data }) {
                 onClose={handleClose}
                 TransitionComponent={Transition}
             >
-                <AppBar sx={{ position: 'relative' }}>
+                <AppBar position="sticky">
                     <Toolbar>
                         <Typography
                             sx={{ ml: 2, flex: 1 }}

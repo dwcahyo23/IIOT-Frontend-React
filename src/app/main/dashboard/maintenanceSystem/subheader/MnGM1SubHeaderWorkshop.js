@@ -25,7 +25,7 @@ function MnGM1SubHeaderWorkshop() {
                     return val
                 }
             })
-            .sortBy(['ymd'])
+            .orderBy(['ymd'], ['desc'])
             .groupBy((val) => dayjs(val.ymd).format('MMMM'))
             .mapValues((items) => {
                 return {
@@ -34,6 +34,9 @@ function MnGM1SubHeaderWorkshop() {
                     ),
                     still_run: _.countBy(items, (val) =>
                         val.pri_no == '04' ? 'pass' : 'fail'
+                    ),
+                    work_order: _.countBy(items, (val) =>
+                        val ? 'pass' : 'fail'
                     ),
                     audit: _.countBy(items, (val) =>
                         val.chk_mark == 'Y' ? 'pass' : 'fail'
@@ -112,12 +115,28 @@ function MnGM1SubHeaderWorkshop() {
             initial="hidden"
             animate="show"
         >
-            <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
+            <motion.div variants={item} className="md:col-span-2">
+                <SummaryWo
+                    data={{
+                        count: filterData[dayjs().format('MMMM')]?.work_order,
+                        title: `Total Workorder ${dayjs().format('MMMM')}`,
+                        name: 'AP Sheet',
+                        colorHg: colors.blue[400],
+                        colorLw: colors.blue[300],
+                        extra: {
+                            name: 'Total Audit',
+                            count: filterData[dayjs().format('MMMM')]?.audit,
+                        },
+                    }}
+                />
+            </motion.div>
+
+            <motion.div variants={item}>
                 <SummaryWo
                     data={{
                         count: filterData[dayjs().format('MMMM')]?.breakdown,
-                        title: `Workshop ${dayjs().format('MMMM')}`,
-                        name: `AP Sheet Breakdown Time`,
+                        title: `Work Order`,
+                        name: `Breakdown`,
                         colorHg: colors.red[400],
                         colorLw: colors.red[300],
                         extra: {
@@ -129,12 +148,12 @@ function MnGM1SubHeaderWorkshop() {
                 />
             </motion.div>
 
-            <motion.div variants={item} className="sm:col-span-2 md:col-span-2">
+            <motion.div variants={item}>
                 <SummaryWo
                     data={{
                         count: filterData[dayjs().format('MMMM')]?.still_run,
-                        title: `Workshop ${dayjs().format('MMMM')}`,
-                        name: `AP Sheet Still Run`,
+                        title: `Work Order`,
+                        name: `Still Run`,
                         colorHg: colors.orange[400],
                         colorLw: colors.orange[300],
                         extra: {

@@ -5,14 +5,18 @@ import dayjs from 'dayjs'
 
 import LastApLeaderInventory from '../tabs/widget/LastApLeaderInventory'
 
-function InventoryGM2RequestSparepart() {
+function InventoryGM1RequestSparepart() {
     const sparepart = useSelector(selectApReq)
 
     const listItemUser =
         sparepart &&
         _.chain(sparepart)
             .filter((val) => {
-                if (val.mch_com == 'GM2') {
+                if (
+                    val.mch_com == 'GM1' ||
+                    val.mch_com == 'GM3' ||
+                    val.mch_com == 'GM5'
+                ) {
                     return val
                 }
             })
@@ -60,7 +64,7 @@ function InventoryGM2RequestSparepart() {
             <LastApLeaderInventory
                 data={{
                     listItemMonth: listItemUser,
-                    user: 21,
+                    user: 20,
                     leader: 'Inventory',
                 }}
             />
@@ -68,4 +72,4 @@ function InventoryGM2RequestSparepart() {
     )
 }
 
-export default InventoryGM2RequestSparepart
+export default InventoryGM1RequestSparepart

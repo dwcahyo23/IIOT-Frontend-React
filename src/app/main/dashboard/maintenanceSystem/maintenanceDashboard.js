@@ -20,7 +20,7 @@ import MnGM1 from './tabs/MnGM1'
 import MnGM2 from './tabs/MnGM2'
 import MnGM3 from './tabs/MnGM3'
 import MnGM5 from './tabs/MnGM5'
-import Inventory from './subheader/InventoryRequestSparepart'
+import Inventory from './subheader/InventoryGM1RequestSparepart'
 
 import MnGM1Header from './header/MnGM1Header'
 import MnGM2Header from './header/MnGM2Header'

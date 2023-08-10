@@ -41,21 +41,6 @@ function MnGM1SubHeaderMachinery() {
         'MNAD1',
     ]
 
-    // const eko = [
-    //     'PDHD1',
-    //     'PDHD2',
-    //     'PDHD3',
-    //     'PDHD4',
-    //     'PDRL1',
-    //     'PDRL2',
-    //     'MNAD1',
-    //     'PCGD1',
-    // ]
-
-    // const didi = ['PDMC1', 'PDNC1', 'PDHB1', 'MNAD1']
-
-    // const ahri = ['PDTR1', 'PDPU1', 'PCGD1', 'MNAD1']
-
     useEffect(() => {
         if (data) {
             const res = _(data)
@@ -246,10 +231,14 @@ function MnGM1SubHeaderMachinery() {
                     }
                 }
             })
-            .sortBy(['ymd'])
+            .orderBy(['ymd'], ['desc'])
             .groupBy((val) => dayjs(val.ymd).format('MMMM'))
             .mapValues((items) => {
                 return {
+                    data: items,
+                    breakdown: _.countBy(items, (val) =>
+                        val.pri_no == '01' ? 'pass' : 'fail'
+                    ),
                     breakdown: _.countBy(items, (val) =>
                         val.pri_no == '01' ? 'pass' : 'fail'
                     ),
@@ -292,54 +281,6 @@ function MnGM1SubHeaderMachinery() {
             })
             .value()
 
-    const listItemBenyamin =
-        data &&
-        _.chain(data)
-            .filter((val) => {
-                if (
-                    _.includes(selectDep_no, val.dep_no) &&
-                    val.com_no == '01' &&
-                    val.chk_mark != 'C' &&
-                    (val.pri_no == '01' ||
-                        val.pri_no == '02' ||
-                        val.pri_no == '03')
-                ) {
-                    if (
-                        _.includes(val.mch_no, 'GS') ||
-                        _.includes(val.mch_no, 'HS') ||
-                        _.includes(val.mch_no, 'CR') ||
-                        _.includes(val.mch_no, 'AD') ||
-                        _.includes(val.mch_no, 'KM') ||
-                        _.includes(val.mch_no, 'LS') ||
-                        val.mch_no == '-' ||
-                        _.isNull(val.mch_no)
-                    ) {
-                    } else {
-                        return val
-                    }
-                }
-            })
-            .orderBy(['ymd'], ['desc'])
-            .groupBy((val) => dayjs(val.ymd).format('MMMM'))
-            .mapValues((items) => {
-                return {
-                    data: items,
-                    breakdown: _.countBy(items, (val) =>
-                        val.pri_no == '01' ? 'pass' : 'fail'
-                    ),
-                    still_run: _.countBy(items, (val) =>
-                        val.pri_no == '02' ? 'pass' : 'fail'
-                    ),
-                    preventive: _.countBy(items, (val) =>
-                        val.pri_no == '03' ? 'pass' : 'fail'
-                    ),
-                    naudit: _.countBy(items, (val) =>
-                        val.chk_mark == 'N' ? 'pass' : 'fail'
-                    ),
-                }
-            })
-            .value()
-
     const container = {
         show: {
             transition: {
@@ -361,16 +302,31 @@ function MnGM1SubHeaderMachinery() {
                 initial="hidden"
                 animate="show"
             >
-                <motion.div
-                    variants={item}
-                    className="sm:col-span-2 md:col-span-2"
-                >
+                <motion.div variants={item} className="md:col-span-2">
+                    <SummaryWo
+                        data={{
+                            count: filterData[dayjs().format('MMMM')]
+                                ?.work_order,
+                            title: `Total Workorder ${dayjs().format('MMMM')}`,
+                            name: 'AP Sheet',
+                            colorHg: colors.blue[400],
+                            colorLw: colors.blue[300],
+                            extra: {
+                                name: 'Total Audit',
+                                count: filterData[dayjs().format('MMMM')]
+                                    ?.audit,
+                            },
+                        }}
+                    />
+                </motion.div>
+
+                <motion.div variants={item}>
                     <SummaryWo
                         data={{
                             count: filterData[dayjs().format('MMMM')]
                                 ?.breakdown,
-                            title: `Machinery ${dayjs().format('MMMM')}`,
-                            name: `AP Sheet Breakdown Time`,
+                            title: 'Work Order',
+                            name: `Breakdown`,
                             colorHg: colors.red[400],
                             colorLw: colors.red[300],
                             extra: {
@@ -382,16 +338,13 @@ function MnGM1SubHeaderMachinery() {
                     />
                 </motion.div>
 
-                <motion.div
-                    variants={item}
-                    className="sm:col-span-2 md:col-span-2"
-                >
+                <motion.div variants={item}>
                     <SummaryWo
                         data={{
                             count: filterData[dayjs().format('MMMM')]
                                 ?.still_run,
-                            title: `Machinery ${dayjs().format('MMMM')}`,
-                            name: `AP Sheet Still Run`,
+                            title: 'Work Order',
+                            name: `Still Run`,
                             colorHg: colors.orange[400],
                             colorLw: colors.orange[300],
                             extra: {
@@ -403,16 +356,13 @@ function MnGM1SubHeaderMachinery() {
                     />
                 </motion.div>
 
-                <motion.div
-                    variants={item}
-                    className="sm:col-span-2 md:col-span-2"
-                >
+                <motion.div variants={item}>
                     <SummaryWo
                         data={{
                             count: filterData[dayjs().format('MMMM')]
                                 ?.preventive,
-                            title: `Machinery ${dayjs().format('MMMM')}`,
-                            name: `AP Sheet Preventive`,
+                            title: 'Work Order',
+                            name: `Preventive`,
                             colorHg: colors.green[400],
                             colorLw: colors.green[300],
                             extra: {
@@ -440,7 +390,7 @@ function MnGM1SubHeaderMachinery() {
                 >
                     <LastApUser
                         data={{
-                            listItemMonth: listItemBenyamin,
+                            listItemMonth: filterData,
                             user: 5,
                             leader: 'Kasie MN GM1',
                         }}
