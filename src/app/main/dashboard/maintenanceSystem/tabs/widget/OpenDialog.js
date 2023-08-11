@@ -1232,10 +1232,7 @@ function OpenDialog({ data, header }) {
                                     className="whitespace-nowrap mb-16"
                                     variant="contained"
                                     color="secondary"
-                                    disabled={
-                                        disRep &&
-                                        data?.selectData.chk_mark == 'Y'
-                                    }
+                                    disabled={disRep}
                                     onClick={handleSaveReport}
                                 >
                                     Save
