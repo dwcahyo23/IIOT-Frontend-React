@@ -12,7 +12,10 @@ function InventoryGM2RequestSparepart() {
         sparepart &&
         _.chain(sparepart)
             .filter((val) => {
-                if (val.mch_com == 'GM2') {
+                if (
+                    val.mch_com == 'GM2' &&
+                    (val.audit_request == 'Y' || val.audit_request == 'N')
+                ) {
                     return val
                 }
             })
