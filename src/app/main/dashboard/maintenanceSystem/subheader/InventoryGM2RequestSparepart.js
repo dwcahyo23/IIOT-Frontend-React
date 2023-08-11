@@ -16,6 +16,7 @@ function InventoryGM2RequestSparepart() {
                     return val
                 }
             })
+            .omit(['slug'])
             .groupBy((val) => dayjs(val.createdAt).format('MMM'))
             .mapValues((items) => {
                 return {

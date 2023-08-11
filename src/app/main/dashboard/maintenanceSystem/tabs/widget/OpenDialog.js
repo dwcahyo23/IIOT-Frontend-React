@@ -43,6 +43,7 @@ import {
 } from 'src/app/main/apps/maintenanceSystem/store/machineChildren/machineStock'
 import TableIndex from 'src/app/main/apps/maintenanceSystem/machineTab/TableIndex'
 import StatusColor from 'src/app/main/apps/maintenanceSystem/machineTab/utils/StatusColor'
+import axios from 'axios'
 
 const schema = yup.object().shape({
     id_request: yup
@@ -74,8 +75,8 @@ const columnsRequest = [
         width: 90,
     },
     {
-        field: 'date_request',
-        headerName: 'Target',
+        field: 'createdAt',
+        headerName: 'Date',
         headerClassName: 'super-app-theme--header',
         headerAlign: 'center',
         width: 120,
@@ -165,6 +166,27 @@ const columnsRequest = [
         valueFormatter: (params) =>
             params.value ? dayjs(params.value).format('DD/MM/YY HH:mm') : '',
     },
+    {
+        field: 'sts_wa1',
+        headerName: 'WA1',
+        headerClassName: 'super-app-theme--header',
+        headerAlign: 'center',
+        minWidth: 20,
+    },
+    {
+        field: 'sts_wa2',
+        headerName: 'WA2',
+        headerClassName: 'super-app-theme--header',
+        headerAlign: 'center',
+        minWidth: 20,
+    },
+    {
+        field: 'sts_wa3',
+        headerName: 'WA3',
+        headerClassName: 'super-app-theme--header',
+        headerAlign: 'center',
+        minWidth: 20,
+    },
 ]
 
 function OpenDialog({ data, header }) {
@@ -179,6 +201,7 @@ function OpenDialog({ data, header }) {
     const [tableRequest, setTableRequest] = useState([])
     const [disAuditReq, setDisAuditReq] = useState(true)
     const [disRep, setDisRep] = useState(true)
+    const [disWa, setDisWa] = useState(true)
 
     const methods = useForm({
         mode: 'onChange',
@@ -332,31 +355,31 @@ function OpenDialog({ data, header }) {
             ? setHidSparepart(false)
             : setHidSparepart(true)
 
-        if (category_request === 'Emergency') {
-            setTimeout(() => {
-                setValue('date_request', dayjs().add(10, 'h'))
-            }, 500)
-        } else if (category_request === 'Flash') {
-            setTimeout(() => {
-                setValue('date_request', dayjs().add(3, 'd'))
-            }, 500)
-        } else if (category_request === 'Express') {
-            setTimeout(() => {
-                setValue('date_request', dayjs().add(7, 'd'))
-            }, 500)
-        } else if (category_request === 'Reguler') {
-            setTimeout(() => {
-                setValue('date_request', dayjs().add(14, 'd'))
-            }, 500)
-        } else if (category_request === 'Indent') {
-            setTimeout(() => {
-                setValue('date_request', dayjs().add(1, 'M'))
-            }, 500)
-        } else {
-            setTimeout(() => {
-                setValue('date_request', dayjs().add(14, 'd'))
-            }, 500)
-        }
+        // if (category_request === 'Emergency') {
+        //     setTimeout(() => {
+        //         setValue('date_request', dayjs().add(10, 'h'))
+        //     }, 500)
+        // } else if (category_request === 'Flash') {
+        //     setTimeout(() => {
+        //         setValue('date_request', dayjs().add(3, 'd'))
+        //     }, 500)
+        // } else if (category_request === 'Express') {
+        //     setTimeout(() => {
+        //         setValue('date_request', dayjs().add(7, 'd'))
+        //     }, 500)
+        // } else if (category_request === 'Reguler') {
+        //     setTimeout(() => {
+        //         setValue('date_request', dayjs().add(14, 'd'))
+        //     }, 500)
+        // } else if (category_request === 'Indent') {
+        //     setTimeout(() => {
+        //         setValue('date_request', dayjs().add(1, 'M'))
+        //     }, 500)
+        // } else {
+        //     setTimeout(() => {
+        //         setValue('date_request', dayjs().add(14, 'd'))
+        //     }, 500)
+        // }
 
         audit_request === 'Y'
             ? setTimeout(() => {
@@ -428,37 +451,102 @@ function OpenDialog({ data, header }) {
         if (tableRequest.length > 0) {
             const isAudit = _.every(tableRequest, ['audit_request', 'N'])
             setDisRep(isAudit)
+            setDisWa(false)
         } else {
             setDisRep(false)
+            setDisWa(true)
         }
     }, [tableRequest])
 
     function handleSaveReport() {
-        dispatch(saveMnOne(getValues())).then((action) => {
-            if (action.payload) {
-                const uuid = data?.selectData.mch_index.uuid
-                dispatch(getMnOne(uuid))
+        dispatch(saveMnOne(getValues()))
+            .then((action) => {
+                if (action.payload) {
+                    const uuid = data?.selectData.mch_index.uuid
+                    dispatch(getMnOne(uuid))
+                    dispatch(
+                        showMessage({
+                            message: 'Data has been saved successfully',
+                            variant: 'success',
+                        })
+                    )
+                }
+            })
+            .catch((e) => {
                 dispatch(
                     showMessage({
-                        message: 'Data has been saved successfully',
+                        message: `${e.message}`,
+                        variant: 'error',
                     })
                 )
-            }
-        })
+            })
     }
 
     function handleSaveRequest() {
         tableIndex
-        dispatch(saveMnOneRequest(getValues())).then((action) => {
-            if (action.payload) {
-                const uuid = data?.selectData.mch_index.uuid
-                dispatch(getMnOne(uuid))
-                dispatch(getMachineStock())
+        dispatch(saveMnOneRequest(getValues()))
+            .then((action) => {
+                if (action.payload) {
+                    const uuid = data?.selectData.mch_index.uuid
+                    dispatch(getMnOne(uuid))
+                    dispatch(getMachineStock())
+                    dispatch(
+                        showMessage({
+                            message: 'Data has been saved successfully',
+                            variant: 'success',
+                        })
+                    )
+                }
+            })
+            .catch((e) => {
                 dispatch(
-                    showMessage({ message: 'Data has been saved successfully' })
+                    showMessage({
+                        message: `${e.message}`,
+                        variant: 'error',
+                    })
                 )
-            }
-        })
+            })
+    }
+
+    function handleSendWa() {
+        if (tableRequest.length > 0) {
+            console.log(tableRequest)
+
+            let msg = `*Permintaan Sparepart*`
+            msg += `\n${tableRequest[0].sheet_no} | ${tableRequest[0].user_req1} | ${tableRequest[0].category_request}`
+            _.forEach(tableRequest, (entry, idx) => {
+                msg += `\n${idx + 1}. ${
+                    _.isNull(entry.item_stock) == false
+                        ? entry.item_stock
+                        : entry.name
+                } (${entry.item_qty} ${entry.item_uom})`
+                msg += `\nMRE : ${entry.mre_request}`
+                msg += `\nReady : ${entry.item_ready}`
+            })
+            axios
+                .post('http://192.168.192.7:5010/send-message-group', {
+                    // name: 'PENANGANAN SPAREPART GM1 IK-03-03-01',
+                    number: '082124610363',
+                    message: msg,
+                })
+                .then(() =>
+                    dispatch(
+                        showMessage({
+                            message: 'Sended wa successfully',
+                            variant: 'success',
+                        })
+                    )
+                )
+                .catch((e) => {
+                    // console.log(e)
+                    dispatch(
+                        showMessage({
+                            message: `${e.message}`,
+                            variant: 'error',
+                        })
+                    )
+                })
+        }
     }
 
     const tableIndex = (data) => {
@@ -1577,14 +1665,28 @@ function OpenDialog({ data, header }) {
 
                 <TabPanel value="5">
                     <div style={{ width: 900, height: 450 }}>
-                        <TableIndex
-                            params={{
-                                row: tableRequest,
-                                columns: columnsRequest,
-                                // id: tableRequest?.uuid_request,
-                            }}
-                            tableIndex={tableIndex}
-                        />
+                        <div style={{ width: '100%', height: 400 }}>
+                            <TableIndex
+                                params={{
+                                    row: tableRequest,
+                                    columns: columnsRequest,
+                                    // id: tableRequest?.uuid_request,
+                                }}
+                                tableIndex={tableIndex}
+                            />
+                        </div>
+
+                        <div>
+                            <Button
+                                className="whitespace-nowrap mb-16"
+                                variant="contained"
+                                color="secondary"
+                                disabled={disWa}
+                                onClick={handleSendWa}
+                            >
+                                Send Wa
+                            </Button>
+                        </div>
                     </div>
                 </TabPanel>
             </TabContext>

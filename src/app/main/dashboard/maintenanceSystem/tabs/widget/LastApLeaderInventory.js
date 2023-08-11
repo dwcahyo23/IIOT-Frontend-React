@@ -56,9 +56,26 @@ function CustomToolbar({ props }) {
             _.forEach(rows, (val, index) => {
                 worksheet.addRow({
                     ...val,
-                    unit_id: dayjs(val.ymd).format('MMM'),
-                    s_ymd: dayjs(val.ymd).format('YYYY-MM-DD HH:mm:ss'),
-                    s_ymd: dayjs(val.s_ymd).format('YYYY-MM-DD HH:mm:ss'),
+                    unit_id: dayjs(val.createdAt).format('MMM'),
+
+                    createdAt: dayjs(val.createdAt).format(
+                        'YYYY-MM-DD HH:mm:ss'
+                    ),
+                    updatedAt: dayjs(val.updatedAt).format(
+                        'YYYY-MM-DD HH:mm:ss'
+                    ),
+                    date_request: dayjs(val.createdAt).format(
+                        'YYYY-MM-DD HH:mm:ss'
+                    ),
+                    date_ready_request: dayjs(val.date_ready_request).format(
+                        'YYYY-MM-DD HH:mm:ss'
+                    ),
+                    date_audit_request: dayjs(val.date_request).format(
+                        'YYYY-MM-DD HH:mm:ss'
+                    ),
+                    date_mre_request: dayjs(val.date_ready_request).format(
+                        'YYYY-MM-DD HH:mm:ss'
+                    ),
                     mch_index: '',
                 })
             })

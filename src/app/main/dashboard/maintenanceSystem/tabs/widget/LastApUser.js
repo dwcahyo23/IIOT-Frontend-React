@@ -57,6 +57,46 @@ function CustomToolbar({ props }) {
                     s_ymd: dayjs(val.s_ymd).format('YYYY-MM-DD HH:mm:ss'),
                     mch_index: '',
                 })
+
+                if (_.isNull(val) == false) {
+                    if (
+                        val == 'date_target' ||
+                        val == 'date_finish' ||
+                        val == 'createdAt' ||
+                        val == 'updatedAt' ||
+                        val == 'date_request' ||
+                        val == 'date_audit_request' ||
+                        val == 'date_ready_request' ||
+                        val == 'date_mre_request'
+                    ) {
+                        worksheet.addRow({
+                            date_target: dayjs(val.date_target).format(
+                                'YYYY-MM-DD HH:mm:ss'
+                            ),
+                            date_finish: dayjs(val.date_finish).format(
+                                'YYYY-MM-DD HH:mm:ss'
+                            ),
+                            createdAt: dayjs(val.createdAt).format(
+                                'YYYY-MM-DD HH:mm:ss'
+                            ),
+                            updatedAt: dayjs(val.updatedAt).format(
+                                'YYYY-MM-DD HH:mm:ss'
+                            ),
+                            date_request: dayjs(val.date_request).format(
+                                'YYYY-MM-DD HH:mm:ss'
+                            ),
+                            date_ready_request: dayjs(
+                                val.date_ready_request
+                            ).format('YYYY-MM-DD HH:mm:ss'),
+                            date_audit_request: dayjs(val.date_request).format(
+                                'YYYY-MM-DD HH:mm:ss'
+                            ),
+                            date_mre_request: dayjs(
+                                val.date_ready_request
+                            ).format('YYYY-MM-DD HH:mm:ss'),
+                        })
+                    }
+                }
             })
 
             worksheet.columns.forEach((column, columNumber) => {
@@ -140,7 +180,7 @@ function LastApUser({ data }) {
     }, [filteredItem])
 
     useEffect(() => {
-        // console.log(selectData)
+        console.log(selectData)
     }, [selectData])
 
     useEffect(() => {
