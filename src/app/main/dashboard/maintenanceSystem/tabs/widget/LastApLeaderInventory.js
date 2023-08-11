@@ -503,6 +503,7 @@ function LastApLeaderInventory({ data }) {
             <Dialog
                 open={open}
                 maxWidth={'xl'}
+                style={{ zIndex: 1000 }}
                 onClose={handleClose}
                 TransitionComponent={Transition}
             >

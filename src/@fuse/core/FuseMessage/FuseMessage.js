@@ -6,6 +6,7 @@ import SnackbarContent from '@mui/material/SnackbarContent'
 import Typography from '@mui/material/Typography'
 import { memo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Portal } from '@mui/material'
 import {
     hideMessage,
     selectFuseMessageOptions,
@@ -14,6 +15,9 @@ import {
 import FuseSvgIcon from '../FuseSvgIcon'
 
 const StyledSnackbar = styled(Snackbar)(({ theme, variant }) => ({
+    '.MuiSnackbar-root': {
+        zIndex: '2000 !important',
+    },
     '& .FuseMessage-content': {
         ...(variant === 'success' && {
             backgroundColor: green[600],

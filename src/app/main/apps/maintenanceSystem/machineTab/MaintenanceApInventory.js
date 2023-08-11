@@ -213,7 +213,7 @@ function MaintenanceApReport({ data }) {
 
     return (
         <div>
-            <Box
+            {/* <Box
                 sx={{
                     width: '100%',
                     borderBottom: 1,
@@ -558,7 +558,7 @@ function MaintenanceApReport({ data }) {
                         </Button>
                     </Grid>
                 </Grid>
-            </Box>
+            </Box> */}
 
             <Box
                 sx={{

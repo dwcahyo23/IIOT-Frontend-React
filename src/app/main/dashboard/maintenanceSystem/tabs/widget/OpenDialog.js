@@ -166,35 +166,12 @@ const columnsRequest = [
         valueFormatter: (params) =>
             params.value ? dayjs(params.value).format('DD/MM/YY HH:mm') : '',
     },
-    {
-        field: 'sts_wa1',
-        headerName: 'WA1',
-        headerClassName: 'super-app-theme--header',
-        headerAlign: 'center',
-        minWidth: 20,
-    },
-    {
-        field: 'sts_wa2',
-        headerName: 'WA2',
-        headerClassName: 'super-app-theme--header',
-        headerAlign: 'center',
-        minWidth: 20,
-    },
-    {
-        field: 'sts_wa3',
-        headerName: 'WA3',
-        headerClassName: 'super-app-theme--header',
-        headerAlign: 'center',
-        minWidth: 20,
-    },
 ]
 
 function OpenDialog({ data, header }) {
-    // console.log(data)
     const dispatch = useDispatch()
     const stock = useSelector(selectStock)
     const [noMnOne, setNoMnOne] = useState(false)
-    const MnOne = useSelector(selectMnOne)
     const user = useSelector(selectUser)
     const [tabValue, setTabValue] = useState('1')
     const [hidSparepart, setHidSparepart] = useState(false)
@@ -222,69 +199,13 @@ function OpenDialog({ data, header }) {
 
     const { errors, isValid } = formState
 
-    // useDeepCompareEffect(() => {
-    //     function updateMnOne() {
-    //         const uuid = data?.selectData.mch_index.uuid
-    //         dispatch(getMnOne(uuid)).then((action) => {
-    //             dispatch(getMachineStock())
-
-    //             if (!action.payload) {
-    //                 setNoMnOne(true)
-    //             }
-
-    //             if (action.payload) {
-    //                 const report = _.find(action.payload.report, {
-    //                     sheet_no: data?.selectData.sheet_no,
-    //                 })
-    //                 _.isUndefined(report) == false &&
-    //                     _.map(_.keys(report), (val) => {
-    //                         if (_.isNull(report[val]) == false) {
-    //                             if (
-    //                                 val == 'date_report' ||
-    //                                 val == 'date_target' ||
-    //                                 val == 'date_finish' ||
-    //                                 val == 'createdAt' ||
-    //                                 val == 'updatedAt'
-    //                             ) {
-    //                                 // setValue(val, dayjs(report[val]), {
-    //                                 //     shouldDirty: true,
-    //                                 // })
-    //                                 if (_.isNull(report[val])) {
-    //                                     setValue(val, dayjs(), {
-    //                                         shouldDirty: true,
-    //                                     })
-    //                                 } else {
-    //                                     setValue(val, dayjs(report[val]), {
-    //                                         shouldDirty: true,
-    //                                     })
-    //                                 }
-    //                             } else {
-    //                                 setValue(val, report[val], {
-    //                                     shouldDirty: true,
-    //                                 })
-    //                             }
-    //                         }
-    //                     })
-
-    //                 const request = _.filter(action.payload.request, {
-    //                     sheet_no: data?.selectData.sheet_no,
-    //                 })
-    //                 // console.log(request)
-    //                 // _.isUndefined(request) == false && setTableRequest(request)
-    //                 setTableRequest(request)
-    //             }
-    //         })
-    //     }
-    //     updateMnOne()
-    // }, [dispatch])
-
     useEffect(() => {
         const ap_sheet = data?.selectData
 
         if (!data) {
             return
         } else {
-            const uuid = data?.selectData.mch_index.uuid
+            const uuid = data.selectData.mch_index.uuid
             dispatch(getMnOne(uuid)).then((action) => {
                 dispatch(getMachineStock())
 
@@ -331,8 +252,15 @@ function OpenDialog({ data, header }) {
                     setTableRequest(request)
                     // console.log(request)
                 }
+
+                // if (_.isNull(data?.selectData.chk_date)) {
+                //     setDisChkDate(true)
+                // }else{
+                //     setDisChkDate(true)
+                // }
             })
         }
+
         reset({ ...ap_sheet })
     }, [data, reset])
 
@@ -354,32 +282,6 @@ function OpenDialog({ data, header }) {
         item_stock === '#0 ADD NEW ITEM' || _.isUndefined(item_stock)
             ? setHidSparepart(false)
             : setHidSparepart(true)
-
-        // if (category_request === 'Emergency') {
-        //     setTimeout(() => {
-        //         setValue('date_request', dayjs().add(10, 'h'))
-        //     }, 500)
-        // } else if (category_request === 'Flash') {
-        //     setTimeout(() => {
-        //         setValue('date_request', dayjs().add(3, 'd'))
-        //     }, 500)
-        // } else if (category_request === 'Express') {
-        //     setTimeout(() => {
-        //         setValue('date_request', dayjs().add(7, 'd'))
-        //     }, 500)
-        // } else if (category_request === 'Reguler') {
-        //     setTimeout(() => {
-        //         setValue('date_request', dayjs().add(14, 'd'))
-        //     }, 500)
-        // } else if (category_request === 'Indent') {
-        //     setTimeout(() => {
-        //         setValue('date_request', dayjs().add(1, 'M'))
-        //     }, 500)
-        // } else {
-        //     setTimeout(() => {
-        //         setValue('date_request', dayjs().add(14, 'd'))
-        //     }, 500)
-        // }
 
         audit_request === 'Y'
             ? setTimeout(() => {
@@ -423,15 +325,6 @@ function OpenDialog({ data, header }) {
         mre_request,
     ])
 
-    // console.log(disAuditReq)
-
-    useEffect(() => {
-        // console.log(MnOne)
-        if (!MnOne) {
-            return
-        }
-    }, [MnOne])
-
     function handleTabChange(ev, val) {
         setTabValue(val)
         if (val == 1) {
@@ -450,6 +343,7 @@ function OpenDialog({ data, header }) {
     useEffect(() => {
         if (tableRequest.length > 0) {
             const isAudit = _.every(tableRequest, ['audit_request', 'N'])
+
             setDisRep(isAudit)
             setDisWa(false)
         } else {
@@ -510,21 +404,50 @@ function OpenDialog({ data, header }) {
 
     function handleSendWa() {
         if (tableRequest.length > 0) {
-            console.log(tableRequest)
+            // console.log(tableRequest)
 
             let msg = `*Permintaan Sparepart*`
-            msg += `\n${tableRequest[0].sheet_no} | ${tableRequest[0].user_req1} | ${tableRequest[0].category_request}`
+            msg += `\n\n${tableRequest[0].sheet_no} |  ${tableRequest[0].category_request}`
+            msg += `\n${tableRequest[0].mch_code} | ${
+                tableRequest[0].user_req1
+            } | ${dayjs(tableRequest[0].createdAt).format(
+                'DD/MM/YY HH:mm:ss'
+            )} `
+            msg += `\n\nList permintaan:`
             _.forEach(tableRequest, (entry, idx) => {
-                msg += `\n${idx + 1}. ${
+                msg += `\n*${idx + 1}.)* *${
                     _.isNull(entry.item_stock) == false
                         ? entry.item_stock
                         : entry.name
-                } (${entry.item_qty} ${entry.item_uom})`
-                msg += `\nMRE : ${entry.mre_request}`
-                msg += `\nReady : ${entry.item_ready}`
+                }* | ${entry.item_qty} ${entry.item_uom} | ${
+                    entry.item_ready == 'Y' ? '✅' : '❌'
+                } `
+
+                if (entry.audit_request == 'N') {
+                    if (
+                        _.isNull(entry.mre_request) == false &&
+                        entry.mre_request.length > 3
+                    ) {
+                        msg += `\n↑ Sudah terbit MRE, _*${entry.mre_request}*_`
+                        msg += `\n${dayjs(entry.date_mre_request).format(
+                            'DD/MM/YY HH:mm:ss\n'
+                        )}`
+                    }
+                    if (entry.item_ready == 'Y') {
+                        msg += `\n ↑ Sudah digudang, silahkan diambil`
+                        msg += `\n${dayjs(entry.ready_request).format(
+                            'DD/MM/YY HH:mm:ss\n'
+                        )}`
+                    }
+                } else {
+                    msg += `\n ↑ Audit by ${entry.user_req2}`
+                    msg += `\n${dayjs(entry.date_audit_request).format(
+                        'DD/MM/YY HH:mm:ss\n'
+                    )}`
+                }
             })
             axios
-                .post('http://192.168.192.7:5010/send-message-group', {
+                .post('http://192.168.192.7:5010/send-message', {
                     // name: 'PENANGANAN SPAREPART GM1 IK-03-03-01',
                     number: '082124610363',
                     message: msg,
@@ -982,6 +905,7 @@ function OpenDialog({ data, header }) {
                                                             disablePortal: true,
                                                         },
                                                     }}
+                                                    readOnly
                                                 />
                                             </LocalizationProvider>
                                         )}
@@ -1083,29 +1007,34 @@ function OpenDialog({ data, header }) {
                                         )}
                                     />
                                 </Grid>
-                                <Grid item xs={3}>
-                                    <Controller
-                                        name="analyzed"
-                                        defaultValue=""
-                                        control={control}
-                                        render={({ field }) => (
-                                            <TextField
-                                                {...field}
-                                                className="mt-8 mb-16"
-                                                error={!!errors.analyzed}
-                                                helperText={
-                                                    errors?.analyzed?.message
-                                                }
-                                                label="Analyze"
-                                                id="analyzed"
-                                                variant="outlined"
-                                                fullWidth
-                                                multiline
-                                                rows={6}
-                                            />
-                                        )}
-                                    />
-                                </Grid>
+                                {(data?.selectData.pri_no == '01' ||
+                                    data?.selectData.pri_no == '02' ||
+                                    data?.selectData.pri_no == '03') && (
+                                    <Grid item xs={3}>
+                                        <Controller
+                                            name="analyzed"
+                                            defaultValue=""
+                                            control={control}
+                                            render={({ field }) => (
+                                                <TextField
+                                                    {...field}
+                                                    className="mt-8 mb-16"
+                                                    error={!!errors.analyzed}
+                                                    helperText={
+                                                        errors?.analyzed
+                                                            ?.message
+                                                    }
+                                                    label="Analyze"
+                                                    id="analyzed"
+                                                    variant="outlined"
+                                                    fullWidth
+                                                    multiline
+                                                    rows={6}
+                                                />
+                                            )}
+                                        />
+                                    </Grid>
+                                )}
                                 <Grid item xs={3}>
                                     <Controller
                                         name="corrective"
@@ -1129,29 +1058,34 @@ function OpenDialog({ data, header }) {
                                         )}
                                     />
                                 </Grid>
-                                <Grid item xs={3}>
-                                    <Controller
-                                        name="prevention"
-                                        defaultValue=""
-                                        control={control}
-                                        render={({ field }) => (
-                                            <TextField
-                                                {...field}
-                                                className="mt-8 mb-16"
-                                                error={!!errors.prevention}
-                                                helperText={
-                                                    errors?.prevention?.message
-                                                }
-                                                label="Prevention"
-                                                id="prevention"
-                                                variant="outlined"
-                                                fullWidth
-                                                multiline
-                                                rows={6}
-                                            />
-                                        )}
-                                    />
-                                </Grid>
+                                {(data?.selectData.pri_no == '01' ||
+                                    data?.selectData.pri_no == '02' ||
+                                    data?.selectData.pri_no == '03') && (
+                                    <Grid item xs={3}>
+                                        <Controller
+                                            name="prevention"
+                                            defaultValue=""
+                                            control={control}
+                                            render={({ field }) => (
+                                                <TextField
+                                                    {...field}
+                                                    className="mt-8 mb-16"
+                                                    error={!!errors.prevention}
+                                                    helperText={
+                                                        errors?.prevention
+                                                            ?.message
+                                                    }
+                                                    label="Prevention"
+                                                    id="prevention"
+                                                    variant="outlined"
+                                                    fullWidth
+                                                    multiline
+                                                    rows={6}
+                                                />
+                                            )}
+                                        />
+                                    </Grid>
+                                )}
                             </Grid>
                             <Grid container spacing={2}>
                                 <Grid item xs={2}>
@@ -1240,7 +1174,7 @@ function OpenDialog({ data, header }) {
                                             <TextField
                                                 {...field}
                                                 className="mt-8 mb-16"
-                                                label="Audit"
+                                                label="Audit Report"
                                                 select
                                                 autoFocus
                                                 id="audit_report"
@@ -1258,30 +1192,39 @@ function OpenDialog({ data, header }) {
                                 </Grid>
 
                                 <Grid item xs={3}>
-                                    <Controller
-                                        name="date_finish"
-                                        control={control}
-                                        defaultValue={null}
-                                        render={({ field }) => (
-                                            <LocalizationProvider
-                                                dateAdapter={AdapterDayjs}
-                                            >
-                                                <DateTimePicker
-                                                    {...field}
-                                                    ampm={false}
-                                                    className="mt-8 mb-16"
-                                                    id="date_finish"
-                                                    label="Finish"
-                                                    sx={{ width: '100%' }}
-                                                    slotProps={{
-                                                        popper: {
-                                                            disablePortal: true,
-                                                        },
-                                                    }}
-                                                />
-                                            </LocalizationProvider>
-                                        )}
-                                    />
+                                    {data?.selectData.chk_mark == 'Y' ? (
+                                        <Controller
+                                            name="date_finish"
+                                            control={control}
+                                            // defaultValue={null}
+                                            defaultValue={dayjs(
+                                                data?.selectData.chk_date
+                                            )}
+                                            render={({ field }) => (
+                                                <LocalizationProvider
+                                                    dateAdapter={AdapterDayjs}
+                                                >
+                                                    <DateTimePicker
+                                                        {...field}
+                                                        ampm={false}
+                                                        className="mt-8 mb-16"
+                                                        id="date_finish"
+                                                        label="Finish"
+                                                        sx={{ width: '100%' }}
+                                                        slotProps={{
+                                                            popper: {
+                                                                disablePortal: true,
+                                                            },
+                                                        }}
+                                                    />
+                                                </LocalizationProvider>
+                                            )}
+                                        />
+                                    ) : (
+                                        <Typography style={{ color: 'red' }}>
+                                            unaudit ERP
+                                        </Typography>
+                                    )}
                                 </Grid>
                             </Grid>
                             <Grid item xs={4}>
@@ -1289,7 +1232,10 @@ function OpenDialog({ data, header }) {
                                     className="whitespace-nowrap mb-16"
                                     variant="contained"
                                     color="secondary"
-                                    disabled={disRep}
+                                    disabled={
+                                        disRep &&
+                                        data?.selectData.chk_mark == 'Y'
+                                    }
                                     onClick={handleSaveReport}
                                 >
                                     Save
