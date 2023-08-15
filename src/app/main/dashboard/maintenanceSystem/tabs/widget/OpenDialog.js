@@ -40,6 +40,11 @@ import {
     saveMnOne,
     saveMnOneRequest,
 } from '../../store/mnOneSlice'
+import { getApSlice } from '../../store/apSlice'
+import mnRepSlice, { getMnRepSlice } from '../../store/mnRepSlice'
+import { getMnReqSlice } from '../../store/mnReqSlice'
+import { getMnMachineSlice } from '../../store/mnMachineSlice'
+
 import {
     getMachineStock,
     selectStock,
@@ -401,6 +406,9 @@ function OpenDialog({ data, header }) {
                             setTableRequest(request)
                         }
                     })
+                    dispatch(getApSlice())
+                    dispatch(mnRepSlice())
+                    dispatch(getMnRepSlice())
                     dispatch(
                         showMessage({
                             message: 'Data has been saved successfully',
@@ -468,6 +476,9 @@ function OpenDialog({ data, header }) {
                             setTableRequest(request)
                         }
                     })
+                    dispatch(getApSlice())
+                    dispatch(mnRepSlice())
+                    dispatch(getMnReqSlice())
                     dispatch(
                         showMessage({
                             message: 'Data has been saved successfully',
