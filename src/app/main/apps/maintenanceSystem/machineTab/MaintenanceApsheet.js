@@ -61,6 +61,13 @@ function MaintenanceApsheet({ data }) {
             width: 120,
         },
         {
+            field: 'com_no',
+            headerName: 'Com',
+            headerClassName: 'super-app-theme--header',
+            headerAlign: 'center',
+            width: 120,
+        },
+        {
             field: 'pri_no',
             headerName: 'Status',
             headerClassName: 'super-app-theme--header',
@@ -148,17 +155,21 @@ function MaintenanceApsheet({ data }) {
             // console.log('multi')
         } else {
             if (machines) {
+                // console.log(data.row)
                 const mch_index = _.find(machines, {
                     mch_code: data.row.mch_no,
                     mch_com:
                         data.row.com_no == '01'
                             ? 'GM1'
-                            : data.row.com_no == '02' || 'GM2'
+                            : data.row.com_no == '02'
                             ? 'GM2'
-                            : data.row.com_no == '03' || 'GM3'
+                            : data.row.com_no == '03'
                             ? 'GM3'
+                            : data.row.com_no == '05'
+                            ? 'GM5'
                             : 'GM5',
                 })
+                console.log(mch_index)
                 if (mch_index) {
                     setOpen(true)
                     setSelectData({ ...data.row, mch_index: mch_index })
