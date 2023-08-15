@@ -1781,7 +1781,7 @@ function OpenDialog({ data, header }) {
                         <Button onClick={() => handleSaveRequest('01')}>
                             Yes
                         </Button>
-                        <Button onClose={handleClose}>No</Button>
+                        <Button onClick={handleClose}>No</Button>
                     </DialogActions>
                 </DialogContent>
             </Dialog>
