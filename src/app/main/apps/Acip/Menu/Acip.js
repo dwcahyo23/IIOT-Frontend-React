@@ -23,6 +23,7 @@ import dayjs from 'dayjs'
 import { Controller, useForm, FormProvider } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { selectUser } from 'app/store/userSlice'
 
 import {
     getGenbaAcip,
@@ -43,6 +44,7 @@ function Acip() {
     const genba = useSelector(selectGenbaAcip)
     const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'))
     const [isNoGenba, setIsNoGenba] = useState(false)
+    const user = useSelector(selectUser)
 
     useDeepCompareEffect(() => {
         function updateGenba() {

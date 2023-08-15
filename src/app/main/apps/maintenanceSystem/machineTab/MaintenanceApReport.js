@@ -169,23 +169,24 @@ function MaintenanceApReport({ data }) {
     ]
 
     const tableIndex = (data) => {
-        setValue('id_report', data.row.sheet_no, { shouldDirty: true })
-        setValue('date_report', dayjs(data.row.date_report), {
-            shouldDirty: true,
-        })
-        setValue('date_target', dayjs(data.row.date_target), {
-            shouldDirty: true,
-        })
-        setValue('date_finish', dayjs(data.row.date_finish), {
-            shouldDirty: true,
-        })
-        setValue('kind', data.row.kind, { shouldDirty: true })
-        setValue('audit_report', data.row.audit_report, { shouldDirty: true })
-        setValue('chronological', data.row.chronological, { shouldDirty: true })
-        setValue('analyzed', data.row.analyzed, { shouldDirty: true })
-        setValue('corrective', data.row.corrective, { shouldDirty: true })
-        setValue('prevention', data.row.prevention, { shouldDirty: true })
-        setValue('user_rep2', data.row.user_rep2, { shouldDirty: true })
+        console.log(data)
+        // setValue('id_report', data.row.sheet_no, { shouldDirty: true })
+        // setValue('date_report', dayjs(data.row.date_report), {
+        //     shouldDirty: true,
+        // })
+        // setValue('date_target', dayjs(data.row.date_target), {
+        //     shouldDirty: true,
+        // })
+        // setValue('date_finish', dayjs(data.row.date_finish), {
+        //     shouldDirty: true,
+        // })
+        // setValue('kind', data.row.kind, { shouldDirty: true })
+        // setValue('audit_report', data.row.audit_report, { shouldDirty: true })
+        // setValue('chronological', data.row.chronological, { shouldDirty: true })
+        // setValue('analyzed', data.row.analyzed, { shouldDirty: true })
+        // setValue('corrective', data.row.corrective, { shouldDirty: true })
+        // setValue('prevention', data.row.prevention, { shouldDirty: true })
+        // setValue('user_rep2', data.row.user_rep2, { shouldDirty: true })
     }
 
     return (

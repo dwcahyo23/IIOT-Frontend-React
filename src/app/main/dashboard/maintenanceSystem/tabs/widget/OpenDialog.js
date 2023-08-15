@@ -603,30 +603,35 @@ function OpenDialog({ data, header }) {
 
     const tableIndex = (data) => {
         // console.log(data)
-        setSelectWa(data)
-        _.map(_.keys(data.row), (val) => {
-            if (_.isNull(data.row[val]) == false) {
-                if (
-                    val == 'date_data.row' ||
-                    val == 'date_target' ||
-                    val == 'date_finish' ||
-                    val == 'createdAt' ||
-                    val == 'updatedAt' ||
-                    val == 'date_request' ||
-                    val == 'date_audit_request' ||
-                    val == 'date_ready_request' ||
-                    val == 'date_mre_request'
-                ) {
-                    setValue(val, dayjs(data.row[val]), {
-                        shouldDirty: true,
-                    })
-                } else {
-                    setValue(val, data.row[val], {
-                        shouldDirty: true,
-                    })
+        if (_.has(data, 'multi')) {
+            console.log(data.multi)
+            setSelectWa(data.multi)
+        } else {
+            _.map(_.keys(data.row), (val) => {
+                if (_.isNull(data.row[val]) == false) {
+                    if (
+                        val == 'date_data.row' ||
+                        val == 'date_target' ||
+                        val == 'date_finish' ||
+                        val == 'createdAt' ||
+                        val == 'updatedAt' ||
+                        val == 'date_request' ||
+                        val == 'date_audit_request' ||
+                        val == 'date_ready_request' ||
+                        val == 'date_mre_request'
+                    ) {
+                        setValue(val, dayjs(data.row[val]), {
+                            shouldDirty: true,
+                        })
+                    } else {
+                        setValue(val, data.row[val], {
+                            shouldDirty: true,
+                        })
+                    }
                 }
-            }
-        })
+            })
+            // console.log(data)
+        }
     }
 
     return (

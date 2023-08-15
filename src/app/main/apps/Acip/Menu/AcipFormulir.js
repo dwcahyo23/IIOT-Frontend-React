@@ -20,6 +20,7 @@ import StatusColor from '../../maintenanceSystem/machineTab/utils/StatusColor'
 import { showMessage } from 'app/store/fuse/messageSlice'
 import { getGenbaAcip, saveGenbaAcip } from '../store/genba/genbaAcipSlice'
 import AcipDialog from './AcipDialog'
+import { selectUser } from 'app/store/userSlice'
 
 const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />
@@ -77,11 +78,20 @@ const columns = [
         headerClassName: 'super-app-theme--header',
         headerAlign: 'center',
         width: 150,
-        renderCell: (params) => (
-            <img
-                src={`data:${params.value?.mimetype};base64,${params.value?.data}`}
-            />
-        ),
+        valueGetter: (params) => params.row.images1,
+        renderCell: (params) => {
+            if (_.isObject(params.value)) {
+                return (
+                    <img
+                        src={`data:${params.value?.mimetype};base64,${params.value?.data}`}
+                    />
+                )
+            } else {
+                return (
+                    <img src="assets/images/apps/ecommerce/product-image-placeholder.png" />
+                )
+            }
+        },
     },
     {
         field: 'case',
@@ -131,15 +141,22 @@ const columns = [
         headerClassName: 'super-app-theme--header',
         headerAlign: 'center',
         width: 150,
-        renderCell: (params) =>
-            params.value ? (
-                <img
-                    src={`data:${params.value?.mimetype};base64,${params.value?.data}`}
-                />
-            ) : (
-                <img src="assets/images/apps/ecommerce/product-image-placeholder.png" />
-            ),
-        // images1: `data:${attachmentData.mimetype};base64,${attachmentData.data}`,
+        valueGetter: (params) => params.row.images2,
+        renderCell: (params) => {
+            // console.log(params.value)
+            if (_.isArray(params.value)) {
+                // console.log('array')
+                return (
+                    <img src="assets/images/apps/ecommerce/product-image-placeholder.png" />
+                )
+            } else {
+                return (
+                    <img
+                        src={`data:${params.value?.mimetype};base64,${params.value?.data}`}
+                    />
+                )
+            }
+        },
     },
     {
         field: 'improvement',
@@ -206,6 +223,7 @@ const columns = [
 function AcipFormulir() {
     const dispatch = useDispatch()
     const methods = useFormContext()
+    const user = useSelector(selectUser)
     const { control, formState, watch, getValues, setValue, getFieldState } =
         methods
     const { errors, isValid } = formState
@@ -225,9 +243,15 @@ function AcipFormulir() {
     }
 
     const tableIndex = (data) => {
-        console.log(data)
-        setSelectData(data.row)
-        setOpen(true)
+        if (user.data.userNIK == '201712256') {
+            if (_.has(data, 'multi')) {
+                console.log('multi')
+            } else {
+                setSelectData(data.row)
+                setOpen(true)
+                // console.log(data)
+            }
+        }
     }
 
     const header = (data) => {

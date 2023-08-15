@@ -138,23 +138,23 @@ function MaintenanceApReport({ data }) {
     }
 
     const tableIndex = (data) => {
-        // console.log(data)
-        setValue('id_request', data.row.sheet_no, { shouldDirty: true })
-        setValue('date_request', dayjs(data.row.date_request), {
-            shouldDirty: true,
-        })
-        setValue('uuid_request', data.row.uuid_request)
-        setValue('item_name', data.row.item_name, { shouldDirty: true })
-        setValue('item_qty', data.row.item_qty, { shouldDirty: true })
-        setValue('item_uom', data.row.item_uom, { shouldDirty: true })
-        setValue('audit_request', data.row.audit_request, { shouldDirty: true })
-        setValue('item_stock', data.row.item_stock, { shouldDirty: true })
-        setValue('mre_request', data.row.mre_request, { shouldDirty: true })
-        setValue('user_req1', data.row.user_req1, { shouldDirty: true })
-        setValue('item_ready', data.row.item_ready, { shouldDirty: true })
-        setValue('category_request', data.row.category_request, {
-            shouldDirty: true,
-        })
+        console.log(data)
+        // setValue('id_request', data.row.sheet_no, { shouldDirty: true })
+        // setValue('date_request', dayjs(data.row.date_request), {
+        //     shouldDirty: true,
+        // })
+        // setValue('uuid_request', data.row.uuid_request)
+        // setValue('item_name', data.row.item_name, { shouldDirty: true })
+        // setValue('item_qty', data.row.item_qty, { shouldDirty: true })
+        // setValue('item_uom', data.row.item_uom, { shouldDirty: true })
+        // setValue('audit_request', data.row.audit_request, { shouldDirty: true })
+        // setValue('item_stock', data.row.item_stock, { shouldDirty: true })
+        // setValue('mre_request', data.row.mre_request, { shouldDirty: true })
+        // setValue('user_req1', data.row.user_req1, { shouldDirty: true })
+        // setValue('item_ready', data.row.item_ready, { shouldDirty: true })
+        // setValue('category_request', data.row.category_request, {
+        //     shouldDirty: true,
+        // })
     }
 
     function valid() {

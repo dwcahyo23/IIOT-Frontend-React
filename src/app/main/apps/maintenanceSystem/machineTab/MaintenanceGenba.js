@@ -94,7 +94,7 @@ function MaintenanceGenba() {
     ]
 
     const tableIndex = (data) => {
-        console.log(data.row)
+        console.log(data)
     }
 
     return (

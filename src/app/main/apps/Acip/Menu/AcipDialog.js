@@ -78,7 +78,7 @@ function AcipDialog({ data, header }) {
     // }, [beforeImage])
 
     useEffect(() => {
-        // console.log(data)
+        console.log(data)
         if (data) {
             const genba = data.selectData
             _.map(_.keys(genba), (val) => {
@@ -104,7 +104,7 @@ function AcipDialog({ data, header }) {
                         `data:${images1.mimetype};base64,${images1.data}`
                     )
 
-                    if (_.isNull(genba['images2'])) {
+                    if (_.isArray(genba['images2'])) {
                     } else {
                         const images2 = genba['images2']
                         setAfterImage(

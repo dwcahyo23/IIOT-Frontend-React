@@ -141,34 +141,39 @@ function MaintenanceApsheet({ data }) {
     ]
 
     const tableIndex = (data) => {
-        console.log(data)
+        // console.log(data)
         // console.log(data.row.mch_no, data.row.com_no)
 
-        if (machines) {
-            const mch_index = _.find(machines, {
-                mch_code: data.row.mch_no,
-                mch_com:
-                    data.row.com_no == '01'
-                        ? 'GM1'
-                        : data.row.com_no == '02' || 'GM2'
-                        ? 'GM2'
-                        : data.row.com_no == '03' || 'GM3'
-                        ? 'GM3'
-                        : 'GM5',
-            })
-            if (mch_index) {
-                setOpen(true)
-                setSelectData({ ...data.row, mch_index: mch_index })
-            } else {
-                dispatch(
-                    showMessage({
-                        message: 'Please check mch_no,mch_com with master data',
-                        variant: 'warning',
-                    })
-                )
-            }
+        if (_.has(data, 'multi')) {
+            // console.log('multi')
+        } else {
+            if (machines) {
+                const mch_index = _.find(machines, {
+                    mch_code: data.row.mch_no,
+                    mch_com:
+                        data.row.com_no == '01'
+                            ? 'GM1'
+                            : data.row.com_no == '02' || 'GM2'
+                            ? 'GM2'
+                            : data.row.com_no == '03' || 'GM3'
+                            ? 'GM3'
+                            : 'GM5',
+                })
+                if (mch_index) {
+                    setOpen(true)
+                    setSelectData({ ...data.row, mch_index: mch_index })
+                } else {
+                    dispatch(
+                        showMessage({
+                            message:
+                                'Please check mch_no,mch_com with master data',
+                            variant: 'warning',
+                        })
+                    )
+                }
 
-            console.log({ ...data.row, mch_index: mch_index })
+                console.log({ ...data.row, mch_index: mch_index })
+            }
         }
     }
 

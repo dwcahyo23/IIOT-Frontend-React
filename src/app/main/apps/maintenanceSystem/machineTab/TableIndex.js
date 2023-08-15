@@ -276,7 +276,7 @@ function TableIndex({ params, tableIndex }) {
                     )
                 )
                 setRowSelectionModel(selectedRows)
-                tableIndex(selectedRows)
+                tableIndex({ multi: selectedRows })
             }}
         />
     )
