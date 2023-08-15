@@ -243,7 +243,10 @@ function AcipFormulir() {
     }
 
     const tableIndex = (data) => {
-        if (user.data.userNIK == '201712256') {
+        if (
+            user.data.userNIK == '201712256' ||
+            user.data.userNIK == '201802045'
+        ) {
             if (_.has(data, 'multi')) {
                 console.log('multi')
             } else {

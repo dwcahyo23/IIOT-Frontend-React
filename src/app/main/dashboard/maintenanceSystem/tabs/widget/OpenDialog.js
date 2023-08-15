@@ -41,7 +41,7 @@ import {
     saveMnOneRequest,
 } from '../../store/mnOneSlice'
 import { getApSlice } from '../../store/apSlice'
-import mnRepSlice, { getMnRepSlice } from '../../store/mnRepSlice'
+import { getMnRepSlice } from '../../store/mnRepSlice'
 import { getMnReqSlice } from '../../store/mnReqSlice'
 import { getMnMachineSlice } from '../../store/mnMachineSlice'
 
@@ -407,7 +407,6 @@ function OpenDialog({ data, header }) {
                         }
                     })
                     dispatch(getApSlice())
-                    dispatch(mnRepSlice())
                     dispatch(getMnRepSlice())
                     dispatch(
                         showMessage({
@@ -477,7 +476,6 @@ function OpenDialog({ data, header }) {
                         }
                     })
                     dispatch(getApSlice())
-                    dispatch(mnRepSlice())
                     dispatch(getMnReqSlice())
                     dispatch(
                         showMessage({
