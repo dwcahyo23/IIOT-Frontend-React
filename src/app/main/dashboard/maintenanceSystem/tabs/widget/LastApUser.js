@@ -180,7 +180,7 @@ function LastApUser({ data }) {
     }, [filteredItem])
 
     useEffect(() => {
-        console.log(selectData)
+        // console.log(selectData)
     }, [selectData])
 
     useEffect(() => {

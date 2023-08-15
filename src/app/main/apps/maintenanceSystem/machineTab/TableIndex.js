@@ -239,6 +239,7 @@ function TableIndex({ params, tableIndex }) {
         return null
     }
     const [filter, setFilter] = useState('')
+    const [rowSelectionModel, setRowSelectionModel] = useState([])
 
     useEffect(() => {
         if (params.filter) {
@@ -246,12 +247,15 @@ function TableIndex({ params, tableIndex }) {
         }
     }, [params])
 
+    useEffect(() => {
+        // console.log(rowSelectionModel)
+    }, [rowSelectionModel])
+
     return (
         <StyledDataGrid
             rows={params.row}
             columns={params.columns}
             getRowHeight={() => 'auto'}
-            // getRowId={params.id}
             getRowId={(row) =>
                 row.uuid || row.uuid_request || row.sheet_no || row.id_genba
             }
@@ -261,18 +265,19 @@ function TableIndex({ params, tableIndex }) {
             slots={{ toolbar: CustomToolbar }}
             slotProps={{ toolbar: { rows, column } }}
             autoPageSize
-            // filterModel={{
-            //     items: [],
-            //     quickFilterValues: [],
-            // }}
-            // initialState={{
-            //     filter: {
-            //         filterModel: {
-            //             items: [],
-            //             quickFilterValues: [filter],
-            //         },
-            //     },
-            // }}
+            onRowSelectionModelChange={(ids) => {
+                const selectedIDs = new Set(ids)
+                const selectedRows = params.row.filter((row) =>
+                    selectedIDs.has(
+                        row.uuid ||
+                            row.uuid_request ||
+                            row.sheet_no ||
+                            row.id_genba
+                    )
+                )
+                setRowSelectionModel(selectedRows)
+                tableIndex(selectedRows)
+            }}
         />
     )
 }

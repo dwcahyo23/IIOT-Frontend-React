@@ -141,6 +141,7 @@ function MaintenanceApsheet({ data }) {
     ]
 
     const tableIndex = (data) => {
+        console.log(data)
         // console.log(data.row.mch_no, data.row.com_no)
 
         if (machines) {

@@ -7,6 +7,9 @@ import {
     Tab,
     TextField,
     Grid,
+    Dialog,
+    DialogContent,
+    DialogActions,
     MenuItem,
 } from '@mui/material'
 import { useDeepCompareEffect } from '@fuse/hooks'
@@ -179,6 +182,8 @@ function OpenDialog({ data, header }) {
     const [disAuditReq, setDisAuditReq] = useState(true)
     const [disRep, setDisRep] = useState(true)
     const [disWa, setDisWa] = useState(true)
+    const [open, setOpen] = useState(false)
+    const [selectWa, setSelectWa] = useState(null)
 
     const methods = useForm({
         mode: 'onChange',
@@ -208,10 +213,6 @@ function OpenDialog({ data, header }) {
             const uuid = data.selectData.mch_index.uuid
             dispatch(getMnOne(uuid)).then((action) => {
                 dispatch(getMachineStock())
-
-                if (!action.payload) {
-                    setNoMnOne(true)
-                }
 
                 if (action.payload) {
                     const report = _.find(action.payload.report, {
@@ -343,6 +344,10 @@ function OpenDialog({ data, header }) {
         }
     }, [tableRequest])
 
+    // useEffect(() => {
+    //     console.log(selectWa)
+    // }, [selectWa])
+
     function handleSaveReport() {
         dispatch(saveMnOne(getValues()))
             .then((action) => {
@@ -414,18 +419,13 @@ function OpenDialog({ data, header }) {
             })
     }
 
-    function handleSaveRequest() {
-        tableIndex
+    function handleSaveRequest(isWhatsappCode) {
         dispatch(saveMnOneRequest(getValues()))
             .then((action) => {
                 if (action.payload) {
                     const uuid = data?.selectData.mch_index.uuid
                     dispatch(getMnOne(uuid)).then((action) => {
                         dispatch(getMachineStock())
-
-                        if (!action.payload) {
-                            setNoMnOne(true)
-                        }
 
                         if (action.payload) {
                             const report = _.find(action.payload.report, {
@@ -486,78 +486,116 @@ function OpenDialog({ data, header }) {
             })
     }
 
+    function handleOpenWa() {
+        setOpen(true)
+    }
+
     function handleSendWa() {
-        if (tableRequest.length > 0) {
-            // console.log(tableRequest)
-
+        if (selectWa.length > 0) {
             let msg = `*Permintaan Sparepart*`
-            msg += `\n\n${tableRequest[0].sheet_no} |  ${tableRequest[0].category_request}`
-            msg += `\n${tableRequest[0].mch_code} | ${
-                tableRequest[0].user_req1
-            } | ${dayjs(tableRequest[0].createdAt).format(
-                'DD/MM/YY HH:mm:ss'
-            )} `
+            msg += `\n\n${selectWa[0].sheet_no} |  ${selectWa[0].category_request}`
+            msg += `\n${selectWa[0].mch_code} | ${
+                selectWa[0].user_req1
+            } | ${dayjs(selectWa[0].createdAt).format('DD/MM/YY HH:mm:ss')} `
             msg += `\n\nList permintaan:`
-            _.forEach(tableRequest, (entry, idx) => {
-                msg += `\n*${idx + 1}.)* *${
-                    _.isNull(entry.item_stock) == false
-                        ? entry.item_stock
-                        : entry.name
-                }* | ${entry.item_qty} ${entry.item_uom} | ${
-                    entry.item_ready == 'Y' ? '✅' : '❌'
-                } `
-
+            _.forEach(selectWa, (entry, idx) => {
                 if (entry.audit_request == 'N') {
-                    if (
-                        _.isNull(entry.mre_request) == false &&
-                        entry.mre_request.length > 3
-                    ) {
-                        msg += `\n↑ Sudah terbit MRE, _*${entry.mre_request}*_`
-                        msg += `\n${dayjs(entry.date_mre_request).format(
+                    msg += `\n*${idx + 1}.)* *${
+                        _.isNull(entry.item_stock) == false
+                            ? entry.item_stock
+                            : entry.name
+                    }* | ${entry.item_qty} ${entry.item_uom} | ${
+                        entry.item_ready == 'Y' ? '✅' : '❌'
+                    } `
+
+                    if (entry.audit_request == 'N') {
+                        if (
+                            _.isNull(entry.mre_request) == false &&
+                            entry.mre_request.length > 3
+                        ) {
+                            msg += `\n↑ Sudah terbit MRE, _*${entry.mre_request}*_`
+                            msg += `\n${dayjs(entry.date_mre_request).format(
+                                'DD/MM/YY HH:mm:ss\n'
+                            )}`
+                        }
+                        if (entry.item_ready == 'Y') {
+                            msg += `\n ↑ Sudah digudang, silahkan diambil`
+                            msg += `\n${dayjs(entry.ready_request).format(
+                                'DD/MM/YY HH:mm:ss\n'
+                            )}`
+                        }
+                    } else {
+                        msg += `\n ↑ Sudah audit, by ${entry.user_req2}`
+                        msg += `\n${dayjs(entry.date_audit_request).format(
                             'DD/MM/YY HH:mm:ss\n'
                         )}`
                     }
-                    if (entry.item_ready == 'Y') {
-                        msg += `\n ↑ Sudah digudang, silahkan diambil`
-                        msg += `\n${dayjs(entry.ready_request).format(
-                            'DD/MM/YY HH:mm:ss\n'
-                        )}`
-                    }
-                } else {
-                    msg += `\n ↑ Audit by ${entry.user_req2}`
-                    msg += `\n${dayjs(entry.date_audit_request).format(
-                        'DD/MM/YY HH:mm:ss\n'
-                    )}`
                 }
             })
-            axios
-                .post('http://192.168.192.7:5010/send-message-group', {
-                    name: 'PENANGANAN SPAREPART GM1 IK-03-03-01',
-                    // number: '082124610363',
-                    message: msg,
-                })
-                .then(() =>
-                    dispatch(
-                        showMessage({
-                            message: 'Sended wa successfully',
-                            variant: 'success',
-                        })
+
+            if (
+                selectWa[0].mch_com == 'GM1' ||
+                selectWa[0].mch_com == 'GM3' ||
+                selectWa[0].mch_com == 'GM5'
+            ) {
+                axios
+                    .post('http://192.168.192.7:5010/send-message', {
+                        // name: 'PENANGANAN SPAREPART GM1 IK-03-03-01',
+                        number: '082124610363',
+                        message: msg,
+                    })
+                    .then(() =>
+                        dispatch(
+                            showMessage({
+                                message: 'Sended wa successfully',
+                                variant: 'success',
+                            })
+                        )
                     )
-                )
-                .catch((e) => {
-                    // console.log(e)
-                    dispatch(
-                        showMessage({
-                            message: `${e.message}`,
-                            variant: 'error',
-                        })
+                    .catch((e) => {
+                        // console.log(e)
+                        dispatch(
+                            showMessage({
+                                message: `${e.message}`,
+                                variant: 'error',
+                            })
+                        )
+                    })
+            } else if (selectWa[0].mch_com == 'GM2') {
+                axios
+                    .post('http://192.168.192.7:5010/send-message-group', {
+                        name: 'PENANGANAN SPAREPART GM2 IK-03-03-01',
+                        // number: '082124610363',
+                        message: msg,
+                    })
+                    .then(() =>
+                        dispatch(
+                            showMessage({
+                                message: 'Sended wa successfully',
+                                variant: 'success',
+                            })
+                        )
                     )
-                })
+                    .catch((e) => {
+                        // console.log(e)
+                        dispatch(
+                            showMessage({
+                                message: `${e.message}`,
+                                variant: 'error',
+                            })
+                        )
+                    })
+            }
         }
+    }
+
+    const handleClose = () => {
+        setOpen(false)
     }
 
     const tableIndex = (data) => {
         // console.log(data)
+        setSelectWa(data)
         _.map(_.keys(data.row), (val) => {
             if (_.isNull(data.row[val]) == false) {
                 if (
@@ -1589,12 +1627,18 @@ function OpenDialog({ data, header }) {
                                             autoFocus
                                             id="audit_request"
                                             fullWidth
-                                            disabled={disAuditReq}
+                                            // disabled={disAuditReq}
                                             // InputProps={{
                                             //     readOnly: { disAuditReq },
                                             // }}
                                         >
-                                            <MenuItem value="Y">Audit</MenuItem>
+                                            <MenuItem
+                                                value="Y"
+                                                disabled={disAuditReq}
+                                            >
+                                                Audit
+                                            </MenuItem>
+
                                             <MenuItem value="C">
                                                 Cancel
                                             </MenuItem>
@@ -1686,7 +1730,7 @@ function OpenDialog({ data, header }) {
                                     variant="contained"
                                     color="secondary"
                                     // disabled={valid()
-                                    onClick={handleSaveRequest}
+                                    onClick={handleOpenWa}
                                 >
                                     Save
                                 </Button>
@@ -1716,12 +1760,23 @@ function OpenDialog({ data, header }) {
                                 disabled={disWa}
                                 onClick={handleSendWa}
                             >
-                                Send Wa
+                                Send WA Selection
                             </Button>
                         </div>
                     </div>
                 </TabPanel>
             </TabContext>
+            <Dialog open={open} onClose={handleClose}>
+                <DialogContent>
+                    <Typography>Apakah data sudah benar?</Typography>
+                    <DialogActions>
+                        <Button onClick={() => handleSaveRequest('01')}>
+                            Yes
+                        </Button>
+                        <Button onClose={handleClose}>No</Button>
+                    </DialogActions>
+                </DialogContent>
+            </Dialog>
         </FormProvider>
     )
 }
