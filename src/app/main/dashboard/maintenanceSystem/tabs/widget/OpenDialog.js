@@ -491,7 +491,8 @@ function OpenDialog({ data, header }) {
     }
 
     function handleSendWa() {
-        if (selectWa.length > 0) {
+        console.log(selectWa)
+        if (!_.isNull(selectWa) && selectWa.length > 0) {
             let msg = `*Permintaan Sparepart*`
             msg += `\n\n${selectWa[0].sheet_no} |  ${selectWa[0].category_request}`
             msg += `\n${selectWa[0].mch_code} | ${
@@ -586,6 +587,13 @@ function OpenDialog({ data, header }) {
                         )
                     })
             }
+        } else {
+            dispatch(
+                showMessage({
+                    message: `Please select data to be sent to WA!`,
+                    variant: 'warning',
+                })
+            )
         }
     }
 
