@@ -29,7 +29,11 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 
-import { getGenbaAcip, saveGenbaAcip } from '../store/genba/genbaAcipSlice'
+import {
+    getGenbaAcip,
+    saveGenbaAcip,
+    getGenbaOne,
+} from '../store/genba/genbaAcipSlice'
 import { selectUser } from 'app/store/userSlice'
 import { showMessage } from 'app/store/fuse/messageSlice'
 
@@ -78,8 +82,11 @@ function AcipDialog({ data, header }) {
     // }, [beforeImage])
 
     useEffect(() => {
-        console.log(data)
-        if (data) {
+        if (!data) {
+            return
+        }
+        {
+            const id = data.selectData.id_genba
             const genba = data.selectData
             _.map(_.keys(genba), (val) => {
                 if (
@@ -103,7 +110,6 @@ function AcipDialog({ data, header }) {
                     setBeforeImage(
                         `data:${images1.mimetype};base64,${images1.data}`
                     )
-
                     if (_.isArray(genba['images2'])) {
                     } else {
                         const images2 = genba['images2']
@@ -124,6 +130,52 @@ function AcipDialog({ data, header }) {
                     // console.log(_.isNull(genba[val]))
                 }
             })
+            // dispatch(getGenbaOne(id)).then((action) => {
+            //     if (action.payload) {
+            //         // _.map(_.keys(genba), (val) => {
+            //         //     if (
+            //         //         val == 'due_date' ||
+            //         //         val == 'close_date' ||
+            //         //         val == 'open_date' ||
+            //         //         val == 'createdAt' ||
+            //         //         val == 'updatedAt'
+            //         //     ) {
+            //         //         if (_.isNull(genba[val])) {
+            //         //             setValue(val, dayjs(), {
+            //         //                 shouldDirty: true,
+            //         //             })
+            //         //         } else {
+            //         //             setValue(val, dayjs(genba[val]), {
+            //         //                 shouldDirty: true,
+            //         //             })
+            //         //         }
+            //         //     } else if (val == 'images1' || val == 'images2') {
+            //         //         const images1 = genba['images1']
+            //         //         setBeforeImage(
+            //         //             `data:${images1.mimetype};base64,${images1.data}`
+            //         //         )
+            //         //         if (_.isArray(genba['images2'])) {
+            //         //         } else {
+            //         //             const images2 = genba['images2']
+            //         //             setAfterImage(
+            //         //                 `data:${images2.mimetype};base64,${images2.data}`
+            //         //             )
+            //         //         }
+            //         //     } else {
+            //         //         if (_.isNull(genba[val])) {
+            //         //             // setValue(val, '', {
+            //         //             //     shouldDirty: true,
+            //         //             // })
+            //         //         } else {
+            //         //             setValue(val, genba[val], {
+            //         //                 shouldDirty: true,
+            //         //             })
+            //         //         }
+            //         //         // console.log(_.isNull(genba[val]))
+            //         //     }
+            //         // })
+            //     }
+            // })
         }
     }, [data])
 
@@ -139,17 +191,26 @@ function AcipDialog({ data, header }) {
     }
 
     function handleSave() {
-        console.log(getValues())
-        dispatch(saveGenbaAcip(getValues())).then((action) => {
-            if (action.payload) {
-                dispatch(getGenbaAcip())
+        // console.log(getValues())
+        dispatch(saveGenbaAcip(getValues()))
+            .then((action) => {
+                if (action.payload) {
+                    // dispatch(getGenbaAcip())
+                    dispatch(
+                        showMessage({
+                            message: 'Data has been saved successfully',
+                        })
+                    )
+                }
+            })
+            .catch((e) => {
                 dispatch(
                     showMessage({
-                        message: 'Data has been saved successfully',
+                        message: `${e.message}`,
+                        variant: 'error',
                     })
                 )
-            }
-        })
+            })
     }
 
     return (
@@ -335,6 +396,16 @@ function AcipDialog({ data, header }) {
                                     >
                                         Save
                                     </Button>
+
+                                    {/* <Button
+                                        className="whitespace-nowrap mb-16"
+                                        variant="contained"
+                                        color="warning"
+                                        // disabled={valid()}
+                                        onClick={handleSave}
+                                    >
+                                        Delete
+                                    </Button> */}
                                 </Grid>
                             </Grid>
                         </Box>

@@ -243,6 +243,7 @@ function AcipFormulir() {
     }
 
     const tableIndex = (data) => {
+        console.log(user.data.userNIK)
         if (
             user.data.userNIK == '201712256' ||
             user.data.userNIK == '201802045'
@@ -260,19 +261,6 @@ function AcipFormulir() {
     const header = (data) => {
         setToolBarHeader(data)
     }
-
-    // const handleSave = (event) => {
-    //     console.log(getValues())
-    //     dispatch(saveGenbaAcip(getValues())).then((action) => {
-    //         if (action.payload) {
-    //             dispatch(
-    //                 showMessage({ message: 'Data has been saved successfully' })
-    //             )
-    //             setOpen(false)
-    //             setSelectData(null)
-    //         }
-    //     })
-    // }
 
     return (
         <div>

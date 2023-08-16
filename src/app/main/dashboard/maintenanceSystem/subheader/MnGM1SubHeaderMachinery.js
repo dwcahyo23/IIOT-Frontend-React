@@ -26,19 +26,25 @@ function MnGM1SubHeaderMachinery() {
         'PDHD1',
         'PDHD2',
         'PDHD3',
-        'PDHD4',
+        'PDHD4,',
+        'PDMR1',
+        'PDNT1',
         'PDRL1',
         'PDRL2',
-        'PDMC1',
-        'PDMC3',
-        'PDMR1',
-        'PDNC1',
-        'PDNT1',
-        'PDHB1',
-        'PDTR1',
-        'PDPU1',
+        'PDTM1',
+        'PDUB1',
         'PCGD1',
+        'PCGD4',
+        'PCTD2',
+        'PDMC1',
+        'PDNC1',
+        'PDPU1',
+        'PDTR1',
+        'QAQC1',
+        'TDAD4',
         'MNAD1',
+        'MNAD3',
+        'MNAD4',
     ]
 
     useEffect(() => {
@@ -417,9 +423,7 @@ function MnGM1SubHeaderMachinery() {
                     >
                         <LastApUser
                             data={{
-                                listItemMonth: {
-                                    ...filterWorOrder['Eko Hadi S'],
-                                },
+                                listItemMonth: filterWorOrder['Eko Hadi S'],
                                 user: 4,
                                 leader: 'Forming - Rolling',
                             }}
