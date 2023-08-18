@@ -267,8 +267,13 @@ function LastApUser({ data }) {
     }
 
     const findRequest = (data) => {
-        const id = _.filter(sparepart, { sheet_no: data })
-        return _.every(id, { audit_request: 'Y' })
+        const id = _.filter(sparepart, {
+            sheet_no: data,
+            audit_request: 'Y',
+            audit_request: 'N',
+        })
+        // console.log(id, _.every(id, ['audit_request', 'Y']))
+        return _.every(id, ['audit_request', 'Y'])
     }
 
     function rowRenderer({
@@ -280,85 +285,44 @@ function LastApUser({ data }) {
     }) {
         return (
             <ListItem key={index} style={style} component="div" disablePadding>
-                {data?.leader == 'Inventory' ? (
-                    <ListItemButton
-                        onClick={() => {
-                            setOpen(true)
-                            setSelectData(filteredText[index])
-                            // console.log(filteredText[index])
-                        }}
-                    >
-                        <ListItemText>
-                            <Typography className="text-13 mt-2 line-clamp-2">
-                                {`${index + 1}. ${
-                                    filteredText[index].sheet_no
-                                } || ${filteredText[index].mch_code} || ${
-                                    filteredText[index].mch_com
-                                } || ${filteredText[index].user_req1} || ${
-                                    _.isNull(filteredText[index].item_stock)
-                                        ? filteredText[index].item_name
-                                        : filteredText[index].item_stock
-                                } || ${filteredText[index].item_qty}  ${
-                                    filteredText[index].item_uom
-                                } || ${filteredText[index].mre_request}`}
-                            </Typography>
-                        </ListItemText>
+                <ListItemButton
+                    onClick={() => {
+                        setOpen(true)
+                        setSelectData(filteredText[index])
+                    }}
+                >
+                    <ListItemText>
+                        <Typography className="text-13 mt-2 line-clamp-2">
+                            {`${index + 1}. ${filteredText[index].sheet_no}|${
+                                filteredText[index].mch_no
+                            }`}
+                        </Typography>
+                    </ListItemText>
 
-                        {filteredText[index].audit_request == 'Y' ? (
-                            <StatusColor id="Y" />
-                        ) : (
-                            <StatusColor id="N" />
-                        )}
-                        {filteredText[index].mre_request?.length > 0 && (
-                            <StatusColor id="MRE" />
-                        )}
-                        {filteredText[index].item_ready == 'Y' &&
-                            filteredText[index].audit_request == 'N' && (
-                                <StatusColor id="Ready" />
-                            )}
-                    </ListItemButton>
-                ) : (
-                    <ListItemButton
-                        onClick={() => {
-                            setOpen(true)
-                            setSelectData(filteredText[index])
-                        }}
-                    >
-                        <ListItemText>
-                            <Typography className="text-13 mt-2 line-clamp-2">
-                                {`${index + 1}. ${
-                                    filteredText[index].sheet_no
-                                }|${filteredText[index].mch_no}`}
-                            </Typography>
-                        </ListItemText>
+                    {findReport(filteredText[index].sheet_no) == 'N' && (
+                        <StatusColor id="R" />
+                    )}
 
-                        {findReport(filteredText[index].sheet_no) == 'N' && (
-                            <StatusColor id="R" />
-                        )}
+                    {findRequest(filteredText[index].sheet_no) == false && (
+                        <StatusColor id="S" />
+                    )}
 
-                        {findRequest(filteredText[index].sheet_no) == false && (
-                            <StatusColor id="S" />
-                        )}
-
-                        {filteredText[index].chk_mark == 'N' ? (
-                            <StatusColor
-                                id={
-                                    (filteredText[index].appe_user ==
-                                        'DESYRUS' ||
-                                        filteredText[index].appe_user ==
-                                            'desyrus' ||
-                                        filteredText[index].appe_user ==
-                                            'SADRI') &&
-                                    filteredText[index].pri_no == '03'
-                                        ? '031'
-                                        : filteredText[index].pri_no
-                                }
-                            />
-                        ) : (
-                            <StatusColor id={filteredText[index].chk_mark} />
-                        )}
-                    </ListItemButton>
-                )}
+                    {filteredText[index].chk_mark == 'N' ? (
+                        <StatusColor
+                            id={
+                                (filteredText[index].appe_user == 'DESYRUS' ||
+                                    filteredText[index].appe_user ==
+                                        'desyrus' ||
+                                    filteredText[index].appe_user == 'SADRI') &&
+                                filteredText[index].pri_no == '03'
+                                    ? '031'
+                                    : filteredText[index].pri_no
+                            }
+                        />
+                    ) : (
+                        <StatusColor id={filteredText[index].chk_mark} />
+                    )}
+                </ListItemButton>
             </ListItem>
         )
     }

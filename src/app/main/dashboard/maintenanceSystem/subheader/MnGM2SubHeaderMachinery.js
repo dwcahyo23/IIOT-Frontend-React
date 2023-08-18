@@ -142,18 +142,14 @@ function MnGM2SubHeaderMachinery() {
                 }
             }
 
-            const groupedX = _(join)
-                .groupBy((val) => val.responsible?.responsible)
-                .flatMap((group) => group)
-                // .mapValues((items) => {
-                //     return {
-                //         s: _.mergeWith({}, ...items, customizer),
-                //     }
-                // })
-                // .flatMap((group) => _.mergeWith({}, ...group, customizer))
-                .value()
+            // const groupedX = _(join)
+            //     .groupBy((val) => val.responsible?.responsible)
+            //     .omit(['NULL', 'null', 'undefined'])
+            //     .map((val, key) => ({ key, val }))
+            //     .forEach((val) => val.key == 'TEGUH')
+            //     .value()
 
-            console.log(groupedX)
+            // console.log(groupedX)
         }
     }, [workOrder, machine])
 

@@ -509,37 +509,35 @@ function OpenDialog({ data, header }) {
             } | ${dayjs(selectWa[0].createdAt).format('DD/MM/YY HH:mm:ss')} `
             msg += `\n\nList permintaan:`
             _.forEach(selectWa, (entry, idx) => {
-                if (entry.audit_request == 'N') {
-                    msg += `\n*${idx + 1}.)* *${
-                        _.isNull(entry.item_stock) == false
-                            ? entry.item_stock
-                            : entry.name
-                    }* | ${entry.item_qty} ${entry.item_uom} | ${
-                        entry.item_ready == 'Y' ? '✅' : '❌'
-                    } `
+                msg += `\n*${idx + 1}.)* *${
+                    _.isNull(entry.item_stock) == false
+                        ? entry.item_stock
+                        : entry.name
+                }* | ${entry.item_qty} ${entry.item_uom} | ${
+                    entry.item_ready == 'Y' ? '✅' : '❌'
+                } `
 
-                    if (entry.audit_request == 'N') {
-                        if (
-                            _.isNull(entry.mre_request) == false &&
-                            entry.mre_request.length > 3
-                        ) {
-                            msg += `\n↑ Sudah terbit MRE, _*${entry.mre_request}*_`
-                            msg += `\n${dayjs(entry.date_mre_request).format(
-                                'DD/MM/YY HH:mm:ss\n'
-                            )}`
-                        }
-                        if (entry.item_ready == 'Y') {
-                            msg += `\n ↑ Sudah digudang, silahkan diambil`
-                            msg += `\n${dayjs(entry.ready_request).format(
-                                'DD/MM/YY HH:mm:ss\n'
-                            )}`
-                        }
-                    } else {
-                        msg += `\n ↑ Sudah audit, by ${entry.user_req2}`
-                        msg += `\n${dayjs(entry.date_audit_request).format(
+                if (entry.audit_request == 'N') {
+                    if (
+                        _.isNull(entry.mre_request) == false &&
+                        entry.mre_request.length > 3
+                    ) {
+                        msg += `\n↑ Sudah terbit MRE, _*${entry.mre_request}*_`
+                        msg += `\n${dayjs(entry.date_mre_request).format(
                             'DD/MM/YY HH:mm:ss\n'
                         )}`
                     }
+                    if (entry.item_ready == 'Y') {
+                        msg += `\n ↑ Sudah digudang, silahkan diambil`
+                        msg += `\n${dayjs(entry.ready_request).format(
+                            'DD/MM/YY HH:mm:ss\n'
+                        )}`
+                    }
+                } else {
+                    msg += `\n ↑ Sudah audit, by ${entry.user_req2}`
+                    msg += `\n${dayjs(entry.date_audit_request).format(
+                        'DD/MM/YY HH:mm:ss\n'
+                    )}`
                 }
             })
 
@@ -1324,7 +1322,16 @@ function OpenDialog({ data, header }) {
                                                 id="audit_report"
                                                 fullWidth
                                             >
-                                                <MenuItem value="Y">
+                                                <MenuItem
+                                                    value="Y"
+                                                    disabled={
+                                                        disRep == true ||
+                                                        data?.selectData
+                                                            .chk_mark == 'N'
+                                                            ? true
+                                                            : false
+                                                    }
+                                                >
                                                     Audit
                                                 </MenuItem>
                                                 <MenuItem value="N">
@@ -1376,12 +1383,12 @@ function OpenDialog({ data, header }) {
                                     className="whitespace-nowrap mb-16"
                                     variant="contained"
                                     color="secondary"
-                                    disabled={
-                                        disRep == true ||
-                                        data?.selectData.chk_mark == 'N'
-                                            ? true
-                                            : false
-                                    }
+                                    // disabled={
+                                    //     disRep == true ||
+                                    //     data?.selectData.chk_mark == 'N'
+                                    //         ? true
+                                    //         : false
+                                    // }
                                     onClick={handleSaveReport}
                                 >
                                     Save
