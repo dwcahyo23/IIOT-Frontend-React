@@ -179,6 +179,11 @@ function MnGM1SubHeaderMachinery() {
                                         ? 'pass'
                                         : 'fail'
                                 ),
+                                breakdown_naudit: _.countBy(items, (val) =>
+                                    val.pri_no == '01' && val.chk_mark == 'N'
+                                        ? 'pass'
+                                        : 'fail'
+                                ),
                                 still_run_audit: _.countBy(items, (val) =>
                                     val.pri_no == '02' && val.chk_mark == 'Y'
                                         ? 'pass'
@@ -259,6 +264,11 @@ function MnGM1SubHeaderMachinery() {
                     ),
                     breakdown_audit: _.countBy(items, (val) =>
                         val.pri_no == '01' && val.chk_mark == 'Y'
+                            ? 'pass'
+                            : 'fail'
+                    ),
+                    breakdown_naudit: _.countBy(items, (val) =>
+                        val.pri_no == '01' && val.chk_mark == 'N'
                             ? 'pass'
                             : 'fail'
                     ),

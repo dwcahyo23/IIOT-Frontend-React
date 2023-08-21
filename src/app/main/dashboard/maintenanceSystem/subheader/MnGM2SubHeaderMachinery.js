@@ -113,6 +113,11 @@ function MnGM2SubHeaderMachinery() {
                                         ? 'pass'
                                         : 'fail'
                                 ),
+                                breakdown_naudit: _.countBy(items, (val) =>
+                                    val.pri_no == '01' && val.chk_mark == 'N'
+                                        ? 'pass'
+                                        : 'fail'
+                                ),
                                 still_run_audit: _.countBy(items, (val) =>
                                     val.pri_no == '02' && val.chk_mark == 'Y'
                                         ? 'pass'
@@ -141,15 +146,6 @@ function MnGM2SubHeaderMachinery() {
                     return objValue.concat(srcValue)
                 }
             }
-
-            // const groupedX = _(join)
-            //     .groupBy((val) => val.responsible?.responsible)
-            //     .omit(['NULL', 'null', 'undefined'])
-            //     .map((val, key) => ({ key, val }))
-            //     .forEach((val) => val.key == 'TEGUH')
-            //     .value()
-
-            // console.log(groupedX)
         }
     }, [workOrder, machine])
 
@@ -197,6 +193,11 @@ function MnGM2SubHeaderMachinery() {
                     ),
                     breakdown_audit: _.countBy(items, (val) =>
                         val.pri_no == '01' && val.chk_mark == 'Y'
+                            ? 'pass'
+                            : 'fail'
+                    ),
+                    breakdown_naudit: _.countBy(items, (val) =>
+                        val.pri_no == '01' && val.chk_mark == 'N'
                             ? 'pass'
                             : 'fail'
                     ),

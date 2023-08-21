@@ -43,6 +43,11 @@ function MnGM2SubHeaderWorkshop() {
                             ? 'pass'
                             : 'fail'
                     ),
+                    breakdown_naudit: _.countBy(items, (val) =>
+                        val.pri_no == '05' && val.chk_mark == 'N'
+                            ? 'pass'
+                            : 'fail'
+                    ),
                     still_run_audit: _.countBy(items, (val) =>
                         val.pri_no == '04' && val.chk_mark == 'Y'
                             ? 'pass'

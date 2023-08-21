@@ -13,18 +13,18 @@ export const getGenbaAcip = createAsyncThunk(
     }
 )
 
-export const getGenbaOne = createAsyncThunk(
-    'genbaAcip/genba/getGenbaAcipOne',
-    async (uuid) => {
-        const response = await axios.get(
-            `http://192.168.192.7:5000/genbaAcipOne/${uuid}`
-        )
+// export const getGenbaOne = createAsyncThunk(
+//     'genbaAcip/genba/getGenbaAcipOne',
+//     async (uuid) => {
+//         const response = await axios.get(
+//             `http://192.168.192.7:5000/genbaAcipOne/${uuid}`
+//         )
 
-        const data = await response.data
+//         const data = await response.data
 
-        return data === undefined ? null : data
-    }
-)
+//         return data === undefined ? null : data
+//     }
+// )
 
 export const saveGenbaAcip = createAsyncThunk(
     'genbaAcip/genba/saveGenbaAcip',
@@ -68,7 +68,6 @@ const genbaAcipSlice = createSlice({
     },
     extraReducers: {
         [getGenbaAcip.fulfilled]: (state, action) => action.payload,
-        [getGenbaOne.fulfilled]: (state, action) => action.payload,
         [saveGenbaAcip.fulfilled]: (state, action) => action.payload,
         [removeGenbaAcip.fulfilled]: (state, action) => null,
     },

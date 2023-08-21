@@ -231,7 +231,6 @@ function LastApUser({ data }) {
 
         if (filteredItem?.data) {
             setFilteredText(getFilteredArray())
-            // console.log(getFilteredArray())
         }
     }, [searchText, filteredItem])
 
@@ -364,16 +363,21 @@ function LastApUser({ data }) {
                                 props={{ rows: filteredItem?.data }}
                             />
                         )}
-                        <Button
+                        <Badge
+                            badgeContent={filteredItem?.breakdown_naudit?.pass}
                             color="error"
-                            startIcon={<Summarize />}
-                            onClick={() => {
-                                setSelectOpen('Open Dialog Summary')
-                                setToolBarHeader('Outstanding Breakdown')
-                            }}
                         >
-                            Outstanding Breakdown
-                        </Button>
+                            <Button
+                                color="error"
+                                startIcon={<Summarize />}
+                                onClick={() => {
+                                    setSelectOpen('Open Dialog Summary')
+                                    setToolBarHeader('Outstanding Breakdown')
+                                }}
+                            >
+                                Outstanding Breakdown
+                            </Button>
+                        </Badge>
                     </div>
                 </div>
 

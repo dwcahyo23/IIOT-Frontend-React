@@ -77,6 +77,7 @@ function Acip() {
 
     useEffect(() => {
         const data = genba
+        console.log('refrsh')
         if (!genba) {
             return
         }

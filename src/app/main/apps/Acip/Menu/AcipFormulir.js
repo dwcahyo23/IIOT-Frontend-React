@@ -243,17 +243,16 @@ function AcipFormulir() {
     }
 
     const tableIndex = (data) => {
-        console.log(user.data.userNIK)
+        // console.log(user.data.userNIK)
         if (
             user.data.userNIK == '201712256' ||
             user.data.userNIK == '201802045'
         ) {
             if (_.has(data, 'multi')) {
-                console.log('multi')
+                // console.log('multi')
             } else {
                 setSelectData(data.row)
                 setOpen(true)
-                // console.log(data)
             }
         }
     }
@@ -267,22 +266,25 @@ function AcipFormulir() {
             <Box
                 sx={{
                     width: '100%',
-                    height: 600,
+                    height: 500,
                 }}
             >
                 <div className="flex flex-col flex-auto p-24 shadow rounded-2xl overflow-hidden h-full">
-                    <TableIndex
-                        params={{
-                            row: fields,
-                            columns: columns,
-                        }}
-                        tableIndex={tableIndex}
-                    />
+                    <div style={{ width: '100%', height: '100%' }}>
+                        <TableIndex
+                            params={{
+                                row: fields,
+                                columns: columns,
+                            }}
+                            tableIndex={tableIndex}
+                        />
+                    </div>
                 </div>
             </Box>
             <Dialog
                 open={open}
                 maxWidth={'xl'}
+                style={{ zIndex: 1000 }}
                 onClose={handleClose}
                 TransitionComponent={Transition}
             >

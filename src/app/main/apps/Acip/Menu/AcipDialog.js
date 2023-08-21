@@ -29,11 +29,8 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 
-import {
-    getGenbaAcip,
-    saveGenbaAcip,
-    getGenbaOne,
-} from '../store/genba/genbaAcipSlice'
+import { getGenbaAcip } from '../store/genba/genbaAcipSlice'
+import { getAcipOne, saveAcipOne } from '../store/genba/genbaAcipOneSlice'
 import { selectUser } from 'app/store/userSlice'
 import { showMessage } from 'app/store/fuse/messageSlice'
 
@@ -77,107 +74,59 @@ function AcipDialog({ data, header }) {
 
     const { errors, isValid } = formState
 
-    // useEffect(() => {
-    //     console.log(beforeImage)
-    // }, [beforeImage])
-
     useEffect(() => {
+        const genba = data.selectData
         if (!data) {
             return
-        }
-        {
+        } else {
             const id = data.selectData.id_genba
-            const genba = data.selectData
-            _.map(_.keys(genba), (val) => {
-                if (
-                    val == 'due_date' ||
-                    val == 'close_date' ||
-                    val == 'open_date' ||
-                    val == 'createdAt' ||
-                    val == 'updatedAt'
-                ) {
-                    if (_.isNull(genba[val])) {
-                        setValue(val, dayjs(), {
-                            shouldDirty: true,
-                        })
-                    } else {
-                        setValue(val, dayjs(genba[val]), {
-                            shouldDirty: true,
-                        })
-                    }
-                } else if (val == 'images1' || val == 'images2') {
-                    const images1 = genba['images1']
-                    setBeforeImage(
-                        `data:${images1.mimetype};base64,${images1.data}`
-                    )
-                    if (_.isArray(genba['images2'])) {
-                    } else {
-                        const images2 = genba['images2']
-                        setAfterImage(
-                            `data:${images2.mimetype};base64,${images2.data}`
-                        )
-                    }
-                } else {
-                    if (_.isNull(genba[val])) {
-                        // setValue(val, '', {
-                        //     shouldDirty: true,
-                        // })
-                    } else {
-                        setValue(val, genba[val], {
-                            shouldDirty: true,
-                        })
-                    }
-                    // console.log(_.isNull(genba[val]))
+            dispatch(getAcipOne(id)).then((action) => {
+                if (action.payload) {
+                    _.map(_.keys(genba), (val) => {
+                        if (
+                            val == 'due_date' ||
+                            val == 'close_date' ||
+                            val == 'open_date' ||
+                            val == 'createdAt' ||
+                            val == 'updatedAt'
+                        ) {
+                            if (_.isNull(genba[val])) {
+                                setValue(val, dayjs(), {
+                                    shouldDirty: true,
+                                })
+                            } else {
+                                setValue(val, dayjs(genba[val]), {
+                                    shouldDirty: true,
+                                })
+                            }
+                        } else if (val == 'images1' || val == 'images2') {
+                            const images1 = genba['images1']
+                            setBeforeImage(
+                                `data:${images1.mimetype};base64,${images1.data}`
+                            )
+                            if (_.isArray(genba['images2'])) {
+                            } else {
+                                const images2 = genba['images2']
+                                setAfterImage(
+                                    `data:${images2.mimetype};base64,${images2.data}`
+                                )
+                            }
+                        } else {
+                            if (_.isNull(genba[val])) {
+                                // setValue(val, '', {
+                                //     shouldDirty: true,
+                                // })
+                            } else {
+                                setValue(val, genba[val], {
+                                    shouldDirty: true,
+                                })
+                            }
+                        }
+                    })
                 }
             })
-            // dispatch(getGenbaOne(id)).then((action) => {
-            //     if (action.payload) {
-            //         // _.map(_.keys(genba), (val) => {
-            //         //     if (
-            //         //         val == 'due_date' ||
-            //         //         val == 'close_date' ||
-            //         //         val == 'open_date' ||
-            //         //         val == 'createdAt' ||
-            //         //         val == 'updatedAt'
-            //         //     ) {
-            //         //         if (_.isNull(genba[val])) {
-            //         //             setValue(val, dayjs(), {
-            //         //                 shouldDirty: true,
-            //         //             })
-            //         //         } else {
-            //         //             setValue(val, dayjs(genba[val]), {
-            //         //                 shouldDirty: true,
-            //         //             })
-            //         //         }
-            //         //     } else if (val == 'images1' || val == 'images2') {
-            //         //         const images1 = genba['images1']
-            //         //         setBeforeImage(
-            //         //             `data:${images1.mimetype};base64,${images1.data}`
-            //         //         )
-            //         //         if (_.isArray(genba['images2'])) {
-            //         //         } else {
-            //         //             const images2 = genba['images2']
-            //         //             setAfterImage(
-            //         //                 `data:${images2.mimetype};base64,${images2.data}`
-            //         //             )
-            //         //         }
-            //         //     } else {
-            //         //         if (_.isNull(genba[val])) {
-            //         //             // setValue(val, '', {
-            //         //             //     shouldDirty: true,
-            //         //             // })
-            //         //         } else {
-            //         //             setValue(val, genba[val], {
-            //         //                 shouldDirty: true,
-            //         //             })
-            //         //         }
-            //         //         // console.log(_.isNull(genba[val]))
-            //         //     }
-            //         // })
-            //     }
-            // })
         }
-    }, [data])
+    }, [data, reset])
 
     function handleTabChange(ev, val) {
         setTabValue(val)
@@ -191,14 +140,66 @@ function AcipDialog({ data, header }) {
     }
 
     function handleSave() {
-        // console.log(getValues())
-        dispatch(saveGenbaAcip(getValues()))
+        dispatch(saveAcipOne(getValues()))
             .then((action) => {
                 if (action.payload) {
-                    // dispatch(getGenbaAcip())
+                    const id = data?.selectData.id_genba
+                    dispatch(getAcipOne(id)).then((action) => {
+                        if (action.payload) {
+                            const genba = action.payload
+                            _.map(_.keys(genba), (val) => {
+                                if (
+                                    val == 'due_date' ||
+                                    val == 'close_date' ||
+                                    val == 'open_date' ||
+                                    val == 'createdAt' ||
+                                    val == 'updatedAt'
+                                ) {
+                                    if (_.isNull(genba[val])) {
+                                        setValue(val, dayjs(), {
+                                            shouldDirty: true,
+                                        })
+                                    } else {
+                                        setValue(val, dayjs(genba[val]), {
+                                            shouldDirty: true,
+                                        })
+                                    }
+                                } else if (
+                                    val == 'images1' ||
+                                    val == 'images2'
+                                ) {
+                                    const images1 = genba['images1']
+                                    setBeforeImage(
+                                        `data:${images1.mimetype};base64,${images1.data}`
+                                    )
+                                    if (_.isArray(genba['images2'])) {
+                                    } else {
+                                        const images2 = genba['images2']
+                                        setAfterImage(
+                                            `data:${images2.mimetype};base64,${images2.data}`
+                                        )
+                                    }
+                                } else {
+                                    if (_.isNull(genba[val])) {
+                                        // setValue(val, '', {
+                                        //     shouldDirty: true,
+                                        // })
+                                    } else {
+                                        setValue(val, genba[val], {
+                                            shouldDirty: true,
+                                        })
+                                    }
+                                }
+                            })
+                            // console.log(action.payload)
+                        }
+                    })
+                    dispatch(getGenbaAcip())
+
                     dispatch(
                         showMessage({
                             message: 'Data has been saved successfully',
+                            variant: 'success',
                         })
                     )
                 }
