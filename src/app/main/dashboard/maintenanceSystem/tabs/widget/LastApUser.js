@@ -21,7 +21,8 @@ import dayjs from 'dayjs'
 import { useSelector } from 'react-redux'
 import { Workbook } from 'exceljs'
 import { saveAs } from 'file-saver-es'
-import { Download } from '@mui/icons-material'
+import { Download, Summarize } from '@mui/icons-material'
+// import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined';
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { List } from 'react-virtualized'
 import { useDispatch } from 'react-redux'
@@ -32,6 +33,7 @@ import { selectApRep } from '../../store/mnRepSlice'
 import StatusColor from 'src/app/main/apps/maintenanceSystem/machineTab/utils/StatusColor'
 import TableIndex from 'src/app/main/apps/maintenanceSystem/machineTab/TableIndex'
 import OpenDialog from './OpenDialog'
+import OpenDialogSummary from './OpenDialogSummary'
 
 function CustomToolbar({ props }) {
     const handleExportExcell = () => {
@@ -136,7 +138,7 @@ function CustomToolbar({ props }) {
             startIcon={<Download />}
             onClick={handleExportExcell}
         >
-            Excell
+            Download Excell
         </Button>
     )
 }
@@ -152,17 +154,15 @@ function LastApUser({ data }) {
     )
     const data_report = useSelector(selectApRep)
     const sparepart = useSelector(selectApReq)
-
     const listItem = data?.listItemMonth
-    const lastTab = Object.keys(listItem).length - 1
     const [tabValue, setTabValue] = useState(0)
     const currentRange = Object.keys(listItem)[tabValue]
     const [filteredItem, setFilteredItem] = useState([])
     const [filteredText, setFilteredText] = useState(null)
     const [open, setOpen] = useState(false)
+    const [selectOpen, setSelectOpen] = useState(null)
     const [selectData, setSelectData] = useState(null)
     const [toolBarHeader, setToolBarHeader] = useState('Update')
-
     const [searchText, setSearchText] = useState('')
 
     useEffect(() => {
@@ -170,18 +170,6 @@ function LastApUser({ data }) {
             setFilteredItem(listItem[currentRange])
         }
     })
-
-    useEffect(() => {
-        // console.log(filteredText)
-    }, [filteredText])
-
-    useEffect(() => {
-        // console.log(filteredItem)
-    }, [filteredItem])
-
-    useEffect(() => {
-        // console.log(selectData)
-    }, [selectData])
 
     useEffect(() => {
         function getFilteredArray() {
@@ -247,6 +235,16 @@ function LastApUser({ data }) {
         }
     }, [searchText, filteredItem])
 
+    useEffect(() => {
+        if (selectOpen == 'Open Dialog') {
+            setOpen(true)
+        } else if (selectOpen == 'Open Dialog Summary') {
+            setOpen(true)
+        } else {
+            setOpen(false)
+        }
+    }, [selectOpen])
+
     const handleSearchText = (event) => {
         setSearchText(event.target.value)
     }
@@ -254,6 +252,8 @@ function LastApUser({ data }) {
     const handleClose = (event, reason) => {
         if (reason !== 'backdropClick' && reason !== 'escapeKeyDown') {
             setOpen(false)
+            setToolBarHeader('Update')
+            setSelectOpen(null)
         }
     }
 
@@ -272,7 +272,6 @@ function LastApUser({ data }) {
             audit_request: 'Y',
             audit_request: 'N',
         })
-        // console.log(id, _.every(id, ['audit_request', 'Y']))
         return _.every(id, ['audit_request', 'Y'])
     }
 
@@ -287,7 +286,7 @@ function LastApUser({ data }) {
             <ListItem key={index} style={style} component="div" disablePadding>
                 <ListItemButton
                     onClick={() => {
-                        setOpen(true)
+                        setSelectOpen('Open Dialog')
                         setSelectData(filteredText[index])
                     }}
                 >
@@ -330,121 +329,106 @@ function LastApUser({ data }) {
     return (
         <div>
             <Paper className="flex flex-col flex-auto p-10 shadow rounded-2xl overflow-hidden h-full">
-                <div className="flex flex-auto items-center min-w-0">
-                    <div className="flex flex-col sm:flex-row items-start justify-between">
-                        <div className="w-full items-center">
-                            <Avatar
-                                className="flex-0 w-64 h-64"
-                                alt="user photo"
-                                src={user?.photoURL}
-                            >
-                                {user?.displayName[0]}
-                            </Avatar>
-                            <Typography className="text-14 font-medium">
-                                {user?.displayName}
-                            </Typography>
-                        </div>
+                <div className="flex flex-auto justify-items-center min-w-0">
+                    <div className="w-full grid justify-items-center">
+                        <Avatar
+                            className="flex-0 w-64 h-64"
+                            alt="user photo"
+                            src={user?.photoURL}
+                        >
+                            {user?.displayName[0]}
+                        </Avatar>
+                        <Typography className="text-14 font-medium">
+                            {user?.displayName}
+                        </Typography>
                     </div>
 
-                    <div className="flex flex-col sm:flex-row ml-16 items-end justify-between">
-                        <div className="w-full">
-                            <Typography className="text-13 mt-2 line-clamp-2">
-                                Leader: {data?.leader}
-                            </Typography>
-                            <Typography className="text-13 mt-2 line-clamp-2">
-                                Breakdown: {filteredItem.breakdown?.pass || 0}
-                            </Typography>
-                            <Typography className="text-13 mt-2 line-clamp-2">
-                                Still Run: {filteredItem.still_run?.pass || 0}
-                            </Typography>
-                            <Typography className="text-13 mt-2 line-clamp-2">
-                                Preventive: {filteredItem.preventive?.pass || 0}
-                            </Typography>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="flex flex-auto items-center min-w-0">
-                    <div className="flex flex-col sm:flex-row items-start justify-between">
-                        <TextField
-                            label="Search"
-                            placeholder="Enter a keyword..."
-                            className="flex w-full sm:w-256 m-8"
-                            value={searchText}
-                            inputProps={{
-                                'aria-label': 'Search',
-                            }}
-                            onChange={handleSearchText}
-                            variant="outlined"
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                        />
+                    <div className="w-full grid">
+                        <Typography className="text-13 mt-2 line-clamp-2">
+                            Leader: {data?.leader}
+                        </Typography>
+                        <Typography className="text-13 mt-2 line-clamp-2">
+                            Breakdown: {filteredItem.breakdown?.pass || 0}
+                        </Typography>
+                        <Typography className="text-13 mt-2 line-clamp-2">
+                            Still Run: {filteredItem.still_run?.pass || 0}
+                        </Typography>
+                        <Typography className="text-13 mt-2 line-clamp-2">
+                            Preventive: {filteredItem.preventive?.pass || 0}
+                        </Typography>
                     </div>
 
-                    {data && (
-                        <div className="flex flex-col sm:flex-row ml-16 items-end justify-between">
+                    <div className="w-full grid justify-items-left">
+                        {data && (
                             <CustomToolbar
                                 props={{ rows: filteredItem?.data }}
                             />
-                        </div>
-                    )}
+                        )}
+                        <Button
+                            color="error"
+                            startIcon={<Summarize />}
+                            onClick={() => {
+                                setSelectOpen('Open Dialog Summary')
+                                setToolBarHeader('Outstanding Breakdown')
+                            }}
+                        >
+                            Outstanding Breakdown
+                        </Button>
+                    </div>
                 </div>
 
-                {data?.leader == 'Inventory' ? (
-                    <div className="flex flex-auto items-center min-w-0">
-                        <Tabs
-                            value={tabValue}
-                            onChange={(ev, value) => setTabValue(value)}
-                            indicatorColor="secondary"
-                            textColor="inherit"
-                            variant="scrollable"
-                            scrollButtons="auto"
-                            classes={{ root: 'w-full h-16 border-b-1' }}
-                        >
-                            {Object.entries(listItem).map(([key, value]) => (
-                                <Tab disableRipple key={key} label={key} />
-                            ))}
-                        </Tabs>
-                    </div>
-                ) : (
-                    <div className="flex flex-auto items-center min-w-0">
-                        <Tabs
-                            value={tabValue}
-                            onChange={(ev, value) => setTabValue(value)}
-                            indicatorColor="secondary"
-                            textColor="inherit"
-                            variant="scrollable"
-                            scrollButtons="auto"
-                            classes={{ root: 'w-full h-16 border-b-1' }}
-                        >
-                            {Object.entries(listItem).map(([key, value]) => (
-                                <Tab
-                                    disableRipple
-                                    key={key}
-                                    label={
-                                        <Badge
-                                            badgeContent={
-                                                _.reject(
-                                                    listItem[key]?.data,
-                                                    (item) =>
-                                                        _.find(data_report, {
-                                                            sheet_no:
-                                                                item.sheet_no,
-                                                            audit_report: 'Y',
-                                                        })
-                                                ).length
-                                            }
-                                            color="error"
-                                        >
-                                            {key}
-                                        </Badge>
-                                    }
-                                />
-                            ))}
-                        </Tabs>
-                    </div>
-                )}
+                <div className="w-full grid">
+                    <TextField
+                        label="Search"
+                        placeholder="Enter a keyword filter..."
+                        className="flex w-full"
+                        value={searchText}
+                        inputProps={{
+                            'aria-label': 'Search',
+                        }}
+                        onChange={handleSearchText}
+                        variant="outlined"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                </div>
+
+                <div className="flex flex-auto items-center min-w-0">
+                    <Tabs
+                        value={tabValue}
+                        onChange={(ev, value) => setTabValue(value)}
+                        indicatorColor="secondary"
+                        textColor="inherit"
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        classes={{ root: 'w-full h-16 border-b-1' }}
+                    >
+                        {Object.entries(listItem).map(([key, value]) => (
+                            <Tab
+                                disableRipple
+                                key={key}
+                                label={
+                                    <Badge
+                                        badgeContent={
+                                            _.reject(
+                                                listItem[key]?.data,
+                                                (item) =>
+                                                    _.find(data_report, {
+                                                        sheet_no: item.sheet_no,
+                                                        audit_report: 'Y',
+                                                    })
+                                            ).length
+                                        }
+                                        color="error"
+                                    >
+                                        {key}
+                                    </Badge>
+                                }
+                            />
+                        ))}
+                    </Tabs>
+                </div>
 
                 <div className="flex flex-col flex-auto">
                     {filteredText && filteredText.length > 0 && (
@@ -484,7 +468,14 @@ function LastApUser({ data }) {
                         </Button>
                     </Toolbar>
                 </AppBar>
-                <OpenDialog data={{ selectData }} header={header} />
+                {!_.isNull(selectOpen) && selectOpen == 'Open Dialog' ? (
+                    <OpenDialog data={{ selectData }} header={header} />
+                ) : (
+                    <OpenDialogSummary
+                        data={{ filteredItem, sparepart, data_report }}
+                        header={header}
+                    />
+                )}
             </Dialog>
         </div>
     )

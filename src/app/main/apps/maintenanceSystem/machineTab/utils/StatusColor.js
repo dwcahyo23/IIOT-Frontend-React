@@ -89,6 +89,12 @@ export const status = [
         icon: 'heroicons-outline:exclamation',
     },
     {
+        id: 'SN',
+        name: 'NO',
+        color: 'success',
+        icon: 'heroicons-outline:exclamation-circle',
+    },
+    {
         id: 'T',
         name: 'Target',
         color: 'error',

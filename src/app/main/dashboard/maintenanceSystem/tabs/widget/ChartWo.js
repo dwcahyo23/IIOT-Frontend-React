@@ -11,15 +11,11 @@ function ChartWo({ data }) {
     const theme = useTheme()
     const [awaitRender, setAwaitRender] = useState(true)
     const [tabValue, setTabValue] = useState(0)
-    const labels = Object.keys(data.filterData)
+    const labels = Object.keys(data.filterData).reverse()
 
     const [label, setLabel] = useState([])
     const [breakdown, setBreakdown] = useState([])
     const [audit, setAudit] = useState([])
-
-    useEffect(() => {
-        setAwaitRender(false)
-    }, [])
 
     const series = [
         {
@@ -49,11 +45,17 @@ function ChartWo({ data }) {
     //     })
 
     // console.log(series)
+    useEffect(() => {
+        setAwaitRender(false)
+    }, [])
 
     _.forEach(data?.filterData, (val, i) => {
         series[0].data.push(val.breakdown?.pass || 0)
         series[1].data.push(val.breakdown_audit?.pass || 0)
     })
+
+    series[0].data.reverse()
+    series[1].data.reverse()
 
     const chartOptions = {
         chart: {

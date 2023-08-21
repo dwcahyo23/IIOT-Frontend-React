@@ -413,73 +413,27 @@ function LastApLeaderInventory({ data }) {
                                 </div>
                             )}
                         </div>
-                        {data?.leader == 'Inventory' ? (
-                            <div className="flex flex-auto items-center min-w-0">
-                                <Tabs
-                                    value={tabValue}
-                                    onChange={handleTabChange}
-                                    indicatorColor="secondary"
-                                    textColor="inherit"
-                                    variant="scrollable"
-                                    scrollButtons="auto"
-                                    classes={{ root: 'w-full h-16 border-b-1' }}
-                                >
-                                    {Object.entries(listItem).map(
-                                        ([key, value]) => (
-                                            <Tab
-                                                disableRipple
-                                                key={key}
-                                                label={key}
-                                            />
-                                        )
-                                    )}
-                                </Tabs>
-                            </div>
-                        ) : (
-                            <div className="flex flex-auto items-center min-w-0">
-                                <Tabs
-                                    value={tabValue}
-                                    onChange={handleTabChange}
-                                    indicatorColor="secondary"
-                                    textColor="inherit"
-                                    variant="scrollable"
-                                    scrollButtons="auto"
-                                    classes={{ root: 'w-full h-16 border-b-1' }}
-                                >
-                                    {Object.entries(listItem).map(
-                                        ([key, value]) => (
-                                            <Tab
-                                                disableRipple
-                                                key={key}
-                                                label={
-                                                    <Badge
-                                                        badgeContent={
-                                                            _.reject(
-                                                                listItem[key]
-                                                                    ?.data,
-                                                                (item) =>
-                                                                    _.find(
-                                                                        data_report,
-                                                                        {
-                                                                            sheet_no:
-                                                                                item.sheet_no,
-                                                                            audit_report:
-                                                                                'Y',
-                                                                        }
-                                                                    )
-                                                            ).length
-                                                        }
-                                                        color="error"
-                                                    >
-                                                        {key}
-                                                    </Badge>
-                                                }
-                                            />
-                                        )
-                                    )}
-                                </Tabs>
-                            </div>
-                        )}
+                        <div className="flex flex-auto items-center min-w-0">
+                            <Tabs
+                                value={tabValue}
+                                onChange={handleTabChange}
+                                indicatorColor="secondary"
+                                textColor="inherit"
+                                variant="scrollable"
+                                scrollButtons="auto"
+                                classes={{ root: 'w-full h-16 border-b-1' }}
+                            >
+                                {Object.entries(listItem).map(
+                                    ([key, value]) => (
+                                        <Tab
+                                            disableRipple
+                                            key={key}
+                                            label={key}
+                                        />
+                                    )
+                                )}
+                            </Tabs>
+                        </div>
 
                         <div className="flex flex-col flex-auto">
                             {filteredText && filteredText.length > 0 && (

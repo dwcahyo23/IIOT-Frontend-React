@@ -483,6 +483,7 @@ function OpenDialog({ data, header }) {
                             variant: 'success',
                         })
                     )
+                    handleClose()
                 }
             })
             .catch((e) => {
@@ -1770,7 +1771,7 @@ function OpenDialog({ data, header }) {
 
                 <TabPanel value="5">
                     <div style={{ width: 900, height: 450 }}>
-                        <div style={{ width: '100%', height: 400 }}>
+                        <div style={{ width: '100%', height: '100%' }}>
                             <TableIndex
                                 params={{
                                     row: tableRequest,
@@ -1780,7 +1781,6 @@ function OpenDialog({ data, header }) {
                                 tableIndex={tableIndex}
                             />
                         </div>
-
                         <div>
                             <Button
                                 className="whitespace-nowrap mb-16"
