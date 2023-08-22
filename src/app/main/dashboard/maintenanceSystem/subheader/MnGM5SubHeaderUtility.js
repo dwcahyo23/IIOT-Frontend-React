@@ -12,7 +12,7 @@ import ChartWo from '../tabs/widget/ChartWo'
 import LastApUser from '../tabs/widget/LastApUser'
 import SummaryWo from '../tabs/widget/SummaryWo'
 
-function MnGM2SubHeaderUtility() {
+function MnGM5SubHeaderUtility() {
     const data = useSelector(selectAp)
     const machine = useSelector(selectMnMachine)
     const [workOrder, setWorkOrder] = useState([])
@@ -23,7 +23,7 @@ function MnGM2SubHeaderUtility() {
             const res = _(data)
                 .filter((val) => {
                     if (
-                        val.com_no == '02' &&
+                        val.com_no == '06' &&
                         val.chk_mark != 'C' &&
                         (val.pri_no == '01' ||
                             val.pri_no == '02' ||
@@ -40,7 +40,7 @@ function MnGM2SubHeaderUtility() {
 
     useEffect(() => {
         if (machine) {
-            const machines = _(machine).filter({ mch_com: 'GM2' }).value()
+            const machines = _(machine).filter({ mch_com: 'GM5' }).value()
 
             const join = _.map(workOrder, (val) => {
                 const match = _.find(machines, {
@@ -144,7 +144,7 @@ function MnGM2SubHeaderUtility() {
                         <SummaryWo
                             data={{
                                 count: {
-                                    ...filterWorOrder['UJANG HENDRA'][
+                                    ...filterWorOrder['Wahid'][
                                         dayjs().format('MMMM')
                                     ]?.work_order,
                                 },
@@ -157,7 +157,7 @@ function MnGM2SubHeaderUtility() {
                                 extra: {
                                     name: 'Total Audit',
                                     count: {
-                                        ...filterWorOrder['UJANG HENDRA'][
+                                        ...filterWorOrder['Wahid'][
                                             dayjs().format('MMMM')
                                         ]?.audit,
                                     },
@@ -170,7 +170,7 @@ function MnGM2SubHeaderUtility() {
                         <SummaryWo
                             data={{
                                 count: {
-                                    ...filterWorOrder['UJANG HENDRA'][
+                                    ...filterWorOrder['Wahid'][
                                         dayjs().format('MMMM')
                                     ]?.breakdown,
                                 },
@@ -181,7 +181,7 @@ function MnGM2SubHeaderUtility() {
                                 extra: {
                                     name: 'Total Audit',
                                     count: {
-                                        ...filterWorOrder['UJANG HENDRA'][
+                                        ...filterWorOrder['Wahid'][
                                             dayjs().format('MMMM')
                                         ]?.breakdown_audit,
                                     },
@@ -194,7 +194,7 @@ function MnGM2SubHeaderUtility() {
                         <SummaryWo
                             data={{
                                 count: {
-                                    ...filterWorOrder['UJANG HENDRA'][
+                                    ...filterWorOrder['Wahid'][
                                         dayjs().format('MMMM')
                                     ]?.still_run,
                                 },
@@ -205,7 +205,7 @@ function MnGM2SubHeaderUtility() {
                                 extra: {
                                     name: 'Total Audit',
                                     count: {
-                                        ...filterWorOrder['UJANG HENDRA'][
+                                        ...filterWorOrder['Wahid'][
                                             dayjs().format('MMMM')
                                         ]?.still_run,
                                     },
@@ -218,7 +218,7 @@ function MnGM2SubHeaderUtility() {
                         <SummaryWo
                             data={{
                                 count: {
-                                    ...filterWorOrder['UJANG HENDRA'][
+                                    ...filterWorOrder['Wahid'][
                                         dayjs().format('MMMM')
                                     ]?.preventive,
                                 },
@@ -229,7 +229,7 @@ function MnGM2SubHeaderUtility() {
                                 extra: {
                                     name: 'Total Audit',
                                     count: {
-                                        ...filterWorOrder['UJANG HENDRA'][
+                                        ...filterWorOrder['Wahid'][
                                             dayjs().format('MMMM')
                                         ]?.preventive_audit,
                                     },
@@ -253,10 +253,8 @@ function MnGM2SubHeaderUtility() {
                     >
                         <LastApUser
                             data={{
-                                listItemMonth: {
-                                    ...filterWorOrder['UJANG HENDRA'],
-                                },
-                                user: 31,
+                                listItemMonth: { ...filterWorOrder['Wahid'] },
+                                user: 11,
                                 leader: 'Utility',
                             }}
                         />
@@ -267,9 +265,7 @@ function MnGM2SubHeaderUtility() {
                         className="sm:col-span-2 md:col-span-4"
                     >
                         <ChartWo
-                            data={{
-                                filterData: filterWorOrder['UJANG HENDRA'],
-                            }}
+                            data={{ filterData: filterWorOrder['Wahid'] }}
                         />
                     </motion.div>
                 </motion.div>
@@ -280,4 +276,4 @@ function MnGM2SubHeaderUtility() {
     )
 }
 
-export default MnGM2SubHeaderUtility
+export default MnGM5SubHeaderUtility

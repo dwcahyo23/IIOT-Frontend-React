@@ -1,24 +1,12 @@
 import FusePageSimple from '@fuse/core/FusePageSimple'
-import Tab from '@mui/material/Tab'
-import Tabs from '@mui/material/Tabs'
-import withReducer from 'app/store/withReducer'
-import _ from '@lodash'
-import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import Box from '@mui/material/Box'
+import _ from 'lodash'
+import { useState } from 'react'
+import { Box, colors, Tabs, Tab } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import reducer from './store'
-import { getApSlice, selectAp } from './store/apSlice'
-import { getUserSlice } from './store/userSlice'
-import { getMnReqSlice } from './store/mnReqSlice'
-import { getMnRepSlice } from './store/mnRepSlice'
-import { getMnControllStock } from './store/mnControllStockSlice'
-import { getMnMachineSlice } from './store/mnMachineSlice'
 
-import MnGM1Header from './header/MnGM1Header'
-import MnGM2Header from './header/MnGM2Header'
-import MnGM5Header from './header/MnGM5Header'
-import MnInventory from './header/MnInventory'
+import MnGM5SubHeaderMachinery from '../subheader/MnGM5SubHeaderMachinery'
+import MnGM5SubHeaderUtility from '../subheader/MnGM5SubHeaderUtility'
+import MnGM5SubHeaderWorkshop from '../subheader/MnGM5SubHeaderWorkshop'
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
     '& .FusePageSimple-header': {
@@ -27,20 +15,8 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
     },
 }))
 
-function maintenanceDashboard(props) {
-    const dispatch = useDispatch()
-
+function MnGM5Header() {
     const [tabValue, setTabValue] = useState(0)
-
-    useEffect(() => {
-        dispatch(getApSlice())
-        dispatch(getUserSlice())
-        dispatch(getMnReqSlice())
-        dispatch(getMnRepSlice())
-        dispatch(getMnControllStock())
-        dispatch(getMnMachineSlice())
-    }, [dispatch])
-
     function handleChangeTab(event, value) {
         setTabValue(value)
     }
@@ -48,7 +24,7 @@ function maintenanceDashboard(props) {
     return (
         <Root
             content={
-                <div className="w-full p-10 pt-8 sm:pt-24 lg:ltr:pr-0 lg:rtl:pl-0">
+                <div className="w-full">
                     <Tabs
                         value={tabValue}
                         onChange={handleChangeTab}
@@ -56,7 +32,7 @@ function maintenanceDashboard(props) {
                         textColor="inherit"
                         variant="scrollable"
                         scrollButtons={false}
-                        className="w-full px-24 -mx-4 min-h-40"
+                        className="w-full px-24 -mx-4 min-h-40 mt-16"
                         classes={{
                             indicator:
                                 'flex justify-center bg-transparent w-full h-full',
@@ -73,32 +49,26 @@ function maintenanceDashboard(props) {
                         <Tab
                             className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
                             disableRipple
-                            label="GM1"
+                            label="Machinery"
                         />
                         <Tab
                             className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
                             disableRipple
-                            label="GM2"
+                            label="Utility"
                         />
                         <Tab
                             className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
                             disableRipple
-                            label="GM5"
-                        />
-                        <Tab
-                            className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
-                            disableRipple
-                            label="Inventory MN"
+                            label="Workshop"
                         />
                     </Tabs>
-                    {tabValue === 0 && <MnGM1Header />}
-                    {tabValue === 1 && <MnGM2Header />}
-                    {tabValue === 2 && <MnGM5Header />}
-                    {tabValue === 3 && <MnInventory />}
+                    {tabValue === 0 && <MnGM5SubHeaderMachinery />}
+                    {tabValue === 1 && <MnGM5SubHeaderUtility />}
+                    {tabValue === 2 && <MnGM5SubHeaderWorkshop />}
                 </div>
             }
-        />
+        ></Root>
     )
 }
 
-export default withReducer('dashboard', reducer)(maintenanceDashboard)
+export default MnGM5Header
