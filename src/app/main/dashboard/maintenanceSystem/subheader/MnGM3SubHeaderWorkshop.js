@@ -10,7 +10,7 @@ import ChartWo from '../tabs/widget/ChartWo'
 import LastApUser from '../tabs/widget/LastApUser'
 import SummaryWo from '../tabs/widget/SummaryWo'
 
-function MnGM2SubHeaderWorkshop() {
+function MnGM3SubHeaderWorkshop() {
     const data = useSelector(selectAp)
 
     const filterData =
@@ -18,7 +18,7 @@ function MnGM2SubHeaderWorkshop() {
         _.chain(data)
             .filter((val) => {
                 if (
-                    val.com_no == '02' &&
+                    val.com_no == '03' &&
                     (val.pri_no == '04' || val.pri_no == '05') &&
                     val.chk_mark != 'C'
                 ) {
@@ -145,8 +145,8 @@ function MnGM2SubHeaderWorkshop() {
                 <LastApUser
                     data={{
                         listItemMonth: filterData,
-                        user: 33,
-                        leader: 'Workshop - Weld',
+                        user: 17,
+                        leader: 'Kasie Workshop',
                     }}
                 />
             </motion.div>
@@ -158,4 +158,4 @@ function MnGM2SubHeaderWorkshop() {
     )
 }
 
-export default MnGM2SubHeaderWorkshop
+export default MnGM3SubHeaderWorkshop

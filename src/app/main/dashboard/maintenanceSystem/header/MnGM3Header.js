@@ -4,9 +4,9 @@ import { useState } from 'react'
 import { Box, colors, Tabs, Tab } from '@mui/material'
 import { styled } from '@mui/material/styles'
 
-import MnGM5SubHeaderMachinery from '../subheader/MnGM5SubHeaderMachinery'
-import MnGM5SubHeaderUtility from '../subheader/MnGM5SubHeaderUtility'
-import MnGM5SubHeaderWorkshop from '../subheader/MnGM5SubHeaderWorkshop'
+import MnGM3SubHeaderMachinery from '../subheader/MnGM3SubHeaderMachinery'
+import MnGM3SubHeaderUtility from '../subheader/MnGM3SubHeaderUtility'
+import MnGM3SubHeaderWorkshop from '../subheader/MnGM3SubHeaderWorkshop'
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
     '& .FusePageSimple-header': {
@@ -62,9 +62,9 @@ function MnGM3Header() {
                             label="Workshop"
                         />
                     </Tabs>
-                    {tabValue === 0 && <MnGM5SubHeaderMachinery />}
-                    {tabValue === 1 && <MnGM5SubHeaderUtility />}
-                    {tabValue === 2 && <MnGM5SubHeaderWorkshop />}
+                    {tabValue === 0 && <MnGM3SubHeaderMachinery />}
+                    {tabValue === 1 && <MnGM3SubHeaderUtility />}
+                    {tabValue === 2 && <MnGM3SubHeaderWorkshop />}
                 </div>
             }
         ></Root>

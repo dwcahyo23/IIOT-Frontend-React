@@ -17,6 +17,7 @@ import { getMnMachineSlice } from './store/mnMachineSlice'
 
 import MnGM1Header from './header/MnGM1Header'
 import MnGM2Header from './header/MnGM2Header'
+import MnGM3Header from './header/MnGM3Header'
 import MnGM5Header from './header/MnGM5Header'
 import MnInventory from './header/MnInventory'
 
@@ -83,6 +84,11 @@ function maintenanceDashboard(props) {
                         <Tab
                             className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
                             disableRipple
+                            label="GM3"
+                        />
+                        <Tab
+                            className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
+                            disableRipple
                             label="GM5"
                         />
                         <Tab
@@ -93,8 +99,9 @@ function maintenanceDashboard(props) {
                     </Tabs>
                     {tabValue === 0 && <MnGM1Header />}
                     {tabValue === 1 && <MnGM2Header />}
-                    {tabValue === 2 && <MnGM5Header />}
-                    {tabValue === 3 && <MnInventory />}
+                    {tabValue === 2 && <MnGM3Header />}
+                    {tabValue === 3 && <MnGM5Header />}
+                    {tabValue === 4 && <MnInventory />}
                 </div>
             }
         />
