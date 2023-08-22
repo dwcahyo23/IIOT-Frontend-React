@@ -1,16 +1,15 @@
+import FuseLoading from '@fuse/core/FuseLoading/FuseLoading'
 import { useEffect, useState } from 'react'
 import {
     Box,
     Button,
-    Typography,
     Tab,
+    Typography,
     TextField,
     Grid,
-    Dialog,
-    DialogContent,
-    DialogActions,
     MenuItem,
 } from '@mui/material'
+import _ from 'lodash'
 import dayjs from 'dayjs'
 import { useSelector, useDispatch } from 'react-redux'
 import TableIndex from 'src/app/main/apps/maintenanceSystem/machineTab/TableIndex'
@@ -20,9 +19,11 @@ import StatusColor from 'src/app/main/apps/maintenanceSystem/machineTab/utils/St
 function OpenDialogSummary({ data, header }) {
     const dispatch = useDispatch()
     const [tabValue, setTabValue] = useState('1')
-    const [selectOutstanding, setSelectOutstanding] = useState([])
+    const [dataNull, setDataNull] = useState(true)
+    const [selectOutstanding01, setSelectOutstanding01] = useState([])
+    const [selectOutstanding02, setSelectOutstanding02] = useState([])
 
-    const columnsOutstandingBreakdown = [
+    const columnsOutstanding = [
         {
             field: 'sheet_no',
             headerName: 'AP-Sheet',
@@ -193,9 +194,16 @@ function OpenDialogSummary({ data, header }) {
     const tableIndex = (data) => {}
 
     useEffect(() => {
-        if (data) {
+        const breakdown = () => {
             const Outstanding = _(data.filteredItem.data)
-                .filter({ chk_mark: 'N', pri_no: '01' })
+                .filter((val) => {
+                    if (
+                        val.chk_mark == 'N' &&
+                        (val.pri_no == '01' || val.pri_no == '05')
+                    ) {
+                        return val
+                    }
+                })
                 .map((val) => {
                     return {
                         ...val,
@@ -206,8 +214,37 @@ function OpenDialogSummary({ data, header }) {
                     }
                 })
                 .value()
-            // console.log(Outstanding)
-            setSelectOutstanding(Outstanding)
+            setSelectOutstanding01(Outstanding)
+            setDataNull(false)
+        }
+
+        const stillRun = () => {
+            const Outstanding = _(data.filteredItem.data)
+                .filter((val) => {
+                    if (
+                        val.chk_mark == 'N' &&
+                        (val.pri_no == '02' || val.pri_no == '04')
+                    ) {
+                        return val
+                    }
+                })
+                .map((val) => {
+                    return {
+                        ...val,
+                        sparepart: _.filter(data.sparepart, {
+                            sheet_no: val.sheet_no,
+                            audit_request: 'N',
+                        }),
+                    }
+                })
+                .value()
+            setSelectOutstanding02(Outstanding)
+            setDataNull(false)
+        }
+
+        if (data) {
+            breakdown()
+            stillRun()
         }
     }, [data])
 
@@ -215,35 +252,50 @@ function OpenDialogSummary({ data, header }) {
         setTabValue(val)
         if (val == 1) {
             header('Outstanding Breakdown')
+        } else if (val == 2) {
+            header('Outstanding Still Run')
         }
     }
 
+    if (dataNull) {
+        return <FuseLoading />
+    }
+
     return (
-        <div>
-            <TabContext value={tabValue}>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <TabList
-                        onChange={handleTabChange}
-                        aria-label="lab API tabs example"
-                    >
-                        <Tab label="Outstanding" value="1" />
-                    </TabList>
-                </Box>
-                <TabPanel value="1">
-                    <div style={{ width: 900, height: 450 }}>
-                        <div style={{ width: '100%', height: '100%' }}>
-                            <TableIndex
-                                params={{
-                                    row: selectOutstanding,
-                                    columns: columnsOutstandingBreakdown,
-                                }}
-                                tableIndex={tableIndex}
-                            />
-                        </div>
+        <TabContext value={tabValue}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <TabList onChange={handleTabChange}>
+                    <Tab label="Outstanding Breakdown" value="1" />
+                    <Tab label="Outstanding Still Run" value="2" />
+                </TabList>
+            </Box>
+            <TabPanel value="1">
+                <div style={{ width: 900, height: 450 }}>
+                    <div style={{ width: '100%', height: '100%' }}>
+                        <TableIndex
+                            params={{
+                                row: selectOutstanding01,
+                                columns: columnsOutstanding,
+                            }}
+                            tableIndex={tableIndex}
+                        />
                     </div>
-                </TabPanel>
-            </TabContext>
-        </div>
+                </div>
+            </TabPanel>
+            <TabPanel value="2">
+                <div style={{ width: 900, height: 450 }}>
+                    <div style={{ width: '100%', height: '100%' }}>
+                        <TableIndex
+                            params={{
+                                row: selectOutstanding02,
+                                columns: columnsOutstanding,
+                            }}
+                            tableIndex={tableIndex}
+                        />
+                    </div>
+                </div>
+            </TabPanel>
+        </TabContext>
     )
 }
 

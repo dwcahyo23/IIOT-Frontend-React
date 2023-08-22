@@ -134,7 +134,7 @@ function CustomToolbar({ props }) {
 
     return (
         <Button
-            color="primary"
+            color="info"
             startIcon={<Download />}
             onClick={handleExportExcell}
         >
@@ -363,21 +363,17 @@ function LastApUser({ data }) {
                                 props={{ rows: filteredItem?.data }}
                             />
                         )}
-                        <Badge
-                            badgeContent={filteredItem?.breakdown_naudit?.pass}
+
+                        <Button
                             color="error"
+                            startIcon={<Summarize />}
+                            onClick={() => {
+                                setSelectOpen('Open Dialog Summary')
+                                setToolBarHeader('Outstanding Breakdown')
+                            }}
                         >
-                            <Button
-                                color="error"
-                                startIcon={<Summarize />}
-                                onClick={() => {
-                                    setSelectOpen('Open Dialog Summary')
-                                    setToolBarHeader('Outstanding Breakdown')
-                                }}
-                            >
-                                Outstanding Breakdown
-                            </Button>
-                        </Badge>
+                            Outstanding
+                        </Button>
                     </div>
                 </div>
 
@@ -424,7 +420,7 @@ function LastApUser({ data }) {
                                                     })
                                             ).length
                                         }
-                                        color="error"
+                                        color="secondary"
                                     >
                                         {key}
                                     </Badge>

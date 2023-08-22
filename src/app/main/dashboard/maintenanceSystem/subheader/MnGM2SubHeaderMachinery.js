@@ -17,35 +17,9 @@ import SummaryWo from '../tabs/widget/SummaryWo'
 
 function MnGM2SubHeaderMachinery() {
     const data = useSelector(selectAp)
-    // const sparepart = useSelector(selectApReq)
     const machine = useSelector(selectMnMachine)
     const [workOrder, setWorkOrder] = useState([])
     const [filterWorOrder, setFilterWorkOrder] = useState(null)
-
-    const selectDep_no = [
-        'PDHD1',
-        'PDHD2',
-        'PDHD3',
-        'PDHD4,',
-        'PDMR1',
-        'PDNT1',
-        'PDRL1',
-        'PDRL2',
-        'PDTM1',
-        'PDUB1',
-        'PCGD1',
-        'PCGD4',
-        'PCTD2',
-        'PDMC1',
-        'PDNC1',
-        'PDPU1',
-        'PDTR1',
-        'QAQC1',
-        'TDAD4',
-        'MNAD1',
-        'MNAD3',
-        'MNAD4',
-    ]
 
     useEffect(() => {
         if (data) {
@@ -81,8 +55,16 @@ function MnGM2SubHeaderMachinery() {
                 }
             })
 
-            const grouped = _(join)
+            const x = _(join)
                 .groupBy((val) => val.responsible?.responsible)
+                .omit(['null', 'undefined'])
+                .value()
+
+            if (_.isObject(x) && _.isEmpty(x) == false) {
+                x['SADRI'] = _.concat(x['ARIS M'], x['TEGUH P'], x['MUSLIH'])
+            }
+
+            const y = _(x)
                 .mapValues((items) => {
                     return _(items)
                         .orderBy(['ymd'], ['desc'])
@@ -139,86 +121,9 @@ function MnGM2SubHeaderMachinery() {
                 })
                 .value()
 
-            setFilterWorkOrder(grouped)
-
-            function customizer(objValue, srcValue) {
-                if (_.isArray(objValue)) {
-                    return objValue.concat(srcValue)
-                }
-            }
+            setFilterWorkOrder(y)
         }
     }, [workOrder, machine])
-
-    const filterData =
-        data &&
-        _.chain(data)
-            .filter((val) => {
-                if (
-                    // _.includes(selectDep_no, val.dep_no) &&
-                    val.com_no == '02' &&
-                    val.chk_mark != 'C' &&
-                    val.mch_no != '-'
-                ) {
-                    if (_.isNull(val.mch_no)) {
-                    } else {
-                        return val
-                    }
-                }
-            })
-            .orderBy(['ymd'], ['desc'])
-            .groupBy((val) => dayjs(val.ymd).format('MMMM'))
-            .mapValues((items) => {
-                return {
-                    data: items,
-                    breakdown: _.countBy(items, (val) =>
-                        val.pri_no == '01' ? 'pass' : 'fail'
-                    ),
-                    breakdown: _.countBy(items, (val) =>
-                        val.pri_no == '01' ? 'pass' : 'fail'
-                    ),
-                    still_run: _.countBy(items, (val) =>
-                        val.pri_no == '02' ? 'pass' : 'fail'
-                    ),
-                    preventive: _.countBy(items, (val) =>
-                        val.pri_no == '03' ? 'pass' : 'fail'
-                    ),
-                    workshop: _.countBy(items, (val) =>
-                        val.pri_no == '04' ? 'pass' : 'fail'
-                    ),
-                    work_order: _.countBy(items, (val) =>
-                        val ? 'pass' : 'fail'
-                    ),
-                    audit: _.countBy(items, (val) =>
-                        val.chk_mark == 'Y' ? 'pass' : 'fail'
-                    ),
-                    breakdown_audit: _.countBy(items, (val) =>
-                        val.pri_no == '01' && val.chk_mark == 'Y'
-                            ? 'pass'
-                            : 'fail'
-                    ),
-                    breakdown_naudit: _.countBy(items, (val) =>
-                        val.pri_no == '01' && val.chk_mark == 'N'
-                            ? 'pass'
-                            : 'fail'
-                    ),
-                    still_run_audit: _.countBy(items, (val) =>
-                        val.pri_no == '02' && val.chk_mark == 'Y'
-                            ? 'pass'
-                            : 'fail'
-                    ),
-                    preventive_audit: _.countBy(items, (val) =>
-                        val.pri_no == '03' && val.chk_mark == 'Y'
-                            ? 'pass'
-                            : 'fail'
-                    ),
-                    workshop_audit: _.countBy(items, (val) =>
-                        val.pri_no == '04' && val.chk_mark == 'Y'
-                            ? 'pass'
-                            : 'fail'
-                    ),
-                }
-            })
-            .value()
 
     const container = {
         show: {
@@ -235,114 +140,6 @@ function MnGM2SubHeaderMachinery() {
 
     return (
         <div>
-            <motion.div
-                className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-6 lg:grid-cols-6 gap-16 w-full min-w-0 p-24"
-                variants={container}
-                initial="hidden"
-                animate="show"
-            >
-                <motion.div variants={item} className="md:col-span-2">
-                    <SummaryWo
-                        data={{
-                            count: filterData[dayjs().format('MMMM')]
-                                ?.work_order,
-                            title: `Total Workorder ${dayjs().format('MMMM')}`,
-                            name: 'AP Sheet',
-                            colorHg: colors.blue[400],
-                            colorLw: colors.blue[300],
-                            extra: {
-                                name: 'Total Audit',
-                                count: filterData[dayjs().format('MMMM')]
-                                    ?.audit,
-                            },
-                        }}
-                    />
-                </motion.div>
-
-                <motion.div variants={item}>
-                    <SummaryWo
-                        data={{
-                            count: filterData[dayjs().format('MMMM')]
-                                ?.breakdown,
-                            title: 'Work Order',
-                            name: `Breakdown`,
-                            colorHg: colors.red[400],
-                            colorLw: colors.red[300],
-                            extra: {
-                                name: 'Total Audit',
-                                count: filterData[dayjs().format('MMMM')]
-                                    ?.breakdown_audit,
-                            },
-                        }}
-                    />
-                </motion.div>
-
-                <motion.div variants={item}>
-                    <SummaryWo
-                        data={{
-                            count: filterData[dayjs().format('MMMM')]
-                                ?.still_run,
-                            title: 'Work Order',
-                            name: `Still Run`,
-                            colorHg: colors.orange[400],
-                            colorLw: colors.orange[300],
-                            extra: {
-                                name: 'Total Audit',
-                                count: filterData[dayjs().format('MMMM')]
-                                    ?.still_run,
-                            },
-                        }}
-                    />
-                </motion.div>
-
-                <motion.div variants={item}>
-                    <SummaryWo
-                        data={{
-                            count: filterData[dayjs().format('MMMM')]
-                                ?.preventive,
-                            title: 'Work Order',
-                            name: `Preventive`,
-                            colorHg: colors.green[400],
-                            colorLw: colors.green[300],
-                            extra: {
-                                name: 'Total Audit',
-                                count: filterData[dayjs().format('MMMM')]
-                                    ?.preventive_audit,
-                            },
-                        }}
-                    />
-                </motion.div>
-
-                <motion.div
-                    variants={item}
-                    className="sm:col-span-2 md:col-span-6"
-                >
-                    <Typography className="text-md" color="text.secondary">
-                        {/* PDHD1 PDHD2 PDHD3 PDHD4 PDRL1 PDRL2 PDMC1 PDMC3 PDMR1
-                        PDNC1 PDNT1 PDHB1 PDTR1 PDPU1 */}
-                    </Typography>
-                </motion.div>
-
-                <motion.div
-                    variants={item}
-                    className="sm:col-span-2 md:col-span-2"
-                >
-                    <LastApUser
-                        data={{
-                            listItemMonth: filterData,
-                            user: 8,
-                            leader: 'Kasie MN GM2',
-                        }}
-                    />
-                </motion.div>
-
-                <motion.div
-                    variants={item}
-                    className="sm:col-span-2 md:col-span-4"
-                >
-                    <ChartWo data={{ filterData }} />
-                </motion.div>
-            </motion.div>
             {_.isNull(filterWorOrder) == false && _.size(filterWorOrder) > 0 ? (
                 <motion.div
                     className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-6 lg:grid-cols-6 gap-16 w-full min-w-0 p-24"
@@ -350,6 +147,128 @@ function MnGM2SubHeaderMachinery() {
                     initial="hidden"
                     animate="show"
                 >
+                    <motion.div variants={item} className="md:col-span-2">
+                        <SummaryWo
+                            data={{
+                                count: {
+                                    ...filterWorOrder['SADRI'][
+                                        dayjs().format('MMMM')
+                                    ]?.work_order,
+                                },
+                                title: `Total Workorder ${dayjs().format(
+                                    'MMMM'
+                                )}`,
+                                name: 'AP Sheet',
+                                colorHg: colors.blue[400],
+                                colorLw: colors.blue[300],
+                                extra: {
+                                    name: 'Total Audit',
+                                    count: {
+                                        ...filterWorOrder['SADRI'][
+                                            dayjs().format('MMMM')
+                                        ]?.audit,
+                                    },
+                                },
+                            }}
+                        />
+                    </motion.div>
+
+                    <motion.div variants={item}>
+                        <SummaryWo
+                            data={{
+                                count: {
+                                    ...filterWorOrder['SADRI'][
+                                        dayjs().format('MMMM')
+                                    ]?.breakdown,
+                                },
+                                title: 'Work Order',
+                                name: `Breakdown`,
+                                colorHg: colors.red[400],
+                                colorLw: colors.red[300],
+                                extra: {
+                                    name: 'Total Audit',
+                                    count: {
+                                        ...filterWorOrder['SADRI'][
+                                            dayjs().format('MMMM')
+                                        ]?.breakdown_audit,
+                                    },
+                                },
+                            }}
+                        />
+                    </motion.div>
+
+                    <motion.div variants={item}>
+                        <SummaryWo
+                            data={{
+                                count: {
+                                    ...filterWorOrder['SADRI'][
+                                        dayjs().format('MMMM')
+                                    ]?.still_run,
+                                },
+                                title: 'Work Order',
+                                name: `Still Run`,
+                                colorHg: colors.orange[400],
+                                colorLw: colors.orange[300],
+                                extra: {
+                                    name: 'Total Audit',
+                                    count: {
+                                        ...filterWorOrder['SADRI'][
+                                            dayjs().format('MMMM')
+                                        ]?.still_run,
+                                    },
+                                },
+                            }}
+                        />
+                    </motion.div>
+
+                    <motion.div variants={item}>
+                        <SummaryWo
+                            data={{
+                                count: {
+                                    ...filterWorOrder['SADRI'][
+                                        dayjs().format('MMMM')
+                                    ]?.preventive,
+                                },
+                                title: 'Work Order',
+                                name: `Preventive`,
+                                colorHg: colors.green[400],
+                                colorLw: colors.green[300],
+                                extra: {
+                                    name: 'Total Audit',
+                                    count: {
+                                        ...filterWorOrder['SADRI'][
+                                            dayjs().format('MMMM')
+                                        ]?.preventive_audit,
+                                    },
+                                },
+                            }}
+                        />
+                    </motion.div>
+
+                    <motion.div
+                        variants={item}
+                        className="sm:col-span-2 md:col-span-2"
+                    >
+                        <LastApUser
+                            data={{
+                                listItemMonth: {
+                                    ...filterWorOrder['SADRI'],
+                                },
+                                user: 8,
+                                leader: 'Kasie MN GM2',
+                            }}
+                        />
+                    </motion.div>
+
+                    <motion.div
+                        variants={item}
+                        className="sm:col-span-2 md:col-span-4"
+                    >
+                        <ChartWo
+                            data={{ filterData: filterWorOrder['SADRI'] }}
+                        />
+                    </motion.div>
+
                     <motion.div
                         variants={item}
                         className="sm:col-span-2 md:col-span-2"
@@ -362,6 +281,7 @@ function MnGM2SubHeaderMachinery() {
                             }}
                         />
                     </motion.div>
+
                     <motion.div
                         variants={item}
                         className="sm:col-span-2 md:col-span-2"
@@ -374,6 +294,7 @@ function MnGM2SubHeaderMachinery() {
                             }}
                         />
                     </motion.div>
+
                     <motion.div
                         variants={item}
                         className="sm:col-span-2 md:col-span-2"

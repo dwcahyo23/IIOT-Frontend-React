@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
-import MaintenanceDashboardHeader from './maintenanceDashboardHeader'
 import reducer from './store'
 import { getApSlice, selectAp } from './store/apSlice'
 import { getUserSlice } from './store/userSlice'
@@ -15,12 +14,6 @@ import { getMnReqSlice } from './store/mnReqSlice'
 import { getMnRepSlice } from './store/mnRepSlice'
 import { getMnControllStock } from './store/mnControllStockSlice'
 import { getMnMachineSlice } from './store/mnMachineSlice'
-
-import MnGM1 from './tabs/MnGM1'
-import MnGM2 from './tabs/MnGM2'
-import MnGM3 from './tabs/MnGM3'
-import MnGM5 from './tabs/MnGM5'
-import Inventory from './subheader/InventoryGM1RequestSparepart'
 
 import MnGM1Header from './header/MnGM1Header'
 import MnGM2Header from './header/MnGM2Header'
@@ -53,7 +46,6 @@ function maintenanceDashboard(props) {
 
     return (
         <Root
-            // header={<MaintenanceDashboardHeader />}
             content={
                 <div className="w-full p-10 pt-8 sm:pt-24 lg:ltr:pr-0 lg:rtl:pl-0">
                     <Tabs

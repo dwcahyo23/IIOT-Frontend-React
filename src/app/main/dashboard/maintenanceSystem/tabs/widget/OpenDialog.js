@@ -1,5 +1,5 @@
+import FuseLoading from '@fuse/core/FuseLoading/FuseLoading'
 import { useEffect, useState } from 'react'
-import FusePageCarded from '@fuse/core/FusePageCarded/FusePageCarded'
 import {
     Box,
     Button,
@@ -11,8 +11,8 @@ import {
     DialogContent,
     DialogActions,
     MenuItem,
+    AppBar,
 } from '@mui/material'
-import { useDeepCompareEffect } from '@fuse/hooks'
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
@@ -33,13 +33,7 @@ import VirtualizedData from 'src/app/main/apps/maintenanceSystem/machineTab/util
 
 import { selectUser } from 'app/store/userSlice'
 import { showMessage } from 'app/store/fuse/messageSlice'
-import {
-    getMnOne,
-    selectMnOne,
-    resetMnOne,
-    saveMnOne,
-    saveMnOneRequest,
-} from '../../store/mnOneSlice'
+import { getMnOne, saveMnOne, saveMnOneRequest } from '../../store/mnOneSlice'
 import { getApSlice } from '../../store/apSlice'
 import { getMnRepSlice } from '../../store/mnRepSlice'
 import { getMnReqSlice } from '../../store/mnReqSlice'
@@ -89,7 +83,7 @@ const columnsRequest = [
         headerAlign: 'center',
         width: 120,
         valueFormatter: (params) =>
-            dayjs(params.value).format('DD/MM/YY HH:mm'),
+            dayjs(params.value).format('DD/MM/YYYY HH:mm'),
     },
     {
         field: 'mre_request',
@@ -154,7 +148,7 @@ const columnsRequest = [
         headerAlign: 'center',
         width: 120,
         valueFormatter: (params) =>
-            params.value ? dayjs(params.value).format('DD/MM/YY HH:mm') : '',
+            params.value ? dayjs(params.value).format('DD/MM/YYYY HH:mm') : '',
     },
     {
         field: 'date_mre_request',
@@ -163,7 +157,7 @@ const columnsRequest = [
         headerAlign: 'center',
         width: 120,
         valueFormatter: (params) =>
-            params.value ? dayjs(params.value).format('DD/MM/YY HH:mm') : '',
+            params.value ? dayjs(params.value).format('DD/MM/YYYY HH:mm') : '',
     },
     {
         field: 'date_audit_request',
@@ -172,14 +166,14 @@ const columnsRequest = [
         headerAlign: 'center',
         width: 120,
         valueFormatter: (params) =>
-            params.value ? dayjs(params.value).format('DD/MM/YY HH:mm') : '',
+            params.value ? dayjs(params.value).format('DD/MM/YYYY HH:mm') : '',
     },
 ]
 
 function OpenDialog({ data, header }) {
     const dispatch = useDispatch()
     const stock = useSelector(selectStock)
-    const [noMnOne, setNoMnOne] = useState(false)
+    const [dataNull, setDataNull] = useState(true)
     const user = useSelector(selectUser)
     const [tabValue, setTabValue] = useState('1')
     const [hidSparepart, setHidSparepart] = useState(false)
@@ -189,6 +183,7 @@ function OpenDialog({ data, header }) {
     const [disWa, setDisWa] = useState(true)
     const [open, setOpen] = useState(false)
     const [selectWa, setSelectWa] = useState(null)
+    const [errTargetRequest, setErrTargetRequest] = useState('')
 
     const methods = useForm({
         mode: 'onChange',
@@ -218,7 +213,9 @@ function OpenDialog({ data, header }) {
             const uuid = data.selectData.mch_index.uuid
             dispatch(getMnOne(uuid)).then((action) => {
                 dispatch(getMachineStock())
-
+                if (!action.payload) {
+                    setDataNull(true)
+                }
                 if (action.payload) {
                     const report = _.find(action.payload.report, {
                         sheet_no: data?.selectData.sheet_no,
@@ -249,11 +246,11 @@ function OpenDialog({ data, header }) {
                                 }
                             }
                         })
-
                     const request = _.filter(action.payload.request, {
                         sheet_no: data?.selectData.sheet_no,
                     })
                     setTableRequest(request)
+                    setDataNull(false)
                 }
             })
         }
@@ -287,7 +284,6 @@ function OpenDialog({ data, header }) {
                       'date_audit_request',
                       dayjs().format('YYYY-MM-DD HH:mm:ss')
                   )
-                  //   console.log(watch('date_audit_request'))
               }, 500)
             : setTimeout(() => {
                   setValue('user_req2', '')
@@ -310,7 +306,6 @@ function OpenDialog({ data, header }) {
                       'date_mre_request',
                       dayjs().format('YYYY-MM-DD HH:mm:ss')
                   )
-                  //   console.log(watch('date_mre_request'))
               }, 500)
             : ''
     }, [
@@ -349,10 +344,6 @@ function OpenDialog({ data, header }) {
         }
     }, [tableRequest])
 
-    // useEffect(() => {
-    //     console.log(selectWa)
-    // }, [selectWa])
-
     function handleSaveReport() {
         dispatch(saveMnOne(getValues()))
             .then((action) => {
@@ -360,10 +351,6 @@ function OpenDialog({ data, header }) {
                     const uuid = data?.selectData.mch_index.uuid
                     dispatch(getMnOne(uuid)).then((action) => {
                         dispatch(getMachineStock())
-
-                        if (!action.payload) {
-                            setNoMnOne(true)
-                        }
 
                         if (action.payload) {
                             const report = _.find(action.payload.report, {
@@ -507,7 +494,7 @@ function OpenDialog({ data, header }) {
             msg += `\n\n${selectWa[0].sheet_no} |  ${selectWa[0].category_request}`
             msg += `\n${selectWa[0].mch_code} | ${
                 selectWa[0].user_req1
-            } | ${dayjs(selectWa[0].createdAt).format('DD/MM/YY HH:mm:ss')} `
+            } | ${dayjs(selectWa[0].createdAt).format('DD/MM/YYYY HH:mm:ss')} `
             msg += `\n\nList permintaan:`
             _.forEach(selectWa, (entry, idx) => {
                 msg += `\n*${idx + 1}.)* *${
@@ -636,10 +623,17 @@ function OpenDialog({ data, header }) {
                             shouldDirty: true,
                         })
                     }
+                } else {
+                    if (val == 'date_request') {
+                        setErrTargetRequest('target not found in database!')
+                    }
                 }
             })
-            // console.log(data)
         }
+    }
+
+    if (dataNull) {
+        return <FuseLoading />
     }
 
     return (
@@ -869,11 +863,9 @@ function OpenDialog({ data, header }) {
                                             <TextField
                                                 {...field}
                                                 className="mt-8 mb-16"
-                                                onChange={(val) =>
-                                                    dayjs(val).format(
-                                                        'DD/MM/YYYY HH:mm'
-                                                    )
-                                                }
+                                                value={dayjs(
+                                                    field.value
+                                                ).format('DD/MM/YYYY HH:mm')}
                                                 label="Stoptime"
                                                 id="s_ymd"
                                                 variant="outlined"
@@ -892,13 +884,11 @@ function OpenDialog({ data, header }) {
                                             <TextField
                                                 {...field}
                                                 className="mt-8 mb-16"
-                                                onChange={(val) =>
-                                                    dayjs(val).format(
-                                                        'DD/MM/YYYY HH:mm'
-                                                    )
-                                                }
                                                 label="Date"
                                                 id="ymd"
+                                                value={dayjs(
+                                                    field.value
+                                                ).format('DD/MM/YYYY HH:mm')}
                                                 variant="outlined"
                                                 fullWidth
                                                 disabled
@@ -915,11 +905,6 @@ function OpenDialog({ data, header }) {
                                             <TextField
                                                 {...field}
                                                 className="mt-8 mb-16"
-                                                onChange={(val) =>
-                                                    dayjs(val).format(
-                                                        'DD/MM/YYYY HH:mm'
-                                                    )
-                                                }
                                                 label="User"
                                                 id="modi_user"
                                                 variant="outlined"
@@ -1069,7 +1054,9 @@ function OpenDialog({ data, header }) {
                                                     className="mt-8 mb-16"
                                                     id="date_target"
                                                     label="Target"
-                                                    sx={{ width: '100%' }}
+                                                    sx={{
+                                                        width: '100%',
+                                                    }}
                                                     slotProps={{
                                                         popper: {
                                                             disablePortal: true,
@@ -1362,7 +1349,9 @@ function OpenDialog({ data, header }) {
                                                         className="mt-8 mb-16"
                                                         id="date_finish"
                                                         label="Finish"
-                                                        sx={{ width: '100%' }}
+                                                        sx={{
+                                                            width: '100%',
+                                                        }}
                                                         slotProps={{
                                                             popper: {
                                                                 disablePortal: true,
@@ -1384,12 +1373,6 @@ function OpenDialog({ data, header }) {
                                     className="whitespace-nowrap mb-16"
                                     variant="contained"
                                     color="secondary"
-                                    // disabled={
-                                    //     disRep == true ||
-                                    //     data?.selectData.chk_mark == 'N'
-                                    //         ? true
-                                    //         : false
-                                    // }
                                     onClick={handleSaveReport}
                                 >
                                     Save
@@ -1426,7 +1409,7 @@ function OpenDialog({ data, header }) {
                                     )}
                                 />
                             </Grid>
-                            <Grid item xs={3}>
+                            <Grid item xs={2}>
                                 <Controller
                                     name="category_request"
                                     defaultValue={
@@ -1457,8 +1440,39 @@ function OpenDialog({ data, header }) {
                                     )}
                                 />
                             </Grid>
-
                             <Grid item xs={3}>
+                                <Controller
+                                    name="date_request"
+                                    control={control}
+                                    defaultValue={dayjs()}
+                                    render={({ field }) => (
+                                        <LocalizationProvider
+                                            dateAdapter={AdapterDayjs}
+                                        >
+                                            <DateTimePicker
+                                                {...field}
+                                                ampm={false}
+                                                className="mt-8 mb-16"
+                                                id="date_request"
+                                                label="Target"
+                                                sx={{
+                                                    width: '100%',
+                                                }}
+                                                slotProps={{
+                                                    popper: {
+                                                        disablePortal: true,
+                                                    },
+                                                    textField: {
+                                                        helperText:
+                                                            errTargetRequest,
+                                                    },
+                                                }}
+                                            />
+                                        </LocalizationProvider>
+                                    )}
+                                />
+                            </Grid>
+                            <Grid item xs={2}>
                                 <Controller
                                     name="mch_code"
                                     defaultValue={
@@ -1482,7 +1496,7 @@ function OpenDialog({ data, header }) {
                                     )}
                                 />
                             </Grid>
-                            <Grid item xs={3}>
+                            <Grid item xs={2}>
                                 <Controller
                                     name="mch_com"
                                     defaultValue={
@@ -1572,7 +1586,7 @@ function OpenDialog({ data, header }) {
                             <Grid item xs={2}>
                                 <Controller
                                     name="item_qty"
-                                    defaultValue={0}
+                                    defaultValue={1}
                                     control={control}
                                     render={({ field }) => (
                                         <TextField
@@ -1583,7 +1597,7 @@ function OpenDialog({ data, header }) {
                                             helperText={
                                                 errors?.item_qty?.message
                                             }
-                                            label="Item qty"
+                                            label="Qty"
                                             autoFocus
                                             id="item_qty"
                                             variant="outlined"
@@ -1606,7 +1620,7 @@ function OpenDialog({ data, header }) {
                                             helperText={
                                                 errors?.item_uom?.message
                                             }
-                                            label="Item uom"
+                                            label="Uom"
                                             autoFocus
                                             id="item_uom"
                                             variant="outlined"

@@ -7,17 +7,13 @@ import dayjs from 'dayjs'
 import { Typography, colors } from '@mui/material'
 
 import { selectAp } from '../store/apSlice'
-import { selectApRep, selectApRepById } from '../store/mnRepSlice'
-import { selectApReq } from '../store/mnReqSlice'
 import { selectMnMachine } from '../store/mnMachineSlice'
-
 import ChartWo from '../tabs/widget/ChartWo'
 import LastApUser from '../tabs/widget/LastApUser'
 import SummaryWo from '../tabs/widget/SummaryWo'
 
 function MnGM1SubHeaderMachinery() {
     const data = useSelector(selectAp)
-    // const sparepart = useSelector(selectApReq)
     const machine = useSelector(selectMnMachine)
     const [workOrder, setWorkOrder] = useState([])
     const [filterWorOrder, setFilterWorkOrder] = useState(null)
@@ -125,6 +121,8 @@ function MnGM1SubHeaderMachinery() {
                         .value()
                 })
                 .value()
+
+            console.log(y)
 
             setFilterWorkOrder(y)
         }
