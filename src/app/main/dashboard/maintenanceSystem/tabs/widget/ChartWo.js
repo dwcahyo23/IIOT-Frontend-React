@@ -11,8 +11,8 @@ function ChartWo({ data }) {
     const theme = useTheme()
     const [awaitRender, setAwaitRender] = useState(true)
     const [tabValue, setTabValue] = useState(0)
-    const labels = Object.keys(data.filterData).reverse()
-
+    // console.log(data)
+    const labels = Object.keys(data?.filterData).reverse()
     const [label, setLabel] = useState([])
     const [breakdown, setBreakdown] = useState([])
     const [audit, setAudit] = useState([])
@@ -29,20 +29,6 @@ function ChartWo({ data }) {
             data: [],
         },
     ]
-
-    // // let ordered = {}
-    // Object.keys(data?.filterData)
-    //     .sort(
-    //         (a, b) =>
-    //             new Date(`${a} 1, 2023 12:00:00`).getMonth() -
-    //             new Date(`${b} 1, 2023 12:00:00`).getMonth()
-    //     )
-    //     .forEach((key) => {
-    //         // ordered[key] = data.filterData[key]
-    //         console.log(data.filterData[key])
-    //         series[0].data.push(data.filterData[key].breakdown?.pass || 0)
-    //         series[1].data.push(data.filterData[key].breakdown_audit?.pass || 0)
-    //     })
 
     // console.log(series)
     useEffect(() => {
