@@ -1,17 +1,12 @@
 import FusePageSimple from '@fuse/core/FusePageSimple'
 import _ from 'lodash'
-import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectAp } from '../store/apSlice'
+import { useState } from 'react'
 import { Box, colors, Tabs, Tab } from '@mui/material'
-import dayjs from 'dayjs'
 import { styled } from '@mui/material/styles'
 
-import InventoryGM1RequestSparepart from '../subheader/InventoryGM1RequestSparepart'
-import InventoryGM2RequestSparepart from '../subheader/InventoryGM2RequestSparepart'
-import InventoryGM3RequestSparepart from '../subheader/InventoryGM3RequestSparepart'
-import InventoryGM5RequestSparepart from '../subheader/InventoryGM5RequestSparepart'
-import InventorySafetyStock from '../subheader/InventorySafetyStock'
+import MnGM5SubHeaderMachinery from '../subheader/MnGM5SubHeaderMachinery'
+import MnGM5SubHeaderUtility from '../subheader/MnGM5SubHeaderUtility'
+import MnGM5SubHeaderWorkshop from '../subheader/MnGM5SubHeaderWorkshop'
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
     '& .FusePageSimple-header': {
@@ -20,9 +15,7 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
     },
 }))
 
-function MnInventory() {
-    const data = useSelector(selectAp)
-
+function MnGM3Header() {
     const [tabValue, setTabValue] = useState(0)
     function handleChangeTab(event, value) {
         setTabValue(value)
@@ -56,38 +49,26 @@ function MnInventory() {
                         <Tab
                             className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
                             disableRipple
-                            label="Inventory GM1"
+                            label="Machinery"
                         />
                         <Tab
                             className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
                             disableRipple
-                            label="Inventory GM2"
+                            label="Utility"
                         />
                         <Tab
                             className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
                             disableRipple
-                            label="Inventory GM3"
-                        />
-                        <Tab
-                            className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
-                            disableRipple
-                            label="Inventory GM5"
-                        />
-                        <Tab
-                            className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
-                            disableRipple
-                            label="Safety Stock"
+                            label="Workshop"
                         />
                     </Tabs>
-                    {tabValue === 0 && <InventoryGM1RequestSparepart />}
-                    {tabValue === 1 && <InventoryGM2RequestSparepart />}
-                    {tabValue === 2 && <InventoryGM3RequestSparepart />}
-                    {tabValue === 3 && <InventoryGM5RequestSparepart />}
-                    {tabValue === 4 && <InventorySafetyStock />}
+                    {tabValue === 0 && <MnGM5SubHeaderMachinery />}
+                    {tabValue === 1 && <MnGM5SubHeaderUtility />}
+                    {tabValue === 2 && <MnGM5SubHeaderWorkshop />}
                 </div>
             }
         ></Root>
     )
 }
 
-export default MnInventory
+export default MnGM3Header
