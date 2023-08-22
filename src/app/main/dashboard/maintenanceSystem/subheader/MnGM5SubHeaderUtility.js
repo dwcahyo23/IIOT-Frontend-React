@@ -240,15 +240,6 @@ function MnGM5SubHeaderUtility() {
 
                     <motion.div
                         variants={item}
-                        className="sm:col-span-2 md:col-span-6"
-                    >
-                        <Typography className="text-md" color="text.secondary">
-                            HS GS KM AD ASRS UTILITY ELECTRIC
-                        </Typography>
-                    </motion.div>
-
-                    <motion.div
-                        variants={item}
                         className="sm:col-span-2 md:col-span-2"
                     >
                         <LastApUser
