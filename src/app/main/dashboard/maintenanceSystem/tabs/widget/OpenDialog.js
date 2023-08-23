@@ -1440,11 +1440,11 @@ function OpenDialog({ data, header }) {
                                     )}
                                 />
                             </Grid>
-                            <Grid item xs={3}>
+                            {/* <Grid item xs={3}>
                                 <Controller
                                     name="date_request"
                                     control={control}
-                                    defaultValue={dayjs()}
+                                    // defaultValue={dayjs()}
                                     render={({ field }) => (
                                         <LocalizationProvider
                                             dateAdapter={AdapterDayjs}
@@ -1471,7 +1471,7 @@ function OpenDialog({ data, header }) {
                                         </LocalizationProvider>
                                     )}
                                 />
-                            </Grid>
+                            </Grid> */}
                             <Grid item xs={2}>
                                 <Controller
                                     name="mch_code"
