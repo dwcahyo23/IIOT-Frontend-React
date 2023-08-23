@@ -30,7 +30,8 @@ function MnGM2SubHeaderMachinery() {
                         val.chk_mark != 'C' &&
                         (val.pri_no == '01' ||
                             val.pri_no == '02' ||
-                            val.pri_no == '03') &&
+                            val.pri_no == '03' ||
+                            val.pri_no == '06') &&
                         dayjs(val.ymd).year() == dayjs().year()
                     ) {
                         return val

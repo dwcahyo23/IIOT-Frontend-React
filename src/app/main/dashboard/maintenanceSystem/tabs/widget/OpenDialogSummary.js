@@ -22,6 +22,8 @@ function OpenDialogSummary({ data, header }) {
     const [dataNull, setDataNull] = useState(true)
     const [selectOutstanding01, setSelectOutstanding01] = useState([])
     const [selectOutstanding02, setSelectOutstanding02] = useState([])
+    const [selectOutstanding03, setSelectOutstanding03] = useState([])
+    const [selectOutstanding04, setSelectOutstanding04] = useState([])
 
     const columnsOutstanding = [
         {
@@ -242,9 +244,56 @@ function OpenDialogSummary({ data, header }) {
             setDataNull(false)
         }
 
+        const preventive = () => {
+            const Outstanding = _(data.filteredItem.data)
+                .filter((val) => {
+                    if (val.chk_mark == 'N' && val.pri_no == '03') {
+                        return val
+                    }
+                })
+                .map((val) => {
+                    return {
+                        ...val,
+                        sparepart: _.filter(data.sparepart, {
+                            sheet_no: val.sheet_no,
+                            audit_request: 'N',
+                        }),
+                    }
+                })
+                .value()
+            setSelectOutstanding03(Outstanding)
+            setDataNull(false)
+        }
+
+        const project = () => {
+            const Outstanding = _(data.filteredItem.data)
+                .filter((val) => {
+                    if (
+                        val.chk_mark == 'N' &&
+                        (val.pri_no == '06' || val.pri_no == '07')
+                    ) {
+                        return val
+                    }
+                })
+                .map((val) => {
+                    return {
+                        ...val,
+                        sparepart: _.filter(data.sparepart, {
+                            sheet_no: val.sheet_no,
+                            audit_request: 'N',
+                        }),
+                    }
+                })
+                .value()
+            setSelectOutstanding03(Outstanding)
+            setDataNull(false)
+        }
+
         if (data) {
             breakdown()
             stillRun()
+            preventive()
+            project()
         }
     }, [data])
 
@@ -254,6 +303,10 @@ function OpenDialogSummary({ data, header }) {
             header('Outstanding Breakdown')
         } else if (val == 2) {
             header('Outstanding Still Run')
+        } else if (val == 3) {
+            header('Outstanding Preventive')
+        } else if (val == 4) {
+            header('Outstanding Project')
         }
     }
 
@@ -267,6 +320,8 @@ function OpenDialogSummary({ data, header }) {
                 <TabList onChange={handleTabChange}>
                     <Tab label="Outstanding Breakdown" value="1" />
                     <Tab label="Outstanding Still Run" value="2" />
+                    <Tab label="Outstanding Preventive" value="3" />
+                    <Tab label="Outstanding Project" value="4" />
                 </TabList>
             </Box>
             <TabPanel value="1">
@@ -288,6 +343,32 @@ function OpenDialogSummary({ data, header }) {
                         <TableIndex
                             params={{
                                 row: selectOutstanding02,
+                                columns: columnsOutstanding,
+                            }}
+                            tableIndex={tableIndex}
+                        />
+                    </div>
+                </div>
+            </TabPanel>
+            <TabPanel value="3">
+                <div style={{ width: 900, height: 450 }}>
+                    <div style={{ width: '100%', height: '100%' }}>
+                        <TableIndex
+                            params={{
+                                row: selectOutstanding03,
+                                columns: columnsOutstanding,
+                            }}
+                            tableIndex={tableIndex}
+                        />
+                    </div>
+                </div>
+            </TabPanel>
+            <TabPanel value="4">
+                <div style={{ width: 900, height: 450 }}>
+                    <div style={{ width: '100%', height: '100%' }}>
+                        <TableIndex
+                            params={{
+                                row: selectOutstanding04,
                                 columns: columnsOutstanding,
                             }}
                             tableIndex={tableIndex}

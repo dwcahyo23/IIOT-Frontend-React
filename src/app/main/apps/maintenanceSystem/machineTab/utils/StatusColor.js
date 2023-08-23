@@ -41,6 +41,18 @@ export const status = [
         icon: 'heroicons-outline:exclamation-circle',
     },
     {
+        id: '06',
+        name: 'PM',
+        color: 'info',
+        icon: 'heroicons-outline:exclamation-circle',
+    },
+    {
+        id: '07',
+        name: 'PW',
+        color: 'info',
+        icon: 'heroicons-outline:exclamation-circle',
+    },
+    {
         id: 'Y',
         name: 'Audit',
         color: 'success',

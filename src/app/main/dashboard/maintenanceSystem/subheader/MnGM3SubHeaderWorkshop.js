@@ -19,7 +19,9 @@ function MnGM3SubHeaderWorkshop() {
             .filter((val) => {
                 if (
                     val.com_no == '03' &&
-                    (val.pri_no == '04' || val.pri_no == '05') &&
+                    (val.pri_no == '04' ||
+                        val.pri_no == '05' ||
+                        val.pri_no == '07') &&
                     val.chk_mark != 'C'
                 ) {
                     return val

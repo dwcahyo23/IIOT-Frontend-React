@@ -148,22 +148,8 @@ function LastApLeaderInventory({ data }) {
     useEffect(() => {
         if (data && listItem[currentRange]) {
             setFilteredItem(listItem[currentRange])
-            // console.log(listItem[currentRange])
         }
     })
-
-    useEffect(() => {
-        // console.log(filteredText)
-    }, [filteredText])
-
-    useEffect(() => {
-        // summary(filteredItem)
-        // console.log(filteredItem.data)
-    }, [filteredItem])
-
-    useEffect(() => {
-        // console.log(selectData)
-    }, [selectData])
 
     useEffect(() => {
         function getFilteredArray() {

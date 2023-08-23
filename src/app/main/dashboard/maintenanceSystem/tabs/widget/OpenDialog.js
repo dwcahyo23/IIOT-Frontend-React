@@ -46,6 +46,7 @@ import {
 import TableIndex from 'src/app/main/apps/maintenanceSystem/machineTab/TableIndex'
 import StatusColor from 'src/app/main/apps/maintenanceSystem/machineTab/utils/StatusColor'
 import axios from 'axios'
+import _ from 'lodash'
 
 const schema = yup.object().shape({
     id_request: yup
@@ -53,12 +54,12 @@ const schema = yup.object().shape({
         .required('Require machine ap-sheet')
         .min(11)
         .max(11),
-    item_name: yup.string().required('Require item name'),
-    item_qty: yup.number().positive().required('Require item qty'),
-    item_uom: yup.string().required('Require item uom').min(3).max(3),
-    chronological: yup.string().required('Require machine chronological'),
-    corrective: yup.string().required('Require machine corrective'),
-    prevention: yup.string().required('Require machine prevention'),
+    // item_name: yup.string().required('Require item name'),
+    // item_qty: yup.number().positive().required('Require item qty'),
+    // item_uom: yup.string().required('Require item uom').min(3).max(3),
+    // chronological: yup.string().required('Require machine chronological'),
+    // corrective: yup.string().required('Require machine corrective'),
+    // prevention: yup.string().required('Require machine prevention'),
 })
 
 const columnsRequest = [
@@ -207,6 +208,56 @@ function OpenDialog({ data, header }) {
     useEffect(() => {
         const ap_sheet = data?.selectData
 
+        const renderCollection = (collection, id) => {
+            return new Promise((resolve, reject) => {
+                try {
+                    const foundId = _.find(collection, { sheet_no: id })
+                    _.isUndefined(foundId) == false && resolve(foundId)
+                } catch (error) {
+                    reject(error)
+                }
+            })
+        }
+
+        const renderMapSet = (collection) => {
+            return new Promise((resolve, reject) => {
+                try {
+                    const x = _.map(_.keys(collection), (val) => {
+                        // console.log(`${val} : ${collection[val]}`)
+
+                        if (
+                            val == 'date_report' ||
+                            val == 'date_target' ||
+                            val == 'date_finish' ||
+                            val == 'createdAt' ||
+                            val == 'updatedAt' ||
+                            val == 'date_request' ||
+                            val == 'date_audit_request' ||
+                            val == 'date_ready_request' ||
+                            val == 'date_mre_request'
+                        ) {
+                            if (_.isNull(collection[val])) {
+                                setValue(val, dayjs(), {
+                                    shouldDirty: true,
+                                })
+                            } else {
+                                setValue(val, dayjs(collection[val]), {
+                                    shouldDirty: true,
+                                })
+                            }
+                        } else {
+                            setValue(val, collection[val], {
+                                shouldDirty: true,
+                            })
+                        }
+                    })
+                    resolve(x)
+                } catch (error) {
+                    reject({ message: error.message })
+                }
+            })
+        }
+
         if (!data) {
             return
         } else {
@@ -217,45 +268,31 @@ function OpenDialog({ data, header }) {
                     setDataNull(true)
                 }
                 if (action.payload) {
-                    const report = _.find(action.payload.report, {
-                        sheet_no: data?.selectData.sheet_no,
-                    })
-                    _.isUndefined(report) == false &&
-                        _.map(_.keys(report), (val) => {
-                            if (_.isNull(report[val]) == false) {
-                                if (
-                                    val == 'date_report' ||
-                                    val == 'date_target' ||
-                                    val == 'date_finish' ||
-                                    val == 'createdAt' ||
-                                    val == 'updatedAt'
-                                ) {
-                                    if (_.isNull(report[val])) {
-                                        setValue(val, dayjs(), {
-                                            shouldDirty: true,
-                                        })
-                                    } else {
-                                        setValue(val, dayjs(report[val]), {
-                                            shouldDirty: true,
-                                        })
-                                    }
-                                } else {
-                                    setValue(val, report[val], {
-                                        shouldDirty: true,
-                                    })
-                                }
-                            }
-                        })
+                    const id = data?.selectData.sheet_no
+                    reset({ ...ap_sheet })
+                    if (action.payload.report) {
+                        renderCollection(action.payload.report, id)
+                            .then((x) =>
+                                renderMapSet(x).catch((err) => console.log(err))
+                            )
+                            .catch((err) => console.log(err))
+                    }
+
+                    renderCollection(action.payload.request, id)
+                        .then((x) =>
+                            renderMapSet(x).catch((err) => console.log(err))
+                        )
+                        .catch((err) => console.log(err))
+
                     const request = _.filter(action.payload.request, {
                         sheet_no: data?.selectData.sheet_no,
                     })
+
                     setTableRequest(request)
                     setDataNull(false)
                 }
             })
         }
-
-        reset({ ...ap_sheet })
     }, [data, reset])
 
     const [
@@ -351,7 +388,6 @@ function OpenDialog({ data, header }) {
                     const uuid = data?.selectData.mch_index.uuid
                     dispatch(getMnOne(uuid)).then((action) => {
                         dispatch(getMachineStock())
-
                         if (action.payload) {
                             const report = _.find(action.payload.report, {
                                 sheet_no: data?.selectData.sheet_no,
@@ -386,7 +422,6 @@ function OpenDialog({ data, header }) {
                                         }
                                     }
                                 })
-
                             const request = _.filter(action.payload.request, {
                                 sheet_no: data?.selectData.sheet_no,
                             })
@@ -420,7 +455,6 @@ function OpenDialog({ data, header }) {
                     const uuid = data?.selectData.mch_index.uuid
                     dispatch(getMnOne(uuid)).then((action) => {
                         dispatch(getMachineStock())
-
                         if (action.payload) {
                             const report = _.find(action.payload.report, {
                                 sheet_no: data?.selectData.sheet_no,
@@ -455,7 +489,6 @@ function OpenDialog({ data, header }) {
                                         }
                                     }
                                 })
-
                             const request = _.filter(action.payload.request, {
                                 sheet_no: data?.selectData.sheet_no,
                             })
@@ -682,10 +715,6 @@ function OpenDialog({ data, header }) {
                                             <TextField
                                                 {...field}
                                                 className="mt-8 mb-16"
-                                                error={!!errors.mch_name}
-                                                helperText={
-                                                    errors?.mch_name?.message
-                                                }
                                                 label="Machine name"
                                                 id="mch_name"
                                                 variant="outlined"
@@ -974,6 +1003,12 @@ function OpenDialog({ data, header }) {
                                                 <MenuItem value="05">
                                                     Workshop Breakdown
                                                 </MenuItem>
+                                                <MenuItem value="06">
+                                                    Project Machinery
+                                                </MenuItem>
+                                                <MenuItem value="07">
+                                                    Project Workshop
+                                                </MenuItem>
                                             </TextField>
                                         )}
                                     />
@@ -1122,11 +1157,6 @@ function OpenDialog({ data, header }) {
                                             <TextField
                                                 {...field}
                                                 className="mt-8 mb-16"
-                                                error={!!errors.chronological}
-                                                helperText={
-                                                    errors?.chronological
-                                                        ?.message
-                                                }
                                                 label="Chronological"
                                                 id="chronological"
                                                 variant="outlined"
@@ -1149,11 +1179,6 @@ function OpenDialog({ data, header }) {
                                                 <TextField
                                                     {...field}
                                                     className="mt-8 mb-16"
-                                                    error={!!errors.analyzed}
-                                                    helperText={
-                                                        errors?.analyzed
-                                                            ?.message
-                                                    }
                                                     label="Analyze"
                                                     id="analyzed"
                                                     variant="outlined"
@@ -1174,10 +1199,6 @@ function OpenDialog({ data, header }) {
                                             <TextField
                                                 {...field}
                                                 className="mt-8 mb-16"
-                                                error={!!errors.corrective}
-                                                helperText={
-                                                    errors?.corrective?.message
-                                                }
                                                 label="Corrective"
                                                 id="corrective"
                                                 variant="outlined"
@@ -1200,11 +1221,6 @@ function OpenDialog({ data, header }) {
                                                 <TextField
                                                     {...field}
                                                     className="mt-8 mb-16"
-                                                    error={!!errors.prevention}
-                                                    helperText={
-                                                        errors?.prevention
-                                                            ?.message
-                                                    }
                                                     label="Prevention"
                                                     id="prevention"
                                                     variant="outlined"
@@ -1227,11 +1243,7 @@ function OpenDialog({ data, header }) {
                                             <TextField
                                                 {...field}
                                                 className="mt-8 mb-16"
-                                                error={!!errors.user_rep1}
                                                 required
-                                                helperText={
-                                                    errors?.user_rep1?.message
-                                                }
                                                 label="Leader"
                                                 autoFocus
                                                 id="user_rep1"
@@ -1254,11 +1266,7 @@ function OpenDialog({ data, header }) {
                                             <TextField
                                                 {...field}
                                                 className="mt-8 mb-16"
-                                                error={!!errors.user_rep2}
                                                 required
-                                                helperText={
-                                                    errors?.user_rep2?.message
-                                                }
                                                 label="Technician"
                                                 autoFocus
                                                 id="user_rep2"
@@ -1440,11 +1448,11 @@ function OpenDialog({ data, header }) {
                                     )}
                                 />
                             </Grid>
-                            {/* <Grid item xs={3}>
+                            <Grid item xs={3}>
                                 <Controller
                                     name="date_request"
                                     control={control}
-                                    // defaultValue={dayjs()}
+                                    defaultValue={dayjs()}
                                     render={({ field }) => (
                                         <LocalizationProvider
                                             dateAdapter={AdapterDayjs}
@@ -1462,16 +1470,16 @@ function OpenDialog({ data, header }) {
                                                     popper: {
                                                         disablePortal: true,
                                                     },
-                                                    textField: {
-                                                        helperText:
-                                                            errTargetRequest,
-                                                    },
+                                                    // textField: {
+                                                    //     helperText:
+                                                    //         errTargetRequest,
+                                                    // },
                                                 }}
                                             />
                                         </LocalizationProvider>
                                     )}
                                 />
-                            </Grid> */}
+                            </Grid>
                             <Grid item xs={2}>
                                 <Controller
                                     name="mch_code"
@@ -1567,11 +1575,7 @@ function OpenDialog({ data, header }) {
                                         <TextField
                                             {...field}
                                             className="mt-8 mb-16"
-                                            error={!!errors.item_name}
                                             required
-                                            helperText={
-                                                errors?.item_name?.message
-                                            }
                                             label="Remarks"
                                             autoFocus
                                             id="item_name"
@@ -1592,11 +1596,7 @@ function OpenDialog({ data, header }) {
                                         <TextField
                                             {...field}
                                             className="mt-8 mb-16"
-                                            error={!!errors.item_qty}
                                             required
-                                            helperText={
-                                                errors?.item_qty?.message
-                                            }
                                             label="Qty"
                                             autoFocus
                                             id="item_qty"
@@ -1615,11 +1615,7 @@ function OpenDialog({ data, header }) {
                                         <TextField
                                             {...field}
                                             className="mt-8 mb-16"
-                                            error={!!errors.item_uom}
                                             required
-                                            helperText={
-                                                errors?.item_uom?.message
-                                            }
                                             label="Uom"
                                             autoFocus
                                             id="item_uom"
@@ -1638,11 +1634,7 @@ function OpenDialog({ data, header }) {
                                         <TextField
                                             {...field}
                                             className="mt-8 mb-16"
-                                            error={!!errors.user_req1}
                                             required
-                                            helperText={
-                                                errors?.user_req1?.message
-                                            }
                                             label="User"
                                             autoFocus
                                             id="user_req1"
@@ -1702,11 +1694,7 @@ function OpenDialog({ data, header }) {
                                         <TextField
                                             {...field}
                                             className="mt-8 mb-16"
-                                            error={!!errors.mre_request}
                                             required
-                                            helperText={
-                                                errors?.mre_request?.message
-                                            }
                                             label="MRE"
                                             autoFocus
                                             id="mre_request"
@@ -1749,11 +1737,7 @@ function OpenDialog({ data, header }) {
                                         <TextField
                                             {...field}
                                             className="mt-8 mb-16"
-                                            error={!!errors.mre_request}
                                             required
-                                            helperText={
-                                                errors?.mre_request?.message
-                                            }
                                             label="Auditor"
                                             autoFocus
                                             id="user_req2"
