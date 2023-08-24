@@ -263,7 +263,8 @@ function OpenDialog({ data, header }) {
                 }
                 if (action.payload) {
                     const id = data?.selectData.sheet_no
-                    reset({ ...ap_sheet })
+
+                    console.log(action.payload)
                     if (action.payload.report) {
                         renderCollection(action.payload.report, id)
                             .then((x) =>
@@ -272,21 +273,25 @@ function OpenDialog({ data, header }) {
                             .catch((err) => console.log(err))
                     }
 
-                    renderCollection(action.payload.request, id)
-                        .then((x) =>
-                            renderMapSet(x).catch((err) => console.log(err))
-                        )
-                        .catch((err) => console.log(err))
+                    if (action.payload.request) {
+                        renderCollection(action.payload.request, id)
+                            .then((x) =>
+                                renderMapSet(_.omit(x, ['uuid_request'])).catch(
+                                    (err) => console.log(err)
+                                )
+                            )
+                            .catch((err) => console.log(err))
+                    }
 
                     const request = _.filter(action.payload.request, {
                         sheet_no: data?.selectData.sheet_no,
                     })
-
                     setTableRequest(request)
                     setDataNull(false)
                 }
             })
         }
+        reset({ ...ap_sheet })
     }, [data, reset])
 
     const [
@@ -379,51 +384,6 @@ function OpenDialog({ data, header }) {
         dispatch(saveMnOne(getValues()))
             .then((action) => {
                 if (action.payload) {
-                    const uuid = data?.selectData.mch_index.uuid
-                    dispatch(getMnOne(uuid)).then((action) => {
-                        dispatch(getMachineStock())
-                        if (action.payload) {
-                            const report = _.find(action.payload.report, {
-                                sheet_no: data?.selectData.sheet_no,
-                            })
-                            _.isUndefined(report) == false &&
-                                _.map(_.keys(report), (val) => {
-                                    if (_.isNull(report[val]) == false) {
-                                        if (
-                                            val == 'date_report' ||
-                                            val == 'date_target' ||
-                                            val == 'date_finish' ||
-                                            val == 'createdAt' ||
-                                            val == 'updatedAt'
-                                        ) {
-                                            if (_.isNull(report[val])) {
-                                                setValue(val, dayjs(), {
-                                                    shouldDirty: true,
-                                                })
-                                            } else {
-                                                setValue(
-                                                    val,
-                                                    dayjs(report[val]),
-                                                    {
-                                                        shouldDirty: true,
-                                                    }
-                                                )
-                                            }
-                                        } else {
-                                            setValue(val, report[val], {
-                                                shouldDirty: true,
-                                            })
-                                        }
-                                    }
-                                })
-                            const request = _.filter(action.payload.request, {
-                                sheet_no: data?.selectData.sheet_no,
-                            })
-                            setTableRequest(request)
-                        }
-                    })
-                    dispatch(getApSlice())
-                    dispatch(getMnRepSlice())
                     dispatch(
                         showMessage({
                             message: 'Data has been saved successfully',
@@ -448,49 +408,49 @@ function OpenDialog({ data, header }) {
                 if (action.payload) {
                     const uuid = data?.selectData.mch_index.uuid
                     dispatch(getMnOne(uuid)).then((action) => {
-                        dispatch(getMachineStock())
                         if (action.payload) {
-                            const report = _.find(action.payload.report, {
-                                sheet_no: data?.selectData.sheet_no,
-                            })
-                            _.isUndefined(report) == false &&
-                                _.map(_.keys(report), (val) => {
-                                    if (_.isNull(report[val]) == false) {
-                                        if (
-                                            val == 'date_report' ||
-                                            val == 'date_target' ||
-                                            val == 'date_finish' ||
-                                            val == 'createdAt' ||
-                                            val == 'updatedAt'
-                                        ) {
-                                            if (_.isNull(report[val])) {
-                                                setValue(val, dayjs(), {
-                                                    shouldDirty: true,
-                                                })
-                                            } else {
-                                                setValue(
-                                                    val,
-                                                    dayjs(report[val]),
-                                                    {
-                                                        shouldDirty: true,
-                                                    }
-                                                )
-                                            }
-                                        } else {
-                                            setValue(val, report[val], {
-                                                shouldDirty: true,
-                                            })
-                                        }
-                                    }
-                                })
+                            // const report = _.find(action.payload.report, {
+                            //     sheet_no: data?.selectData.sheet_no,
+                            // })
+                            // _.isUndefined(report) == false &&
+                            //     _.map(_.keys(report), (val) => {
+                            //         if (_.isNull(report[val]) == false) {
+                            //             if (
+                            //                 val == 'date_report' ||
+                            //                 val == 'date_target' ||
+                            //                 val == 'date_finish' ||
+                            //                 val == 'createdAt' ||
+                            //                 val == 'updatedAt'
+                            //             ) {
+                            //                 if (_.isNull(report[val])) {
+                            //                     setValue(val, dayjs(), {
+                            //                         shouldDirty: true,
+                            //                     })
+                            //                 } else {
+                            //                     setValue(
+                            //                         val,
+                            //                         dayjs(report[val]),
+                            //                         {
+                            //                             shouldDirty: true,
+                            //                         }
+                            //                     )
+                            //                 }
+                            //             } else {
+                            //                 setValue(val, report[val], {
+                            //                     shouldDirty: true,
+                            //                 })
+                            //             }
+                            //         }
+                            //     })
                             const request = _.filter(action.payload.request, {
                                 sheet_no: data?.selectData.sheet_no,
                             })
                             setTableRequest(request)
                         }
                     })
-                    dispatch(getApSlice())
-                    dispatch(getMnReqSlice())
+                    // dispatch(getMachineStock())
+                    // dispatch(getApSlice())
+                    // dispatch(getMnReqSlice())
                     dispatch(
                         showMessage({
                             message: 'Data has been saved successfully',
