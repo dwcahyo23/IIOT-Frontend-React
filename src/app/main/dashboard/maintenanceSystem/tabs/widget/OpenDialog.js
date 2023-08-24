@@ -569,7 +569,7 @@ function OpenDialog({ data, header }) {
             ) {
                 axios
                     .post('http://192.168.192.7:5010/send-message-group', {
-                        name: 'PENANGANAN SPAREPART GM1 IK-03-03-01',
+                        name: 'GM1 PENANGANAN SPAREPART',
                         // number: '082124610363',
                         message: msg,
                     })
@@ -593,7 +593,7 @@ function OpenDialog({ data, header }) {
             } else if (selectWa[0].mch_com == 'GM2') {
                 axios
                     .post('http://192.168.192.7:5010/send-message-group', {
-                        name: 'PENANGANAN SPAREPART GM2 IK-03-03-01',
+                        name: 'GM2 PENANGANAN SPAREPART',
                         // number: '082124610363',
                         message: msg,
                     })
