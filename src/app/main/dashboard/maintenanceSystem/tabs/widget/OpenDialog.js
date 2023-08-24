@@ -272,11 +272,11 @@ function OpenDialog({ data, header }) {
                             .catch((err) => console.log(err))
                     }
 
-                    renderCollection(action.payload.request, id)
-                        .then((x) =>
-                            renderMapSet(x).catch((err) => console.log(err))
-                        )
-                        .catch((err) => console.log(err))
+                    // renderCollection(action.payload.request, id)
+                    //     .then((x) =>
+                    //         renderMapSet(x).catch((err) => console.log(err))
+                    //     )
+                    //     .catch((err) => console.log(err))
 
                     const request = _.filter(action.payload.request, {
                         sheet_no: data?.selectData.sheet_no,
