@@ -35,7 +35,7 @@ export const saveAcipOne = createAsyncThunk(
 //     'genbaAcip/genbaOne/removeAcipOne',
 //     async (val, { dispatch, getState }) => {
 //         const { uuid } = getState().mnPreventiveApp.item
-//         await axios.delete(`http://localhost:5000/machineitem/${uuid}`)
+//         await axios.delete(`http://192.168.192.7:5000/machineitem/${uuid}`)
 
 //         return uuid
 //     }

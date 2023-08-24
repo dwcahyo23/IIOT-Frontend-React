@@ -54,12 +54,6 @@ const schema = yup.object().shape({
         .required('Require machine ap-sheet')
         .min(11)
         .max(11),
-    // item_name: yup.string().required('Require item name'),
-    // item_qty: yup.number().positive().required('Require item qty'),
-    // item_uom: yup.string().required('Require item uom').min(3).max(3),
-    // chronological: yup.string().required('Require machine chronological'),
-    // corrective: yup.string().required('Require machine corrective'),
-    // prevention: yup.string().required('Require machine prevention'),
 })
 
 const columnsRequest = [
@@ -1647,6 +1641,7 @@ function OpenDialog({ data, header }) {
                                     )}
                                 />
                             </Grid>
+                            <Grid item xs={3}></Grid>
                         </Grid>
                         <Grid container spacing={2}>
                             <Grid item xs={2}>
