@@ -96,9 +96,10 @@ const columns = [
     {
         field: 'case',
         headerName: 'Case',
+        minWidth: 180,
+        flex: 1,
         headerClassName: 'super-app-theme--header',
         headerAlign: 'center',
-        width: 120,
     },
     {
         field: 'b_r1',
@@ -161,9 +162,10 @@ const columns = [
     {
         field: 'improvement',
         headerName: 'Idea Improvement',
+        minWidth: 180,
+        flex: 1,
         headerClassName: 'super-app-theme--header',
         headerAlign: 'center',
-        width: 120,
     },
     {
         field: 'close_date',
@@ -266,7 +268,7 @@ function AcipFormulir() {
             <Box
                 sx={{
                     width: '100%',
-                    height: 500,
+                    height: 700,
                 }}
             >
                 <div className="flex flex-col flex-auto p-24 shadow rounded-2xl overflow-hidden h-full">

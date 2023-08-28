@@ -205,7 +205,9 @@ function OpenDialog({ data, header }) {
         const renderCollection = (collection, id) => {
             return new Promise((resolve, reject) => {
                 try {
-                    const foundId = _.find(collection, { sheet_no: id })
+                    const foundId = _.find(collection, (val) => {
+                        return val.sheet_no == id || val.uuid_request == id
+                    })
                     _.isUndefined(foundId) == false && resolve(foundId)
                 } catch (error) {
                     reject(error)
@@ -256,15 +258,16 @@ function OpenDialog({ data, header }) {
             return
         } else {
             const uuid = data.selectData.mch_index.uuid
+            const uuid_request = data?.selectData.uuid_request
+            const id = data?.selectData.sheet_no
+
+            console.log(data.selectData)
             dispatch(getMnOne(uuid)).then((action) => {
                 dispatch(getMachineStock())
                 if (!action.payload) {
                     setDataNull(true)
                 }
                 if (action.payload) {
-                    const id = data?.selectData.sheet_no
-
-                    console.log(action.payload)
                     if (action.payload.report) {
                         renderCollection(action.payload.report, id)
                             .then((x) =>
@@ -274,14 +277,45 @@ function OpenDialog({ data, header }) {
                     }
 
                     if (action.payload.request) {
-                        renderCollection(action.payload.request, id)
-                            .then((x) =>
-                                renderMapSet(_.omit(x, ['uuid_request'])).catch(
-                                    (err) => console.log(err)
-                                )
+                        if (_.isUndefined(uuid_request) == false) {
+                            renderCollection(
+                                action.payload.request,
+                                uuid_request
                             )
-                            .catch((err) => console.log(err))
+                                .then((x) =>
+                                    renderMapSet(x).catch((err) =>
+                                        console.log(err)
+                                    )
+                                )
+                                .catch((err) => console.log(err))
+                        } else {
+                            renderCollection(action.payload.request, id)
+                                .then((x) =>
+                                    renderMapSet(
+                                        _.omit(x, ['uuid_request'])
+                                    ).catch((err) => console.log(err))
+                                )
+                                .catch((err) => console.log(err))
+                        }
                     }
+
+                    // if (uuid_request) {
+                    //     renderCollection(action.payload.request, uuid_request)
+                    //         .then((x) =>
+                    //             renderMapSet(_.omit(x, ['uuid_request'])).catch(
+                    //                 (err) => console.log(err)
+                    //             )
+                    //         )
+                    //         .catch((err) => console.log(err))
+                    // } else {
+                    //     renderCollection(action.payload.request, id)
+                    //         .then((x) =>
+                    //             renderMapSet(_.omit(x, ['uuid_request'])).catch(
+                    //                 (err) => console.log(err)
+                    //             )
+                    //         )
+                    //         .catch((err) => console.log(err))
+                    // }
 
                     const request = _.filter(action.payload.request, {
                         sheet_no: data?.selectData.sheet_no,
@@ -1402,7 +1436,7 @@ function OpenDialog({ data, header }) {
                                     )}
                                 />
                             </Grid>
-                            <Grid item xs={3}>
+                            {/* <Grid item xs={3}>
                                 <Controller
                                     name="date_request"
                                     control={control}
@@ -1417,6 +1451,7 @@ function OpenDialog({ data, header }) {
                                                 className="mt-8 mb-16"
                                                 id="date_request"
                                                 label="Target"
+                                                // value={dayjs()}
                                                 sx={{
                                                     width: '100%',
                                                 }}
@@ -1433,7 +1468,7 @@ function OpenDialog({ data, header }) {
                                         </LocalizationProvider>
                                     )}
                                 />
-                            </Grid>
+                            </Grid> */}
                             <Grid item xs={2}>
                                 <Controller
                                     name="mch_code"
