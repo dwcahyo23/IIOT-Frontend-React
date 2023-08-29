@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useFormContext, useFieldArray, Controller } from 'react-hook-form'
 import dayjs from 'dayjs'
 
-import TableIndex from '../../maintenanceSystem/machineTab/TableIndex'
+import Table from './Table'
 import StatusColor from '../../maintenanceSystem/machineTab/utils/StatusColor'
 import { showMessage } from 'app/store/fuse/messageSlice'
 import { getGenbaAcip, saveGenbaAcip } from '../store/genba/genbaAcipSlice'
@@ -273,7 +273,7 @@ function AcipFormulir() {
             >
                 <div className="flex flex-col flex-auto p-24 shadow rounded-2xl overflow-hidden h-full">
                     <div style={{ width: '100%', height: '100%' }}>
-                        <TableIndex
+                        <Table
                             params={{
                                 row: fields,
                                 columns: columns,

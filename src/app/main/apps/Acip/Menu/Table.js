@@ -209,7 +209,7 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
     ...customCheckbox(theme),
 }))
 
-function TableIndex({ params, tableIndex }) {
+function Table({ params, tableIndex }) {
     const rows = params.row
     const column = params.columns
     if (!params) {
@@ -259,4 +259,4 @@ function TableIndex({ params, tableIndex }) {
     )
 }
 
-export default TableIndex
+export default Table
