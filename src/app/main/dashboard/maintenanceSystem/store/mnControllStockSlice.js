@@ -31,6 +31,22 @@ export const saveMnControllStock = createAsyncThunk(
     }
 )
 
+export const updateStockControl = createAsyncThunk(
+    'dashboard/MnControllStock/updateStockControl',
+    async (row, { dispatch, getState }) => {
+        try {
+            const response = await axios.post(
+                `http://192.168.192.7:5000/maintenanceControlUpdateStock`,
+                row
+            )
+            const data = await response.data
+            return data
+        } catch (error) {
+            console.log(error)
+        }
+    }
+)
+
 const mnControllStock = createSlice({
     name: 'dashboard/MnControllStock',
     initialState: null,
@@ -48,6 +64,7 @@ const mnControllStock = createSlice({
     extraReducers: {
         [getMnControllStock.fulfilled]: (state, action) => action.payload,
         [saveMnControllStock.fulfilled]: (state, action) => action.payload,
+        [updateStockControl.fulfilled]: (state, action) => action.payload,
     },
 })
 

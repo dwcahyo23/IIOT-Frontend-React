@@ -1,17 +1,21 @@
 import FusePageSimple from '@fuse/core/FusePageSimple/FusePageSimple'
 import { motion } from 'framer-motion'
 import _ from 'lodash'
-import { Box, Typography, Paper, Button } from '@mui/material'
+import { Box, Typography, Paper, Button, Grid } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { colors } from '@mui/material'
 import dayjs from 'dayjs'
 import { styled } from '@mui/material/styles'
 import * as xlsx from 'xlsx'
-import { MuiFileInput } from 'mui-file-input'
 import { Controller, useForm, FormProvider } from 'react-hook-form'
 
-import { selectMnControllStock } from '../store/mnControllStockSlice'
+import { showMessage } from 'app/store/fuse/messageSlice'
+import {
+    selectMnControllStock,
+    updateStockControl,
+    getMnControllStock,
+} from '../store/mnControllStockSlice'
 import TableIndex from 'src/app/main/apps/maintenanceSystem/machineTab/TableIndex'
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
@@ -90,6 +94,7 @@ const columns = [
 ]
 
 function InventorySafetyStock() {
+    const dispatch = useDispatch()
     const data = useSelector(selectMnControllStock)
     const [fileToJson, setFileToJson] = useState(null)
 
@@ -128,11 +133,22 @@ function InventorySafetyStock() {
     }
 
     useEffect(() => {
-        console.log(fileToJson)
-    }, [fileToJson])
+        console.log(data)
+    }, [data])
 
     const handlSave = () => {
-        console.log(getValues())
+        // console.log(getValues('file'))
+        dispatch(updateStockControl(getValues('file'))).then((action) => {
+            if (action.payload) {
+                dispatch(
+                    showMessage({
+                        message: 'Data has been saved successfully',
+                        variant: 'success',
+                    })
+                )
+                dispatch(getMnControllStock())
+            }
+        })
     }
 
     return (
@@ -146,31 +162,6 @@ function InventorySafetyStock() {
                         animate="show"
                     >
                         <Paper className="p-8">
-                            <div>
-                                <FormProvider {...methods}>
-                                    <Controller
-                                        name="file"
-                                        control={control}
-                                        render={({ field, fieldState }) => (
-                                            <input
-                                                type="file"
-                                                name="upload"
-                                                id="upload"
-                                                onChange={readUploadFile}
-                                            />
-                                        )}
-                                    />
-                                    <Button
-                                        className="whitespace-nowrap mb-16"
-                                        variant="contained"
-                                        color="secondary"
-                                        onClick={handlSave}
-                                    >
-                                        Save
-                                    </Button>
-                                </FormProvider>
-                            </div>
-
                             <Box
                                 sx={{
                                     width: '100%',
@@ -185,6 +176,41 @@ function InventorySafetyStock() {
                                     tableIndex={tableIndex}
                                 />
                             </Box>
+                            <FormProvider {...methods}>
+                                <div>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={4}>
+                                            <Controller
+                                                name="file"
+                                                control={control}
+                                                render={({
+                                                    field,
+                                                    fieldState,
+                                                }) => (
+                                                    <input
+                                                        type="file"
+                                                        name="upload"
+                                                        id="upload"
+                                                        onChange={
+                                                            readUploadFile
+                                                        }
+                                                    />
+                                                )}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                            <Button
+                                                className="whitespace-nowrap mb-16"
+                                                variant="contained"
+                                                color="secondary"
+                                                onClick={handlSave}
+                                            >
+                                                Save
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+                                </div>
+                            </FormProvider>
                         </Paper>
                     </motion.div>
                 </div>
