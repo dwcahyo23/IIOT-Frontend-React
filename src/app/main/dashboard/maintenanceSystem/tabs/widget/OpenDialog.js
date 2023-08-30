@@ -425,6 +425,9 @@ function OpenDialog({ data, header }) {
                             variant: 'success',
                         })
                     )
+                    dispatch(getMachineStock())
+                    dispatch(getApSlice())
+                    dispatch(getMnReqSlice())
                 }
             })
             .catch((e) => {
@@ -483,9 +486,9 @@ function OpenDialog({ data, header }) {
                             setTableRequest(request)
                         }
                     })
-                    // dispatch(getMachineStock())
-                    // dispatch(getApSlice())
-                    // dispatch(getMnReqSlice())
+                    dispatch(getMachineStock())
+                    dispatch(getApSlice())
+                    dispatch(getMnReqSlice())
                     dispatch(
                         showMessage({
                             message: 'Data has been saved successfully',
