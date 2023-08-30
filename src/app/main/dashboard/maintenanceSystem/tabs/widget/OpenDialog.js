@@ -283,17 +283,18 @@ function OpenDialog({ data, header }) {
                                 uuid_request
                             )
                                 .then((x) =>
-                                    renderMapSet(x).catch((err) =>
-                                        console.log(err)
-                                    )
+                                    renderMapSet(
+                                        _.omit(x, ['uuid_request'])
+                                    ).catch((err) => console.log(err))
                                 )
+
                                 .catch((err) => console.log(err))
                         } else {
                             renderCollection(action.payload.request, id)
                                 .then((x) =>
-                                    renderMapSet(
-                                        _.omit(x, ['uuid_request'])
-                                    ).catch((err) => console.log(err))
+                                    renderMapSet(x).catch((err) =>
+                                        console.log(err)
+                                    )
                                 )
                                 .catch((err) => console.log(err))
                         }
