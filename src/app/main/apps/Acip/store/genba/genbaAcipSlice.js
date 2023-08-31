@@ -5,7 +5,7 @@ import _ from 'lodash'
 export const getGenbaAcip = createAsyncThunk(
     'genbaAcip/genba/getGenbaAcip',
     async () => {
-        const response = await axios.get(`http://localhost:5000/genbaAcip`)
+        const response = await axios.get(`http://192.168.192.7:5000/genbaAcip`)
 
         const data = await response.data
 
@@ -17,7 +17,7 @@ export const getGenbaAcip = createAsyncThunk(
 //     'genbaAcip/genba/getGenbaAcipOne',
 //     async (uuid) => {
 //         const response = await axios.get(
-//             `http://localhost:5000/genbaAcipOne/${uuid}`
+//             `http://192.168.192.7:5000/genbaAcipOne/${uuid}`
 //         )
 
 //         const data = await response.data
@@ -31,7 +31,7 @@ export const saveGenbaAcip = createAsyncThunk(
     async (row, { dispatch, getState }) => {
         try {
             const response = await axios.post(
-                `http://localhost:5000/genbaAcip`,
+                `http://192.168.192.7:5000/genbaAcip`,
                 row
             )
             const data = await response.data
@@ -46,7 +46,7 @@ export const removeGenbaAcip = createAsyncThunk(
     'genbaAcip/genba/removeGenbaAcip',
     async (val, { dispatch, getState }) => {
         const { uuid } = getState().genbaAcip.item
-        // await axios.delete(`http://localhost:5000/machineitem/${uuid}`)
+        // await axios.delete(`http://192.168.192.7:5000/machineitem/${uuid}`)
 
         // return uuid
     }
