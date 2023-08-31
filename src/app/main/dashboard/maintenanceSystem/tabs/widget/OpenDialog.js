@@ -268,6 +268,7 @@ function OpenDialog({ data, header }) {
                     setDataNull(true)
                 }
                 if (action.payload) {
+                    console.log(action.payload)
                     if (action.payload.report) {
                         renderCollection(action.payload.report, id)
                             .then((x) =>
@@ -282,21 +283,22 @@ function OpenDialog({ data, header }) {
                                 action.payload.request,
                                 uuid_request
                             )
-                                .then((x) =>
-                                    renderMapSet(
-                                        _.omit(x, ['uuid_request'])
-                                    ).catch((err) => console.log(err))
-                                )
-
-                                .catch((err) => console.log(err))
-                        } else {
-                            renderCollection(action.payload.request, id)
-                                .then((x) =>
+                                .then((x) => {
                                     renderMapSet(x).catch((err) =>
                                         console.log(err)
                                     )
-                                )
+                                })
+
                                 .catch((err) => console.log(err))
+                        } else {
+                            // renderCollection(action.payload.request, id)
+                            //     .then((x) => {
+                            //         console.log(x)
+                            //         renderMapSet(
+                            //             _.omit(x, ['uuid_request'])
+                            //         ).catch((err) => console.log(err))
+                            //     })
+                            //     .catch((err) => console.log(err))
                         }
                     }
 
@@ -426,7 +428,7 @@ function OpenDialog({ data, header }) {
                         })
                     )
                     dispatch(getMachineStock())
-                    dispatch(getApSlice())
+                    // dispatch(getApSlice())
                     dispatch(getMnReqSlice())
                 }
             })
@@ -487,7 +489,7 @@ function OpenDialog({ data, header }) {
                         }
                     })
                     dispatch(getMachineStock())
-                    dispatch(getApSlice())
+                    // dispatch(getApSlice())
                     dispatch(getMnReqSlice())
                     dispatch(
                         showMessage({
@@ -1440,7 +1442,7 @@ function OpenDialog({ data, header }) {
                                     )}
                                 />
                             </Grid>
-                            {/* <Grid item xs={3}>
+                            <Grid item xs={3}>
                                 <Controller
                                     name="date_request"
                                     control={control}
@@ -1472,7 +1474,7 @@ function OpenDialog({ data, header }) {
                                         </LocalizationProvider>
                                     )}
                                 />
-                            </Grid> */}
+                            </Grid>
                             <Grid item xs={2}>
                                 <Controller
                                     name="mch_code"

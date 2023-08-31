@@ -6,7 +6,7 @@ export const getMnOne = createAsyncThunk(
     'dashboard/MnOne/getMnOne',
     async (uuid) => {
         const response = await axios.get(
-            `http://192.168.192.7:5000/maintenanceMachine/${uuid}`
+            `http://localhost:5000/maintenanceMachine/${uuid}`
         )
 
         const data = await response.data
@@ -20,7 +20,7 @@ export const saveMnOne = createAsyncThunk(
     async (row, { dispatch, getState }) => {
         try {
             const response = await axios.post(
-                `http://192.168.192.7:5000/maintenanceReport`,
+                `http://localhost:5000/maintenanceReport`,
                 row
             )
             const data = await response.data
@@ -36,7 +36,7 @@ export const saveMnOneRequest = createAsyncThunk(
     async (row, { dispatch, getState }) => {
         try {
             const response = await axios.post(
-                `http://192.168.192.7:5000/maintenanceRequest`,
+                `http://localhost:5000/maintenanceRequest`,
                 row
             )
             const data = await response.data

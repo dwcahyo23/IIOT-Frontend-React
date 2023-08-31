@@ -34,12 +34,12 @@ function maintenanceDashboard(props) {
     const [tabValue, setTabValue] = useState(0)
 
     useEffect(() => {
-        dispatch(getApSlice())
+        // dispatch(getApSlice())
         dispatch(getUserSlice())
         dispatch(getMnReqSlice())
         dispatch(getMnRepSlice())
-        dispatch(getMnControllStock())
-        dispatch(getMnMachineSlice())
+        // dispatch(getMnControllStock())
+        // dispatch(getMnMachineSlice())
     }, [dispatch])
 
     function handleChangeTab(event, value) {
