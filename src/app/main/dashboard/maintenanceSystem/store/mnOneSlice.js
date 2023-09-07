@@ -1,12 +1,16 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import {
+    createAsyncThunk,
+    createSlice,
+    isRejectedWithValue,
+} from '@reduxjs/toolkit'
 import axios from 'axios'
 import _ from 'lodash'
 
 export const getMnOne = createAsyncThunk(
     'dashboard/MnOne/getMnOne',
-    async (uuid) => {
+    async (params) => {
         const response = await axios.get(
-            `http://192.168.192.7:5000/maintenanceMachine/${uuid}`
+            `http://localhost:5000/machineSheet/${params.uuid}/${params.sheet_no}/${params.uuid_request}`
         )
 
         const data = await response.data
@@ -17,32 +21,38 @@ export const getMnOne = createAsyncThunk(
 
 export const saveMnOne = createAsyncThunk(
     'dashboard/MnOne/saveMnOne',
-    async (row, { dispatch, getState }) => {
+    async (row, { dispatch, getState, rejectWithValue }) => {
         try {
             const response = await axios.post(
-                `http://192.168.192.7:5000/maintenanceReport`,
+                `http://localhost:5000/maintenanceReport`,
                 row
             )
             const data = await response.data
             return data
-        } catch (error) {
-            console.log(error)
+        } catch (err) {
+            if (!err.response) {
+                throw err
+            }
+            return rejectWithValue(err.response.data)
         }
     }
 )
 
 export const saveMnOneRequest = createAsyncThunk(
     'dashboard/MnOne/saveMnOneRequest',
-    async (row, { dispatch, getState }) => {
+    async (params, { dispatch, getState, rejectWithValue }) => {
         try {
             const response = await axios.post(
-                `http://192.168.192.7:5000/maintenanceRequest`,
-                row
+                `http://localhost:5000/maintenanceRequest/${params.options}/${params.user}`,
+                params.row
             )
             const data = await response.data
             return data
-        } catch (error) {
-            console.log(error)
+        } catch (err) {
+            if (!err.response) {
+                throw err
+            }
+            return rejectWithValue(err.response.data)
         }
     }
 )
@@ -55,21 +65,7 @@ const mnOneSlice = createSlice({
         newMnOne: {
             reducer: (state, action) => action.payload,
             prepare: (event) => ({
-                payload: {
-                    uuid: '',
-                    mch_code: '',
-                    mch_name: '',
-                    mch_process: '',
-                    mch_process: '',
-                    mch_com: '',
-                    mch_loc: '',
-                    mch_prod: '',
-                    mch_maker: '',
-                    MaintenanceSpareparts: [],
-                    request: {
-                        id_request: '',
-                    },
-                },
+                payload: {},
             }),
         },
     },

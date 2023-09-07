@@ -241,7 +241,10 @@ function TableIndex({ params, tableIndex }) {
             density="compact"
             slots={{ toolbar: CustomToolbar }}
             slotProps={{ toolbar: { rows, column } }}
-            autoPageSize
+            initialState={{
+                pagination: { paginationModel: { pageSize: 100 } },
+            }}
+            pageSizeOptions={[25, 50, 100]}
             onRowSelectionModelChange={(ids) => {
                 const selectedIDs = new Set(ids)
                 const selectedRows = params.row.filter((row) =>

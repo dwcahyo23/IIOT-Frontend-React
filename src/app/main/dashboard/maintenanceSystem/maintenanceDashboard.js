@@ -37,8 +37,8 @@ function maintenanceDashboard(props) {
         // dispatch(getApSlice())
         dispatch(getUserSlice())
         dispatch(getMnReqSlice())
-        dispatch(getMnRepSlice())
-        // dispatch(getMnControllStock())
+        // dispatch(getMnRepSlice())
+        dispatch(getMnControllStock())
         // dispatch(getMnMachineSlice())
     }, [dispatch])
 

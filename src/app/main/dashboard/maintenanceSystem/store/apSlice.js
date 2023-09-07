@@ -9,7 +9,7 @@ export const getApSlice = createAsyncThunk(
     'dashboard/APPG/getApSlice',
     async (params) => {
         const response = await axios.get(
-            `http://192.168.192.7:5000/maintenanceDashboard/${params.com}/${params.section}`
+            `http://localhost:5000/maintenanceDashboard/${params.com}/${params.section}`
         )
         const data = await response.data
         return data

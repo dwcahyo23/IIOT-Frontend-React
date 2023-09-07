@@ -462,7 +462,11 @@ function LastApLeaderInventory({ data }) {
                         </Button>
                     </Toolbar>
                 </AppBar>
-                <OpenDialog data={{ selectData }} header={header} />
+                <OpenDialog
+                    data={{ selectData }}
+                    header={header}
+                    parentName="Inventory"
+                />
             </Dialog>
         </div>
     )

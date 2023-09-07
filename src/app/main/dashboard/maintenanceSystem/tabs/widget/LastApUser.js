@@ -469,7 +469,11 @@ function LastApUser({ data }) {
                     </Toolbar>
                 </AppBar>
                 {!_.isNull(selectOpen) && selectOpen == 'Open Dialog' ? (
-                    <OpenDialog data={{ selectData }} header={header} />
+                    <OpenDialog
+                        data={{ selectData }}
+                        header={header}
+                        parentName="Leader"
+                    />
                 ) : (
                     <OpenDialogSummary
                         data={{ filteredItem, sparepart, data_report }}

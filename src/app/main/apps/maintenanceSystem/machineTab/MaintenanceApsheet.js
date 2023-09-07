@@ -48,10 +48,6 @@ function MaintenanceApsheet({ data }) {
         dispatch(getMachines())
     }, [])
 
-    // useEffect(() => {
-    //     console.log(selectData)
-    // }, [selectData])
-
     const columns = [
         {
             field: 'sheet_no',
@@ -148,9 +144,6 @@ function MaintenanceApsheet({ data }) {
     ]
 
     const tableIndex = (data) => {
-        // console.log(data)
-        // console.log(data.row.mch_no, data.row.com_no)
-
         if (_.has(data, 'multi')) {
             // console.log('multi')
         } else {
