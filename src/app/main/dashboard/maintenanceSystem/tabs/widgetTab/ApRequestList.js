@@ -168,43 +168,7 @@ function ApRequestList() {
         setOpen(false)
     }
 
-    const tableIndex = (data) => {
-        // if (_.has(data, 'multi')) {
-        //     setSelectWa(data.multi)
-        // } else {
-        //     setOpen(true)
-        //     _.map(_.keys(data.row), (val) => {
-        //         if (_.isNull(data.row[val]) == false) {
-        //             // console.log('request', { [val]: data.row[val] })
-        //             setValue('request', { [val]: data.row[val] })
-        //             // if (
-        //             //     val == 'date_data.row' ||
-        //             //     val == 'date_target' ||
-        //             //     val == 'date_finish' ||
-        //             //     val == 'createdAt' ||
-        //             //     val == 'updatedAt' ||
-        //             //     val == 'date_request' ||
-        //             //     val == 'date_audit_request' ||
-        //             //     val == 'date_ready_request' ||
-        //             //     val == 'date_mre_request'
-        //             // ) {
-        //             //     setValue(val, dayjs(data.row[val]), {
-        //             //         shouldDirty: true,
-        //             //     })
-        //             // } else {
-        //             //     setValue(val, data.row[val], {
-        //             //         shouldDirty: true,
-        //             //     })
-        //             // }
-        //         }
-        //         //  else {
-        //         //     if (val == 'date_request') {
-        //         //         setErrTargetRequest('target not found in database!')
-        //         //     }
-        //         // }
-        //     })
-        // }
-    }
+    const tableIndex = (data) => {}
 
     return (
         <Box style={{ width: '100%', height: 500 }}>

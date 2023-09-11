@@ -15,15 +15,14 @@ function MnGM2SubHeaderUtility() {
     const dispatch = useDispatch()
     const data = useSelector(selectAp)
     const [filterWorOrder, setFilterWorkOrder] = useState(null)
+    const apOptions = { com: '02', section: 'utility' }
 
     useEffect(() => {
-        dispatch(getApSlice({ com: '02', section: 'utility' })).then(
-            (action) => {
-                if (action.payload) {
-                    setFilterWorkOrder(action.payload)
-                }
+        dispatch(getApSlice(apOptions)).then((action) => {
+            if (action.payload) {
+                setFilterWorkOrder(action.payload)
             }
-        )
+        })
     }, [])
 
     const container = {
@@ -156,6 +155,7 @@ function MnGM2SubHeaderUtility() {
                                     ...filterWorOrder['UJANG HENDRA'],
                                 },
                                 user: 31,
+                                apOptions: apOptions,
                                 leader: 'Utility',
                             }}
                         />

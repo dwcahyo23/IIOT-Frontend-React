@@ -16,15 +16,14 @@ function MnGM1SubHeaderMachinery() {
     const dispatch = useDispatch()
     const data = useSelector(selectAp)
     const [filterWorOrder, setFilterWorkOrder] = useState(null)
+    const apOptions = { com: '01', section: 'machinery' }
 
     useEffect(() => {
-        dispatch(getApSlice({ com: '01', section: 'machinery' })).then(
-            (action) => {
-                if (action.payload) {
-                    setFilterWorkOrder(action.payload)
-                }
+        dispatch(getApSlice(apOptions)).then((action) => {
+            if (action.payload) {
+                setFilterWorkOrder(action.payload)
             }
-        )
+        })
     }, [])
 
     const container = {
@@ -157,6 +156,7 @@ function MnGM1SubHeaderMachinery() {
                                     ...filterWorOrder['Bos'],
                                 },
                                 user: 5,
+                                apOptions: apOptions,
                                 leader: 'Kasie MN GM1',
                             }}
                         />
@@ -179,6 +179,7 @@ function MnGM1SubHeaderMachinery() {
                                     ...filterWorOrder['Eko Hadi S'],
                                 },
                                 user: 4,
+                                apOptions: apOptions,
                                 leader: 'Forming - Rolling',
                             }}
                         />
@@ -192,6 +193,7 @@ function MnGM1SubHeaderMachinery() {
                             data={{
                                 listItemMonth: filterWorOrder['Ahri Sohari'],
                                 user: 7,
+                                apOptions: apOptions,
                                 leader: 'HT - Turret',
                             }}
                         />
@@ -205,6 +207,7 @@ function MnGM1SubHeaderMachinery() {
                             data={{
                                 listItemMonth: filterWorOrder['Didi'],
                                 user: 6,
+                                apOptions: apOptions,
                                 leader: 'MC - CNC - HB',
                             }}
                         />

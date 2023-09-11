@@ -149,11 +149,8 @@ const Transition = forwardRef(function Transition(props, ref) {
 
 function LastApUser({ data }) {
     const dispatch = useDispatch()
-    const user = useSelector((selectApUser) =>
-        selectApUserById(selectApUser, data.user)
-    )
-    const data_report = useSelector(selectApRep)
-    const sparepart = useSelector(selectApReq)
+
+    const apOptions = data?.apOptions
     const listItem = data?.listItemMonth
     const [tabValue, setTabValue] = useState(0)
     const currentRange = Object.keys(listItem)[tabValue]
@@ -164,6 +161,11 @@ function LastApUser({ data }) {
     const [selectData, setSelectData] = useState(null)
     const [toolBarHeader, setToolBarHeader] = useState('Update')
     const [searchText, setSearchText] = useState('')
+    const data_report = useSelector(selectApRep)
+    const sparepart = useSelector(selectApReq)
+    const user = useSelector((selectApUser) =>
+        selectApUserById(selectApUser, data.user)
+    )
 
     useEffect(() => {
         if (data && listItem[currentRange]) {
@@ -471,6 +473,7 @@ function LastApUser({ data }) {
                 {!_.isNull(selectOpen) && selectOpen == 'Open Dialog' ? (
                     <OpenDialog
                         data={{ selectData }}
+                        apOptions={apOptions}
                         header={header}
                         parentName="Leader"
                     />

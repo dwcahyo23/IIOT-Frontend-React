@@ -15,15 +15,14 @@ function MnGM5SubHeaderWorkshop() {
     const dispatch = useDispatch()
     const data = useSelector(selectAp)
     const [filterWorOrder, setFilterWorkOrder] = useState(null)
+    const apOptions = { com: '06', section: 'workshop' }
 
     useEffect(() => {
-        dispatch(getApSlice({ com: '06', section: 'workshop' })).then(
-            (action) => {
-                if (action.payload) {
-                    setFilterWorkOrder(action.payload)
-                }
+        dispatch(getApSlice(apOptions)).then((action) => {
+            if (action.payload) {
+                setFilterWorkOrder(action.payload)
             }
-        )
+        })
     }, [])
 
     const container = {
@@ -139,6 +138,7 @@ function MnGM5SubHeaderWorkshop() {
                             data={{
                                 listItemMonth: { ...filterWorOrder['Bos'] },
                                 user: 17,
+                                apOptions: apOptions,
                                 leader: 'Kasie Workshop',
                             }}
                         />

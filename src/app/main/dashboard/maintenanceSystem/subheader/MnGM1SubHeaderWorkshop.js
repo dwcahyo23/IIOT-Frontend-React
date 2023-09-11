@@ -15,16 +15,22 @@ function MnGM1SubHeaderWorkshop() {
     const dispatch = useDispatch()
     const data = useSelector(selectAp)
     const [filterWorOrder, setFilterWorkOrder] = useState(null)
+    const apOptions = { com: '01', section: 'workshop' }
 
     useEffect(() => {
-        dispatch(getApSlice({ com: '01', section: 'workshop' })).then(
-            (action) => {
-                if (action.payload) {
-                    setFilterWorkOrder(action.payload)
-                }
+        dispatch(getApSlice(apOptions)).then((action) => {
+            if (action.payload) {
+                setFilterWorkOrder(action.payload)
             }
-        )
+        })
     }, [])
+
+    useEffect(() => {
+        if (!data) {
+            return
+        }
+        setFilterWorkOrder(data)
+    }, [data])
 
     const container = {
         show: {

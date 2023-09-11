@@ -16,15 +16,14 @@ function MnGM1SubHeaderUtility() {
     const dispatch = useDispatch()
     const data = useSelector(selectAp)
     const [filterWorOrder, setFilterWorkOrder] = useState(null)
+    const apOptions = { com: '01', section: 'utility' }
 
     useEffect(() => {
-        dispatch(getApSlice({ com: '01', section: 'utility' })).then(
-            (action) => {
-                if (action.payload) {
-                    setFilterWorkOrder(action.payload)
-                }
+        dispatch(getApSlice(apOptions)).then((action) => {
+            if (action.payload) {
+                setFilterWorkOrder(action.payload)
             }
-        )
+        })
     }, [])
 
     const container = {
@@ -42,7 +41,7 @@ function MnGM1SubHeaderUtility() {
 
     return (
         <div>
-            {_.isNull(filterWorOrder) == false ? (
+            {data && _.isNull(filterWorOrder) == false ? (
                 <motion.div
                     className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-6 lg:grid-cols-6 gap-16 w-full min-w-0 p-24"
                     variants={container}
@@ -155,6 +154,7 @@ function MnGM1SubHeaderUtility() {
                             data={{
                                 listItemMonth: { ...filterWorOrder['Sutaryo'] },
                                 user: 16,
+                                apOptions: apOptions,
                                 leader: 'Utility',
                             }}
                         />

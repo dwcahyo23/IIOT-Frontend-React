@@ -9,7 +9,7 @@ export const getMnRepSlice = createAsyncThunk(
     'dashboard/MNRep/getMnRepSlice',
     async () => {
         const response = await axios.get(
-            'http://localhost:5000/maintenanceReport'
+            'http://192.168.192.7:5000/maintenanceReport'
         )
         const data = await response.data
         return data

@@ -5,8 +5,8 @@ import {
     Grid,
     TextField,
     MenuItem,
-    Typography,
     Checkbox,
+    Autocomplete,
     Button,
     FormControlLabel,
 } from '@mui/material'
@@ -25,7 +25,7 @@ import VirtualizedData from 'src/app/main/apps/maintenanceSystem/machineTab/util
 
 import { showMessage } from 'app/store/fuse/messageSlice'
 import { selectStock } from 'src/app/main/apps/maintenanceSystem/store/machineChildren/machineStock'
-import { getMnReqSlice } from '../../store/mnReqSlice'
+
 import { selectUser } from 'app/store/userSlice'
 import { saveMnOneRequest } from '../../store/mnOneSlice'
 import _ from 'lodash'
@@ -38,15 +38,11 @@ function ApRequest() {
     const stock = useSelector(selectStock)
     const { control, formState, getValues, setValue, unregister } = methods
     const [hidSparepart, setHidSparepart] = useState(false)
-    const [hidRole, setHidRole] = useState(false)
+    const [hasLifeTime, setHasLifeTime] = useState(false)
     const [withMonitor, setWithMonitor] = useState(false)
+    const [regenerateLifeTime, setRegenerateLifeTime] = useState(false)
 
     const uuid = FuseUtils.generateGUID()
-
-    const { fields: requestList } = useFieldArray({
-        name: 'requestList',
-        control,
-    })
 
     const { isDirty, isValid } = formState
 
@@ -54,25 +50,20 @@ function ApRequest() {
         name: 'sparepartList',
         control,
     })
-    const sheet = getValues('sheet')
-    const request = getValues('request')
 
-    useEffect(() => {}, [requestList, sheet])
-
-    const watchAll = useWatch({ control, name: 'request' })
-    const { item_stock, audit_request, mre_request, item_ready, with_monitor } =
-        watchAll
+    const watchRequest = useWatch({ control, name: 'request' })
+    const { item_stock, audit_request, mre_request, item_ready } = watchRequest
 
     useEffect(() => {
         item_stock == '#0 ADD NEW ITEM'
             ? setHidSparepart(false)
             : setHidSparepart(true)
-    }, [item_stock])
 
-    useEffect(() => {
-        setWithMonitor(with_monitor)
-        // console.log(with_monitor)
-    }, [with_monitor])
+        let itemLifeTime = sparepartList.map((data) => data.item_name)
+        _.includes(itemLifeTime, item_stock) == true
+            ? setHasLifeTime(true)
+            : setHasLifeTime(false)
+    }, [item_stock, sparepartList])
 
     useEffect(() => {
         mre_request && mre_request.length > 3
@@ -105,13 +96,6 @@ function ApRequest() {
         }
     }, [audit_request])
 
-    useEffect(() => {
-        const userRole = user.data.userRole
-        userRole != 'Inventory Maintenance'
-            ? setHidRole(true)
-            : setHidRole(false)
-    }, [user])
-
     function handleSaveRequest() {
         // console.log(getValues('request'))
         // console.log(getValues('sparepart'))
@@ -131,7 +115,6 @@ function ApRequest() {
                         variant: 'success',
                     })
                 )
-
                 if (withMonitor) {
                     dispatch(
                         saveMnOneRequest({
@@ -139,7 +122,56 @@ function ApRequest() {
                             options: 'lifeTime',
                             user: user.data.datumUuid,
                         })
-                    )
+                    ).then((action) => {
+                        if (!action.error) {
+                            dispatch(
+                                showMessage({
+                                    message:
+                                        'Sparepart life time saved successfully',
+                                    variant: 'success',
+                                })
+                            )
+                        } else {
+                            const errors = action.error.message
+                            dispatch(
+                                showMessage({
+                                    message: errors,
+                                    variant: 'error',
+                                })
+                            )
+                        }
+                    })
+                }
+
+                if (regenerateLifeTime) {
+                    dispatch(
+                        saveMnOneRequest({
+                            row: {
+                                ...getValues('sparepart'),
+                                uuid_request: uuid,
+                            },
+                            options: 'regenerateLifeTime',
+                            user: user.data.datumUuid,
+                        })
+                    ).then((action) => {
+                        if (!action.error) {
+                            dispatch(
+                                showMessage({
+                                    message:
+                                        'Regenerate sparepart life time saved successfully',
+                                    variant: 'success',
+                                })
+                            )
+                        } else {
+                            const errors = action.error.message
+                            dispatch(
+                                showMessage({
+                                    message: errors,
+                                    variant: 'error',
+                                })
+                            )
+                        }
+                    })
                 }
             } else {
                 const errors = action.error.message
@@ -379,98 +411,39 @@ function ApRequest() {
                 </Grid>
             </Grid>
             <Grid container spacing={2}>
-                {/* <Grid item xs={2}>
-                    <Controller
-                        name="request.date_audit_request"
-                        control={control}
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                className="mt-8 mb-16"
-                                label="Date Audit"
-                                id="Date Audit"
-                                variant="outlined"
-                                value={
-                                    _.isNull(field.value) == false
-                                        ? dayjs(field.value).format(
-                                              'YYYY-MM-DD HH:mm:ss'
-                                          )
-                                        : ''
-                                }
-                                fullWidth
-                                disabled
+                <Grid item xs={5}>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={withMonitor}
+                                onChange={(e) => {
+                                    setWithMonitor(e.target.checked)
+                                    setRegenerateLifeTime(false)
+                                }}
                             />
-                        )}
+                        }
+                        label="Create Life Time ?"
+                        color="info"
                     />
                 </Grid>
-                <Grid item xs={2}>
-                    <Controller
-                        name="request.date_mre_request"
-                        control={control}
-                        defaultValue=""
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                className="mt-8 mb-16"
-                                label="Date MRE"
-                                id="Date MRE"
-                                value={
-                                    _.isNull(field.value) == false
-                                        ? dayjs(field.value).format(
-                                              'YYYY-MM-DD HH:mm:ss'
-                                          )
-                                        : ''
-                                }
-                                variant="outlined"
-                                fullWidth
-                                disabled
-                            />
-                        )}
-                    />
-                </Grid>
-                <Grid item xs={2}>
-                    <Controller
-                        name="request.date_ready_request"
-                        control={control}
-                        defaultValue=""
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                className="mt-8 mb-16"
-                                label="Date Ready"
-                                id="Date Ready"
-                                value={
-                                    _.isNull(field.value) == false
-                                        ? dayjs(field.value).format(
-                                              'YYYY-MM-DD HH:mm:ss'
-                                          )
-                                        : ''
-                                }
-                                variant="outlined"
-                                fullWidth
-                                disabled
-                            />
-                        )}
-                    />
-                </Grid> */}
-                <Grid item xs={2}>
-                    <Controller
-                        name="request.with_monitor"
-                        control={control}
-                        defaultValue={false}
-                        render={({ field }) => (
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        {...field}
-                                        checked={field.value}
-                                    />
-                                }
-                                label="Life time ?"
-                            />
-                        )}
-                    />
-                </Grid>
+
+                {hasLifeTime && (
+                    <Grid item xs={5}>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={regenerateLifeTime}
+                                    onChange={(e) => {
+                                        setRegenerateLifeTime(e.target.checked)
+                                        setWithMonitor(false)
+                                    }}
+                                />
+                            }
+                            label="Regenerate Life Time ?"
+                            color="info"
+                        />
+                    </Grid>
+                )}
             </Grid>
             {withMonitor && (
                 <Grid container spacing={2}>
@@ -498,7 +471,7 @@ function ApRequest() {
                         <Controller
                             name="sparepart.item_lead_time"
                             control={control}
-                            defaultValue="4380"
+                            defaultValue="720"
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -544,8 +517,62 @@ function ApRequest() {
                             )}
                         />
                     </Grid>
+
+                    <Grid item xs={4}>
+                        <Controller
+                            name="sparepart.remarks"
+                            control={control}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    className="mt-8 mb-16"
+                                    required
+                                    label="Function Remarks"
+                                    autoFocus
+                                    id="Function Remarks"
+                                    variant="outlined"
+                                    fullWidth
+                                    multiline
+                                    rows={3}
+                                />
+                            )}
+                        />
+                    </Grid>
                 </Grid>
             )}
+            {regenerateLifeTime && (
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <Controller
+                            name="sparepart.regenerate"
+                            control={control}
+                            defaultValue={null}
+                            render={({ field }) => (
+                                <Autocomplete
+                                    {...field}
+                                    options={sparepartList}
+                                    className="mt-8 mb-16"
+                                    getOptionLabel={(option) =>
+                                        `${option.bom} || ${option.item_name} || ${option.remarks}}`
+                                    }
+                                    value={_.isNu}
+                                    onChange={(_, data) =>
+                                        field.onChange(data.uuid)
+                                    }
+                                    id="regenerate"
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            label="Regenerate Life Time"
+                                        />
+                                    )}
+                                />
+                            )}
+                        />
+                    </Grid>
+                </Grid>
+            )}
+
             <Grid container spacing={2}>
                 <Grid item xs={2}>
                     <Controller
@@ -578,82 +605,6 @@ function ApRequest() {
                         )}
                     />
                 </Grid>
-
-                {!hidRole && (
-                    <Grid item xs={9}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={4}>
-                                <Controller
-                                    name="request.mre_request"
-                                    control={control}
-                                    defaultValue=""
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            className="mt-8 mb-16"
-                                            label="MRE"
-                                            autoFocus
-                                            id="MRE"
-                                            variant="outlined"
-                                            fullWidth
-                                            InputProps={{
-                                                readOnly: true,
-                                            }}
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                            <Grid item xs={4}>
-                                <Controller
-                                    name="request.item_ready"
-                                    defaultValue="N"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            className="mt-8 mb-16"
-                                            label="Item Ready"
-                                            select
-                                            autoFocus
-                                            id="Item Ready"
-                                            fullWidth
-                                            InputProps={{
-                                                readOnly: true,
-                                            }}
-                                        >
-                                            <MenuItem value="Y">Ready</MenuItem>
-                                            <MenuItem value="N">
-                                                Not Yet
-                                            </MenuItem>
-                                        </TextField>
-                                    )}
-                                />
-                            </Grid>
-                            <Grid item xs={4}>
-                                <Controller
-                                    name="request.user_req2"
-                                    control={control}
-                                    defaultValue=""
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            className="mt-8 mb-16"
-                                            required
-                                            label="Auditor"
-                                            autoFocus
-                                            id="Auditor"
-                                            variant="outlined"
-                                            fullWidth
-                                            InputProps={{
-                                                readOnly: true,
-                                            }}
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                )}
 
                 <Grid item xs={4}>
                     <Button

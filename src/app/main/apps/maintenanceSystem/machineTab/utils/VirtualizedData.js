@@ -148,7 +148,7 @@ const OPTIONS = Array.from(new Array(10000))
 
 export default function VirtualizedData({ field, data }) {
     const getData = data.map((x) => {
-        return x.mat_name
+        return x.mat_name || x.item_name
     })
     // console.log({ field })
 

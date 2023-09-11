@@ -11,6 +11,10 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { selectUser } from 'app/store/userSlice'
 import { getMnOne, selectMnOne } from '../../store/mnOneSlice'
+import { getApSlice } from '../../store/apSlice'
+
+import { getMnRepSlice } from '../../store/mnRepSlice'
+import { getMnReqSlice } from '../../store/mnReqSlice'
 
 import { getMachineStock } from 'src/app/main/apps/maintenanceSystem/store/machineChildren/machineStock'
 import StatusColor from 'src/app/main/apps/maintenanceSystem/machineTab/utils/StatusColor'
@@ -21,6 +25,7 @@ import ApSheet from '../widgetTab/ApSheet'
 import ApReport from '../widgetTab/ApReport'
 import ApRequest from '../widgetTab/ApRequest'
 import ApRequestList from '../widgetTab/ApRequestList'
+import Sparepart from '../widgetTab/Sparepart'
 import { useEventListener } from '@fuse/hooks'
 
 const schema = yup.object().shape({
@@ -31,7 +36,7 @@ const schema = yup.object().shape({
         .max(11),
 })
 
-function OpenDialog({ data, header, parentName }) {
+function OpenDialog({ data, header, apOptions, parentName }) {
     const dispatch = useDispatch()
     const dataMnOne = useSelector(selectMnOne)
     const [dataNull, setDataNull] = useState(true)
@@ -98,6 +103,9 @@ function OpenDialog({ data, header, parentName }) {
             ).then((action) => {
                 if (action.payload) {
                     setDataNull(false)
+                    dispatch(getApSlice(apOptions))
+                    dispatch(getMnRepSlice())
+                    dispatch(getMnReqSlice())
                 }
             })
         }
@@ -108,12 +116,14 @@ function OpenDialog({ data, header, parentName }) {
         if (val == 1) {
             header('Info Mesin')
         } else if (val == 2) {
-            header('Maintenance Work Order FO-03-04-01')
+            header('Monitoring Life Time Sparepart')
         } else if (val == 3) {
-            header('Laporan Maintenance FO-03-03-07')
+            header('Maintenance Work Order FO-03-04-01')
         } else if (val == 4) {
-            header('Penanganan Spare Part Maintenance IK-03-03-11')
+            header('Laporan Maintenance FO-03-03-07')
         } else if (val == 5) {
+            header('Penanganan Spare Part Maintenance IK-03-03-11')
+        } else if (val == 6) {
             header('Penanganan Spare Part Maintenance IK-03-03-11')
         }
     }
@@ -131,14 +141,15 @@ function OpenDialog({ data, header, parentName }) {
                         aria-label="lab API tabs example"
                     >
                         <Tab label="Machine" value="1" />
-                        <Tab label="AP-Sheet" value="2" />
-                        <Tab label="AP-Report" value="3" />
+                        <Tab label="Life Time" value="2" />
+                        <Tab label="AP-Sheet" value="3" />
+                        <Tab label="AP-Report" value="4" />
                         <Tab
                             label="AP-Request"
-                            value="4"
+                            value="5"
                             disabled={isInventory}
                         />
-                        <Tab label="List AP-Request" value="5" />
+                        <Tab label="List AP-Request" value="6" />
                     </TabList>
                 </Box>
                 <TabPanel value="1">
@@ -149,23 +160,29 @@ function OpenDialog({ data, header, parentName }) {
 
                 <TabPanel value="2">
                     <div style={{ width: 900, height: 500 }}>
-                        <ApSheet />
+                        <Sparepart />
                     </div>
                 </TabPanel>
 
                 <TabPanel value="3">
                     <div style={{ width: 900, height: 500 }}>
-                        <ApReport />
+                        <ApSheet />
                     </div>
                 </TabPanel>
 
                 <TabPanel value="4">
                     <div style={{ width: 900, height: 500 }}>
-                        <ApRequest />
+                        <ApReport />
                     </div>
                 </TabPanel>
 
                 <TabPanel value="5">
+                    <div style={{ width: 900, height: 500 }}>
+                        <ApRequest />
+                    </div>
+                </TabPanel>
+
+                <TabPanel value="6">
                     <div style={{ width: 900, height: 500 }}>
                         <ApRequestList />
                     </div>

@@ -10,7 +10,7 @@ export const getMnOne = createAsyncThunk(
     'dashboard/MnOne/getMnOne',
     async (params) => {
         const response = await axios.get(
-            `http://localhost:5000/machineSheet/${params.uuid}/${params.sheet_no}/${params.uuid_request}`
+            `http://192.168.192.7:5000/machineSheet/${params.uuid}/${params.sheet_no}/${params.uuid_request}`
         )
 
         const data = await response.data
@@ -24,7 +24,7 @@ export const saveMnOne = createAsyncThunk(
     async (row, { dispatch, getState, rejectWithValue }) => {
         try {
             const response = await axios.post(
-                `http://localhost:5000/maintenanceReport`,
+                `http://192.168.192.7:5000/maintenanceReport`,
                 row
             )
             const data = await response.data
@@ -43,7 +43,7 @@ export const saveMnOneRequest = createAsyncThunk(
     async (params, { dispatch, getState, rejectWithValue }) => {
         try {
             const response = await axios.post(
-                `http://localhost:5000/maintenanceRequest/${params.options}/${params.user}`,
+                `http://192.168.192.7:5000/maintenanceRequest/${params.options}/${params.user}`,
                 params.row
             )
             const data = await response.data

@@ -16,15 +16,14 @@ function MnGM5SubHeaderMachinery() {
     const dispatch = useDispatch()
     const data = useSelector(selectAp)
     const [filterWorOrder, setFilterWorkOrder] = useState(null)
+    const apOptions = { com: '06', section: 'machinery' }
 
     useEffect(() => {
-        dispatch(getApSlice({ com: '06', section: 'machinery' })).then(
-            (action) => {
-                if (action.payload) {
-                    setFilterWorkOrder(action.payload)
-                }
+        dispatch(getApSlice(apOptions)).then((action) => {
+            if (action.payload) {
+                setFilterWorkOrder(action.payload)
             }
-        )
+        })
     }, [])
 
     const container = {
@@ -157,6 +156,7 @@ function MnGM5SubHeaderMachinery() {
                                     ...filterWorOrder['Wahid'],
                                 },
                                 user: 11,
+                                apOptions: apOptions,
                                 leader: 'Machinery',
                             }}
                         />

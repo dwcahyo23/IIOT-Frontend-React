@@ -15,15 +15,14 @@ function MnGM2SubHeaderMachinery() {
     const dispatch = useDispatch()
     const data = useSelector(selectAp)
     const [filterWorOrder, setFilterWorkOrder] = useState(null)
+    const apOptions = { com: '02', section: 'machinery' }
 
     useEffect(() => {
-        dispatch(getApSlice({ com: '02', section: 'machinery' })).then(
-            (action) => {
-                if (action.payload) {
-                    setFilterWorkOrder(action.payload)
-                }
+        dispatch(getApSlice(apOptions)).then((action) => {
+            if (action.payload) {
+                setFilterWorkOrder(action.payload)
             }
-        )
+        })
     }, [])
 
     const container = {
@@ -156,6 +155,7 @@ function MnGM2SubHeaderMachinery() {
                                     ...filterWorOrder['Bos'],
                                 },
                                 user: 8,
+                                apOptions: apOptions,
                                 leader: 'Kasie MN GM2',
                             }}
                         />
@@ -176,6 +176,7 @@ function MnGM2SubHeaderMachinery() {
                             data={{
                                 listItemMonth: filterWorOrder['MUSLIH'],
                                 user: 29,
+                                apOptions: apOptions,
                                 leader: 'Forming - Nut Former',
                             }}
                         />
@@ -189,6 +190,7 @@ function MnGM2SubHeaderMachinery() {
                             data={{
                                 listItemMonth: filterWorOrder['TEGUH P'],
                                 user: 32,
+                                apOptions: apOptions,
                                 leader: 'Rolling - Nut Tapping, Oil Dryer',
                             }}
                         />
@@ -202,6 +204,7 @@ function MnGM2SubHeaderMachinery() {
                             data={{
                                 listItemMonth: filterWorOrder['ARIS M'],
                                 user: 30,
+                                apOptions: apOptions,
                                 leader: 'CNC - Turret - HT - Packing - QC - Tooling - Workshop - Nut Welding',
                             }}
                         />
