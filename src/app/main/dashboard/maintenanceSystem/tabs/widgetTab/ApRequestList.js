@@ -164,6 +164,15 @@ function ApRequestList() {
         },
     ]
 
+    console.log(requestList)
+
+    const newRow = _(requestList)
+        .filter((val) => _.includes(['Y', 'N'], val.audit_request))
+        .orderBy(['createdAt'], ['asc'])
+        .value()
+
+    console.log(newRow)
+
     const handleClose = () => {
         setOpen(false)
     }
@@ -175,7 +184,7 @@ function ApRequestList() {
             <div style={{ width: '100%', height: 450 }}>
                 <TableGrid
                     params={{
-                        row: requestList,
+                        row: newRow,
                         columns: columnsRequest,
                         user: _.pick(user.data, [
                             'datumUuid',
