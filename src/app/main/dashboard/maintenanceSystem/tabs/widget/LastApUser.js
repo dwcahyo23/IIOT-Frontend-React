@@ -14,6 +14,7 @@ import {
     Slide,
     Dialog,
     TextField,
+    Rating,
 } from '@mui/material'
 import { memo, useState, useEffect, forwardRef } from 'react'
 import _ from 'lodash'
@@ -264,7 +265,7 @@ function LastApUser({ data }) {
 
     const findReport = (data) => {
         const id = _.find(data_report, { sheet_no: data })
-        return _.isUndefined(id) == false ? id.audit_report : 'N'
+        return _.isUndefined(id) == false ? id : 'N'
     }
 
     const findRequest = (data) => {
@@ -306,6 +307,18 @@ function LastApUser({ data }) {
                     {findRequest(filteredText[index].sheet_no) == false && (
                         <StatusColor id="S" />
                     )}
+
+                    {findReport(filteredText[index].sheet_no) != 'N' &&
+                        findRequest(filteredText[index].sheet_no) == true && (
+                            <Rating
+                                value={
+                                    findReport(filteredText[index].sheet_no)
+                                        .feedback_score
+                                }
+                                readOnly
+                                size="small"
+                            />
+                        )}
 
                     {filteredText[index].chk_mark == 'N' ? (
                         <StatusColor

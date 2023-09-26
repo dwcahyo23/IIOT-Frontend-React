@@ -26,6 +26,8 @@ function MnGM1SubHeaderMachinery() {
         })
     }, [])
 
+    // console.log(filterWorOrder)
+
     const container = {
         show: {
             transition: {

@@ -5,10 +5,18 @@ import withReducer from 'app/store/withReducer'
 import _ from '@lodash'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Box from '@mui/material/Box'
+import { Box, Button } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import reducer from './store'
-import { getApSlice, selectAp } from './store/apSlice'
+// import {
+//     getApSlice,
+//     getMachineSlice,
+//     selectAp,
+//     apUpsertMany,
+//     apUpsert,
+// } from './store/apSlice'
+
+import { getApSlice } from './store/apSlice'
 import { getUserSlice } from './store/userSlice'
 import { getMnReqSlice } from './store/mnReqSlice'
 import { getMnRepSlice } from './store/mnRepSlice'
@@ -30,26 +38,42 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 
 function maintenanceDashboard(props) {
     const dispatch = useDispatch()
-
     const [tabValue, setTabValue] = useState(0)
+    // const data = useSelector(selectAp)
 
     useEffect(() => {
         // dispatch(getApSlice())
+        // dispatch(getMachineSlice())
         dispatch(getUserSlice())
         dispatch(getMnReqSlice())
         dispatch(getMnRepSlice())
         dispatch(getMnControllStock())
         // dispatch(getMnMachineSlice())
-    }, [dispatch])
+    }, [])
 
     function handleChangeTab(event, value) {
         setTabValue(value)
     }
 
+    // const onClick = () => {
+    //     dispatch(
+    //         apUpsertMany([
+    //             { id: _.random(37, 100), displayName: 'xxx' },
+    //             { id: _.random(37, 100), displayName: 'zzz' },
+    //         ])
+    //     )
+    // }
+
+    // const onClick2 = () => {
+    //     dispatch(apUpsert({ id: _.random(37, 100), displayName: 'xxx' }))
+    // }
+
     return (
         <Root
             content={
                 <div className="w-full p-10 pt-8 sm:pt-24 lg:ltr:pr-0 lg:rtl:pl-0">
+                    {/* <Button onClick={onClick}>Click</Button>
+                    <Button onClick={onClick2}>Click2</Button> */}
                     <Tabs
                         value={tabValue}
                         onChange={handleChangeTab}

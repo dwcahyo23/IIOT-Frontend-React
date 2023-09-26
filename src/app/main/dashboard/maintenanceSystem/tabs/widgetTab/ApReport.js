@@ -6,6 +6,7 @@ import {
     MenuItem,
     Typography,
     Button,
+    Rating,
 } from '@mui/material'
 import {
     Controller,
@@ -390,6 +391,23 @@ function ApReport() {
                 </Grid>
                 `
             </Grid>
+            <Grid container spacing={2}>
+                <Grid item xs={2}>
+                    <Typography>Feedback PD:</Typography>
+                    <Rating
+                        name="Rating"
+                        readOnly
+                        value={report?.feedback_score || 0}
+                    />
+                </Grid>
+                {/* <Grid item xs={2}>
+                    <Typography>{report?.feedback_note}</Typography>
+                </Grid>
+                <Grid item xs={2}>
+                    <Typography>{report?.feedback_user}</Typography>
+                </Grid> */}
+            </Grid>
+
             <Grid container spacing={2}>
                 <Grid item xs={4}>
                     <Button
