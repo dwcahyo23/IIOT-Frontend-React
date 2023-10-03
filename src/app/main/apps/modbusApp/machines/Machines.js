@@ -79,8 +79,6 @@ function Machines(props) {
         }
     }, [machines, searchText, searchComTab, selectedCategory])
 
-    // useEffect(() => {}, [searchProcessTab])
-
     function handleSelectedCategory(event) {
         setSelectedCategory(event.target.value)
     }

@@ -162,7 +162,6 @@ function MaintenanceApsheet({ data }) {
                             ? 'GM5'
                             : 'GM5',
                 })
-                console.log(mch_index)
                 if (mch_index) {
                     setOpen(true)
                     setSelectData({ ...data.row, mch_index: mch_index })

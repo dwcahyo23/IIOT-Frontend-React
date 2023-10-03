@@ -195,68 +195,8 @@ function MachineChildren(props) {
                                 >
                                     <Tab label="Machine" value="1" />
                                     <Tab label="Sparepart" value="2" />
-                                    <Tab
-                                        label={
-                                            <Badge
-                                                badgeContent={
-                                                    machineChildren.mow.filter(
-                                                        function (v) {
-                                                            return (
-                                                                v.chk_mark ==
-                                                                'N'
-                                                            )
-                                                        }
-                                                    ).length
-                                                }
-                                                color="error"
-                                            >
-                                                AP-Sheet
-                                            </Badge>
-                                        }
-                                        value="3"
-                                    />
-                                    <Tab
-                                        label={
-                                            <Badge
-                                                badgeContent={
-                                                    machineChildren.report.filter(
-                                                        function (v) {
-                                                            return (
-                                                                v.audit_report ==
-                                                                'N'
-                                                            )
-                                                        }
-                                                    ).length
-                                                }
-                                                color="error"
-                                            >
-                                                AP-Report
-                                            </Badge>
-                                        }
-                                        value="4"
-                                    />
-                                    <Tab
-                                        label={
-                                            <Badge
-                                                badgeContent={
-                                                    machineChildren.request.filter(
-                                                        function (v) {
-                                                            return (
-                                                                v.audit_request ==
-                                                                'N'
-                                                            )
-                                                        }
-                                                    ).length
-                                                }
-                                                color="error"
-                                            >
-                                                AP-Request
-                                            </Badge>
-                                        }
-                                        value="5"
-                                    />
+                                    <Tab label="AP-Sheet" value="3" />
                                     <Tab label="AP-History" value="6" />
-                                    <Tab label="Genba" value="7" />
                                 </TabList>
                             </Box>
                             <TabPanel value="1">
@@ -278,24 +218,7 @@ function MachineChildren(props) {
                                     />
                                 </div>
                             </TabPanel>
-                            <TabPanel value="4">
-                                <div style={{ width: '100%', height: 500 }}>
-                                    <MaintenanceApReport
-                                        data={{
-                                            filter: filter,
-                                        }}
-                                    />
-                                </div>
-                            </TabPanel>
-                            <TabPanel value="5">
-                                <div style={{ width: '100%', height: 500 }}>
-                                    <MaintenanceApInventory
-                                        data={{
-                                            filter: filter,
-                                        }}
-                                    />
-                                </div>
-                            </TabPanel>
+
                             <TabPanel value="6">
                                 <div style={{ width: '100%', height: 500 }}>
                                     <MainteannceApHistory
@@ -303,12 +226,6 @@ function MachineChildren(props) {
                                             filter: filter,
                                         }}
                                     />
-                                </div>
-                            </TabPanel>
-
-                            <TabPanel value="7">
-                                <div style={{ width: '100%', height: 500 }}>
-                                    <MaintenanceGenba />
                                 </div>
                             </TabPanel>
                         </TabContext>

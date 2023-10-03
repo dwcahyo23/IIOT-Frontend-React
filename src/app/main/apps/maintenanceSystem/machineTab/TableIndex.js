@@ -65,7 +65,8 @@ const csvOptions = { delimiter: ';' }
 function CustomToolbar(props) {
     const handleExportExcell = () => {
         const { rows, column } = props
-        // console.log({ ...rows })
+        console.log({ ...rows })
+        console.log({ ...column })
         const workbook = new Workbook()
         const worksheet = workbook.addWorksheet('Main sheet')
         try {
@@ -234,7 +235,11 @@ function TableIndex({ params, tableIndex }) {
             columns={params.columns}
             getRowHeight={() => 'auto'}
             getRowId={(row) =>
-                row.uuid || row.uuid_request || row.sheet_no || row.id_genba
+                row.uuid ||
+                row.uuid_request ||
+                row.sheet_no ||
+                row.id_genba ||
+                row.id
             }
             onRowDoubleClick={(data) => tableIndex(data)}
             checkboxSelection
