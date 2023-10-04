@@ -22,7 +22,7 @@ function CardView({ params, dialog }) {
             if (params.zbConn.din_zb_sens == 2) {
                 return green[500]
             } else {
-                return indigo[500]
+                return red[500]
             }
         } else {
             return indigo[500]
@@ -76,7 +76,7 @@ function CardView({ params, dialog }) {
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <Typography className="text-14 font-medium">
-                            Z20 ID
+                            Sensor ID
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>
@@ -88,12 +88,24 @@ function CardView({ params, dialog }) {
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <Typography className="text-14 font-medium">
-                            MT ID
+                            Production ID
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>
                         <Typography className="text-14 font-medium">
-                            : {params.id_zb_view}
+                            : {params.zbConn?.id_production}
+                        </Typography>
+                    </Grid>
+                </Grid>
+                <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                        <Typography className="text-14 font-medium">
+                            Stop Reason
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Typography className="text-14 font-medium">
+                            : {params.zbConn?.stop_reason}
                         </Typography>
                     </Grid>
                 </Grid>
@@ -110,6 +122,7 @@ function CardView({ params, dialog }) {
                         </Typography>
                     </Grid>
                 </Grid>
+
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <Typography className="text-14 font-medium">

@@ -32,10 +32,10 @@ function ListView({ params }) {
             width: 120,
             valueGetter: (params) => params.row.zbConn?.din_zb_sens,
             valueFormatter: (params) => {
-                if (params.value == 3) {
+                if (params.value == 2) {
                     return 'Run'
                 } else {
-                    return 'Off'
+                    return 'Stop'
                 }
             },
         },
@@ -53,7 +53,7 @@ function ListView({ params }) {
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
             width: 120,
-            valueGetter: (params) => params.row.zbConn?.zb_sens_target || 0,
+            valueGetter: (params) => params.row.zbConn?.target_zb_sens || 0,
         },
         {
             field: 'zbConn.id_production',

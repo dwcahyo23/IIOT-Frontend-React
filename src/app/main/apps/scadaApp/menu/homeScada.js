@@ -2,7 +2,7 @@ import FusePageSimple from '@fuse/core/FusePageSimple'
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery'
 import { useEffect, useMemo, useState, forwardRef } from 'react'
 import { motion } from 'framer-motion'
-import { ViewList, ViewModule } from '@mui/icons-material'
+import { ViewList, ViewModule, Map } from '@mui/icons-material'
 import TextField from '@mui/material/TextField'
 import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
@@ -21,7 +21,7 @@ import InputLabel from '@mui/material/InputLabel'
 import { useSelector, useDispatch } from 'react-redux'
 import _ from 'lodash'
 
-import { selectScada, zbUpsertMany, zbUpsert } from '../store/machinesSlice'
+import { selectScada, zbUpdateMq } from '../store/machinesSlice'
 import CardView from './view/CardView'
 import ListView from './view/ListView'
 import OpenDialog from './view/Utils/OpenDialog'
@@ -31,11 +31,17 @@ const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />
 })
 
+import C from './view/MapView/C'
+
+function selectMap(params) {
+    return <div>{params == 'C' && <C />}</div>
+}
+
 function homeScada() {
     const dispatch = useDispatch()
     const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'))
     const [comTab, setComTab] = useState('GM1')
-    const [sectionTab, setSectionTab] = useState('all')
+    const [sectionTab, setSectionTab] = useState('C')
     const [searchText, setSearchText] = useState('')
     const [view, setView] = useState('module')
     const [open, setOpen] = useState(false)
@@ -80,7 +86,8 @@ function homeScada() {
 
     useEffect(() => {
         if (mqZbData !== null && intervalStart == 'auto') {
-            dispatch(zbUpsertMany(mqZbData))
+            dispatch(zbUpdateMq(mqZbData))
+            console.log(mqZbData)
         }
     }, [mqZbData, intervalStart])
 
@@ -110,14 +117,14 @@ function homeScada() {
     }
 
     function handleMqtt(params) {
-        const upsert = params.message.map((val) => {
-            return {
-                id: val.id_zb_sens,
-                changes: { zbConn: val },
-            }
-        })
+        // const upsert = params.message.map((val) => {
+        //     return {
+        //         id: val.id_zb_sens,
+        //         changes: { zbConn: val },
+        //     }
+        // })
 
-        setMqZbData(upsert)
+        setMqZbData(params.message)
     }
 
     const handleClose = (event, reason) => {
@@ -194,16 +201,19 @@ function homeScada() {
                                     onChange={handleView}
                                 >
                                     <ToggleButton
-                                        value="list"
-                                        aria-label="list"
-                                    >
-                                        <ViewList />
-                                    </ToggleButton>
-                                    <ToggleButton
                                         value="module"
                                         aria-label="module"
                                     >
                                         <ViewModule />
+                                    </ToggleButton>
+                                    <ToggleButton value="map" aria-label="map">
+                                        <Map />
+                                    </ToggleButton>
+                                    <ToggleButton
+                                        value="list"
+                                        aria-label="list"
+                                    >
+                                        <ViewList />
                                     </ToggleButton>
                                 </ToggleButtonGroup>
                             </div>
@@ -266,51 +276,59 @@ function homeScada() {
                                 },
                             }
 
-                            return (
-                                filteredData &&
-                                (filteredData.length > 0 ? (
-                                    <div>
-                                        {view == 'module' && (
-                                            <motion.div
-                                                className="flex grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-16 mt-16 sm:mt-16"
-                                                variants={container}
-                                                initial="hidden"
-                                                animate="show"
-                                            >
-                                                {filteredData.map((data) => {
-                                                    return (
-                                                        <motion.div
-                                                            variants={item}
-                                                            key={data.id}
-                                                        >
-                                                            <CardView
-                                                                params={{
-                                                                    ...data,
-                                                                }}
-                                                                dialog={
-                                                                    handleDialog
-                                                                }
-                                                            />
-                                                        </motion.div>
-                                                    )
-                                                })}
-                                            </motion.div>
-                                        )}
-                                        {view == 'list' && (
-                                            <ListView params={filteredData} />
-                                        )}
-                                    </div>
-                                ) : (
-                                    <div className="flex flex-1 items-center justify-center">
-                                        <Typography
-                                            color="text.secondary"
-                                            className="text-24 mt-32 my-32"
-                                        >
-                                            N/A
-                                        </Typography>
-                                    </div>
-                                ))
-                            )
+                            return view == 'map'
+                                ? selectMap(sectionTab)
+                                : filteredData &&
+                                      (filteredData.length > 0 ? (
+                                          <div>
+                                              {view == 'module' && (
+                                                  <motion.div
+                                                      className="flex grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-16 mt-16 sm:mt-16"
+                                                      variants={container}
+                                                      initial="hidden"
+                                                      animate="show"
+                                                  >
+                                                      {filteredData.map(
+                                                          (data) => {
+                                                              return (
+                                                                  <motion.div
+                                                                      variants={
+                                                                          item
+                                                                      }
+                                                                      key={
+                                                                          data.id
+                                                                      }
+                                                                  >
+                                                                      <CardView
+                                                                          params={{
+                                                                              ...data,
+                                                                          }}
+                                                                          dialog={
+                                                                              handleDialog
+                                                                          }
+                                                                      />
+                                                                  </motion.div>
+                                                              )
+                                                          }
+                                                      )}
+                                                  </motion.div>
+                                              )}
+                                              {view == 'list' && (
+                                                  <ListView
+                                                      params={filteredData}
+                                                  />
+                                              )}
+                                          </div>
+                                      ) : (
+                                          <div className="flex flex-1 items-center justify-center">
+                                              <Typography
+                                                  color="text.secondary"
+                                                  className="text-24 mt-32 my-32"
+                                              >
+                                                  N/A
+                                              </Typography>
+                                          </div>
+                                      ))
                         }, [filteredData, view])}
                     </div>
                 }

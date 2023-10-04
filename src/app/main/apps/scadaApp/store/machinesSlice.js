@@ -52,6 +52,7 @@ const machinesSlice = createSlice({
         zbUpdate: scadaAdapter.updateOne,
         zbUpsert: scadaAdapter.upsertOne,
         zbUpsertMany: scadaAdapter.upsertMany,
+        zbUpdateMq: scadaAdapter.setAll,
     },
     extraReducers: {
         [initZbSlice.fulfilled]: scadaAdapter.setAll,
@@ -61,7 +62,7 @@ const machinesSlice = createSlice({
     },
 })
 
-export const { zbAdded, zbUpdate, zbUpsert, zbUpsertMany } =
+export const { zbAdded, zbUpdate, zbUpsert, zbUpsertMany, zbUpdateMq } =
     machinesSlice.actions
 
 export default machinesSlice.reducer

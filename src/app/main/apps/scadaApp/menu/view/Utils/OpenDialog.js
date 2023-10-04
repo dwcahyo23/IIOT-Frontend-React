@@ -17,10 +17,14 @@ function OpenDialog({ params }) {
 
     const { control, getValues } = useForm({
         defaultValues: {
-            stop_reason: '2',
+            stop_reason: 'none',
             shift_production: 1,
             id_zb_sens: params.id,
-            start_zb_sens: params.zbConn?.init_zb_sens || '',
+            start_zb_sens:
+                params.zbConn?.start_zb_sens == 0
+                    ? params.zbConn?.init_zb_sens
+                    : params.zbConn?.start_zb_sens,
+            target_zb_sens: params.zbConn?.target_zb_sens || '',
             lock: params.zbConn?.lock || 0,
             id_production: params.zbConn?.id_production || '',
         },
@@ -105,6 +109,24 @@ function OpenDialog({ params }) {
                         )}
                     />
                 </Grid>
+                <Grid item xs={4}>
+                    <Controller
+                        name="target_zb_sens"
+                        control={control}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                className="mt-8 mb-16"
+                                label="Target Production"
+                                id="target_zb_sens"
+                                variant="outlined"
+                                fullWidth
+                                disabled={hasDisable}
+                                type="number"
+                            />
+                        )}
+                    />
+                </Grid>
             </Grid>
             <Grid container spacing={2}>
                 <Grid item xs={4}>
@@ -141,8 +163,12 @@ function OpenDialog({ params }) {
                                 fullWidth
                                 disabled={hasDisable}
                             >
-                                <MenuItem value="1">Reason 1</MenuItem>
-                                <MenuItem value="2">Reason 2</MenuItem>
+                                <MenuItem value="none">None</MenuItem>
+                                <MenuItem value="setting">Setting</MenuItem>
+                                <MenuItem value="tooling">Tooling</MenuItem>
+                                <MenuItem value="maintenance">
+                                    Maintenance
+                                </MenuItem>
                             </TextField>
                         )}
                     />
