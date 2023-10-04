@@ -19,7 +19,10 @@ import Progres1 from './Utils/Progres1'
 function CardView({ params, dialog }) {
     const statusColor = () => {
         if (params.zbConn !== null) {
-            if (params.zbConn.din_zb_sens == 2) {
+            if (
+                params.zbConn.din_zb_sens == 2 ||
+                params.zbConn.din_zb_sens == 3
+            ) {
                 return green[500]
             } else {
                 return red[500]
@@ -88,7 +91,7 @@ function CardView({ params, dialog }) {
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <Typography className="text-14 font-medium">
-                            Production ID
+                            PD ID
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>

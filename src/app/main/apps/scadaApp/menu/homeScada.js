@@ -34,7 +34,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 import C from './view/MapView/C'
 
 function selectMap(params) {
-    return <div>{params == 'C' && <C />}</div>
+    return <div>{params.section == 'C' && <C params={params.data} />}</div>
 }
 
 function homeScada() {
@@ -277,7 +277,10 @@ function homeScada() {
                             }
 
                             return view == 'map'
-                                ? selectMap(sectionTab)
+                                ? selectMap({
+                                      section: sectionTab,
+                                      data: filteredData && filteredData,
+                                  })
                                 : filteredData &&
                                       (filteredData.length > 0 ? (
                                           <div>
