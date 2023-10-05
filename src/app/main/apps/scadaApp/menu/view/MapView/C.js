@@ -28,8 +28,6 @@ function C({ params }) {
         }
     }
 
-    console.log(handleAndon('BF-22402'))
-
     return (
         <Box>
             <svg

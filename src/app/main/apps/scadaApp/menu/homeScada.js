@@ -32,9 +32,15 @@ const Transition = forwardRef(function Transition(props, ref) {
 })
 
 import C from './view/MapView/C'
+import D from './view/MapView/D'
 
 function selectMap(params) {
-    return <div>{params.section == 'C' && <C params={params.data} />}</div>
+    return (
+        <div>
+            {params.section == 'C' && <C params={params.data} />}
+            {params.section == 'D' && <D params={params.data} />}
+        </div>
+    )
 }
 
 function homeScada() {
