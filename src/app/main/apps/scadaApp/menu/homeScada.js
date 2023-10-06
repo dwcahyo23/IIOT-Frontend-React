@@ -33,12 +33,18 @@ const Transition = forwardRef(function Transition(props, ref) {
 
 import C from './view/MapView/C'
 import D from './view/MapView/D'
+import F from './view/MapView/F'
+import G from './view/MapView/G'
+import H from './view/MapView/H'
 
 function selectMap(params) {
     return (
         <div>
             {params.section == 'C' && <C params={params.data} />}
             {params.section == 'D' && <D params={params.data} />}
+            {params.section == 'F' && <F params={params.data} />}
+            {params.section == 'G' && <G params={params.data} />}
+            {params.section == 'H' && <H params={params.data} />}
         </div>
     )
 }
