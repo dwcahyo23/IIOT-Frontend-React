@@ -68,7 +68,7 @@ function CardView({ params, dialog }) {
                         color: 'white',
                     }}
                     subheaderTypographyProps={{
-                        className: 'text-14 font-medium',
+                        className: 'text-13 font-medium w-11/12',
                         align: 'center',
                         color: 'white',
                     }}
@@ -78,36 +78,36 @@ function CardView({ params, dialog }) {
             <CardContent className="flex flex-col flex-auto p-16">
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <Typography className="text-14 font-medium">
+                        <Typography className="text-13 font-medium w-11/12">
                             Sensor ID
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>
-                        <Typography className="text-14 font-medium">
+                        <Typography className="text-13 font-medium w-11/12">
                             : {params.id}
                         </Typography>
                     </Grid>
                 </Grid>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <Typography className="text-14 font-medium">
+                        <Typography className="text-13 font-medium w-11/12">
                             PD ID
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>
-                        <Typography className="text-14 font-medium">
+                        <Typography className="text-13 font-medium w-11/12">
                             : {params.zbConn?.id_production}
                         </Typography>
                     </Grid>
                 </Grid>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <Typography className="text-14 font-medium">
+                        <Typography className="text-13 font-medium w-11/12">
                             Stop Reason
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>
-                        <Typography className="text-14 font-medium">
+                        <Typography className="text-13 font-medium w-11/12">
                             : {params.zbConn?.stop_reason}
                         </Typography>
                     </Grid>
@@ -115,12 +115,12 @@ function CardView({ params, dialog }) {
 
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <Typography className="text-14 font-medium">
+                        <Typography className="text-13 font-medium w-11/12">
                             RPM
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>
-                        <Typography className="text-14 font-medium">
+                        <Typography className="text-13 font-medium w-11/12">
                             : {params.zbConn?.spm_zb_sens || 0} pcs/min
                         </Typography>
                     </Grid>
@@ -128,24 +128,24 @@ function CardView({ params, dialog }) {
 
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <Typography className="text-14 font-medium">
+                        <Typography className="text-13 font-medium w-11/12">
                             Count
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>
-                        <Typography className="text-14 font-medium">
+                        <Typography className="text-13 font-medium w-11/12">
                             : {params.zbConn?.count_zb_sens || 0} pcs
                         </Typography>
                     </Grid>
                 </Grid>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <Typography className="text-14 font-medium">
+                        <Typography className="text-13 font-medium w-11/12">
                             Target
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>
-                        <Typography className="text-14 font-medium">
+                        <Typography className="text-13 font-medium w-11/12">
                             : {params.zbConn?.target_zb_sens || 0} pcs
                         </Typography>
                     </Grid>
