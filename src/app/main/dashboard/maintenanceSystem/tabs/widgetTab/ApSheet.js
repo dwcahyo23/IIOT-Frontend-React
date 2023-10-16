@@ -1,12 +1,23 @@
-import React from 'react'
-import { Box, Grid, TextField, MenuItem } from '@mui/material'
-import { Controller, useFormContext } from 'react-hook-form'
+import { useEffect, useState } from 'react'
+import { Box, Grid, TextField, MenuItem, Button } from '@mui/material'
+import { Controller, useFormContext, useWatch } from 'react-hook-form'
+import { Link } from 'react-router-dom'
 import dayjs from 'dayjs'
 
 function ApSheet() {
     const methods = useFormContext()
-    const { control, formState, watch } = methods
+    const { control, formState } = methods
     const { errors } = formState
+
+    const machine = useWatch({
+        control,
+        name: 'machine.uuid',
+    })
+
+    const sheet = useWatch({
+        control,
+        name: 'sheet.sheet_no',
+    })
 
     return (
         <Box>
@@ -184,6 +195,21 @@ function ApSheet() {
                             </TextField>
                         )}
                     />
+                </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+                <Grid item xs={4}>
+                    {/* ${params.uuid}/${params.sheet_no}/${params.uuid_request}` */}
+                    <Button
+                        to={`/dashboards/maintenance/print/${machine}/${sheet}`}
+                        component={Link}
+                        target="_blank"
+                        className="px-16 min-w-100"
+                        variant="contained"
+                        color="secondary"
+                    >
+                        Print
+                    </Button>
                 </Grid>
             </Grid>
         </Box>

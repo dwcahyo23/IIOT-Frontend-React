@@ -6,6 +6,7 @@ import MNRep from './mnRepSlice'
 import MnOne from './mnOneSlice'
 import MnControllStock from './mnControllStockSlice'
 import MNMachine from './mnMachineSlice'
+import Print from './printSlice'
 
 const reducer = combineReducers({
     APPG,
@@ -15,6 +16,7 @@ const reducer = combineReducers({
     MnOne,
     MnControllStock,
     MNMachine,
+    Print,
 })
 
 export default reducer

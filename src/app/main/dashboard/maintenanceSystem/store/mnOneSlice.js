@@ -1,6 +1,7 @@
 import {
     createAsyncThunk,
     createSlice,
+    createEntityAdapter,
     isRejectedWithValue,
 } from '@reduxjs/toolkit'
 import axios from 'axios'
