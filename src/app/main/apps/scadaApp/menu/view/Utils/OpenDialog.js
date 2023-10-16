@@ -6,14 +6,54 @@ import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
-
 import { showMessage } from 'app/store/fuse/messageSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { upZbSlice, zbUpsert } from '../../../store/machinesSlice'
+import { isArray } from 'lodash'
+import dayjs from 'dayjs'
+import _ from 'lodash'
+import { selectScada } from '../../../store/machinesSlice'
 
 function OpenDialog({ params }) {
     const dispatch = useDispatch()
+    const data = useSelector(selectScada)
     const [hasDisable, setHasDisable] = useState(false)
+    const [totalHours, setTotalHours] = useState(null)
+
+    useEffect(() => {
+        // console.log(params)
+    }, [])
+
+    useEffect(() => {
+        const getId = _.find(data, { id: params.id })
+        // console.log(getId)
+
+        const total = {
+            none: 0,
+            setting: 0,
+            tooling: 0,
+            maintenance: 0,
+        }
+
+        const zbLog = getId.zbLog
+        if (zbLog.length > 0) {
+            _.forEach(zbLog, (val) => {
+                if (val.lock === 0) {
+                    total[val.stop_reason] +=
+                        dayjs(new Date()).diff(dayjs(val.start), 'hour', true) *
+                        1
+                } else {
+                    total[val.stop_reason] +=
+                        dayjs(val.stop).diff(dayjs(val.start), 'hour', true) * 1
+                }
+            })
+        }
+
+        console.log(typeof total.none)
+        setTotalHours(total)
+
+        // console.log(total)
+    }, [data])
 
     const { control, getValues } = useForm({
         defaultValues: {
@@ -195,6 +235,25 @@ function OpenDialog({ params }) {
                     />
                 </Grid>
             </Grid>
+
+            {totalHours && (
+                <div className="grid grid-cols-12 gap-x-3 my-8 p-24 border rounded-lg ">
+                    <Typography className="col-span-3 w-11/12 text-xl font-normal">
+                        Running : {_.toNumber(totalHours.none).toFixed(1)} h
+                    </Typography>
+                    <Typography className="col-span-3 w-11/12 text-xl font-normal">
+                        Setting : {_.toNumber(totalHours.setting).toFixed(1)} h
+                    </Typography>
+                    <Typography className="col-span-3 w-11/12 text-xl font-normal">
+                        Tooling : {_.toNumber(totalHours.tooling).toFixed(1)} h
+                    </Typography>
+                    <Typography className="col-span-3 w-11/12 text-xl font-normal">
+                        Maintenance :{' '}
+                        {_.toNumber(totalHours.maintenance).toFixed(1)} h
+                    </Typography>
+                </div>
+            )}
+
             {hasDisable && <Typography>Machine unconnected</Typography>}
             <Grid container spacing={2}>
                 <Grid item xs={4}>

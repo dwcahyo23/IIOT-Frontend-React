@@ -101,7 +101,7 @@ function homeScada() {
     useEffect(() => {
         if (mqZbData !== null && intervalStart == 'auto') {
             dispatch(zbUpdateMq(mqZbData))
-            console.log(mqZbData)
+            // console.log(mqZbData)
         }
     }, [mqZbData, intervalStart])
 
