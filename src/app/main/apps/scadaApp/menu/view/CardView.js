@@ -12,6 +12,7 @@ import green from '@mui/material/colors/green'
 import { Link } from 'react-router-dom'
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon'
 import { lighten } from '@mui/material/styles'
+import dayjs from 'dayjs'
 import _ from 'lodash'
 
 import Progres1 from './Utils/Progres1'
@@ -51,9 +52,9 @@ function CardView({ params, dialog }) {
     return (
         <Card className="flex flex-col shadow">
             <CardActionArea
-                onClick={() => {
-                    dialog({ set: true, data: params })
-                }}
+            // onClick={() => {
+            //     dialog({ set: true, data: params })
+            // }}
             >
                 <CardHeader
                     className="items-center py-8 px-16"
@@ -77,18 +78,18 @@ function CardView({ params, dialog }) {
 
             <CardContent className="flex flex-col flex-auto p-16">
                 <Grid container spacing={2}>
-                    <Grid item xs={6}>
+                    <Grid item xs={5}>
                         <Typography className="text-13 font-medium w-11/12">
                             Sensor ID
                         </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={7}>
                         <Typography className="text-13 font-medium w-11/12">
                             : {params.id}
                         </Typography>
                     </Grid>
                 </Grid>
-                <Grid container spacing={2}>
+                {/* <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <Typography className="text-13 font-medium w-11/12">
                             PD ID
@@ -99,8 +100,8 @@ function CardView({ params, dialog }) {
                             : {params.zbConn?.id_production}
                         </Typography>
                     </Grid>
-                </Grid>
-                <Grid container spacing={2}>
+                </Grid> */}
+                {/* <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <Typography className="text-13 font-medium w-11/12">
                             Stop Reason
@@ -111,34 +112,60 @@ function CardView({ params, dialog }) {
                             : {params.zbConn?.stop_reason}
                         </Typography>
                     </Grid>
-                </Grid>
+                </Grid> */}
 
                 <Grid container spacing={2}>
-                    <Grid item xs={6}>
+                    <Grid item xs={5}>
+                        <Typography className="text-13 font-medium w-11/12">
+                            Counter
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={7}>
+                        <Typography className="text-13 font-medium w-11/12">
+                            :{' '}
+                            {_.isUndefined(params.zbConn?.init_zb_sens)
+                                ? 0
+                                : _.toNumber(
+                                      params.zbConn?.init_zb_sens
+                                  ).toLocaleString()}
+                        </Typography>
+                    </Grid>
+                </Grid>
+                <Grid container spacing={2}>
+                    <Grid item xs={5}>
                         <Typography className="text-13 font-medium w-11/12">
                             RPM
                         </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={7}>
                         <Typography className="text-13 font-medium w-11/12">
                             : {params.zbConn?.spm_zb_sens || 0} pcs/min
                         </Typography>
                     </Grid>
                 </Grid>
-
                 <Grid container spacing={2}>
-                    <Grid item xs={6}>
+                    <Grid item xs={5}>
                         <Typography className="text-13 font-medium w-11/12">
-                            Count
+                            Stop
                         </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={7}>
                         <Typography className="text-13 font-medium w-11/12">
-                            : {params.zbConn?.count_zb_sens || 0} pcs
+                            :{' '}
+                            {params.zbConn?.timeoff !== 'n/a'
+                                ? dayjs()
+                                      .diff(
+                                          dayjs(params.zbConn?.timeoff),
+                                          'hour',
+                                          true
+                                      )
+                                      .toFixed(2) + ' hour'
+                                : '-'}
                         </Typography>
                     </Grid>
                 </Grid>
-                <Grid container spacing={2}>
+
+                {/* <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <Typography className="text-13 font-medium w-11/12">
                             Target
@@ -150,7 +177,7 @@ function CardView({ params, dialog }) {
                         </Typography>
                     </Grid>
                 </Grid>
-                <Progres1 params={progressTarget()} />
+                <Progres1 params={progressTarget()} /> */}
             </CardContent>
         </Card>
     )

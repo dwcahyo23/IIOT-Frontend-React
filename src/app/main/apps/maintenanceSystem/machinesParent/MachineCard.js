@@ -1,9 +1,7 @@
 import Card from '@mui/material/Card'
-import { CardContent, CardActions, CardHeader } from '@mui/material'
-import Button from '@mui/material/Button'
+import { CardContent, CardHeader, CardActionArea } from '@mui/material'
 import { Link } from 'react-router-dom'
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon'
-import { lighten } from '@mui/material/styles'
+import indigo from '@mui/material/colors/indigo'
 import _ from 'lodash'
 import MachineInfo from './MachineInfo'
 
@@ -15,37 +13,34 @@ function MachineCard({ params }) {
     return (
         <div>
             <Card className="flex flex-col shadow">
+                <CardActionArea>
+                    <Link
+                        to={`/apps/maintenanceSystem/machines/${params.uuid}`}
+                    >
+                        <CardHeader
+                            className="items-center py-8 px-16"
+                            sx={{
+                                backgroundColor: indigo[500],
+                            }}
+                            title={params.mch_code}
+                            subheader={params.mch_name}
+                            titleTypographyProps={{
+                                className: 'text-18 font-medium',
+                                align: 'center',
+                                color: 'white',
+                            }}
+                            subheaderTypographyProps={{
+                                className: 'text-13 font-medium w-11/12',
+                                align: 'center',
+                                color: 'white',
+                            }}
+                        />
+                    </Link>
+                </CardActionArea>
+
                 <CardContent className="flex flex-col flex-auto p-24">
                     <MachineInfo params={params} className="" />
                 </CardContent>
-
-                <CardActions
-                    className="items-center justify-end py-16 px-24"
-                    sx={{
-                        backgroundColor: (theme) =>
-                            theme.palette.mode === 'light'
-                                ? lighten(theme.palette.background.default, 0.4)
-                                : lighten(
-                                      theme.palette.background.default,
-                                      0.03
-                                  ),
-                    }}
-                >
-                    <Button
-                        to={`/apps/maintenanceSystem/machines/${params.uuid}`}
-                        component={Link}
-                        className="px-16 min-w-100"
-                        variant="contained"
-                        color="secondary"
-                        endIcon={
-                            <FuseSvgIcon className="" size={20}>
-                                heroicons-solid:arrow-sm-right
-                            </FuseSvgIcon>
-                        }
-                    >
-                        Continue
-                    </Button>
-                </CardActions>
             </Card>
         </div>
     )

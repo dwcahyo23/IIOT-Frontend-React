@@ -374,7 +374,7 @@ function homeScada() {
                         </Button>
                     </Toolbar>
                 </AppBar>
-                <div style={{ width: 900, height: 400 }}>
+                <div style={{ width: 900, height: 400, zIndex: 1000 }}>
                     <OpenDialog params={dialogData} />
                 </div>
             </Dialog>

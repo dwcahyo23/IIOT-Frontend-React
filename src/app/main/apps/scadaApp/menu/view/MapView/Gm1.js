@@ -1,33 +1,55 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import Box from '@mui/material/Box'
 import _ from 'lodash'
-import images from '../Images/Layout2DBig.jpg'
+import dayjs from 'dayjs'
 
 function Gm1({ params }) {
     const data = params && params
-    const [andonColor, setAndonColor] = useState(null)
+    const text = document.getElementsByClassName('mytext')
 
     useEffect(() => {
-        const x = data.map((val) => {
-            if (val.zbConn !== null) {
-                const andon =
-                    val.zbConn?.din_zb_sens == 2 || val.zbConn?.din_zb_sens == 3
-                        ? '#0d931d'
-                        : '#ff1744'
-                return { machine: val.machine.mch_code, andon }
-            } else {
-                return { machine: val.machine.mch_code, andon: '#e6e6e6' }
-            }
-        })
-        setAndonColor(x)
-    }, [data])
+        _.forEach(data, (val) => {
+            _.forEach(text, (tval, index) => {
+                if (tval.lastElementChild.textContent == val.mch_code) {
+                    if (_.isNull(val.zbConn) == false) {
+                        if (val.zbConn.din_zb_sens !== 0) {
+                            tval.firstElementChild.setAttribute(
+                                'fill',
+                                '#0d931d'
+                            )
+                            tval.lastElementChild.setAttribute(
+                                'fill',
+                                '#e0ece1'
+                            )
+                        } else {
+                            let width =
+                                tval.firstElementChild.getAttribute('width')
+                            let newWidth = _.toInteger(width) + 60
+                            tval.firstElementChild.setAttribute(
+                                'width',
+                                _.toString(newWidth)
+                            )
 
-    const handleAndon = (id) => {
-        if (andonColor !== null) {
-            const x = _.find(andonColor, { machine: id })
-            return x?.andon || '#e6e6e6'
-        }
-    }
+                            tval.firstElementChild.setAttribute(
+                                'fill',
+                                '#ff1744'
+                            )
+
+                            let hour = dayjs()
+                                .diff(dayjs(val.zbConn?.timeoff), 'hour', true)
+                                .toFixed(1)
+                            tval.lastElementChild.textContent = `${val.mch_code} (${hour}h)`
+
+                            tval.lastElementChild.setAttribute(
+                                'fill',
+                                '#e0ece1'
+                            )
+                        }
+                    }
+                }
+            })
+        })
+    }, [data, text])
 
     return (
         <Box>
@@ -28908,6 +28930,7 @@ function Gm1({ params }) {
                         </g>
                     </g>
                     <g id="BlokI1">
+                        tex
                         <g>
                             <rect
                                 x="405.99"
@@ -31973,7 +31996,7 @@ function Gm1({ params }) {
                         />
                     </g>
                     <g id="Text">
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="2416.3"
                                 y="1127.92"
@@ -31981,20 +32004,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-18502')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(2419.3 1144.6)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-18502
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="2422.82"
                                 y="942.38"
@@ -32002,20 +32025,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-16401')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(2425.82 959.06)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-16401
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="2422.82"
                                 y="760.07"
@@ -32023,20 +32046,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-22401')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(2425.82 776.76)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-22401
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="2422.82"
                                 y="559.02"
@@ -32044,20 +32067,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-22402')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(2425.82 575.7)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-22402
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="2419.56"
                                 y="389.9"
@@ -32065,20 +32088,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-18501')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(2422.56 406.58)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-18501
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="2342.56"
                                 y="160.88"
@@ -32086,20 +32109,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-28501')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(2345.56 177.57)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-28501
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="2121.53"
                                 y="1082.36"
@@ -32107,20 +32130,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PR-06006')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(2124.53 1099.04)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PR-06006
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="2090.91"
                                 y="1031.7"
@@ -32128,20 +32151,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-08403')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(2093.91 1048.39)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-08403
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1983.77"
                                 y="1052.55"
@@ -32149,20 +32172,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-08413')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1986.77 1069.23)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-08413
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1748.12"
                                 y="1095.7"
@@ -32170,20 +32193,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-08302')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1751.12 1112.39)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-08302
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1390.67"
                                 y="1424.58"
@@ -32191,20 +32214,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-12412')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1393.67 1441.27)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-12412
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1154.67"
                                 y="1428.55"
@@ -32212,20 +32235,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PR-10009')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1157.67 1445.23)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PR-10009
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1051.11"
                                 y="1337.97"
@@ -32233,20 +32256,20 @@ function Gm1({ params }) {
                                 height="63.72"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CH-00001')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1067.18 1400.69) rotate(-90)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="15.28"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="15.28"
                             >
                                 <tspan x="0" y="0">
-                                    CH-00001
+                                    CH-0001
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1001.05"
                                 y="1337.04"
@@ -32254,20 +32277,20 @@ function Gm1({ params }) {
                                 height="63.72"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CH-00002')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1017.12 1399.76) rotate(-90)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="15.28"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="15.28"
                             >
                                 <tspan x="0" y="0">
-                                    CH-00002
+                                    CH-0002
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1154.67"
                                 y="1358.55"
@@ -32275,20 +32298,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PR-10010')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1157.67 1375.23)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PR-10010
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1154.67"
                                 y="1293.57"
@@ -32296,20 +32319,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PR-08008')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1157.67 1310.25)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PR-08008
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="994.43"
                                 y="1288.28"
@@ -32317,20 +32340,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('HR-08023')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(997.43 1304.97)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
-                                    HR-08023
+                                    HR-08203
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="905.54"
                                 y="1513.41"
@@ -32338,20 +32361,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-30101')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(908.54 1526.18)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-30101
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="825.77"
                                 y="1513.41"
@@ -32359,20 +32382,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RL-75009')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(828.77 1526.18)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     RL-75009
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="757.77"
                                 y="1513.41"
@@ -32380,20 +32403,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('VT-20202')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(760.77 1526.18)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     VT-20202
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="626.8"
                                 y="1522.26"
@@ -32401,20 +32424,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RL-45006')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(629.8 1535.02)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     RL-45006
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="537.16"
                                 y="1520.38"
@@ -32422,20 +32445,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RL-45004')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(540.16 1533.14)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     RL-45004
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="446.5"
                                 y="1428.4"
@@ -32443,20 +32466,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('DR-03206')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(449.5 1441.16)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     DR-03206
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="259.02"
                                 y="1559.93"
@@ -32464,20 +32487,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('GR-50001')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(262.02 1572.7)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     GR-50001
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="324.87"
                                 y="1507.46"
@@ -32485,20 +32508,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('GR-40004')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(327.87 1520.23)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     GR-40004
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="276.04"
                                 y="1486.99"
@@ -32506,20 +32529,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('GR-40005')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(279.04 1499.75)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     GR-40005
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="279.9"
                                 y="1447.9"
@@ -32527,20 +32550,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('GR-40003')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(282.9 1460.66)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     GR-40003
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="290.98"
                                 y="1385.47"
@@ -32548,20 +32571,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RL-22023')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(293.98 1398.24)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     RL-22023
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="244.59"
                                 y="1364.68"
@@ -32569,20 +32592,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RL-22024')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(247.59 1377.45)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     RL-22024
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="192.86"
                                 y="1387.5"
@@ -32590,20 +32613,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RL-22013')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(195.86 1400.26)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     RL-22013
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="212.8"
                                 y="1448.87"
@@ -32611,20 +32634,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('GR-50002')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(215.8 1461.64)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     GR-50002
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="264.55"
                                 y="1273.7"
@@ -32632,20 +32655,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RL-22006')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(267.55 1286.46)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     RL-22006
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="197.44"
                                 y="1274.67"
@@ -32653,20 +32676,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RL-22016')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(200.44 1287.43)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     RL-22016
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="264.79"
                                 y="1208.69"
@@ -32674,20 +32697,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RL-22004')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(267.79 1221.45)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     RL-22004
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="197.68"
                                 y="1209.66"
@@ -32695,20 +32718,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RL-22005')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(200.68 1222.42)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     RL-22005
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="261.99"
                                 y="1115.88"
@@ -32716,20 +32739,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RL-45012')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(264.99 1128.65)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     RL-45012
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="205.46"
                                 y="1161.26"
@@ -32737,209 +32760,41 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RL-30002')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(208.46 1174.02)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     RL-30002
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
-                                x="185.88"
+                                x="194.88"
                                 y="1116.85"
                                 width="71.56"
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CM-16017')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
-                                transform="translate(188.88 1129.62)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                transform="translate(197.88 1129.62)"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CM-16017
                                 </tspan>
                             </text>
                         </g>
-                        <g>
-                            <rect
-                                x="268.41"
-                                y="992.88"
-                                width="67.21"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('RL-22029')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(271.41 1005.65)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    RL-22029
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="268.5"
-                                y="943.15"
-                                width="67.21"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('RL-22002')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(271.5 955.92)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    RL-22002
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="268.41"
-                                y="891.36"
-                                width="67.21"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('RL-22003')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(271.41 904.12)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    RL-22003
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="192.31"
-                                y="993.86"
-                                width="67.21"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('RL-22022')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(195.31 1006.62)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    RL-22022
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="268.41"
-                                y="847.12"
-                                width="67.21"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('RL-22030')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(271.41 859.88)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    RL-22030
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="192.31"
-                                y="848.09"
-                                width="67.21"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('RL-22031')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(195.31 860.85)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    RL-22031
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="265.19"
-                                y="801.98"
-                                width="67.21"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('RL-25001')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(268.19 814.74)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    RL-25001
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="189.09"
-                                y="802.95"
-                                width="67.21"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('RL-25000')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(192.09 815.71)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    RL-25000
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="234.35"
                                 y="1511.6"
@@ -32947,20 +32802,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('GR-40001')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(237.35 1524.37)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     GR-40001
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="192.86"
                                 y="1486.99"
@@ -32968,20 +32823,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('GR-40002')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(195.86 1499.75)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     GR-40002
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="179.01"
                                 y="1580.15"
@@ -32989,20 +32844,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00016')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(182.01 1592.91)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00016
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="445.94"
                                 y="1371.32"
@@ -33010,20 +32865,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('DR-03205')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(448.94 1384.08)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     DR-03205
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="446.5"
                                 y="1321.52"
@@ -33031,20 +32886,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('DR-03204')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(449.5 1334.29)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     DR-03204
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="450.62"
                                 y="1249.35"
@@ -33052,20 +32907,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('GUN DRILL')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(453.62 1262.11)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     GUN DRILL
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="446.5"
                                 y="1151.23"
@@ -33073,20 +32928,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('MC Press')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(449.5 1164)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     MC Press
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="373.5"
                                 y="1144.03"
@@ -33094,20 +32949,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('TP-08001')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(376.5 1156.8)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     TP-08001
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="373.5"
                                 y="1235.19"
@@ -33115,20 +32970,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00025')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(376.5 1247.96)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00025
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="373.5"
                                 y="1294.14"
@@ -33136,20 +32991,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('TP-00084')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(376.5 1306.9)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     TP-00084
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="626.8"
                                 y="1448.87"
@@ -33157,20 +33012,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00085')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(629.8 1461.64)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00085
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="537.16"
                                 y="1451.38"
@@ -33178,20 +33033,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00082')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(540.16 1464.14)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00082
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="626.8"
                                 y="1366.56"
@@ -33199,20 +33054,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00086')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(629.8 1379.33)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00086
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="537.16"
                                 y="1364.69"
@@ -33220,20 +33075,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00083')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(540.16 1377.45)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00083
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="626.8"
                                 y="1275.12"
@@ -33241,20 +33096,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00087')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(629.8 1287.88)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00087
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="537.16"
                                 y="1273.24"
@@ -33262,20 +33117,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00084')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(540.16 1286.01)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00084
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="626.8"
                                 y="1191.89"
@@ -33283,20 +33138,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00068')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(629.8 1204.65)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00068
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="537.16"
                                 y="1194.39"
@@ -33304,20 +33159,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00078')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(540.16 1207.15)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00078
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="631.92"
                                 y="1109.58"
@@ -33325,20 +33180,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-25805')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(634.92 1122.34)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-25805
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="540.24"
                                 y="1107.7"
@@ -33346,20 +33201,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-25803')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(543.24 1120.46)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-25803
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="629.47"
                                 y="1018.13"
@@ -33367,20 +33222,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-25802')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(632.47 1030.9)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-25802
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="537.8"
                                 y="1016.26"
@@ -33388,20 +33243,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-25601')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(540.8 1029.02)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-25601
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="631.96"
                                 y="931.18"
@@ -33409,20 +33264,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-25801')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(634.96 943.94)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-25801
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="540.29"
                                 y="929.3"
@@ -33430,20 +33285,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-25602')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(543.29 942.06)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-25602
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="629.52"
                                 y="839.73"
@@ -33451,20 +33306,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-25804')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(632.52 852.5)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-25804
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="537.85"
                                 y="837.86"
@@ -33472,20 +33327,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-25806')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(540.85 850.62)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-25806
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="622.42"
                                 y="164.21"
@@ -33493,20 +33348,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00075')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(625.42 176.97)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00075
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="530.75"
                                 y="162.33"
@@ -33514,20 +33369,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00048')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(533.75 175.1)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00048
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="617.33"
                                 y="229.04"
@@ -33535,20 +33390,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00081')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(620.33 241.81)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00081
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="525.66"
                                 y="227.17"
@@ -33556,20 +33411,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00088')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(528.66 239.93)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00088
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="618.96"
                                 y="282"
@@ -33577,20 +33432,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00093')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(621.96 294.76)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00093
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="527.29"
                                 y="280.12"
@@ -33598,20 +33453,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00094')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(530.29 292.88)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00094
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="582.09"
                                 y="347.02"
@@ -33619,20 +33474,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00079')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(585.09 359.78)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00079
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="644.06"
                                 y="379.1"
@@ -33640,20 +33495,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00070')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(647.06 391.86)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00070
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="518.25"
                                 y="379.1"
@@ -33661,524 +33516,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00080')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(521.25 391.86)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00080
                                 </tspan>
                             </text>
                         </g>
-                        <g>
-                            <rect
-                                x="440.87"
-                                y="452.41"
-                                width="67.87"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('TP-08003')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(443.87 465.17)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    TP-08003
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="444.66"
-                                y="381.28"
-                                width="66.87"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('SL-02006')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(447.66 394.04)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    SL-02006
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="386.99"
-                                y="356.58"
-                                width="66.87"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('SL-02005')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(389.99 369.34)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    SL-02005
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="332.66"
-                                y="381.28"
-                                width="66.87"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('SL-02004')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(335.66 394.04)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    SL-02004
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="251.03"
-                                y="357.44"
-                                width="69.3"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('CN-08002')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(254.03 370.21)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    CN-08002
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="435.45"
-                                y="313.51"
-                                width="67.24"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('FR-08004')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(438.45 326.27)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    FR-08004
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="377.78"
-                                y="288.81"
-                                width="67.24"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('FR-08003')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(380.78 301.57)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    FR-08003
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="323.45"
-                                y="313.51"
-                                width="67.24"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('FR-08002')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(326.45 326.27)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    FR-08002
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="241.82"
-                                y="289.67"
-                                width="67.24"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('FR-08001')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(244.82 302.43)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    FR-08001
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="427.99"
-                                y="241.39"
-                                width="69.3"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('CN-08003')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(430.99 254.16)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    CN-08003
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="370.32"
-                                y="216.69"
-                                width="69.3"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('CN-08004')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(373.32 229.46)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    CN-08004
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="316"
-                                y="241.39"
-                                width="67.21"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('RL-45002')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(319 254.16)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    RL-45002
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="234.37"
-                                y="217.56"
-                                width="67.21"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('RL-45001')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(237.37 230.32)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    RL-45001
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="424.49"
-                                y="185.78"
-                                width="68.99"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('SH-16003')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(427.49 198.55)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    SH-16003
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="366.82"
-                                y="161.08"
-                                width="68.99"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('SH-16002')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(369.82 173.85)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    SH-16002
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="312.5"
-                                y="185.78"
-                                width="68.99"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('SH-16006')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(315.5 198.55)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    SH-16006
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="230.86"
-                                y="161.95"
-                                width="68.99"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('SH-16008')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(233.86 174.71)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    SH-16008
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="366.85"
-                                y="97.31"
-                                width="68.99"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('SH-16005')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(369.85 110.08)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    SH-16005
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="312.53"
-                                y="122.01"
-                                width="68.99"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('SH-16004')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(315.53 134.78)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    SH-16004
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="230.9"
-                                y="98.18"
-                                width="68.99"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('SH-16007')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(233.9 110.94)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    SH-16007
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="390.09"
-                                y="413.16"
-                                width="67.87"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('TP-08002')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(393.09 425.92)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    TP-08002
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="344.96"
-                                y="454.07"
-                                width="65.16"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('FT-12101')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(347.96 466.84)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    FT-12101
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="291.22"
-                                y="416.38"
-                                width="65.16"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('FT-20201')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(294.22 429.14)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    FT-20201
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
-                            <rect
-                                x="220.31"
-                                y="454.84"
-                                width="68.99"
-                                height="17.49"
-                                rx="5"
-                                ry="5"
-                                fill={handleAndon('SH-16001')}
-                                strokeWidth="0"
-                            />
-                            <text
-                                transform="translate(223.31 467.6)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
-                            >
-                                <tspan x="0" y="0">
-                                    SH-16001
-                                </tspan>
-                            </text>
-                        </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="574.06"
                                 y="429.65"
@@ -34186,20 +33537,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00069')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(577.06 442.41)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00069
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="636.03"
                                 y="461.73"
@@ -34207,20 +33558,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00077')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(639.03 474.5)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00077
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="510.22"
                                 y="461.73"
@@ -34228,20 +33579,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00078')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(513.22 474.5)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00078
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="574.06"
                                 y="509.47"
@@ -34249,20 +33600,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00009')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(577.06 522.24)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00009
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="636.02"
                                 y="541.56"
@@ -34270,20 +33621,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00092')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(639.02 554.32)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00092
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="510.22"
                                 y="541.56"
@@ -34291,20 +33642,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00010')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(513.22 554.32)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00010
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="572.2"
                                 y="591.46"
@@ -34312,20 +33663,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00011')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(575.2 604.22)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00011
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="634.17"
                                 y="623.54"
@@ -34333,20 +33684,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00091')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(637.17 636.3)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00091
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="508.37"
                                 y="623.54"
@@ -34354,20 +33705,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00012')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(511.37 636.3)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00012
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="901.93"
                                 y="1446.3"
@@ -34375,20 +33726,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('MC-30105')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(904.93 1459.06)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     MC-30105
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="822.15"
                                 y="1446.3"
@@ -34396,20 +33747,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('MC-30104')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(825.15 1459.06)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     MC-30104
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="754.15"
                                 y="1446.3"
@@ -34417,20 +33768,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('NT-31201')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(757.15 1459.06)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
-                                <tspan x="0" y="0" letter-spacing="-.01em">
+                                <tspan x="0" y="0">
                                     NT-31201
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="901.93"
                                 y="1387.93"
@@ -34438,20 +33789,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RL-75005')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(904.93 1400.7)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     RL-75005
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="822.15"
                                 y="1387.93"
@@ -34459,41 +33810,41 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RL-75007')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(825.15 1400.7)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     RL-75007
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
-                                x="873.94"
-                                y="1337.3"
+                                x="880.94"
+                                y="1342.3"
                                 width="67.21"
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RL-45009')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
-                                transform="translate(876.94 1350.07)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                transform="translate(883.94 1355.07)"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     RL-45009
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="956.2"
                                 y="1317.69"
@@ -34501,20 +33852,20 @@ function Gm1({ params }) {
                                 height="64.44"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('TU-32011')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(970.97 1381.13) rotate(-90)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     TU-32011
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="954.77"
                                 y="1250.04"
@@ -34522,83 +33873,83 @@ function Gm1({ params }) {
                                 height="64.44"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('TU-32024')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(969.53 1313.47) rotate(-90)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     TU-32024
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
-                                x="794.17"
-                                y="1337.31"
+                                x="801.17"
+                                y="1342.31"
                                 width="67.21"
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RL-45010')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
-                                transform="translate(797.17 1350.07)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                transform="translate(804.17 1355.07)"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     RL-45010
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
-                                x="871.19"
-                                y="1302.7"
+                                x="878.19"
+                                y="1307.7"
                                 width="67.21"
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RL-45007')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
-                                transform="translate(874.19 1315.46)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                transform="translate(881.19 1320.46)"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     RL-45007
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
-                                x="794.47"
-                                y="1302.7"
+                                x="801.47"
+                                y="1307.7"
                                 width="67.21"
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RL-45008')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
-                                transform="translate(797.47 1315.46)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                transform="translate(804.47 1320.46)"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     RL-45008
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="754.15"
                                 y="1387.93"
@@ -34606,83 +33957,83 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('NT-22201')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(757.15 1400.7)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
-                                <tspan x="0" y="0" letter-spacing="-.01em">
+                                <tspan x="0" y="0">
                                     NT-22201
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
-                                x="867.95"
-                                y="1235.79"
+                                x="896.48"
+                                y="1265.04"
                                 width="67.21"
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RL-75006')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
-                                transform="translate(870.95 1248.56)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                transform="translate(899.48 1277.8)"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     RL-75006
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
-                                x="831.45"
-                                y="1270.79"
+                                x="816.7"
+                                y="1265.04"
                                 width="67.21"
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RL-75008')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
-                                transform="translate(834.45 1283.56)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                transform="translate(819.7 1277.8)"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     RL-75008
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
-                                x="754.76"
-                                y="1246.25"
+                                x="748.7"
+                                y="1265.04"
                                 width="67.06"
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('NT-22202')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
-                                transform="translate(757.76 1259.01)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                transform="translate(751.7 1277.8)"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
-                                <tspan x="0" y="0" letter-spacing="-.01em">
+                                <tspan x="0" y="0">
                                     NT-22202
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="898.21"
                                 y="1202.9"
@@ -34690,20 +34041,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('MC-30101')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(901.21 1215.66)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     MC-30101
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="818.44"
                                 y="1202.9"
@@ -34711,20 +34062,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('MC-30102')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(821.44 1215.66)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     MC-30102
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="750.44"
                                 y="1202.9"
@@ -34732,20 +34083,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('NT-31202')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(753.44 1215.66)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     NT-31202
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="902.54"
                                 y="1146.72"
@@ -34753,20 +34104,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-30101')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(905.54 1159.48)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-30101
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="822.77"
                                 y="1146.72"
@@ -34774,20 +34125,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RL-75010')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(825.77 1159.48)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     RL-75010
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="754.76"
                                 y="1146.72"
@@ -34795,20 +34146,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('VT-20201')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(757.76 1159.48)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     VT-20201
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="851.39"
                                 y="1002.62"
@@ -34816,20 +34167,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00001')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(854.39 1015.39)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00001
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="909.61"
                                 y="1025.91"
@@ -34837,20 +34188,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00021')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(912.61 1038.67)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00021
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="801.08"
                                 y="1025.91"
@@ -34858,20 +34209,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00016')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(804.08 1038.67)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00016
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="754.76"
                                 y="1002.62"
@@ -34879,20 +34230,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00017')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(757.76 1015.39)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00017
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="856.12"
                                 y="930.16"
@@ -34900,20 +34251,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00002')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(859.12 942.93)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00002
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="914.35"
                                 y="953.45"
@@ -34921,20 +34272,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00003')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(917.35 966.21)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00003
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="805.82"
                                 y="953.45"
@@ -34942,20 +34293,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00020')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(808.82 966.21)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00020
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="759.5"
                                 y="930.16"
@@ -34963,20 +34314,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00019')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(762.5 942.93)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00019
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="856.12"
                                 y="852.32"
@@ -34984,20 +34335,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00005')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(859.12 865.08)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00005
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="914.35"
                                 y="875.6"
@@ -35005,20 +34356,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00004')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(917.35 888.36)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00004
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="805.82"
                                 y="875.6"
@@ -35026,20 +34377,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00015')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(808.82 888.36)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00015
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="759.5"
                                 y="852.32"
@@ -35047,20 +34398,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CN-00016')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(762.5 865.08)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CN-00016
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="754.76"
                                 y="1085.5"
@@ -35068,20 +34419,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CM-16022')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(757.76 1098.27)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     CM-16022
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="831.45"
                                 y="1084.33"
@@ -35089,20 +34440,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PG-00001')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(834.45 1097.09)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     PG-00001
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="909.61"
                                 y="1084.96"
@@ -35110,20 +34461,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PG-00002')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(912.61 1097.72)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     PG-00002
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1042.71"
                                 y="1214.81"
@@ -35131,20 +34482,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RL-22014')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1045.71 1227.57)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     RL-22014
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="967.97"
                                 y="1214.1"
@@ -35152,20 +34503,20 @@ function Gm1({ params }) {
                                 height="17.49"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RL-22001')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(970.97 1226.86)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="13.75"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="13.75"
                             >
                                 <tspan x="0" y="0">
                                     RL-22001
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="998.74"
                                 y="1145.61"
@@ -35173,20 +34524,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('HR-08022')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1001.74 1162.29)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
-                                    HR-08022
+                                    HR-08202
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="998.74"
                                 y="1059.99"
@@ -35194,20 +34545,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('HR-08021')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1001.74 1076.68)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
-                                    HR-08021
+                                    HR-08201
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1154.67"
                                 y="1223.56"
@@ -35215,20 +34566,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PR-08009')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1157.67 1240.25)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PR-08009
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1154.67"
                                 y="1158.15"
@@ -35236,20 +34587,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PR-10002')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1157.67 1174.83)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PR-10002
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1154.67"
                                 y="1093.17"
@@ -35257,20 +34608,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PR-06018')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1157.67 1109.85)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PR-06018
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1154.67"
                                 y="1023.17"
@@ -35278,20 +34629,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PR-08004')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1157.67 1039.85)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PR-08004
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1154.67"
                                 y="960.14"
@@ -35299,20 +34650,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PR-05005')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1157.67 976.82)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PR-05005
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1154.67"
                                 y="890.13"
@@ -35320,20 +34671,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PR-08001')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1157.67 906.82)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PR-08001
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1154.67"
                                 y="825.15"
@@ -35341,20 +34692,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PR-08007')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1157.67 841.84)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PR-08007
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1154.67"
                                 y="755.15"
@@ -35362,20 +34713,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PR-12005')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1157.67 771.83)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PR-12005
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1154.67"
                                 y="689.46"
@@ -35383,20 +34734,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PR-16002')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1157.67 706.14)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PR-16002
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1154.67"
                                 y="619.45"
@@ -35404,20 +34755,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PR-12003')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1157.67 636.14)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PR-12003
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1154.67"
                                 y="554.47"
@@ -35425,20 +34776,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PR-12001')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1157.67 571.16)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PR-12001
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1154.67"
                                 y="484.47"
@@ -35446,20 +34797,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PR-12002')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1157.67 501.15)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PR-12002
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1154.67"
                                 y="421.34"
@@ -35467,20 +34818,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PR-10001')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1157.67 438.03)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PR-10001
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1154.67"
                                 y="351.34"
@@ -35488,20 +34839,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RR-10004')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1157.67 368.03)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     RR-10004
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1154.67"
                                 y="216.08"
@@ -35509,20 +34860,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RR-10002')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1157.67 232.76)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     RR-10002
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1154.67"
                                 y="282.88"
@@ -35530,20 +34881,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RR-10006')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1157.67 299.56)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     RR-10006
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1154.67"
                                 y="146.07"
@@ -35551,20 +34902,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RR-10005')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1157.67 162.76)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     RR-10005
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1390.67"
                                 y="1312.19"
@@ -35572,20 +34923,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-12409')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1393.67 1328.87)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-12409
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1390.67"
                                 y="1200.56"
@@ -35593,20 +34944,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-12408')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1393.67 1217.24)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-12408
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1390.67"
                                 y="1093.98"
@@ -35614,20 +34965,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-12405')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1393.67 1110.66)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-12405
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1390.67"
                                 y="991.03"
@@ -35635,20 +34986,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PF-13605')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1393.67 1007.71)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PF-13605
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1390.67"
                                 y="879.01"
@@ -35656,20 +35007,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PF-13604')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1393.67 895.7)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PF-13604
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1390.67"
                                 y="776.79"
@@ -35677,20 +35028,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PF-13603')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1393.67 793.48)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PF-13603
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1390.67"
                                 y="667.86"
@@ -35698,20 +35049,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PF-13602')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1393.67 684.54)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PF-13602
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1390.67"
                                 y="557.72"
@@ -35719,20 +35070,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PF-13601')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1393.67 574.41)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PF-13601
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1390.67"
                                 y="450.73"
@@ -35740,20 +35091,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-12502')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1393.67 467.41)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-12502
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1390.67"
                                 y="342.69"
@@ -35761,20 +35112,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-12501')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1393.67 359.37)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-12501
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1390.67"
                                 y="248.57"
@@ -35782,20 +35133,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-08501')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1393.67 265.25)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-08501
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1389.57"
                                 y="166.8"
@@ -35803,20 +35154,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('LH-08102')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1392.57 183.48)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     LH-08102
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1389.57"
                                 y="109.75"
@@ -35824,20 +35175,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('LH-08101')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1392.57 126.44)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     LH-08101
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1748.12"
                                 y="995.72"
@@ -35845,20 +35196,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-08301')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1751.12 1012.41)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-08301
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1748.12"
                                 y="897.47"
@@ -35866,20 +35217,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-10303')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1751.12 914.15)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-10303
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1748.12"
                                 y="800.51"
@@ -35887,20 +35238,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-12402')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1751.12 817.2)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-12402
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1748.12"
                                 y="699.62"
@@ -35908,20 +35259,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-12407')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1751.12 716.31)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-12407
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1748.12"
                                 y="604.65"
@@ -35929,20 +35280,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-08407')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1751.12 621.34)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-08407
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1748.12"
                                 y="515.73"
@@ -35950,20 +35301,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CM-16020')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1751.12 532.42)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     CM-16020
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1748.12"
                                 y="432.27"
@@ -35971,20 +35322,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-08415')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1751.12 448.96)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-08415
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1748.12"
                                 y="361.43"
@@ -35992,20 +35343,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('CM-16021')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1751.12 378.11)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     CM-16021
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1748.12"
                                 y="294.35"
@@ -36013,20 +35364,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-08416')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1751.12 311.04)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-08416
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1988.41"
                                 y="979.66"
@@ -36034,20 +35385,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PR-12008')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1991.41 996.34)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PR-12008
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1955.35"
                                 y="925.79"
@@ -36055,20 +35406,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PR-04003')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1958.35 942.48)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PR-04003
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1955.35"
                                 y="750.32"
@@ -36076,20 +35427,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PR-06043')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1958.35 767)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PR-06043
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1983.77"
                                 y="876.63"
@@ -36097,20 +35448,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-08414')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1986.77 893.31)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-08414
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1988.41"
                                 y="799.21"
@@ -36118,20 +35469,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PR-10013')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1991.41 815.9)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PR-10013
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1983.77"
                                 y="681.35"
@@ -36139,20 +35490,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-08409')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1986.77 698.04)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-08409
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1983.77"
                                 y="380.9"
@@ -36160,20 +35511,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-08412')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1986.77 397.58)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-08412
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1983.77"
                                 y="479.92"
@@ -36181,41 +35532,41 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-08411')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1986.77 496.6)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-08411
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1983.77"
-                                y="577.97"
+                                y="590.97"
                                 width="87.65"
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-08410')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
-                                transform="translate(1986.77 594.65)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                transform="translate(1986.77 607.65)"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-08410
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1983.77"
                                 y="210.73"
@@ -36223,20 +35574,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-08401')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1986.77 227.42)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-08401
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="1983.77"
                                 y="111.53"
@@ -36244,20 +35595,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-08402')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(1986.77 128.21)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-08402
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="2120.76"
                                 y="918.9"
@@ -36265,20 +35616,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('PR-06008')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(2123.76 935.58)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     PR-06008
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="2090.91"
                                 y="869.47"
@@ -36286,20 +35637,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-08404')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(2093.91 886.16)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-08404
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="2119.82"
                                 y="761.03"
@@ -36307,20 +35658,20 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('RR-10003')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(2122.82 777.72)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     RR-10003
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="2090.91"
                                 y="708.73"
@@ -36328,41 +35679,41 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-08403')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(2093.91 725.42)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-08403
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="2090.91"
-                                y="575.21"
+                                y="555.21"
                                 width="87.65"
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-08406')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
-                                transform="translate(2093.91 591.89)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                transform="translate(2093.91 571.89)"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-08406
                                 </tspan>
                             </text>
                         </g>
-                        <g>
+                        <g className="mytext">
                             <rect
                                 x="2090.91"
                                 y="443.26"
@@ -36370,19 +35721,167 @@ function Gm1({ params }) {
                                 height="22.65"
                                 rx="5"
                                 ry="5"
-                                fill={handleAndon('BF-08408')}
+                                fill="#e6e6e6"
                                 strokeWidth="0"
                             />
                             <text
                                 transform="translate(2093.91 459.94)"
-                                font-family="Roboto-Regular, Roboto"
-                                font-size="18.33"
+                                fill="#333"
+                                fontFamily="Roboto-Regular, Roboto"
+                                fontSize="18.33"
                             >
                                 <tspan x="0" y="0">
                                     BF-08408
                                 </tspan>
                             </text>
                         </g>
+                    </g>
+                    <g id="_503" data-name="503">
+                        <rect
+                            x="188.88"
+                            y="44.71"
+                            width="776.94"
+                            height="1553.32"
+                            rx="12"
+                            ry="12"
+                            fill="#f2f2f2"
+                            fillOpacity="0.8"
+                            stroke="#fff"
+                            strokeMiterlimit="10"
+                            strokeWidth="6"
+                        />
+                        <g>
+                            <path
+                                d="m263.44,789.64v28.73c0,10.87,4.82,15.48,11.31,15.48,7.2,0,11.81-4.75,11.81-15.48v-28.73h6.34v28.3c0,14.91-7.85,21.03-18.36,21.03-9.94,0-17.43-5.69-17.43-20.74v-28.59h6.34Z"
+                                strokeWidth="0"
+                            />
+                            <path
+                                d="m303.55,812.76c0-3.6-.07-6.55-.29-9.43h5.62l.36,5.76h.14c1.73-3.31,5.76-6.55,11.52-6.55,4.82,0,12.31,2.88,12.31,14.83v20.81h-6.34v-20.09c0-5.62-2.09-10.3-8.06-10.3-4.18,0-7.42,2.95-8.5,6.48-.29.79-.43,1.87-.43,2.95v20.96h-6.34v-25.42Z"
+                                strokeWidth="0"
+                            />
+                            <path
+                                d="m373.6,787.05v42.12c0,3.1.07,6.62.29,9h-5.69l-.29-6.05h-.14c-1.94,3.89-6.19,6.84-11.88,6.84-8.42,0-14.91-7.13-14.91-17.71-.07-11.59,7.13-18.72,15.63-18.72,5.33,0,8.93,2.52,10.51,5.33h.14v-20.81h6.34Zm-6.34,30.46c0-.79-.07-1.87-.29-2.66-.94-4.03-4.39-7.35-9.14-7.35-6.55,0-10.44,5.76-10.44,13.46,0,7.06,3.46,12.89,10.3,12.89,4.25,0,8.14-2.81,9.29-7.56.22-.87.29-1.73.29-2.74v-6.05Z"
+                                strokeWidth="0"
+                            />
+                            <path
+                                d="m387.64,821.9c.14,8.57,5.62,12.1,11.95,12.1,4.54,0,7.27-.79,9.65-1.8l1.08,4.54c-2.23,1.01-6.05,2.16-11.59,2.16-10.73,0-17.14-7.06-17.14-17.57s6.19-18.79,16.35-18.79c11.38,0,14.4,10.01,14.4,16.42,0,1.3-.14,2.3-.22,2.95h-24.48Zm18.58-4.54c.07-4.03-1.66-10.3-8.78-10.3-6.41,0-9.22,5.9-9.72,10.3h18.51Z"
+                                strokeWidth="0"
+                            />
+                            <path
+                                d="m420.19,814.2c0-4.1-.07-7.63-.29-10.87h5.54l.22,6.84h.29c1.58-4.68,5.4-7.63,9.65-7.63.72,0,1.22.07,1.8.22v5.98c-.65-.14-1.3-.22-2.16-.22-4.46,0-7.63,3.38-8.5,8.14-.14.87-.29,1.87-.29,2.95v18.58h-6.26v-23.98Z"
+                                strokeWidth="0"
+                            />
+                            <path
+                                d="m459.21,790.29c3.82-.58,8.35-1.01,13.32-1.01,9,0,15.41,2.09,19.66,6.05,4.32,3.96,6.84,9.58,6.84,17.43s-2.45,14.4-6.98,18.87c-4.54,4.54-12.02,6.98-21.46,6.98-4.46,0-8.21-.22-11.38-.58v-47.74Zm6.26,42.92c1.58.29,3.89.36,6.34.36,13.39,0,20.67-7.49,20.67-20.59.07-11.45-6.41-18.72-19.66-18.72-3.24,0-5.69.29-7.34.65v38.31Z"
+                                strokeWidth="0"
+                            />
+                            <path
+                                d="m510.76,821.9c.14,8.57,5.62,12.1,11.95,12.1,4.54,0,7.27-.79,9.65-1.8l1.08,4.54c-2.23,1.01-6.05,2.16-11.59,2.16-10.73,0-17.14-7.06-17.14-17.57s6.19-18.79,16.35-18.79c11.38,0,14.4,10.01,14.4,16.42,0,1.3-.14,2.3-.22,2.95h-24.48Zm18.58-4.54c.07-4.03-1.66-10.3-8.78-10.3-6.41,0-9.22,5.9-9.72,10.3h18.51Z"
+                                strokeWidth="0"
+                            />
+                            <path
+                                d="m545.75,803.32l6.84,19.59c1.15,3.17,2.09,6.05,2.81,8.93h.22c.79-2.88,1.8-5.76,2.95-8.93l6.77-19.59h6.62l-13.68,34.85h-6.05l-13.25-34.85h6.77Z"
+                                strokeWidth="0"
+                            />
+                            <path
+                                d="m580.74,821.9c.14,8.57,5.62,12.1,11.95,12.1,4.54,0,7.27-.79,9.65-1.8l1.08,4.54c-2.23,1.01-6.05,2.16-11.59,2.16-10.73,0-17.14-7.06-17.14-17.57s6.19-18.79,16.35-18.79c11.38,0,14.4,10.01,14.4,16.42,0,1.3-.14,2.3-.22,2.95h-24.48Zm18.58-4.54c.07-4.03-1.66-10.3-8.78-10.3-6.41,0-9.22,5.9-9.72,10.3h18.51Z"
+                                strokeWidth="0"
+                            />
+                            <path
+                                d="m613.29,787.05h6.34v51.12h-6.34v-51.12Z"
+                                strokeWidth="0"
+                            />
+                            <path
+                                d="m661.82,820.46c0,12.89-8.93,18.51-17.35,18.51-9.43,0-16.71-6.91-16.71-17.93,0-11.66,7.63-18.51,17.28-18.51s16.78,7.27,16.78,17.93Zm-27.65.36c0,7.63,4.39,13.39,10.58,13.39s10.58-5.69,10.58-13.54c0-5.9-2.95-13.39-10.44-13.39s-10.73,6.91-10.73,13.54Z"
+                                strokeWidth="0"
+                            />
+                            <path
+                                d="m669.8,814.7c0-4.46-.14-8.06-.29-11.38h5.69l.29,5.98h.14c2.59-4.25,6.7-6.77,12.39-6.77,8.42,0,14.76,7.13,14.76,17.71,0,12.53-7.63,18.72-15.84,18.72-4.61,0-8.64-2.02-10.73-5.47h-.14v18.94h-6.26v-37.73Zm6.26,9.29c0,.94.14,1.8.29,2.59,1.15,4.39,4.97,7.42,9.5,7.42,6.7,0,10.58-5.47,10.58-13.46,0-6.98-3.67-12.96-10.37-12.96-4.32,0-8.35,3.1-9.58,7.85-.22.79-.43,1.73-.43,2.59v5.98Z"
+                                strokeWidth="0"
+                            />
+                            <path
+                                d="m710.77,812.76c0-3.6-.07-6.55-.29-9.43h5.54l.29,5.62h.22c1.94-3.31,5.18-6.41,10.94-6.41,4.75,0,8.35,2.88,9.86,6.99h.14c1.08-1.95,2.45-3.46,3.89-4.54,2.09-1.58,4.39-2.45,7.71-2.45,4.61,0,11.45,3.03,11.45,15.12v20.52h-6.19v-19.73c0-6.7-2.45-10.73-7.56-10.73-3.6,0-6.41,2.66-7.49,5.76-.29.87-.5,2.02-.5,3.17v21.53h-6.19v-20.88c0-5.54-2.45-9.58-7.27-9.58-3.96,0-6.84,3.17-7.85,6.34-.36.94-.5,2.02-.5,3.1v21.03h-6.19v-25.42Z"
+                                strokeWidth="0"
+                            />
+                            <path
+                                d="m774.35,821.9c.14,8.57,5.62,12.1,11.95,12.1,4.54,0,7.27-.79,9.65-1.8l1.08,4.54c-2.23,1.01-6.05,2.16-11.59,2.16-10.73,0-17.14-7.06-17.14-17.57s6.19-18.79,16.35-18.79c11.38,0,14.4,10.01,14.4,16.42,0,1.3-.14,2.3-.22,2.95h-24.48Zm18.58-4.54c.07-4.03-1.66-10.3-8.78-10.3-6.41,0-9.22,5.9-9.72,10.3h18.51Z"
+                                strokeWidth="0"
+                            />
+                            <path
+                                d="m806.89,812.76c0-3.6-.07-6.55-.29-9.43h5.62l.36,5.76h.14c1.73-3.31,5.76-6.55,11.52-6.55,4.82,0,12.31,2.88,12.31,14.83v20.81h-6.34v-20.09c0-5.62-2.09-10.3-8.07-10.3-4.18,0-7.42,2.95-8.5,6.48-.29.79-.43,1.87-.43,2.95v20.96h-6.34v-25.42Z"
+                                strokeWidth="0"
+                            />
+                            <path
+                                d="m854.19,793.32v10.01h9.07v4.82h-9.07v18.79c0,4.32,1.22,6.77,4.75,6.77,1.66,0,2.88-.22,3.67-.43l.29,4.75c-1.22.5-3.17.86-5.62.86-2.95,0-5.33-.94-6.84-2.66-1.8-1.87-2.45-4.97-2.45-9.07v-19.01h-5.4v-4.82h5.4v-8.35l6.19-1.66Z"
+                                strokeWidth="0"
+                            />
+                        </g>
+                    </g>
+                    <g>
+                        <path
+                            d="m263.44,789.64v28.73c0,10.87,4.82,15.48,11.31,15.48,7.2,0,11.81-4.75,11.81-15.48v-28.73h6.34v28.3c0,14.91-7.85,21.03-18.36,21.03-9.94,0-17.43-5.69-17.43-20.74v-28.59h6.34Z"
+                            strokeWidth="0"
+                        />
+                        <path
+                            d="m303.55,812.76c0-3.6-.07-6.55-.29-9.43h5.62l.36,5.76h.14c1.73-3.31,5.76-6.55,11.52-6.55,4.82,0,12.31,2.88,12.31,14.83v20.81h-6.34v-20.09c0-5.62-2.09-10.3-8.06-10.3-4.18,0-7.42,2.95-8.5,6.48-.29.79-.43,1.87-.43,2.95v20.96h-6.34v-25.42Z"
+                            strokeWidth="0"
+                        />
+                        <path
+                            d="m373.6,787.05v42.12c0,3.1.07,6.62.29,9h-5.69l-.29-6.05h-.14c-1.94,3.89-6.19,6.84-11.88,6.84-8.42,0-14.91-7.13-14.91-17.71-.07-11.59,7.13-18.72,15.63-18.72,5.33,0,8.93,2.52,10.51,5.33h.14v-20.81h6.34Zm-6.34,30.46c0-.79-.07-1.87-.29-2.66-.94-4.03-4.39-7.35-9.14-7.35-6.55,0-10.44,5.76-10.44,13.46,0,7.06,3.46,12.89,10.3,12.89,4.25,0,8.14-2.81,9.29-7.56.22-.87.29-1.73.29-2.74v-6.05Z"
+                            strokeWidth="0"
+                        />
+                        <path
+                            d="m387.64,821.9c.14,8.57,5.62,12.1,11.95,12.1,4.54,0,7.27-.79,9.65-1.8l1.08,4.54c-2.23,1.01-6.05,2.16-11.59,2.16-10.73,0-17.14-7.06-17.14-17.57s6.19-18.79,16.35-18.79c11.38,0,14.4,10.01,14.4,16.42,0,1.3-.14,2.3-.22,2.95h-24.48Zm18.58-4.54c.07-4.03-1.66-10.3-8.78-10.3-6.41,0-9.22,5.9-9.72,10.3h18.51Z"
+                            strokeWidth="0"
+                        />
+                        <path
+                            d="m420.19,814.2c0-4.1-.07-7.63-.29-10.87h5.54l.22,6.84h.29c1.58-4.68,5.4-7.63,9.65-7.63.72,0,1.22.07,1.8.22v5.98c-.65-.14-1.3-.22-2.16-.22-4.46,0-7.63,3.38-8.5,8.14-.14.87-.29,1.87-.29,2.95v18.58h-6.26v-23.98Z"
+                            strokeWidth="0"
+                        />
+                        <path
+                            d="m459.21,790.29c3.82-.58,8.35-1.01,13.32-1.01,9,0,15.41,2.09,19.66,6.05,4.32,3.96,6.84,9.58,6.84,17.43s-2.45,14.4-6.98,18.87c-4.54,4.54-12.02,6.98-21.46,6.98-4.46,0-8.21-.22-11.38-.58v-47.74Zm6.26,42.92c1.58.29,3.89.36,6.34.36,13.39,0,20.67-7.49,20.67-20.59.07-11.45-6.41-18.72-19.66-18.72-3.24,0-5.69.29-7.34.65v38.31Z"
+                            strokeWidth="0"
+                        />
+                        <path
+                            d="m510.76,821.9c.14,8.57,5.62,12.1,11.95,12.1,4.54,0,7.27-.79,9.65-1.8l1.08,4.54c-2.23,1.01-6.05,2.16-11.59,2.16-10.73,0-17.14-7.06-17.14-17.57s6.19-18.79,16.35-18.79c11.38,0,14.4,10.01,14.4,16.42,0,1.3-.14,2.3-.22,2.95h-24.48Zm18.58-4.54c.07-4.03-1.66-10.3-8.78-10.3-6.41,0-9.22,5.9-9.72,10.3h18.51Z"
+                            strokeWidth="0"
+                        />
+                        <path
+                            d="m545.75,803.32l6.84,19.59c1.15,3.17,2.09,6.05,2.81,8.93h.22c.79-2.88,1.8-5.76,2.95-8.93l6.77-19.59h6.62l-13.68,34.85h-6.05l-13.25-34.85h6.77Z"
+                            strokeWidth="0"
+                        />
+                        <path
+                            d="m580.74,821.9c.14,8.57,5.62,12.1,11.95,12.1,4.54,0,7.27-.79,9.65-1.8l1.08,4.54c-2.23,1.01-6.05,2.16-11.59,2.16-10.73,0-17.14-7.06-17.14-17.57s6.19-18.79,16.35-18.79c11.38,0,14.4,10.01,14.4,16.42,0,1.3-.14,2.3-.22,2.95h-24.48Zm18.58-4.54c.07-4.03-1.66-10.3-8.78-10.3-6.41,0-9.22,5.9-9.72,10.3h18.51Z"
+                            strokeWidth="0"
+                        />
+                        <path
+                            d="m613.29,787.05h6.34v51.12h-6.34v-51.12Z"
+                            strokeWidth="0"
+                        />
+                        <path
+                            d="m661.82,820.46c0,12.89-8.93,18.51-17.35,18.51-9.43,0-16.71-6.91-16.71-17.93,0-11.66,7.63-18.51,17.28-18.51s16.78,7.27,16.78,17.93Zm-27.65.36c0,7.63,4.39,13.39,10.58,13.39s10.58-5.69,10.58-13.54c0-5.9-2.95-13.39-10.44-13.39s-10.73,6.91-10.73,13.54Z"
+                            strokeWidth="0"
+                        />
+                        <path
+                            d="m669.8,814.7c0-4.46-.14-8.06-.29-11.38h5.69l.29,5.98h.14c2.59-4.25,6.7-6.77,12.39-6.77,8.42,0,14.76,7.13,14.76,17.71,0,12.53-7.63,18.72-15.84,18.72-4.61,0-8.64-2.02-10.73-5.47h-.14v18.94h-6.26v-37.73Zm6.26,9.29c0,.94.14,1.8.29,2.59,1.15,4.39,4.97,7.42,9.5,7.42,6.7,0,10.58-5.47,10.58-13.46,0-6.98-3.67-12.96-10.37-12.96-4.32,0-8.35,3.1-9.58,7.85-.22.79-.43,1.73-.43,2.59v5.98Z"
+                            strokeWidth="0"
+                        />
+                        <path
+                            d="m710.77,812.76c0-3.6-.07-6.55-.29-9.43h5.54l.29,5.62h.22c1.94-3.31,5.18-6.41,10.94-6.41,4.75,0,8.35,2.88,9.86,6.99h.14c1.08-1.95,2.45-3.46,3.89-4.54,2.09-1.58,4.39-2.45,7.71-2.45,4.61,0,11.45,3.03,11.45,15.12v20.52h-6.19v-19.73c0-6.7-2.45-10.73-7.56-10.73-3.6,0-6.41,2.66-7.49,5.76-.29.87-.5,2.02-.5,3.17v21.53h-6.19v-20.88c0-5.54-2.45-9.58-7.27-9.58-3.96,0-6.84,3.17-7.85,6.34-.36.94-.5,2.02-.5,3.1v21.03h-6.19v-25.42Z"
+                            strokeWidth="0"
+                        />
+                        <path
+                            d="m774.35,821.9c.14,8.57,5.62,12.1,11.95,12.1,4.54,0,7.27-.79,9.65-1.8l1.08,4.54c-2.23,1.01-6.05,2.16-11.59,2.16-10.73,0-17.14-7.06-17.14-17.57s6.19-18.79,16.35-18.79c11.38,0,14.4,10.01,14.4,16.42,0,1.3-.14,2.3-.22,2.95h-24.48Zm18.58-4.54c.07-4.03-1.66-10.3-8.78-10.3-6.41,0-9.22,5.9-9.72,10.3h18.51Z"
+                            strokeWidth="0"
+                        />
+                        <path
+                            d="m806.89,812.76c0-3.6-.07-6.55-.29-9.43h5.62l.36,5.76h.14c1.73-3.31,5.76-6.55,11.52-6.55,4.82,0,12.31,2.88,12.31,14.83v20.81h-6.34v-20.09c0-5.62-2.09-10.3-8.07-10.3-4.18,0-7.42,2.95-8.5,6.48-.29.79-.43,1.87-.43,2.95v20.96h-6.34v-25.42Z"
+                            strokeWidth="0"
+                        />
+                        <path
+                            d="m854.19,793.32v10.01h9.07v4.82h-9.07v18.79c0,4.32,1.22,6.77,4.75,6.77,1.66,0,2.88-.22,3.67-.43l.29,4.75c-1.22.5-3.17.86-5.62.86-2.95,0-5.33-.94-6.84-2.66-1.8-1.87-2.45-4.97-2.45-9.07v-19.01h-5.4v-4.82h5.4v-8.35l6.19-1.66Z"
+                            strokeWidth="0"
+                        />
                     </g>
                 </g>
             </svg>

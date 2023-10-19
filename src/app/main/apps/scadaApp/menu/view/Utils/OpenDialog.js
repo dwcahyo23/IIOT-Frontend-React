@@ -6,6 +6,9 @@ import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
+import { DateTimePicker } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { showMessage } from 'app/store/fuse/messageSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { upZbSlice, zbUpsert } from '../../../store/machinesSlice'
@@ -13,6 +16,7 @@ import { isArray } from 'lodash'
 import dayjs from 'dayjs'
 import _ from 'lodash'
 import { selectScada } from '../../../store/machinesSlice'
+import { getQuest } from '../../../store/questSlice'
 
 function OpenDialog({ params }) {
     const dispatch = useDispatch()
@@ -107,9 +111,22 @@ function OpenDialog({ params }) {
         })
     }
 
+    function handleQuest() {
+        const data = getValues()
+        const query = `"SELECT min(count), max(count), max(count)-min(count) as total from zbSens where id = '${
+            data.id_zb_sens
+        }' and ts BETWEEN '${dayjs(data.start).format()}' AND '${dayjs(
+            data.stop
+        ).format()}'"`
+
+        dispatch(getQuest({ query: query })).then((action) => {
+            console.log(action.payload)
+        })
+    }
+
     return (
         <Box className="flex flex-col flex-auto p-32">
-            <Grid container spacing={2}>
+            {/* <Grid container spacing={2}>
                 <Grid item xs={4}>
                     <Controller
                         name="id_production"
@@ -167,7 +184,7 @@ function OpenDialog({ params }) {
                         )}
                     />
                 </Grid>
-            </Grid>
+            </Grid> */}
             <Grid container spacing={2}>
                 <Grid item xs={4}>
                     <Controller
@@ -235,8 +252,62 @@ function OpenDialog({ params }) {
                     />
                 </Grid>
             </Grid>
+            <Grid container spacing={2}>
+                <Grid item xs={4}>
+                    <Controller
+                        name="start"
+                        control={control}
+                        render={({ field }) => (
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DateTimePicker
+                                    {...field}
+                                    ampm={false}
+                                    className="mt-8 mb-16"
+                                    id="start"
+                                    value={dayjs(field.value)}
+                                    label="Start"
+                                    sx={{
+                                        width: '100%',
+                                    }}
+                                    slotProps={{
+                                        popper: {
+                                            disablePortal: true,
+                                        },
+                                    }}
+                                />
+                            </LocalizationProvider>
+                        )}
+                    />
+                </Grid>
+                <Grid item xs={4}>
+                    <Controller
+                        name="end"
+                        control={control}
+                        render={({ field }) => (
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DateTimePicker
+                                    {...field}
+                                    ampm={false}
+                                    className="mt-8 mb-16"
+                                    id="date_finish"
+                                    value={dayjs(field.value)}
+                                    label="End"
+                                    sx={{
+                                        width: '100%',
+                                    }}
+                                    slotProps={{
+                                        popper: {
+                                            disablePortal: true,
+                                        },
+                                    }}
+                                />
+                            </LocalizationProvider>
+                        )}
+                    />
+                </Grid>
+            </Grid>
 
-            {totalHours && (
+            {/* {totalHours && (
                 <div className="grid grid-cols-12 gap-x-3 my-8 p-24 border rounded-lg ">
                     <Typography className="col-span-3 w-11/12 text-xl font-normal">
                         Running : {_.toNumber(totalHours.none).toFixed(1)} h
@@ -252,7 +323,7 @@ function OpenDialog({ params }) {
                         {_.toNumber(totalHours.maintenance).toFixed(1)} h
                     </Typography>
                 </div>
-            )}
+            )} */}
 
             {hasDisable && <Typography>Machine unconnected</Typography>}
             <Grid container spacing={2}>
@@ -261,10 +332,11 @@ function OpenDialog({ params }) {
                         className="whitespace-nowrap mb-16"
                         variant="contained"
                         color="secondary"
-                        onClick={handleSave}
+                        // onClick={handleSave}
+                        onClick={handleQuest}
                         disabled={hasDisable}
                     >
-                        Save
+                        Submit
                     </Button>
                 </Grid>
             </Grid>

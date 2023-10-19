@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, forwardRef } from 'react'
 import { useDeepCompareEffect } from '@fuse/hooks'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
@@ -11,7 +11,8 @@ import { Link, useParams } from 'react-router-dom'
 import { getMnOne, selectMnOne } from '../../store/mnOneSlice'
 import dayjs from 'dayjs'
 
-function PrintApSheet({}) {
+// function PrintApSheet() {
+const PrintApSheet = forwardRef((ref, props) => {
     const dispatch = useDispatch()
     const [noPrint, setNoPrint] = useState(false)
     const routeParams = useParams()
@@ -409,7 +410,7 @@ function PrintApSheet({}) {
             )}
         </div>
     )
-}
+})
 
 export default PrintApSheet
 

@@ -1,13 +1,21 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Box, Grid, TextField, MenuItem, Button } from '@mui/material'
 import { Controller, useFormContext, useWatch } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import dayjs from 'dayjs'
+import ReactToPrint from 'react-to-print'
+import PrintApSheet from './PrintApSheet'
+import ApSheetPrint from './print/ApSheetPrint'
 
-function ApSheet() {
+function ApSheet({ params }) {
     const methods = useFormContext()
     const { control, formState } = methods
     const { errors } = formState
+    const componentRef = useRef()
+
+    useEffect(() => {
+        console.log(params)
+    }, [])
 
     const machine = useWatch({
         control,
@@ -200,7 +208,7 @@ function ApSheet() {
             <Grid container spacing={2}>
                 <Grid item xs={4}>
                     {/* ${params.uuid}/${params.sheet_no}/${params.uuid_request}` */}
-                    <Button
+                    {/* <Button
                         to={`/dashboards/maintenance/print/${machine}/${sheet}`}
                         component={Link}
                         target="_blank"
@@ -209,7 +217,13 @@ function ApSheet() {
                         color="secondary"
                     >
                         Print
-                    </Button>
+                    </Button> */}
+
+                    <ReactToPrint
+                        trigger={() => <button>Print!</button>}
+                        content={() => componentRef.current}
+                    />
+                    <ApSheetPrint ref={componentRef} text={params} />
                 </Grid>
             </Grid>
         </Box>

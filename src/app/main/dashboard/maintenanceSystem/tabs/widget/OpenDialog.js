@@ -166,7 +166,7 @@ function OpenDialog({ data, header, apOptions, parentName }) {
 
                 <TabPanel value="3">
                     <div style={{ width: 900, height: 500 }}>
-                        <ApSheet />
+                        <ApSheet params={dataMnOne} />
                     </div>
                 </TabPanel>
 
