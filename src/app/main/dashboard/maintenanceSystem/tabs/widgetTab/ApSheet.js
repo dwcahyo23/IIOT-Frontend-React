@@ -218,12 +218,12 @@ function ApSheet({ params }) {
                     >
                         Print
                     </Button> */}
-
+                    {/* 
                     <ReactToPrint
                         trigger={() => <button>Print!</button>}
                         content={() => componentRef.current}
                     />
-                    <ApSheetPrint ref={componentRef} text={params} />
+                    <ApSheetPrint ref={componentRef} text={params} /> */}
                 </Grid>
             </Grid>
         </Box>
