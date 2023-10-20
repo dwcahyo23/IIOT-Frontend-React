@@ -4,7 +4,7 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import dayjs from 'dayjs'
 import ReactToPrint from 'react-to-print'
-import PrintApSheet from './PrintApSheet'
+
 import ApSheetPrint from './print/ApSheetPrint'
 
 function ApSheet({ params }) {
@@ -15,21 +15,19 @@ function ApSheet({ params }) {
 
     useEffect(() => {
         console.log(params)
+        console.log(componentRef)
+    })
+
+    useEffect(() => {
+        const isMre = _.some(params.requestList, (val) => {
+            if (val.mre_request.length > 3) return val
+        })
+        console.log(isMre)
     }, [])
-
-    const machine = useWatch({
-        control,
-        name: 'machine.uuid',
-    })
-
-    const sheet = useWatch({
-        control,
-        name: 'sheet.sheet_no',
-    })
 
     return (
         <Box>
-            <Grid container spacing={2}>
+            {/* <Grid container spacing={2}>
                 <Grid item xs={4}>
                     <Controller
                         name="sheet.sheet_no"
@@ -204,26 +202,22 @@ function ApSheet({ params }) {
                         )}
                     />
                 </Grid>
-            </Grid>
+            </Grid> */}
             <Grid container spacing={2}>
-                <Grid item xs={4}>
-                    {/* ${params.uuid}/${params.sheet_no}/${params.uuid_request}` */}
-                    {/* <Button
-                        to={`/dashboards/maintenance/print/${machine}/${sheet}`}
-                        component={Link}
-                        target="_blank"
-                        className="px-16 min-w-100"
-                        variant="contained"
-                        color="secondary"
-                    >
-                        Print
-                    </Button> */}
-                    {/* 
+                <Grid item xs={12}>
                     <ReactToPrint
-                        trigger={() => <button>Print!</button>}
+                        trigger={() => (
+                            <Button
+                                className="px-16 min-w-100"
+                                variant="contained"
+                                color="secondary"
+                            >
+                                Print
+                            </Button>
+                        )}
                         content={() => componentRef.current}
                     />
-                    <ApSheetPrint ref={componentRef} text={params} /> */}
+                    <ApSheetPrint ref={componentRef} params={params} />
                 </Grid>
             </Grid>
         </Box>
