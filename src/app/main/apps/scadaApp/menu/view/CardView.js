@@ -52,9 +52,9 @@ function CardView({ params, dialog }) {
     return (
         <Card className="flex flex-col shadow">
             <CardActionArea
-            // onClick={() => {
-            //     dialog({ set: true, data: params })
-            // }}
+                onClick={() => {
+                    dialog({ set: true, data: params })
+                }}
             >
                 <CardHeader
                     className="items-center py-8 px-16"

@@ -17,12 +17,14 @@ import dayjs from 'dayjs'
 import _ from 'lodash'
 import { selectScada } from '../../../store/machinesSlice'
 import { getQuest } from '../../../store/questSlice'
+import axios from 'axios'
 
 function OpenDialog({ params }) {
     const dispatch = useDispatch()
     const data = useSelector(selectScada)
     const [hasDisable, setHasDisable] = useState(false)
     const [totalHours, setTotalHours] = useState(null)
+    const [getQuery, setGetQuery] = useState(null)
 
     useEffect(() => {
         // console.log(params)
@@ -53,13 +55,13 @@ function OpenDialog({ params }) {
             })
         }
 
-        console.log(typeof total.none)
+        // console.log(typeof total.none)
         setTotalHours(total)
 
         // console.log(total)
     }, [data])
 
-    const { control, getValues } = useForm({
+    const { control, getValues, setValue } = useForm({
         defaultValues: {
             stop_reason: 'none',
             shift_production: 1,
@@ -71,6 +73,9 @@ function OpenDialog({ params }) {
             target_zb_sens: params.zbConn?.target_zb_sens || '',
             lock: params.zbConn?.lock || 0,
             id_production: params.zbConn?.id_production || '',
+            ts1: dayjs(),
+            ts2: dayjs(),
+            counter: 0,
         },
     })
 
@@ -81,6 +86,15 @@ function OpenDialog({ params }) {
             setHasDisable(false)
         }
     }, [])
+
+    useEffect(() => {
+        console.log(getQuery)
+        _.isNull(getQuery) == false &&
+            setValue(
+                'counter',
+                _.isNull(getQuery[0].total) ? 0 : getQuery[0].total
+            )
+    }, [getQuery])
 
     function handleSave() {
         const data = [getValues()]
@@ -113,14 +127,27 @@ function OpenDialog({ params }) {
 
     function handleQuest() {
         const data = getValues()
-        const query = `"SELECT min(count), max(count), max(count)-min(count) as total from zbSens where id = '${
-            data.id_zb_sens
-        }' and ts BETWEEN '${dayjs(data.start).format()}' AND '${dayjs(
-            data.stop
-        ).format()}'"`
+        console.log(data)
 
-        dispatch(getQuest({ query: query })).then((action) => {
-            console.log(action.payload)
+        dispatch(getQuest(data)).then((action) => {
+            if (!action.payload.errors) {
+                // console.log(action.payload)
+                setGetQuery(action.payload)
+                dispatch(
+                    showMessage({
+                        message: 'Get query successfully',
+                        variant: 'success',
+                    })
+                )
+            } else {
+                const errors = action.payload.errors[0].message
+                dispatch(
+                    showMessage({
+                        message: errors,
+                        variant: 'error',
+                    })
+                )
+            }
         })
     }
 
@@ -255,16 +282,17 @@ function OpenDialog({ params }) {
             <Grid container spacing={2}>
                 <Grid item xs={4}>
                     <Controller
-                        name="start"
+                        name="ts1"
                         control={control}
+                        // defaultValue={dayjs()}
                         render={({ field }) => (
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DateTimePicker
                                     {...field}
                                     ampm={false}
                                     className="mt-8 mb-16"
-                                    id="start"
-                                    value={dayjs(field.value)}
+                                    id="ts1"
+                                    // value={dayjs(field.value)}
                                     label="Start"
                                     sx={{
                                         width: '100%',
@@ -281,16 +309,17 @@ function OpenDialog({ params }) {
                 </Grid>
                 <Grid item xs={4}>
                     <Controller
-                        name="end"
+                        name="ts2"
                         control={control}
+                        // defaultValue={dayjs()}
                         render={({ field }) => (
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DateTimePicker
                                     {...field}
                                     ampm={false}
                                     className="mt-8 mb-16"
-                                    id="date_finish"
-                                    value={dayjs(field.value)}
+                                    id="ts2"
+                                    // value={dayjs(field.value)}
                                     label="End"
                                     sx={{
                                         width: '100%',
@@ -302,6 +331,26 @@ function OpenDialog({ params }) {
                                     }}
                                 />
                             </LocalizationProvider>
+                        )}
+                    />
+                </Grid>
+                <Grid item xs={4}>
+                    <Controller
+                        name="counter"
+                        control={control}
+                        // defaultValue={0}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                className="mt-8 mb-16"
+                                label="Count"
+                                id="counter"
+                                variant="outlined"
+                                fullWidth
+                                InputProps={{
+                                    readOnly: true,
+                                }}
+                            />
                         )}
                     />
                 </Grid>
