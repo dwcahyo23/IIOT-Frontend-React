@@ -163,13 +163,13 @@ function homeScada() {
                                     }}
                                 >
                                     <Typography className="text-16 sm:text-20 truncate font-semibold">
-                                        SDA
+                                        Andon System
                                     </Typography>
                                     <Typography
                                         variant="caption"
                                         className="font-medium"
                                     >
-                                        Supervisory Data Acquisition
+                                        Andon System Garuda Metalindo
                                     </Typography>
                                 </motion.div>
                             </div>

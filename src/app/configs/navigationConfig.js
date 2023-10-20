@@ -63,7 +63,7 @@ const navigationConfig = [
             },
             {
                 id: 'apps.scadaApp',
-                title: 'SDA',
+                title: 'Andon System',
                 type: 'item',
                 icon: 'heroicons-outline:status-online',
                 url: '/apps/scadaApp/home',
