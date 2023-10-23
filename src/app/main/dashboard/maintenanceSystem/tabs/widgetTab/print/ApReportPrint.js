@@ -13,17 +13,55 @@ import _ from 'lodash'
 
 const ApReportPrint = forwardRef((props, ref) => {
     const data = props.params
+
+    const renderList = () => {
+        const listItems = []
+
+        for (let i = 0; i < 13; i++) {
+            listItems.push(
+                <tr key={i}>
+                    <td className="border border-black" height="22"></td>
+                    <td className="border border-black"></td>
+                    <td className="border border-black"></td>
+                    <td className="border border-black"></td>
+                    <td className="border border-black"></td>
+                    <td className="border border-black"></td>
+                    <td className="border border-black"></td>
+                </tr>
+            )
+        }
+
+        return listItems
+    }
+
+    const renderListSP = () => {
+        const listItems = []
+
+        for (let i = 0; i < 5; i++) {
+            listItems.push(
+                <tr key={i}>
+                    <td className="border border-black" height="22"></td>
+                    <td className="border border-black"></td>
+                    <td className="border border-black"></td>
+                    <td className="border border-black"></td>
+                </tr>
+            )
+        }
+
+        return listItems
+    }
+
     return (
         // className="hidden print:block"
         <div ref={ref} className="hidden print:block">
             <div className="inline-block p-16 sm:p-16 text-left print:p-0 w-full overflow-auto">
-                <div className="w-xl p-16 mx-16 rounded-2xl shadow print:w-auto print:rounded-none print:shadow-none print:bg-transparent">
-                    <div className="grid grid-cols-12 gap-x-4 my-16">
+                <div className="w-xl p-16 mx-16 rounded-2xl shadow print:w-1/2 print:rounded-none print:shadow-none print:bg-transparent">
+                    <div className="grid grid-cols-12 gap-x-4 my-32">
                         <div className="col-span-4">
                             <img className="w-11/12" src={logo} alt="logo" />
                         </div>
                     </div>
-                    <div className="grid grid-cols-12 gap-x-4 my-16">
+                    <div className="grid grid-cols-12 gap-x-4 my-32">
                         <Typography className="col-span-6 text-xl font-medium"></Typography>
 
                         <Typography
@@ -34,12 +72,12 @@ const ApReportPrint = forwardRef((props, ref) => {
                         </Typography>
                     </div>
 
-                    <table className="table-auto my-16 w-full border-collapse border border-slate-400">
+                    <table className="table-auto my-32 w-full border-collapse border border-black">
                         <tbody>
                             <tr>
                                 <td
                                     rowSpan="3"
-                                    className="w-3/12 border border-slate-300"
+                                    className="w-3/12 border border-black"
                                 >
                                     <Typography
                                         className="font-medium ml-5"
@@ -50,7 +88,7 @@ const ApReportPrint = forwardRef((props, ref) => {
                                 </td>
                                 <td
                                     rowSpan="3"
-                                    className="w-3/12 border border-slate-300"
+                                    className="w-3/12 border border-black"
                                 >
                                     <Typography
                                         className="font-medium ml-5"
@@ -61,7 +99,7 @@ const ApReportPrint = forwardRef((props, ref) => {
                                 </td>
                                 <td
                                     colSpan="3"
-                                    className="w-3/12 border border-slate-300"
+                                    className="w-3/12 border border-black"
                                 >
                                     <Typography
                                         className="font-medium ml-5"
@@ -72,7 +110,7 @@ const ApReportPrint = forwardRef((props, ref) => {
                                 </td>
                                 <td
                                     rowSpan="3"
-                                    className="w-3/12 border border-slate-300"
+                                    className="w-3/12 border border-black"
                                 >
                                     <Typography
                                         className="font-medium ml-5"
@@ -83,7 +121,7 @@ const ApReportPrint = forwardRef((props, ref) => {
                                 </td>
                                 <td
                                     rowSpan="3"
-                                    className="w-3/12 border border-slate-300"
+                                    className="w-3/12 border border-black"
                                 >
                                     <Typography
                                         className="font-medium ml-5"
@@ -96,7 +134,7 @@ const ApReportPrint = forwardRef((props, ref) => {
                             <tr>
                                 <td
                                     rowSpan="2"
-                                    className="w-6/12 border border-slate-300"
+                                    className="w-6/12 border border-black"
                                 >
                                     <Typography
                                         className="font-medium ml-5"
@@ -107,7 +145,7 @@ const ApReportPrint = forwardRef((props, ref) => {
                                 </td>
                                 <td
                                     colSpan="2"
-                                    className="w-6/12 border border-slate-300"
+                                    className="w-6/12 border border-black"
                                 >
                                     <Typography
                                         className="font-medium ml-5"
@@ -118,7 +156,7 @@ const ApReportPrint = forwardRef((props, ref) => {
                                 </td>
                             </tr>
                             <tr>
-                                <td className="w-6/12 border border-slate-300">
+                                <td className="w-6/12 border border-black">
                                     <Typography
                                         className="font-medium ml-5"
                                         align="center"
@@ -126,7 +164,7 @@ const ApReportPrint = forwardRef((props, ref) => {
                                         INTERNAL
                                     </Typography>
                                 </td>
-                                <td className="w-6/12 border border-slate-300">
+                                <td className="w-6/12 border border-black">
                                     <Typography
                                         className="font-medium ml-5"
                                         align="center"
@@ -136,7 +174,7 @@ const ApReportPrint = forwardRef((props, ref) => {
                                 </td>
                             </tr>
                             <tr>
-                                <td className="border border-slate-300">
+                                <td className="border border-black">
                                     <Typography className="font-medium ml-5">
                                         {_.isNull(data.report?.date_report)
                                             ? '-'
@@ -145,28 +183,30 @@ const ApReportPrint = forwardRef((props, ref) => {
                                               ).format('DD-MM-YYYY')}
                                     </Typography>
                                 </td>
-                                <td className="border border-slate-300">
+                                <td className="border border-black">
                                     <Typography className="font-medium ml-5">
                                         {_.capitalize(data.report?.user_rep2)}
                                     </Typography>
                                 </td>
-                                <td className="border border-slate-300">
+                                <td className="border border-black">
                                     <Typography className="font-medium ml-5">
                                         {_.capitalize(data.report?.corrective)}
                                     </Typography>
                                 </td>
-                                <td className="border border-slate-300"></td>
-                                <td className="border border-slate-300"></td>
-                                <td className="border border-slate-300"></td>
-                                <td className="border border-slate-300"></td>
+                                <td className="border border-black"></td>
+                                <td className="border border-black"></td>
+                                <td className="border border-black"></td>
+                                <td className="border border-black"></td>
                             </tr>
+
+                            {renderList()}
                         </tbody>
                     </table>
 
-                    <table className="table-auto my-16 w-full border-collapse border border-slate-400">
+                    <table className="table-auto my-32 w-full border-collapse border border-black">
                         <tbody>
                             <tr>
-                                <td className="w-1/12 border border-slate-300">
+                                <td className="w-1/12 border border-black">
                                     <Typography
                                         className="font-medium ml-5"
                                         align="center"
@@ -174,7 +214,7 @@ const ApReportPrint = forwardRef((props, ref) => {
                                         NO
                                     </Typography>
                                 </td>
-                                <td className="w-7/12 border border-slate-300">
+                                <td className="w-7/12 border border-black">
                                     <Typography
                                         className="font-medium ml-5"
                                         align="center"
@@ -182,7 +222,7 @@ const ApReportPrint = forwardRef((props, ref) => {
                                         NAMA SPAREPART
                                     </Typography>
                                 </td>
-                                <td className="w-2/12 border border-slate-300">
+                                <td className="w-2/12 border border-black">
                                     <Typography
                                         className="font-medium ml-5"
                                         align="center"
@@ -190,7 +230,7 @@ const ApReportPrint = forwardRef((props, ref) => {
                                         QUANTITY
                                     </Typography>
                                 </td>
-                                <td className="w-2/12 border border-slate-300">
+                                <td className="w-2/12 border border-black">
                                     <Typography
                                         className="font-medium ml-5"
                                         align="center"
@@ -203,7 +243,7 @@ const ApReportPrint = forwardRef((props, ref) => {
                             {data?.requestList.length > 0 ? (
                                 _.map(data.requestList, (val, i) => (
                                     <tr key={i}>
-                                        <td className="border border-slate-300">
+                                        <td className="border border-black">
                                             <Typography
                                                 className="font-medium ml-5"
                                                 align="center"
@@ -211,12 +251,12 @@ const ApReportPrint = forwardRef((props, ref) => {
                                                 {i + 1}
                                             </Typography>
                                         </td>
-                                        <td className="border border-slate-300">
+                                        <td className="border border-black">
                                             <Typography className="font-medium ml-5 inline-block">
                                                 {val.item_stock}
                                             </Typography>
                                         </td>
-                                        <td className="border border-slate-300">
+                                        <td className="border border-black">
                                             <Typography
                                                 className="font-medium ml-5"
                                                 lign="center"
@@ -224,7 +264,7 @@ const ApReportPrint = forwardRef((props, ref) => {
                                                 {val.item_qty} {val.item_uom}
                                             </Typography>
                                         </td>
-                                        <td className="border border-slate-300">
+                                        <td className="border border-black">
                                             <Typography
                                                 className="font-medium ml-5"
                                                 align="center"
@@ -238,7 +278,7 @@ const ApReportPrint = forwardRef((props, ref) => {
                                 ))
                             ) : (
                                 <tr>
-                                    <td className="border border-slate-300">
+                                    <td className="border border-black">
                                         <Typography
                                             className="font-medium ml-5"
                                             align="center"
@@ -246,18 +286,20 @@ const ApReportPrint = forwardRef((props, ref) => {
                                             1
                                         </Typography>
                                     </td>
-                                    <td className="border border-slate-300"></td>
-                                    <td className="border border-slate-300"></td>
-                                    <td className="border border-slate-300"></td>
+                                    <td className="border border-black"></td>
+                                    <td className="border border-black"></td>
+                                    <td className="border border-black"></td>
                                 </tr>
                             )}
+
+                            {renderListSP()}
                         </tbody>
                     </table>
 
-                    <table className="table-auto my-16 w-full border-collapse border border-slate-400">
+                    <table className="table-auto my-32 w-full border-collapse border border-black">
                         <tbody>
                             <tr>
-                                <td className="w-3/12 border border-slate-300">
+                                <td className="w-3/12 border border-black">
                                     <Typography
                                         className="font-medium ml-5"
                                         align="center"
@@ -265,7 +307,7 @@ const ApReportPrint = forwardRef((props, ref) => {
                                         SEBAB KERUSAKAN
                                     </Typography>
                                 </td>
-                                <td className="w-3/12 border border-slate-300">
+                                <td className="w-3/12 border border-black">
                                     <Typography
                                         className="font-medium ml-5"
                                         align="center"
@@ -273,7 +315,7 @@ const ApReportPrint = forwardRef((props, ref) => {
                                         DESKRIPSI ANALISA
                                     </Typography>
                                 </td>
-                                <td className="w-3/12 border border-slate-300">
+                                <td className="w-3/12 border border-black">
                                     <Typography
                                         className="font-medium ml-5"
                                         align="center"
@@ -281,7 +323,7 @@ const ApReportPrint = forwardRef((props, ref) => {
                                         DIPERIKSA
                                     </Typography>
                                 </td>
-                                <td className="w-3/12 border border-slate-300">
+                                <td className="w-3/12 border border-black">
                                     <Typography
                                         className="font-medium ml-5"
                                         align="center"
@@ -293,11 +335,11 @@ const ApReportPrint = forwardRef((props, ref) => {
                             <tr>
                                 <td
                                     rowSpan="2"
-                                    className="w-3/12 border border-slate-300"
+                                    className="w-3/12 border border-black"
                                 ></td>
                                 <td
                                     rowSpan="2"
-                                    className="w-3/12 border border-slate-300"
+                                    className="w-3/12 border border-black"
                                 >
                                     <Typography
                                         className="font-medium ml-5"
@@ -306,7 +348,7 @@ const ApReportPrint = forwardRef((props, ref) => {
                                         {_.capitalize(data.report?.analyzed)}
                                     </Typography>
                                 </td>
-                                <td className="w-3/12 border border-slate-300 h-96">
+                                <td className="w-3/12 border border-black h-96">
                                     {data.report?.audit_report == 'Y' && (
                                         <img
                                             className="m-auto"
@@ -316,7 +358,7 @@ const ApReportPrint = forwardRef((props, ref) => {
                                         />
                                     )}
                                 </td>
-                                <td className="w-3/12 border border-slate-300 h-96">
+                                <td className="w-3/12 border border-black h-96">
                                     {data.report?.audit_report == 'Y' && (
                                         <img
                                             className="m-auto"
@@ -328,7 +370,7 @@ const ApReportPrint = forwardRef((props, ref) => {
                                 </td>
                             </tr>
                             <tr>
-                                <td className="border border-slate-300">
+                                <td className="border border-black">
                                     <Typography
                                         className="font-medium ml-5"
                                         align="center"
@@ -338,7 +380,7 @@ const ApReportPrint = forwardRef((props, ref) => {
                                         )}
                                     </Typography>
                                 </td>
-                                <td className="border border-slate-300">
+                                <td className="border border-black">
                                     <Typography
                                         className="font-medium ml-5"
                                         align="center"
@@ -350,7 +392,7 @@ const ApReportPrint = forwardRef((props, ref) => {
                         </tbody>
                     </table>
 
-                    <div className="grid grid-cols-12 my-16">
+                    <div className="grid grid-cols-12 my-32">
                         <Typography className="col-span-6 text-sm font-small">
                             FO-03-03-07
                         </Typography>

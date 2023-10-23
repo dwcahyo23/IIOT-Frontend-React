@@ -34,6 +34,8 @@ function ApSheet({ params }) {
                             </Button>
                         )}
                         content={() => componentRef.current}
+                        pageStyle="@media print { @page { size: landscape; margin: 0mm; } }"
+                        // "@page { size: auto; margin: 0mm; } @media print { body { -webkit-print-color-adjust: exact; padding: 40px !important; } }"
                     />
                     <ApSheetPrint ref={componentRef} params={params} />
                 </Grid>

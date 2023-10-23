@@ -434,6 +434,7 @@ function ApReport({ params }) {
                             </Button>
                         )}
                         content={() => componentRef.current}
+                        pageStyle="@media print { @page { size: landscape; margin: 0mm; } }"
                     />
                 </Grid>
             </Grid>
