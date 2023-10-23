@@ -93,7 +93,7 @@ const ApSheetPrint = forwardRef((props, ref) => {
                                 </td>
                                 <td className="border border-slate-300">
                                     <Typography className="font-medium ml-5">
-                                        {data.sheet?.appe_user}
+                                        {_.capitalize(data.sheet?.appe_user)}
                                     </Typography>
                                 </td>
                                 <td className="border border-slate-300">
@@ -155,12 +155,14 @@ const ApSheetPrint = forwardRef((props, ref) => {
                                 </td>
                                 <td className="border border-slate-300">
                                     <Typography className="font-medium ml-5">
-                                        {data.machine?.responsible}
+                                        {_.capitalize(
+                                            data.machine?.responsible
+                                        )}
                                     </Typography>
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2">
+                                <td colSpan="2">
                                     <Typography className="font-medium ml-5">
                                         Kerusakan/Pengerjaan yang diminta *)
                                     </Typography>
@@ -178,7 +180,7 @@ const ApSheetPrint = forwardRef((props, ref) => {
                             </tr>
                             <tr>
                                 <td
-                                    colspan="2"
+                                    colSpan="2"
                                     className="border border-slate-300 h-80"
                                 >
                                     <Typography className="font-medium ml-5">
@@ -195,6 +197,111 @@ const ApSheetPrint = forwardRef((props, ref) => {
                                         {data.sheet?.pri_no}
                                     </Typography>
                                 </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table className="table-auto my-16 w-full border-collapse border border-slate-400">
+                        <tbody>
+                            <tr>
+                                <td className="w-1/12 border border-slate-300">
+                                    <Typography
+                                        className="font-medium ml-5"
+                                        align="center"
+                                    >
+                                        NO
+                                    </Typography>
+                                </td>
+                                <td className="w-auto border border-slate-300">
+                                    <Typography
+                                        className="font-medium ml-5"
+                                        align="center"
+                                    >
+                                        INTRUKSI KERJA
+                                    </Typography>
+                                </td>
+                                <td className="w-auto border border-slate-300">
+                                    <Typography
+                                        className="font-medium ml-5"
+                                        align="center"
+                                    >
+                                        KERUSAKAN
+                                    </Typography>
+                                </td>
+                                <td className="w-auto border border-slate-300">
+                                    <Typography
+                                        className="font-medium ml-5"
+                                        align="center"
+                                    >
+                                        PERBAIKAN
+                                    </Typography>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className="border border-slate-300 ">
+                                    <Typography
+                                        className="font-medium ml-5"
+                                        align="center"
+                                    >
+                                        1
+                                    </Typography>
+                                </td>
+                                <td className="border border-slate-300">
+                                    <Typography className="font-medium ml-5">
+                                        {_.capitalize(data.report?.corrective)}
+                                    </Typography>
+                                </td>
+                                <td className="border border-slate-300">
+                                    <Typography className="font-medium ml-5">
+                                        {_.capitalize(
+                                            data.report?.chronological
+                                        )}
+                                    </Typography>
+                                </td>
+                                <td className="border border-slate-300">
+                                    <Typography className="font-medium ml-5">
+                                        {_.capitalize(data.report?.corrective)}
+                                    </Typography>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className="border border-slate-300 ">
+                                    <Typography
+                                        className="font-medium ml-5"
+                                        align="center"
+                                    >
+                                        2
+                                    </Typography>
+                                </td>
+                                <td className="border border-slate-300"></td>
+                                <td className="border border-slate-300"></td>
+                                <td className="border border-slate-300"></td>
+                            </tr>
+                            <tr>
+                                <td className="border border-slate-300 ">
+                                    <Typography
+                                        className="font-medium ml-5"
+                                        align="center"
+                                    >
+                                        3
+                                    </Typography>
+                                </td>
+                                <td className="border border-slate-300"></td>
+                                <td className="border border-slate-300"></td>
+                                <td className="border border-slate-300"></td>
+                            </tr>
+                            <tr>
+                                <td className="border border-slate-300 ">
+                                    <Typography
+                                        className="font-medium ml-5"
+                                        align="center"
+                                    >
+                                        4
+                                    </Typography>
+                                </td>
+                                <td className="border border-slate-300"></td>
+                                <td className="border border-slate-300"></td>
+                                <td className="border border-slate-300"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -305,8 +412,8 @@ const ApSheetPrint = forwardRef((props, ref) => {
                         <tbody>
                             <tr>
                                 <td
-                                    className="border border-slate-300"
-                                    colspan="3"
+                                    className="border border-slate-300 w-6/12"
+                                    colSpan="3"
                                 >
                                     <Typography
                                         className="font-medium ml-5"
@@ -317,8 +424,8 @@ const ApSheetPrint = forwardRef((props, ref) => {
                                     </Typography>
                                 </td>
                                 <td
-                                    className="border border-slate-300"
-                                    colspan="2"
+                                    className="border border-slate-300 w-6/12"
+                                    colSpan="2"
                                 >
                                     <Typography
                                         className="font-medium"
@@ -331,7 +438,7 @@ const ApSheetPrint = forwardRef((props, ref) => {
                             <tr>
                                 <td
                                     className="border border-slate-300 h-96"
-                                    rowspan="3"
+                                    rowSpan="3"
                                 >
                                     <Typography className="font-medium ml-5">
                                         Alasan:
@@ -339,7 +446,7 @@ const ApSheetPrint = forwardRef((props, ref) => {
                                 </td>
                                 <td
                                     className="border border-slate-300"
-                                    colspan="2"
+                                    colSpan="2"
                                 >
                                     <Typography
                                         className="font-medium"
@@ -368,13 +475,31 @@ const ApSheetPrint = forwardRef((props, ref) => {
                             <tr>
                                 <td className="border border-slate-300 h-96"></td>
                                 <td className="border border-slate-300 h-96"></td>
-                                <td className="border border-slate-300 h-96"></td>
-                                <td className="border border-slate-300 h-96"></td>
+                                <td className="border border-slate-300 h-96">
+                                    {data.report?.audit_report == 'Y' && (
+                                        <img
+                                            className="m-auto"
+                                            width="30%"
+                                            src={approve}
+                                            alt="logo"
+                                        />
+                                    )}
+                                </td>
+                                <td className="border border-slate-300 h-96">
+                                    {data.report?.audit_report == 'Y' && (
+                                        <img
+                                            className="m-auto"
+                                            width="30%"
+                                            src={approve}
+                                            alt="logo"
+                                        />
+                                    )}
+                                </td>
                             </tr>
                             <tr>
                                 <td className="border border-slate-300">
                                     <Typography
-                                        className="font-medium self-end  w-full"
+                                        className="font-medium self-end w-full"
                                         align="center"
                                     >
                                         PD
@@ -382,33 +507,35 @@ const ApSheetPrint = forwardRef((props, ref) => {
                                 </td>
                                 <td className="border border-slate-300">
                                     <Typography
-                                        className="font-medium self-end  w-full"
+                                        className="font-medium self-end w-full"
                                         align="center"
                                     >
-                                        PF
+                                        PC
                                     </Typography>
                                 </td>
                                 <td className="border border-slate-300">
                                     <Typography
-                                        className="font-medium self-end  w-full"
+                                        className="font-medium self-end w-full"
                                         align="center"
                                     >
-                                        {data.machine?.responsible}
+                                        {_.capitalize(
+                                            data.machine?.responsible
+                                        )}
                                     </Typography>
                                 </td>
                                 <td className="border border-slate-300">
                                     <Typography
-                                        className="font-medium self-end  w-full"
+                                        className="font-medium self-end w-full"
                                         align="center"
                                     >
-                                        {data.sheet?.appe_user}
+                                        {_.capitalize(data.sheet?.appe_user)}
                                     </Typography>
                                 </td>
                             </tr>
                             <tr>
                                 <td
                                     className="border border-slate-300"
-                                    colspan="3"
+                                    colSpan="3"
                                 >
                                     <Typography className="font-medium ml-5">
                                         Tanggal penyerahan hasil perbaikan :
@@ -421,7 +548,7 @@ const ApSheetPrint = forwardRef((props, ref) => {
                                 </td>
                                 <td
                                     className="border border-slate-300"
-                                    colspan="2"
+                                    colSpan="2"
                                 >
                                     <Typography className="font-medium ml-5">
                                         Tanggal input riwayat mesin :

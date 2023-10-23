@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import {
     Box,
     Grid,
@@ -19,7 +19,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { useDispatch, useSelector } from 'react-redux'
-
+import ReactToPrint from 'react-to-print'
 import { showMessage } from 'app/store/fuse/messageSlice'
 import { getMachineStock } from 'src/app/main/apps/maintenanceSystem/store/machineChildren/machineStock'
 import { getMnReqSlice } from '../../store/mnReqSlice'
@@ -27,9 +27,12 @@ import { selectUser } from 'app/store/userSlice'
 import { saveMnOne } from '../../store/mnOneSlice'
 import _ from 'lodash'
 
-function ApReport() {
+import ApReportPrint from './print/ApReportPrint'
+
+function ApReport({ params }) {
     const methods = useFormContext()
     const dispatch = useDispatch()
+    const componentRef = useRef()
     const user = useSelector(selectUser)
     const { control, formState, getValues, setValue, resetField } = methods
     const [disRep, setDisRep] = useState(true)
@@ -418,6 +421,25 @@ function ApReport() {
                     >
                         Save
                     </Button>
+                </Grid>
+                <Grid item xs={4}>
+                    <ReactToPrint
+                        trigger={() => (
+                            <Button
+                                className="px-16 min-w-100"
+                                variant="contained"
+                                color="secondary"
+                            >
+                                Print
+                            </Button>
+                        )}
+                        content={() => componentRef.current}
+                    />
+                </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <ApReportPrint ref={componentRef} params={params} />
                 </Grid>
             </Grid>
         </Box>
