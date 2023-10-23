@@ -189,12 +189,41 @@ const ApSheetPrint = forwardRef((props, ref) => {
                                 </td>
                                 <td className="border border-slate-300">
                                     <Typography className="font-medium ml-5">
-                                        {data.sheet?.shf_no}
+                                        {data.sheet?.shf_no} shift
                                     </Typography>
                                 </td>
+
+                                {/* 
+                                <MenuItem value="01">Breakdown</MenuItem>
+                                <MenuItem value="02">Still Run</MenuItem>
+                                <MenuItem value="03">Preventive</MenuItem>
+                                <MenuItem value="04">
+                                    Workshop Stil Run
+                                </MenuItem>
+                                <MenuItem value="05">
+                                    Workshop Breakdown
+                                </MenuItem>
+                                <MenuItem value="06">
+                                    Project Machinery
+                                </MenuItem>
+                                <MenuItem value="07">Project Workshop</MenuItem> */}
                                 <td className="border border-slate-300">
                                     <Typography className="font-medium ml-5">
-                                        {data.sheet?.pri_no}
+                                        {data.sheet?.pri_no == '01'
+                                            ? 'Breakdown'
+                                            : data.sheet?.pri_no == '02'
+                                            ? 'Still Run'
+                                            : data.sheet?.pri_no == '03'
+                                            ? 'Preventive'
+                                            : data.sheet?.pri_no == '04'
+                                            ? 'Workshop Still Run'
+                                            : data.sheet?.pri_no == '05'
+                                            ? 'Workshop Breakdown'
+                                            : data.sheet?.pri_no == '06'
+                                            ? 'Project Machinery'
+                                            : data.sheet?.pri_no == '07'
+                                            ? 'Project Workshop'
+                                            : 'undefined'}
                                     </Typography>
                                 </td>
                             </tr>
@@ -437,15 +466,15 @@ const ApSheetPrint = forwardRef((props, ref) => {
                             </tr>
                             <tr>
                                 <td
-                                    className="border border-slate-300 h-96"
+                                    className="relative w-3/12 border border-slate-300 h-96"
                                     rowSpan="3"
                                 >
-                                    <Typography className="font-medium ml-5">
+                                    <Typography className="absolute inset-x-0 top-0 font-medium ml-5">
                                         Alasan:
                                     </Typography>
                                 </td>
                                 <td
-                                    className="border border-slate-300"
+                                    className="border w-3/12 border-slate-300"
                                     colSpan="2"
                                 >
                                     <Typography
@@ -455,7 +484,7 @@ const ApSheetPrint = forwardRef((props, ref) => {
                                         Paraf
                                     </Typography>
                                 </td>
-                                <td className="border border-slate-300">
+                                <td className="w-3/12 border border-slate-300">
                                     <Typography
                                         className="font-medium"
                                         align="center"
@@ -463,7 +492,7 @@ const ApSheetPrint = forwardRef((props, ref) => {
                                         Yang Menyerahkan
                                     </Typography>
                                 </td>
-                                <td className="border border-slate-300">
+                                <td className="w-3/12 border border-slate-300">
                                     <Typography
                                         className="font-medium"
                                         align="center"
@@ -538,7 +567,7 @@ const ApSheetPrint = forwardRef((props, ref) => {
                                     colSpan="3"
                                 >
                                     <Typography className="font-medium ml-5">
-                                        Tanggal penyerahan hasil perbaikan :
+                                        Tanggal penyerahan hasil perbaikan :{' '}
                                         {_.isNull(data.report?.date_finish)
                                             ? '-'
                                             : dayjs(
@@ -551,7 +580,7 @@ const ApSheetPrint = forwardRef((props, ref) => {
                                     colSpan="2"
                                 >
                                     <Typography className="font-medium ml-5">
-                                        Tanggal input riwayat mesin :
+                                        Tanggal input riwayat mesin :{' '}
                                         {_.isNull(data.report?.date_finish)
                                             ? '-'
                                             : dayjs(
