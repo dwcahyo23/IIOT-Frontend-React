@@ -35,7 +35,7 @@ const ApSheetPrint = forwardRef((props, ref) => {
     return (
         // className="hidden print:block"
         <div ref={ref}>
-            <div className="inline-block p-16 sm:p-16 text-left print:p-0 w-full overflow-auto">
+            <div className="inline-block p-16 sm:p-16 text-left print:p-1 w-full overflow-auto">
                 <div className="w-xl p-16 mx-16 rounded-2xl shadow print:w-1/2 print:rounded-none print:shadow-none print:bg-transparent">
                     <div className="grid grid-cols-12 gap-x-4 my-32">
                         <div className="col-span-4">
