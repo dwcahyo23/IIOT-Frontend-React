@@ -13,6 +13,7 @@ import _ from 'lodash'
 
 const ApReportPrint = forwardRef((props, ref) => {
     const data = props.params
+    console.log(data)
 
     const renderList = () => {
         const listItems = []
@@ -240,7 +241,8 @@ const ApReportPrint = forwardRef((props, ref) => {
                                 </td>
                             </tr>
 
-                            {data?.requestList.length > 0 ? (
+                            {_.isArray(data?.requestList) &&
+                            data?.requestList.length > 0 ? (
                                 _.map(data.requestList, (val, i) => (
                                     <tr key={i}>
                                         <td className="border border-black">

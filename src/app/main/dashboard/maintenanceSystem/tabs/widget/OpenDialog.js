@@ -77,6 +77,7 @@ function OpenDialog({ data, header, apOptions, parentName }) {
 
     useEffect(() => {
         const newData = { ...dataMnOne }
+        // console.log(newData)
         if (!dataMnOne) {
             return
         }

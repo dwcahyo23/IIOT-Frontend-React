@@ -14,6 +14,10 @@ import {
     Slide,
     Dialog,
     TextField,
+    FormControl,
+    Select,
+    MenuItem,
+    InputLabel,
 } from '@mui/material'
 import { memo, useState, useEffect, forwardRef } from 'react'
 import { useCallback } from 'react'
@@ -131,18 +135,19 @@ function LastApLeaderInventory({ data }) {
     const user = useSelector((selectApUser) =>
         selectApUserById(selectApUser, data.user)
     )
-    const data_report = useSelector(selectApRep)
-    const sparepart = useSelector(selectApReq)
+    // const data_report = useSelector(selectApRep)
+    // const sparepart = useSelector(selectApReq)
     const listItem = data?.listItemMonth
-    const lastTab = Object.keys(listItem).length - 1
+    // const lastTab = Object.keys(listItem).length - 1
     const [tabValue, setTabValue] = useState(0)
     const currentRange = Object.keys(listItem)[tabValue]
     const [filteredItem, setFilteredItem] = useState([])
     const [filteredText, setFilteredText] = useState(null)
+    const [sumaryInventory, setSumaryInventory] = useState(null)
     const [open, setOpen] = useState(false)
     const [selectData, setSelectData] = useState(null)
     const [toolBarHeader, setToolBarHeader] = useState('Update')
-
+    const [selectedCategory, setSelectedCategory] = useState('All')
     const [searchText, setSearchText] = useState('')
 
     useEffect(() => {
@@ -152,12 +157,63 @@ function LastApLeaderInventory({ data }) {
     })
 
     useEffect(() => {
+        function getSumary() {
+            return {
+                request: _.countBy(filteredText, (val) =>
+                    val ? 'pass' : 'fail'
+                ),
+                request_audit_Y: _.countBy(filteredText, (val) =>
+                    val.audit_request == 'Y' ? 'pass' : 'fail'
+                ),
+                request_audit_N: _.countBy(filteredText, (val) =>
+                    val.audit_request == 'N' ? 'pass' : 'fail'
+                ),
+                request_mre: _.countBy(filteredText, (val) =>
+                    val.mre_request.length > 0 &&
+                    val.item_ready == 'N' &&
+                    val.audit_request == 'N'
+                        ? 'pass'
+                        : 'fail'
+                ),
+                request_mre_audit: _.countBy(filteredText, (val) =>
+                    val.mre_request.length > 0 &&
+                    val.item_ready == 'Y' &&
+                    val.audit_request == 'Y'
+                        ? 'pass'
+                        : 'fail'
+                ),
+                request_ready: _.countBy(filteredText, (val) =>
+                    val.item_ready == 'Y' && val.audit_request == 'N'
+                        ? 'pass'
+                        : 'fail'
+                ),
+                request_ready_audit: _.countBy(filteredText, (val) =>
+                    val.item_ready == 'Y' && val.audit_request == 'Y'
+                        ? 'pass'
+                        : 'fail'
+                ),
+            }
+        }
+
+        if (_.isNull(filteredText) == false) {
+            setSumaryInventory(getSumary())
+        }
+    }, [filteredText])
+
+    useEffect(() => {
         function getFilteredArray() {
-            if (searchText.length === 0) {
+            if (searchText.length === 0 && selectedCategory == 'All') {
                 return filteredItem?.data
             }
 
             return _.filter(filteredItem?.data, (val) => {
+                if (
+                    selectedCategory !== 'All' &&
+                    val.category_request !== selectedCategory
+                ) {
+                    return false
+                }
+
                 if (
                     (!_.isUndefined(val.sheet_no) &&
                         val.sheet_no
@@ -211,9 +267,8 @@ function LastApLeaderInventory({ data }) {
 
         if (filteredItem?.data) {
             setFilteredText(getFilteredArray())
-            // console.log(getFilteredArray())
         }
-    }, [searchText, filteredItem])
+    }, [searchText, filteredItem, selectedCategory])
 
     const handleSearchText = (event) => {
         setSearchText(event.target.value)
@@ -231,6 +286,10 @@ function LastApLeaderInventory({ data }) {
 
     const header = (data) => {
         setToolBarHeader(data)
+    }
+
+    function handleSelectedCategory(event) {
+        setSelectedCategory(event.target.value)
     }
 
     function rowRenderer({
@@ -309,7 +368,7 @@ function LastApLeaderInventory({ data }) {
                 >
                     <SummaryWo
                         data={{
-                            count: filteredItem?.request,
+                            count: sumaryInventory?.request,
                             title: 'Inventory',
                             name: 'AP Request',
                             colorHg: colors.blue[400],
@@ -321,7 +380,7 @@ function LastApLeaderInventory({ data }) {
                 <motion.div variants={item}>
                     <SummaryWo
                         data={{
-                            count: filteredItem?.request_audit_N,
+                            count: sumaryInventory?.request_audit_N,
                             title: 'N.Audit',
                             name: 'AP Request',
                             colorHg: colors.red[400],
@@ -333,7 +392,7 @@ function LastApLeaderInventory({ data }) {
                 <motion.div variants={item}>
                     <SummaryWo
                         data={{
-                            count: filteredItem?.request_mre,
+                            count: sumaryInventory?.request_mre,
                             title: 'Publish MRE',
                             name: 'MRE',
                             colorHg: colors.green[400],
@@ -345,7 +404,7 @@ function LastApLeaderInventory({ data }) {
                 <motion.div variants={item}>
                     <SummaryWo
                         data={{
-                            count: filteredItem?.request_ready,
+                            count: sumaryInventory?.request_ready,
                             title: 'Ready Sparepart',
                             name: 'Ready',
                             colorHg: colors.orange[400],
@@ -391,10 +450,54 @@ function LastApLeaderInventory({ data }) {
                                 />
                             </div>
 
+                            <div className="flex flex-col">
+                                <FormControl
+                                    className="flex w-full sm:w-256"
+                                    variant="outlined"
+                                >
+                                    <InputLabel id="category-select-label">
+                                        Category
+                                    </InputLabel>
+
+                                    <Select
+                                        labelId="category-select-label"
+                                        id="category-select"
+                                        label="Category"
+                                        value={selectedCategory}
+                                        onChange={handleSelectedCategory}
+                                    >
+                                        <MenuItem value="All">
+                                            <em> All </em>
+                                        </MenuItem>
+                                        <MenuItem value="Breakdown">
+                                            <em> Breakdown </em>
+                                        </MenuItem>
+                                        <MenuItem value="Still Run">
+                                            <em> Still Run </em>
+                                        </MenuItem>
+                                        <MenuItem value="Preventive">
+                                            <em> Preventive </em>
+                                        </MenuItem>
+                                        <MenuItem value="Workshop Still Run">
+                                            <em> Workshop Still Run </em>
+                                        </MenuItem>
+                                        <MenuItem value="Workshop Breakdown">
+                                            <em> Workshop Breakdown </em>
+                                        </MenuItem>
+                                        <MenuItem value="Project Machinery">
+                                            <em> Project Machinery </em>
+                                        </MenuItem>
+                                        <MenuItem value="Project Workshop">
+                                            <em> Project Workshop </em>
+                                        </MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </div>
+
                             {data && (
                                 <div className="flex flex-col">
                                     <CustomToolbar
-                                        props={{ rows: filteredItem?.data }}
+                                        props={{ rows: sumaryInventory?.data }}
                                     />
                                 </div>
                             )}

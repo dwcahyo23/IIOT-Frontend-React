@@ -145,10 +145,10 @@ function MaintenanceApsheet({ data }) {
 
     const tableIndex = (data) => {
         if (_.has(data, 'multi')) {
-            // console.log('multi')
+            console.log('multi')
         } else {
             if (machines) {
-                // console.log(data.row)
+                console.log(data.row)
                 const mch_index = _.find(machines, {
                     mch_code: data.row.mch_no,
                     mch_com:
