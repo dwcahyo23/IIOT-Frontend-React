@@ -1,14 +1,21 @@
-import React from 'react'
-import { Box } from '@mui/material'
+import { useRef } from 'react'
+import { Box, Button, Grid } from '@mui/material'
 import dayjs from 'dayjs'
+import { useEffect, useState } from 'react'
 import { useFormContext, useFieldArray } from 'react-hook-form'
 import TableIndex from './TableIndex'
 import StatusColor from './utils/StatusColor'
 import _ from 'lodash'
+import ReactToPrint from 'react-to-print'
+import PrintApHistory from './print/PrintApHistory'
 
 function MainteannceApHistory({ data }) {
     const methods = useFormContext()
     const { control, watch } = methods
+    const { print, setPrint } = useState(null)
+
+    const componentRef = useRef()
+
     const { fields: mow } = useFieldArray({
         name: 'mow',
         control,
@@ -114,6 +121,9 @@ function MainteannceApHistory({ data }) {
     ]
 
     const tableIndex = (data) => {
+        // _.isArray(data.multi) &&
+        //     data.multi.length > 0 &&
+        //     console.log(data.multi)
         console.log(data)
     }
 
@@ -124,6 +134,26 @@ function MainteannceApHistory({ data }) {
                 width: '100%',
             }}
         >
+            <Grid container spacing={2}>
+                <Grid item xs={4}>
+                    <ReactToPrint
+                        trigger={() => (
+                            <Button
+                                className="px-16 min-w-100"
+                                variant="contained"
+                                color="secondary"
+                            >
+                                Print
+                            </Button>
+                        )}
+                        content={() => componentRef.current}
+                        pageStyle="@media print { @page { size: landscape; margin: 0mm; } }"
+                        // "@page { size: auto; margin: 0mm; } @media print { body { -webkit-print-color-adjust: exact; padding: 40px !important; } }"
+                    />
+                    <PrintApHistory ref={componentRef} params={joinData} />
+                </Grid>
+            </Grid>
+
             <TableIndex
                 params={{
                     row: joinData,

@@ -12,9 +12,8 @@ import approve from './approve.png'
 import dayjs from 'dayjs'
 import _ from 'lodash'
 
-const MachinePrint = forwardRef((props, ref) => {
+const PrintApHistory = forwardRef((props, ref) => {
     const data = props.params
-    // console.log(_.isArray(data) && data[0]?.mch_process)
     return (
         // className="hidden print:block"
         <Box ref={ref} className="hidden print:block">
@@ -25,24 +24,25 @@ const MachinePrint = forwardRef((props, ref) => {
                             <img className="w-11/12" src={logo} alt="logo" />
                         </div>
                         <div className="col-span-4">
-                            {_.isArray(data) &&
-                            (data[0]?.mch_process == 'ASRS' ||
-                                data[0]?.mch_process == 'GENERATOR' ||
-                                data[0]?.mch_process == 'HOIST' ||
-                                data[0]?.mch_process == 'KOMPRESOR') ? (
-                                <Typography className="col-span-6 text-xl font-medium">
-                                    DAFTAR INFRASTRUKTUR
-                                </Typography>
-                            ) : (
-                                <Typography className="col-span-6 text-xl font-medium">
-                                    DAFTAR MESIN
-                                </Typography>
-                            )}
+                            <Typography className="col-span-6 text-xl font-medium">
+                                RIWAYAT MESIN
+                            </Typography>
                         </div>
                     </div>
-                    <div className="grid grid-cols-12 gap-x-4 my-16">
+                    <div className="grid grid-cols-3 gap-x-4 my-16">
                         <Typography className="col-span-6 text-sm font-medium">
-                            Lokasi : {_.isArray(data) && data[0]?.mch_process}
+                            NAMA MESIN :{' '}
+                            {_.isArray(data) && data[0]?.mch_process}
+                        </Typography>
+                    </div>
+                    <div className="grid grid-cols-3 gap-x-4 my-16">
+                        <Typography className="col-span-6 text-sm font-medium">
+                            KODE MESIN : {_.isArray(data) && data[0]?.mch_code}
+                        </Typography>
+                    </div>
+                    <div className="grid grid-cols-3 gap-x-4 my-16">
+                        <Typography className="col-span-6 text-sm font-medium">
+                            LOKASI MESIN : {_.isArray(data) && data[0]?.mch_com}
                         </Typography>
                     </div>
 
@@ -54,7 +54,7 @@ const MachinePrint = forwardRef((props, ref) => {
                                         className="font-medium"
                                         align="center"
                                     >
-                                        NO
+                                        TANGGAL
                                     </Typography>
                                 </td>
                                 <td className="w-3/12 border border-black">
@@ -62,7 +62,7 @@ const MachinePrint = forwardRef((props, ref) => {
                                         className="font-medium"
                                         align="center"
                                     >
-                                        KODE MESIN
+                                        KERUSAKAN
                                     </Typography>
                                 </td>
                                 <td className="w-3/12 border border-black">
@@ -70,7 +70,7 @@ const MachinePrint = forwardRef((props, ref) => {
                                         className="font-medium"
                                         align="center"
                                     >
-                                        NAMA MESIN
+                                        ANALISA
                                     </Typography>
                                 </td>
                                 <td className="w-2/12 border border-black">
@@ -78,7 +78,7 @@ const MachinePrint = forwardRef((props, ref) => {
                                         className="font-medium"
                                         align="center"
                                     >
-                                        DAYA
+                                        KRONOLOGI
                                     </Typography>
                                 </td>
                                 <td className="w-3/12 border border-black">
@@ -86,7 +86,7 @@ const MachinePrint = forwardRef((props, ref) => {
                                         className="font-medium"
                                         align="center"
                                     >
-                                        KETERANGAN
+                                        PERBAIKAN
                                     </Typography>
                                 </td>
                             </tr>
@@ -113,30 +113,19 @@ const MachinePrint = forwardRef((props, ref) => {
                                             <Typography
                                                 className="font-medium"
                                                 align="center"
-                                            >
-                                                {val.mch_name}
-                                            </Typography>
+                                            ></Typography>
                                         </td>
                                         <td className="w-2/12 border border-black">
                                             <Typography
                                                 className="font-medium"
                                                 align="center"
-                                            >
-                                                {_.toNumber(val.mch_hp).toFixed(
-                                                    1
-                                                )}{' '}
-                                                HP
-                                            </Typography>
+                                            ></Typography>
                                         </td>
                                         <td className="w-3/12 border border-black">
                                             <Typography
                                                 className="font-medium"
                                                 align="center"
-                                            >
-                                                {_.isNull(val.memo)
-                                                    ? ''
-                                                    : _.capitalize(val.memo)}
-                                            </Typography>
+                                            ></Typography>
                                         </td>
                                     </tr>
                                 ))
@@ -147,19 +136,9 @@ const MachinePrint = forwardRef((props, ref) => {
                     </table>
 
                     <div className="grid grid-cols-12 my-16">
-                        {_.isArray(data) &&
-                        (data[0]?.mch_process == 'ASRS' ||
-                            data[0]?.mch_process == 'GENERATOR' ||
-                            data[0]?.mch_process == 'HOIST' ||
-                            data[0]?.mch_process == 'KOMPRESOR') ? (
-                            <Typography className="col-span-6 text-sm font-small">
-                                FO-03-03-08
-                            </Typography>
-                        ) : (
-                            <Typography className="col-span-6 text-sm font-small">
-                                FO-03-03-01
-                            </Typography>
-                        )}
+                        <Typography className="col-span-6 text-sm font-small">
+                            FO-03-04-03
+                        </Typography>
 
                         <Typography
                             className="col-span-6 text-sm font-small"
@@ -174,4 +153,4 @@ const MachinePrint = forwardRef((props, ref) => {
     )
 })
 
-export default MachinePrint
+export default PrintApHistory

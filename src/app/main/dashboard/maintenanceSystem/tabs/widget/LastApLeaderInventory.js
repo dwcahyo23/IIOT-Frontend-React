@@ -154,6 +154,8 @@ function LastApLeaderInventory({ data }) {
         if (data && listItem[currentRange]) {
             setFilteredItem(listItem[currentRange])
         }
+        // console.log(filteredItem)
+        // console.log(sumaryInventory)
     })
 
     useEffect(() => {
@@ -192,6 +194,7 @@ function LastApLeaderInventory({ data }) {
                         ? 'pass'
                         : 'fail'
                 ),
+                data: filteredText,
             }
         }
 

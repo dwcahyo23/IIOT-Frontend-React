@@ -9,8 +9,8 @@ function ApSheet({ params }) {
     const componentRef = useRef()
 
     useEffect(() => {
-        console.log(params)
-        console.log(componentRef)
+        // console.log(params)
+        // console.log(componentRef)
     })
 
     useEffect(() => {
