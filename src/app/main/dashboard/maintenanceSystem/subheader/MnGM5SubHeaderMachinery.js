@@ -167,7 +167,10 @@ function MnGM5SubHeaderMachinery() {
                         className="sm:col-span-2 md:col-span-4"
                     >
                         <ChartWo
-                            data={{ filterData: filterWorOrder['Wahid'] }}
+                            data={{
+                                filterData: filterWorOrder['Wahid'],
+                                kpi: 100,
+                            }}
                         />
                     </motion.div>
                 </motion.div>

@@ -159,11 +159,11 @@ const ApSheetPrint = forwardRef((props, ref) => {
                                 </td>
                                 <td className="border border-black">
                                     <Typography className="font-medium ml-5">
-                                        {_.isNull(data.sheet?.m_ymd)
+                                        {_.isNull(data.report?.date_finish)
                                             ? '-'
-                                            : dayjs(data.sheet?.m_ymd).format(
-                                                  'DD-MM-YYYY HH:mm:ss'
-                                              )}
+                                            : dayjs(
+                                                  data.report?.date_finish
+                                              ).format('DD-MM-YYYY')}
                                     </Typography>
                                 </td>
                                 <td className="border border-black">

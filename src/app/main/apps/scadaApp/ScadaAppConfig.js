@@ -1,5 +1,6 @@
 import { lazy } from 'react'
 import { Navigate } from 'react-router-dom'
+import authRoles from '../../../auth/authRoles'
 
 import ScadaSystem from './ScadaSystem'
 
@@ -9,6 +10,7 @@ const ScadaAppConfig = {
     settings: {
         layout: {},
     },
+    auth: authRoles.user,
     routes: [
         {
             path: 'apps/scadaApp',

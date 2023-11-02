@@ -168,6 +168,7 @@ function MnGM2SubHeaderUtility() {
                         <ChartWo
                             data={{
                                 filterData: filterWorOrder['UJANG HENDRA'],
+                                kpi: 100,
                             }}
                         />
                     </motion.div>

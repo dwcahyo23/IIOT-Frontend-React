@@ -10,12 +10,8 @@ import _ from 'lodash'
 function ChartWo({ data }) {
     const theme = useTheme()
     const [awaitRender, setAwaitRender] = useState(true)
-    const [tabValue, setTabValue] = useState(0)
-    // console.log(data)
     const labels = Object.keys(data?.filterData).reverse()
-    const [label, setLabel] = useState([])
-    const [breakdown, setBreakdown] = useState([])
-    const [audit, setAudit] = useState([])
+    const kpi = _.toString(data.kpi)
 
     const series = [
         {
@@ -30,7 +26,7 @@ function ChartWo({ data }) {
         },
     ]
 
-    // console.log(series)
+    console.log(typeof kpi)
     useEffect(() => {
         setAwaitRender(false)
     }, [])
@@ -69,7 +65,7 @@ function ChartWo({ data }) {
             borderColor: theme.palette.divider,
         },
         legend: {
-            show: false,
+            // show: true,
         },
         plotOptions: {
             bar: {
@@ -128,7 +124,7 @@ function ChartWo({ data }) {
                             color: '#fff',
                             background: '#00ce06',
                         },
-                        text: 'KPI 100',
+                        text: `KPI ${kpi}`,
                     },
                 },
             ],

@@ -154,7 +154,12 @@ function MnGM1SubHeaderWorkshop() {
                         variants={item}
                         className="sm:col-span-2 md:col-span-4"
                     >
-                        <ChartWo data={{ filterData: filterWorOrder['Bos'] }} />
+                        <ChartWo
+                            data={{
+                                filterData: filterWorOrder['Bos'],
+                                kpi: 100,
+                            }}
+                        />
                     </motion.div>
                 </motion.div>
             ) : (

@@ -65,6 +65,7 @@ const navigationConfig = [
                 id: 'apps.scadaApp',
                 title: 'Andon System',
                 type: 'item',
+                auth: authRoles.user,
                 icon: 'heroicons-outline:status-online',
                 url: '/apps/scadaApp/home',
             },

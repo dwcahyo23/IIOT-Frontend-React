@@ -165,7 +165,10 @@ function MnGM3SubHeaderUtility() {
                         className="sm:col-span-2 md:col-span-4"
                     >
                         <ChartWo
-                            data={{ filterData: filterWorOrder['Sutaryo'] }}
+                            data={{
+                                filterData: filterWorOrder['Sutaryo'],
+                                kpi: 100,
+                            }}
                         />
                     </motion.div>
                 </motion.div>
