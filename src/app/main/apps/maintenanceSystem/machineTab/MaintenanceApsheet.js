@@ -111,22 +111,33 @@ function MaintenanceApsheet({ data }) {
                 dayjs(params.value).format('DD/MM/YYYY HH:mm'),
         },
         {
-            field: 'm_ymd',
+            field: 'chk_date',
             headerName: 'Target',
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
             width: 150,
-            renderCell: (params) => {
-                const res = _.find(report && report, {
-                    sheet_no: params.row.sheet_no,
-                })
-                return _.isUndefined(res) ? (
-                    <StatusColor id="T" />
-                ) : (
-                    dayjs(res.date_target).format('DD/MM/YYYY HH:mm')
-                )
-            },
+            valueFormatter: (params) =>
+                _.isNull(params.value)
+                    ? ''
+                    : dayjs(params.value).format('DD/MM/YYYY'),
         },
+        // {
+        //     field: 'm_ymd',
+        //     headerName: 'Target',
+        //     headerClassName: 'super-app-theme--header',
+        //     headerAlign: 'center',
+        //     width: 150,
+        //     renderCell: (params) => {
+        //         const res = _.find(report && report, {
+        //             sheet_no: params.row.sheet_no,
+        //         })
+        //         return _.isUndefined(res) ? (
+        //             <StatusColor id="T" />
+        //         ) : (
+        //             dayjs(res.date_target).format('DD/MM/YYYY HH:mm')
+        //         )
+        //     },
+        // },
         {
             field: 'memo',
             headerName: 'Problem',

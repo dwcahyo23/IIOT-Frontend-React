@@ -18,8 +18,11 @@ const userAdapter = createEntityAdapter({
     selectId: (data) => data.id,
 })
 
-export const { selectAll: selectApUser, selectById: selectApUserById } =
-    userAdapter.getSelectors((state) => state.dashboard.APUser)
+export const {
+    selectAll: selectApUser,
+    selectById: selectApUserById,
+    selectEntities: selectApEntity,
+} = userAdapter.getSelectors((state) => state.dashboard.APUser)
 
 const userSlice = createSlice({
     name: 'dashboard/APUser',

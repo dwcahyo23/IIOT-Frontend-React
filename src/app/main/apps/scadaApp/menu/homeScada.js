@@ -99,11 +99,11 @@ function homeScada() {
     }, [Zb, searchText, sectionTab, comTab])
 
     useEffect(() => {
-        if (mqZbData !== null && intervalStart == 'auto') {
+        if (intervalStart == 'auto') {
             dispatch(zbUpdateMq(mqZbData))
             // console.log(mqZbData)
         }
-    }, [mqZbData, intervalStart])
+    }, [dispatch, mqZbData, intervalStart])
 
     function handleComTab(event, value) {
         setComTab(value)

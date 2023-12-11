@@ -25,6 +25,29 @@ function MaintenanceSparepart() {
             width: 150,
         },
         {
+            field: 'item_change_date',
+            headerName: 'Date',
+            headerClassName: 'super-app-theme--header',
+            headerAlign: 'center',
+            width: 150,
+            valueFormatter: (params) =>
+                dayjs(params.value[0]).format('DD/MM/YYYY HH:mm'),
+        },
+        {
+            field: 'category',
+            headerName: 'Category',
+            headerClassName: 'super-app-theme--header',
+            headerAlign: 'center',
+            width: 90,
+        },
+        {
+            field: 'item_name',
+            headerName: 'Sparepart',
+            width: 200,
+            headerClassName: 'super-app-theme--header',
+            headerAlign: 'center',
+        },
+        {
             field: 'progress_bar',
             headerName: 'Life Time Bar',
             width: 150,
@@ -40,43 +63,45 @@ function MaintenanceSparepart() {
             renderCell: (params) => <ProgressBar value={params.value} />,
         },
         {
-            field: 'category',
-            headerName: 'Category',
+            field: 'item_life_time',
+            headerName: 'Life Time Hours',
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
             width: 90,
+            valueFormatter: (params) => `${params.value}H`,
         },
         {
-            field: 'item_name',
-            headerName: 'Sparepart',
-            flex: 1,
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-        },
-        {
-            field: 'item_change_date',
-            headerName: 'Last Change',
+            field: 'estimation',
+            headerName: 'Life Time End',
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
             width: 150,
-            valueFormatter: (params) =>
-                dayjs(params.value[0]).format('DD/MM/YYYY HH:mm'),
-        },
-        {
-            field: 'item_life_time',
-            headerName: 'Life Time',
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-            width: 90,
-            valueFormatter: (params) => `${params.value}H`,
+            valueGetter: (params) => {
+                return dayjs(params.row.item_change_date[0])
+                    .add(params.row.item_life_time, 'hour')
+                    .format('DD/MM/YYYY HH:mm')
+            },
         },
         {
             field: 'item_lead_time',
-            headerName: 'Lead Time',
+            headerName: 'Lead Time Hours',
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
             width: 90,
             valueFormatter: (params) => `${params.value}H`,
+        },
+        {
+            field: 'warning',
+            headerName: 'Warning Lead Time',
+            headerClassName: 'super-app-theme--header',
+            headerAlign: 'center',
+            width: 150,
+            valueGetter: (params) => {
+                return dayjs(params.row.item_change_date[0])
+                    .add(params.row.item_life_time, 'hour')
+                    .subtract(params.row.item_lead_time, 'hour')
+                    .format('DD/MM/YYYY HH:mm')
+            },
         },
     ]
 

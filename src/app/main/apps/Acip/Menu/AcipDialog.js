@@ -231,7 +231,7 @@ function AcipDialog({ data, header }) {
                     <div style={{ width: 900, height: 450 }}>
                         <Box>
                             <Grid container spacing={2}>
-                                <Grid item xs={6}>
+                                <Grid item xs={4}>
                                     <Controller
                                         name="id_genba"
                                         defaultValue=""
@@ -251,7 +251,27 @@ function AcipDialog({ data, header }) {
                                         )}
                                     />
                                 </Grid>
-                                <Grid item xs={6}>
+                                <Grid item xs={4}>
+                                    <Controller
+                                        name="sheet"
+                                        defaultValue=""
+                                        control={control}
+                                        render={({ field }) => (
+                                            <TextField
+                                                {...field}
+                                                className="mt-8 mb-16"
+                                                label="Sheet"
+                                                id="sheet"
+                                                variant="outlined"
+                                                fullWidth
+                                                InputProps={{
+                                                    readOnly: true,
+                                                }}
+                                            />
+                                        )}
+                                    />
+                                </Grid>
+                                <Grid item xs={4}>
                                     <Controller
                                         name="from"
                                         defaultValue=""

@@ -48,9 +48,9 @@ function ProgressBar(props) {
                 .toLocaleString()} %`}</div>
             <div
                 className={clsx(classes.bar, {
-                    low: valueInPercent < 30,
-                    medium: valueInPercent >= 30 && valueInPercent <= 70,
-                    high: valueInPercent > 70,
+                    low: valueInPercent < 10,
+                    medium: valueInPercent >= 10 && valueInPercent <= 50,
+                    high: valueInPercent > 50,
                 })}
                 style={{ maxWidth: `${valueInPercent}%` }}
             />

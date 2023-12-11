@@ -40,7 +40,7 @@ function OpenDialog({ data, header, apOptions, parentName }) {
     const dispatch = useDispatch()
     const dataMnOne = useSelector(selectMnOne)
     const [dataNull, setDataNull] = useState(true)
-    const [tabValue, setTabValue] = useState('1')
+    const [tabValue, setTabValue] = useState('3')
     const [isInventory, setIsInventory] = useState(true)
 
     const methods = useForm({
@@ -141,8 +141,8 @@ function OpenDialog({ data, header, apOptions, parentName }) {
                         onChange={handleTabChange}
                         aria-label="lab API tabs example"
                     >
-                        <Tab label="Machine" value="1" />
-                        <Tab label="Life Time" value="2" />
+                        {/* <Tab label="Machine" value="1" /> */}
+                        {/* <Tab label="Life Time" value="2" /> */}
                         <Tab label="AP-Sheet" value="3" />
                         <Tab label="AP-Report" value="4" />
                         <Tab
@@ -153,17 +153,17 @@ function OpenDialog({ data, header, apOptions, parentName }) {
                         <Tab label="List AP-Request" value="6" />
                     </TabList>
                 </Box>
-                <TabPanel value="1">
+                {/* <TabPanel value="1">
                     <div style={{ width: 900, height: 500 }}>
                         <Machine />
                     </div>
-                </TabPanel>
+                </TabPanel> */}
 
-                <TabPanel value="2">
+                {/* <TabPanel value="2">
                     <div style={{ width: 900, height: 500 }}>
                         <Sparepart />
                     </div>
-                </TabPanel>
+                </TabPanel> */}
 
                 <TabPanel value="3">
                     <div style={{ width: 900, height: 500 }}>

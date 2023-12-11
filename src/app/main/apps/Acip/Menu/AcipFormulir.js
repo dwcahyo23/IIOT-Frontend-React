@@ -34,6 +34,15 @@ const columns = [
     //     headerAlign: 'center',
     //     width: 100,
     // },
+
+    {
+        field: 'sheet',
+        headerName: 'Sheet',
+        headerClassName: 'super-app-theme--header',
+        headerAlign: 'center',
+        width: 100,
+    },
+
     {
         field: 'dept',
         headerName: 'Dept',

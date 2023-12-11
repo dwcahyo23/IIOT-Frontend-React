@@ -31,12 +31,6 @@ const PrintApHistory = forwardRef((props, ref) => {
                     </div>
                     <div className="grid grid-cols-3 gap-x-4 my-16">
                         <Typography className="col-span-6 text-sm font-medium">
-                            NAMA MESIN :{' '}
-                            {_.isArray(data) && data[0]?.mch_process}
-                        </Typography>
-                    </div>
-                    <div className="grid grid-cols-3 gap-x-4 my-16">
-                        <Typography className="col-span-6 text-sm font-medium">
                             KODE MESIN : {_.isArray(data) && data[0]?.mch_code}
                         </Typography>
                     </div>
@@ -57,7 +51,7 @@ const PrintApHistory = forwardRef((props, ref) => {
                                         TANGGAL
                                     </Typography>
                                 </td>
-                                <td className="w-3/12 border border-black">
+                                <td className="w-2/12 border border-black">
                                     <Typography
                                         className="font-medium"
                                         align="center"
@@ -65,7 +59,7 @@ const PrintApHistory = forwardRef((props, ref) => {
                                         KERUSAKAN
                                     </Typography>
                                 </td>
-                                <td className="w-3/12 border border-black">
+                                <td className="w-2/12 border border-black">
                                     <Typography
                                         className="font-medium"
                                         align="center"
@@ -81,12 +75,20 @@ const PrintApHistory = forwardRef((props, ref) => {
                                         KRONOLOGI
                                     </Typography>
                                 </td>
-                                <td className="w-3/12 border border-black">
+                                <td className="w-2/12 border border-black">
                                     <Typography
                                         className="font-medium"
                                         align="center"
                                     >
                                         PERBAIKAN
+                                    </Typography>
+                                </td>
+                                <td className="w-3/12 border border-black">
+                                    <Typography
+                                        className="font-medium"
+                                        align="center"
+                                    >
+                                        SPAREPART
                                     </Typography>
                                 </td>
                             </tr>
@@ -98,34 +100,60 @@ const PrintApHistory = forwardRef((props, ref) => {
                                                 className="font-medium"
                                                 align="center"
                                             >
-                                                {i + 1}
+                                                {dayjs(val.date_finish).format(
+                                                    'DD/MM/YYYY'
+                                                )}
                                             </Typography>
-                                        </td>
-                                        <td className="w-3/12 border border-black">
-                                            <Typography
-                                                className="font-medium"
-                                                align="center"
-                                            >
-                                                {val.mch_code}
-                                            </Typography>
-                                        </td>
-                                        <td className="w-3/12 border border-black">
-                                            <Typography
-                                                className="font-medium"
-                                                align="center"
-                                            ></Typography>
                                         </td>
                                         <td className="w-2/12 border border-black">
                                             <Typography
                                                 className="font-medium"
-                                                align="center"
-                                            ></Typography>
+                                                align="left"
+                                            >
+                                                {val.sheet?.memo}
+                                            </Typography>
+                                        </td>
+                                        <td className="w-2/12 border border-black">
+                                            <Typography
+                                                className="font-medium"
+                                                align="left"
+                                            >
+                                                {val.analyzed}
+                                            </Typography>
+                                        </td>
+                                        <td className="w-2/12 border border-black">
+                                            <Typography
+                                                className="font-medium"
+                                                align="left"
+                                            >
+                                                {val.chronological}
+                                            </Typography>
+                                        </td>
+                                        <td className="w-2/12 border border-black">
+                                            <Typography
+                                                className="font-medium"
+                                                align="left"
+                                            >
+                                                {val.corrective}
+                                            </Typography>
                                         </td>
                                         <td className="w-3/12 border border-black">
                                             <Typography
                                                 className="font-medium"
-                                                align="center"
-                                            ></Typography>
+                                                align="left"
+                                            >
+                                                {/* {val.corrective} */}
+                                                {val.request.length > 0 &&
+                                                    _.map(
+                                                        val.request,
+                                                        (i) =>
+                                                            `${i.item_stock}, `
+                                                    )}
+
+                                                {/* {val.request.length > 0
+                                                    ? val.request[0].item_stock
+                                                    : ''} */}
+                                            </Typography>
                                         </td>
                                     </tr>
                                 ))

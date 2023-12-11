@@ -1,59 +1,5 @@
-import { useEffect } from 'react'
-import Box from '@mui/material/Box'
-import _ from 'lodash'
-import dayjs from 'dayjs'
 
-function Gm1({ params }) {
-    const data = params && params
-    const text = document.getElementsByClassName('mytext')
-
-    useEffect(() => {
-        console.log(data)
-        _.forEach(data, (val) => {
-            _.forEach(text, (tval, index) => {
-                if (tval.lastElementChild.textContent == val.mch_code) {
-                    if (_.isNull(val.zbConn) == false) {
-                        if (val.zbConn.din_zb_sens !== 0) {
-                            tval.firstElementChild.setAttribute(
-                                'fill',
-                                '#0d931d'
-                            )
-                            tval.lastElementChild.setAttribute(
-                                'fill',
-                                '#e0ece1'
-                            )
-                        } else {
-                            let width =
-                                tval.firstElementChild.getAttribute('width')
-                            let newWidth = _.toInteger(width) + 60
-                            tval.firstElementChild.setAttribute(
-                                'width',
-                                _.toString(newWidth)
-                            )
-
-                            tval.firstElementChild.setAttribute(
-                                'fill',
-                                '#ff1744'
-                            )
-
-                            let hour = dayjs()
-                                .diff(dayjs(val.zbConn?.timeoff), 'hour', true)
-                                .toFixed(1)
-                            tval.lastElementChild.textContent = `${val.mch_code} (${hour}h)`
-
-                            tval.lastElementChild.setAttribute(
-                                'fill',
-                                '#e0ece1'
-                            )
-                        }
-                    }
-                }
-            })
-        })
-    }, [data, text])
-
-    return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2898.59 1630.45">
+    <svg ref="ref.current.innerHTML"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2898.59 1630.45">
             <g isolation="isolate">
                 <g id="Layer_5" data-name="Layer 5">
                     <polygon
@@ -64,6 +10,7 @@ function Gm1({ params }) {
                         strokeWidth="2"
                     />
                 </g>
+                
                 <g id="Layer_6" data-name="Layer 6">
                     <rect
                         x="2270.22"
@@ -35997,7 +35944,3 @@ function Gm1({ params }) {
                 </g>
             </g>
         </svg>
-    )
-}
-
-export default Gm1
