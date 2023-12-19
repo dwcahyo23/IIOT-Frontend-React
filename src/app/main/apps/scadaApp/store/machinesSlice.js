@@ -9,7 +9,7 @@ import axios from 'axios'
 export const initZbSlice = createAsyncThunk(
     'ScadaApp/Scada/initZb',
     async (params) => {
-        const response = await axios.get(`http://192.168.192.7:5000/ZbOn`)
+        const response = await axios.get(`http://localhost:5000/ZbOn`)
         const data = await response.data
         return data
     }
@@ -20,7 +20,7 @@ export const upZbSlice = createAsyncThunk(
     async (row, { dispatch, getState, rejectWithValue }) => {
         try {
             const response = await axios.post(
-                `http://192.168.192.7:5000/ZbConn`,
+                `http://localhost:5000/ZbConn`,
                 row
             )
             const data = await response.data

@@ -7,9 +7,6 @@ import { Box, colors, Tabs, Tab, Typography } from '@mui/material'
 import dayjs from 'dayjs'
 import { styled } from '@mui/material/styles'
 
-import { getGenbaAcip, selectGenbaAcip } from '../store/genba/genbaAcipSlice'
-import AcipGM1 from './children/AcipGM1'
-
 const Root = styled(FusePageSimple)(({ theme }) => ({
     '& .FusePageSimple-header': {
         backgroundColor: theme.palette.background.paper,
@@ -18,7 +15,7 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 }))
 
 function AcipDashboard() {
-    const data = useSelector(selectGenbaAcip)
+    // const data = useSelector(selectGenbaAcip)
     const [tabValue, setTabValue] = useState(0)
     const [filterData, setFilterData] = useState(null)
 
@@ -135,7 +132,7 @@ function AcipDashboard() {
                                 label="GM5"
                             />
                         </Tabs>
-                        {tabValue === 0 && <AcipGM1 />}
+                        {/* {tabValue === 0 && <AcipGM1 />} */}
                         {/* {tabValue === 1 && <MnGM1SubHeaderUtility />}
                         {tabValue === 2 && <MnGM1SubHeaderWorkshop />} */}
                     </div>

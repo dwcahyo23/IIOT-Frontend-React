@@ -2,23 +2,23 @@ import { lazy } from 'react'
 import { Navigate } from 'react-router-dom'
 import authRoles from '../../../auth/authRoles'
 
-import AcipSystem from './AcipSystem'
+import AcipApp from './AcipApp'
 const Acip = lazy(() => import('./Menu/Acip'))
 const AcipDashboard = lazy(() => import('./Menu/AcipDashboard'))
 
-const AcipSystemConfig = {
+const AcipAppConfig = {
     settings: {
         layout: {},
     },
     auth: authRoles.acip,
     routes: [
         {
-            path: 'apps/AcipSystem',
-            element: <AcipSystem />,
+            path: 'apps/AcipApp',
+            element: <AcipApp />,
             children: [
                 {
                     path: '',
-                    element: <Navigate to="/apps/acipSystem/acip" />,
+                    element: <Navigate to="/apps/acipApp/acip" />,
                 },
                 {
                     path: 'acip',
@@ -33,4 +33,4 @@ const AcipSystemConfig = {
     ],
 }
 
-export default AcipSystemConfig
+export default AcipAppConfig

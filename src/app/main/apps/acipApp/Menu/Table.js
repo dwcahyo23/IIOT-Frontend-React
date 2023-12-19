@@ -233,28 +233,26 @@ function Table({ params, tableIndex }) {
             rows={params.row}
             columns={params.columns}
             getRowHeight={() => 'auto'}
-            getRowId={(row) =>
-                row.uuid || row.uuid_request || row.sheet_no || row.id_genba
-            }
+            getRowId={(row) => row.id_genba || row.sheet}
             onRowDoubleClick={(data) => tableIndex(data)}
             checkboxSelection
             density="compact"
-            slots={{ toolbar: CustomToolbar }}
+            // slots={{ toolbar: CustomToolbar }}
             slotProps={{ toolbar: { rows, column } }}
             autoPageSize
-            onRowSelectionModelChange={(ids) => {
-                const selectedIDs = new Set(ids)
-                const selectedRows = params.row.filter((row) =>
-                    selectedIDs.has(
-                        row.uuid ||
-                            row.uuid_request ||
-                            row.sheet_no ||
-                            row.id_genba
-                    )
-                )
-                setRowSelectionModel(selectedRows)
-                tableIndex({ multi: selectedRows })
-            }}
+            // onRowSelectionModelChange={(ids) => {
+            //     const selectedIDs = new Set(ids)
+            //     const selectedRows = params.row.filter((row) =>
+            //         selectedIDs.has(
+            //             row.uuid ||
+            //                 row.uuid_request ||
+            //                 row.sheet_no ||
+            //                 row.id_genba
+            //         )
+            //     )
+            //     setRowSelectionModel(selectedRows)
+            //     tableIndex({ multi: selectedRows })
+            // }}
         />
     )
 }

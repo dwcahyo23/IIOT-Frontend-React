@@ -1,11 +1,11 @@
 import { combineReducers } from '@reduxjs/toolkit'
 
+import genbas from './genba/genbaAcipSlices'
 import genba from './genba/genbaAcipSlice'
-import genbaOne from './genba/genbaAcipOneSlice'
 
 const reducer = combineReducers({
+    genbas,
     genba,
-    genbaOne,
 })
 
 export default reducer

@@ -1,13 +1,8 @@
 import ModbusApp from './modbusApp/ModbusAppConfig'
 import MaintenanceSystem from './maintenanceSystem/MaintenanceSystemConfig'
-import AcipSystemConfig from './Acip/AcipSystemConfig'
+import AcipApp from './acipApp/AcipAppConfig'
 import ScadaAppConfig from './scadaApp/ScadaAppConfig'
 
-const appsConfig = [
-    ModbusApp,
-    MaintenanceSystem,
-    AcipSystemConfig,
-    ScadaAppConfig,
-]
+const appsConfig = [ModbusApp, MaintenanceSystem, AcipApp, ScadaAppConfig]
 
 export default appsConfig

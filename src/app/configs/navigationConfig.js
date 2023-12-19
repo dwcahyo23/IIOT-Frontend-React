@@ -30,7 +30,7 @@ const navigationConfig = [
                 type: 'item',
                 auth: authRoles.acip,
                 icon: 'heroicons-outline:clipboard-check',
-                url: '/apps/acipSystem/dashboard',
+                url: '/apps/acipApp/dashboard',
             },
         ],
     },
@@ -54,12 +54,12 @@ const navigationConfig = [
                 url: '/apps/maintenanceSystem',
             },
             {
-                id: 'apps.acipSystem',
+                id: 'apps.acipApp',
                 title: 'Genba Acip',
                 type: 'item',
                 icon: 'heroicons-outline:desktop-computer',
                 auth: authRoles.acip,
-                url: '/apps/acipSystem/acip',
+                url: '/apps/acipApp/acip',
             },
             {
                 id: 'apps.scadaApp',
