@@ -13,7 +13,7 @@ export const getQuest = createAsyncThunk(
     async (row, { dispatch, getState, rejectWithValue }) => {
         try {
             const response = await axios.post(
-                `http://localhost:5000/query`,
+                `http://192.168.192.7:5000/query`,
                 row
             )
             const data = await response.data
