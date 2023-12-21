@@ -67,6 +67,7 @@
         "react-virtualized-auto-sizer": "^1.0.20",
         "react-window": "^1.8.9",
         "react-window-dynamic-list": "^2.4.2",
+        "recharts": "^2.10.3",
         "redux-logger": "4.0.0",
         "styled-components": "5.3.6",
         "stylis": "4.1.3",

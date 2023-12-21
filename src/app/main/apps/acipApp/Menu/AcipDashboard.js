@@ -1,11 +1,20 @@
 import FusePageSimple from '@fuse/core/FusePageSimple'
 import { motion } from 'framer-motion'
-import _, { forEach } from 'lodash'
+import _ from 'lodash'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Box, colors, Tabs, Tab, Typography } from '@mui/material'
+import { Box, colors, Tabs, Tab, Typography, Input } from '@mui/material'
 import dayjs from 'dayjs'
 import { styled } from '@mui/material/styles'
+
+import {
+    setGenbasCom,
+    selectFilteredGenbasCom,
+    selectGenbasUseCom,
+    selectChartFilteredGenbasCom,
+} from '../store/genba/genbaAcipSlices'
+
+import AcipDashboardMain from './AcipDashboardMain'
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
     '& .FusePageSimple-header': {
@@ -15,56 +24,16 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 }))
 
 function AcipDashboard() {
-    // const data = useSelector(selectGenbaAcip)
-    const [tabValue, setTabValue] = useState(0)
-    const [filterData, setFilterData] = useState(null)
+    const dispatch = useDispatch()
+    // const genbasCom = useSelector(selectFilteredGenbasCom)
+    const useCom = useSelector(selectGenbasUseCom)
+    // const useChart = useSelector(selectChartFilteredGenbasCom)
+    const [tabValue, setTabValue] = useState('ALL')
 
     function handleChangeTab(event, value) {
         setTabValue(value)
+        dispatch(setGenbasCom(value))
     }
-
-    // useEffect(() => {
-    //     if (data) {
-    //         const filter = _.chain(data?.data)
-    //             .sortBy(['createdAt'])
-    //             .groupBy((val) => val.com)
-    //            .mapValues()
-    //             .mapValues((items) => {
-    //                 return _(items)
-    //                     .groupBy((val) => val.area)
-    //                     .mapValues((area) => {
-    //                         return (
-    //                             _(area)
-    //                                 .groupBy((val) =>
-    //                                     dayjs(val.createdAt).format('MMMM')
-    //                                 )
-    //                                 // .mapValues((month) => {
-    //                                 //     return {
-    //                                 //         data: month,
-    //                                 //         a_r1: _.sumBy(month, 'a_r1'),
-    //                                 //         a_r2: _.sumBy(month, 'a_r2'),
-    //                                 //         a_r3: _.sumBy(month, 'a_r3'),
-    //                                 //         a_r4: _.sumBy(month, 'a_r4'),
-    //                                 //         a_r5: _.sumBy(month, 'a_r5'),
-    //                                 //         b_r1: _.sumBy(month, 'b_r1'),
-    //                                 //         b_r2: _.sumBy(month, 'b_r2'),
-    //                                 //         b_r3: _.sumBy(month, 'b_r3'),
-    //                                 //         b_r4: _.sumBy(month, 'b_r4'),
-    //                                 //         b_r5: _.sumBy(month, 'b_r5'),
-    //                                 //     }
-    //                                 // })
-    //                                 .value()
-    //                         )
-    //                     })
-    //                     .value()
-    //             })
-    //             .value()
-
-    //         setFilterData(filter)
-
-    //         // console.log(filter)
-    //     }
-    // }, [data])
 
     const container = {
         show: {
@@ -72,11 +41,6 @@ function AcipDashboard() {
                 staggerChildren: 0.1,
             },
         },
-    }
-
-    const item = {
-        hidden: { opacity: 0, y: 20 },
-        show: { opacity: 1, y: 0 },
     }
 
     return (
@@ -111,30 +75,21 @@ function AcipDashboard() {
                                 ),
                             }}
                         >
-                            <Tab
-                                className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
-                                disableRipple
-                                label="GM1"
-                            />
-                            <Tab
-                                className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
-                                disableRipple
-                                label="GM2"
-                            />
-                            <Tab
-                                className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
-                                disableRipple
-                                label="GM3"
-                            />
-                            <Tab
-                                className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
-                                disableRipple
-                                label="GM5"
-                            />
+                            {useCom &&
+                                useCom.map((val, index) => (
+                                    <Tab
+                                        className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
+                                        disableRipple
+                                        key={index}
+                                        label={val}
+                                        value={val}
+                                    />
+                                ))}
                         </Tabs>
-                        {/* {tabValue === 0 && <AcipGM1 />} */}
-                        {/* {tabValue === 1 && <MnGM1SubHeaderUtility />}
-                        {tabValue === 2 && <MnGM1SubHeaderWorkshop />} */}
+
+                        {tabValue && (
+                            <AcipDashboardMain params={{ com: tabValue }} />
+                        )}
                     </div>
                 </div>
             }
