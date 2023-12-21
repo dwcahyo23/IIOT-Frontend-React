@@ -24,7 +24,6 @@ function ChartBar() {
             return
         }
         setLoading(false)
-        console.log(data)
     }, [data, loading])
 
     if (loading) {

@@ -1,14 +1,10 @@
+import FuseLoading from '@fuse/core/FuseLoading'
 import FusePageSimple from '@fuse/core/FusePageSimple'
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery'
-import { useEffect, useMemo, useState, forwardRef } from 'react'
+import { useEffect, useState, forwardRef } from 'react'
 import { motion } from 'framer-motion'
-import { ViewList, ViewModule, Map } from '@mui/icons-material'
 import TextField from '@mui/material/TextField'
-import Tab from '@mui/material/Tab'
-import Tabs from '@mui/material/Tabs'
 import Typography from '@mui/material/Typography'
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
-import ToggleButton from '@mui/material/ToggleButton'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
@@ -19,9 +15,19 @@ import Button from '@mui/material/Button'
 import Slide from '@mui/material/Slide'
 import InputLabel from '@mui/material/InputLabel'
 import { useSelector, useDispatch } from 'react-redux'
-import _ from 'lodash'
 
-import { selectGenbasAcip } from '../store/genba/genbaAcipSlices'
+import {
+    selectFilteredGenbas,
+    setGenbasCom,
+    setGenbasDept,
+    setGenbasArea,
+    setSearchText,
+    setGenbasStatus,
+    selectGenbasUseArea,
+    selectGenbasUseCom,
+    selectGenbasUseDept,
+} from '../store/genba/genbaAcipSlices'
+
 import AcipList from './AcipList'
 import AcipDialog from './AcipDialog'
 
@@ -30,81 +36,53 @@ const Transition = forwardRef(function Transition(props, ref) {
 })
 
 function Acip() {
-    const genba = useSelector(selectGenbasAcip)
+    const dispatch = useDispatch()
     const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'))
-    const [comTab, setComTab] = useState('GM1')
-    const [sectionTab, setSectionTab] = useState('ALL')
-    const [searchText, setSearchText] = useState('')
-    const [statusTab, setStatusTab] = useState('Open')
-    const [withCom, setWithCom] = useState([])
-    const [withDept, setWithDept] = useState([])
-    const [filteredData, setFilteredData] = useState(null)
+    const [selectCom, selectDept, selectArea, selectFilter] = [
+        useSelector(selectGenbasUseCom),
+        useSelector(selectGenbasUseDept),
+        useSelector(selectGenbasUseArea),
+        useSelector(selectFilteredGenbas),
+    ]
+    const [loading, setLoading] = useState(true)
     const [dialogData, setDialogData] = useState(null)
     const [open, setOpen] = useState(false)
+    const [comVal, setComVal] = useState('ALL')
+    const [deptVal, setDeptVal] = useState('ALL')
+    const [areaVal, setAreaVal] = useState('ALL')
+    const [searchVal, setSearchVal] = useState('')
+    const [statusVal, setStatusVal] = useState('Open')
 
     useEffect(() => {
-        function getFilteredArray() {
-            if (searchText.length === 0 && sectionTab === 'ALL' && !comTab) {
-                return genba
-            }
-            return _.filter(genba, (val) => {
-                if (sectionTab !== 'ALL' && val.dept !== sectionTab) {
-                    return false
-                }
-                if (val.com !== comTab) {
-                    return false
-                }
-                if (val.status !== statusTab) {
-                    return false
-                }
-                return val?.sheet
-                    .toLowerCase()
-                    .includes(searchText.toLowerCase())
-            })
+        if (!selectFilter) {
+            return
         }
-
-        function getCom() {
-            const isCom = _.keys(_.groupBy(genba, 'com'))
-            return isCom.sort()
-        }
-
-        function getDept() {
-            const isDep = _.keys(
-                _.groupBy(_.filter(genba, { com: comTab }), 'dept')
-            )
-            isDep.unshift('ALL')
-            return isDep.sort()
-        }
-
-        if (genba) {
-            setFilteredData(getFilteredArray())
-            setWithCom(getCom())
-            setWithDept(getDept())
-        }
-    }, [
-        genba,
-        searchText,
-        sectionTab,
-        comTab,
-        statusTab,
-        setWithCom,
-        setWithDept,
-    ])
+        setLoading(false)
+    }, [selectFilter])
 
     function handleComTab(event, value) {
-        setComTab(value.props.value)
+        setComVal(value.props.value)
+        dispatch(setGenbasCom(value.props.value))
     }
 
-    function handleSectionTab(event, value) {
-        setSectionTab(value.props.value)
+    function handleDeptTab(event, value) {
+        setDeptVal(value.props.value)
+        dispatch(setGenbasDept(value.props.value))
+    }
+
+    function handleAreaTab(event, value) {
+        setAreaVal(value.props.value)
+        dispatch(setGenbasArea(value.props.value))
     }
 
     function handleSearchText(event, value) {
-        setSearchText(event.target.value)
+        setSearchVal(event.target.value)
+        dispatch(setSearchText(event.target.value))
     }
 
     function handleStatusTab(event, value) {
-        setStatusTab(event.target.value)
+        setStatusVal(event.target.value)
+        dispatch(setGenbasStatus(event.target.value))
     }
 
     function paramsId(data) {
@@ -116,6 +94,10 @@ function Acip() {
         if (reason !== 'backdropClick' && reason !== 'escapeKeyDown') {
             setOpen(false)
         }
+    }
+
+    if (loading) {
+        return <FuseLoading />
     }
 
     return (
@@ -149,7 +131,7 @@ function Acip() {
                                     label="Search"
                                     placeholder="Search.."
                                     className="flex w-full sm:w-150 mx-8"
-                                    value={searchText}
+                                    value={searchVal}
                                     onChange={handleSearchText}
                                     variant="outlined"
                                     InputLabelProps={{
@@ -163,24 +145,19 @@ function Acip() {
                                 >
                                     <InputLabel>Plant</InputLabel>
 
-                                    {withCom.length > 0 && (
-                                        <Select
-                                            labelId="category-select-label"
-                                            id="category-select"
-                                            label="Category"
-                                            value={comTab}
-                                            onChange={handleComTab}
-                                        >
-                                            {withCom.map((val, index) => (
-                                                <MenuItem
-                                                    value={val}
-                                                    key={index}
-                                                >
-                                                    {val}
-                                                </MenuItem>
-                                            ))}
-                                        </Select>
-                                    )}
+                                    <Select
+                                        labelId="category-select-label"
+                                        id="category-select"
+                                        label="Category"
+                                        value={comVal}
+                                        onChange={handleComTab}
+                                    >
+                                        {selectCom.map((val, index) => (
+                                            <MenuItem value={val} key={index}>
+                                                {val}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
                                 </FormControl>
 
                                 <FormControl
@@ -188,25 +165,41 @@ function Acip() {
                                     variant="outlined"
                                 >
                                     <InputLabel>Dept</InputLabel>
-                                    {withDept.length > 0 && (
-                                        <Select
-                                            labelId="category-select-label"
-                                            id="category-select"
-                                            label="Category"
-                                            value={sectionTab}
-                                            onChange={handleSectionTab}
-                                        >
-                                            {withDept.map((val, index) => (
-                                                <MenuItem
-                                                    value={val}
-                                                    key={index}
-                                                >
-                                                    {val}
-                                                </MenuItem>
-                                            ))}
-                                        </Select>
-                                    )}
+                                    <Select
+                                        labelId="category-select-label"
+                                        id="category-select"
+                                        label="Category"
+                                        value={deptVal}
+                                        onChange={handleDeptTab}
+                                    >
+                                        {selectDept.map((val, index) => (
+                                            <MenuItem value={val} key={index}>
+                                                {val}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
                                 </FormControl>
+
+                                <FormControl
+                                    className="flex w-full sm:w-150 mx-8"
+                                    variant="outlined"
+                                >
+                                    <InputLabel>Area</InputLabel>
+                                    <Select
+                                        labelId="category-select-label"
+                                        id="category-select"
+                                        label="Category"
+                                        value={areaVal}
+                                        onChange={handleAreaTab}
+                                    >
+                                        {selectArea.map((val, index) => (
+                                            <MenuItem value={val} key={index}>
+                                                {val}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+
                                 <FormControl
                                     className="flex w-full sm:w-150 mx-8"
                                     variant="outlined"
@@ -216,7 +209,7 @@ function Acip() {
                                         labelId="category-select-label"
                                         id="category-select"
                                         label="Category"
-                                        value={statusTab}
+                                        value={statusVal}
                                         onChange={handleStatusTab}
                                     >
                                         <MenuItem value="Open" key={1}>
@@ -230,45 +223,21 @@ function Acip() {
                             </div>
                         </div>
 
-                        {useMemo(() => {
-                            const container = {
-                                show: {
-                                    transition: {
-                                        staggerChildren: 0.1,
-                                    },
-                                },
-                            }
-
-                            const item = {
-                                hidden: {
-                                    opacity: 0,
-                                    y: 20,
-                                },
-                                show: {
-                                    opacity: 1,
-                                    y: 0,
-                                },
-                            }
-
-                            return (
-                                filteredData &&
-                                (filteredData.length > 0 ? (
-                                    <AcipList
-                                        params={filteredData}
-                                        paramsId={paramsId}
-                                    />
-                                ) : (
-                                    <div className="flex flex-1 items-center justify-center">
-                                        <Typography
-                                            color="text.secondary"
-                                            className="text-24 mt-32 my-32"
-                                        >
-                                            N/A
-                                        </Typography>
-                                    </div>
-                                ))
-                            )
-                        }, [filteredData])}
+                        {selectFilter.length > 0 ? (
+                            <AcipList
+                                params={selectFilter}
+                                paramsId={paramsId}
+                            />
+                        ) : (
+                            <div className="flex flex-1 items-center justify-center">
+                                <Typography
+                                    color="text.secondary"
+                                    className="text-24 mt-32 my-32"
+                                >
+                                    N/A
+                                </Typography>
+                            </div>
+                        )}
                     </div>
                 }
                 scroll={isMobile ? 'normal' : 'page'}

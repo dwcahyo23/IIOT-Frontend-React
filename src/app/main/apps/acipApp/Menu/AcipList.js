@@ -13,14 +13,6 @@ function AcipList({ params, paramsId }) {
     }
 
     const columns = [
-        // {
-        //     field: 'id_genba',
-        //     headerName: 'ID',
-        //     headerClassName: 'super-app-theme--header',
-        //     headerAlign: 'center',
-        // align:'center',
-        //     width: 100,
-        // },
         {
             field: 'sheet',
             headerName: 'Sheet',
@@ -80,28 +72,28 @@ function AcipList({ params, paramsId }) {
             valueFormatter: (params) =>
                 dayjs(params.value).format('DD/MM/YY HH:mm'),
         },
-        {
-            field: 'images1',
-            headerName: 'Before',
-            headerClassName: 'super-app-theme--header',
-            headerAlign: 'center',
-            align: 'center',
-            width: 150,
-            valueGetter: (params) => params.row.images1,
-            renderCell: (params) => {
-                if (_.isObject(params.value)) {
-                    return (
-                        <img
-                            src={`data:${params.value?.mimetype};base64,${params.value?.data}`}
-                        />
-                    )
-                } else {
-                    return (
-                        <img src="assets/images/apps/ecommerce/product-image-placeholder.png" />
-                    )
-                }
-            },
-        },
+        // {
+        //     field: 'images1',
+        //     headerName: 'Before',
+        //     headerClassName: 'super-app-theme--header',
+        //     headerAlign: 'center',
+        //     align: 'center',
+        //     width: 150,
+        //     valueGetter: (params) => params.row.images1,
+        //     renderCell: (params) => {
+        //         if (_.isObject(params.value)) {
+        //             return (
+        //                 <img
+        //                     src={`data:${params.value?.mimetype};base64,${params.value?.data}`}
+        //                 />
+        //             )
+        //         } else {
+        //             return (
+        //                 <img src="assets/images/apps/ecommerce/product-image-placeholder.png" />
+        //             )
+        //         }
+        //     },
+        // },
         {
             field: 'case',
             headerName: 'Case',
