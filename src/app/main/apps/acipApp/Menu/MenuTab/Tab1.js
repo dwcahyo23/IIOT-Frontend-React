@@ -12,7 +12,7 @@ import {
 } from '../../store/genba/genbaAcipSlice'
 import { showMessage } from 'app/store/fuse/messageSlice'
 
-function Tab1() {
+function Tab1({ useDelete }) {
     const dispatch = useDispatch()
     const methods = useFormContext()
     const { control, formState, getValues, setValue, resetField } = methods
@@ -26,8 +26,16 @@ function Tab1() {
     const onSubmit = async (data) => {
         const { sheet } = getValues()
         if (data.confirmation == `DELETE ${sheet}`) {
-            dispatch(removeGenbaAcip(getValues('id_genba')))
-            setOpen(false)
+            dispatch(removeGenbaAcip(getValues('id_genba'))).then((action) => {
+                dispatch(
+                    showMessage({
+                        message: 'Data has been deleted',
+                        variant: 'error',
+                    })
+                )
+                setOpen(false)
+                useDelete(false)
+            })
         }
     }
 
@@ -46,7 +54,6 @@ function Tab1() {
 
     function handleDelete(params) {
         setOpen(true)
-        // dispatch(removeGenbaAcip(getValues('id_genba')))
     }
 
     function handleClose() {
@@ -250,7 +257,7 @@ function Tab1() {
             </Box>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>
-                    To confirm, type "DELETE {getValues('sheet')} " in the box
+                    To confirm, type "DELETE {getValues('sheet')}" in the box
                     bellow
                 </DialogTitle>
                 <DialogContent>

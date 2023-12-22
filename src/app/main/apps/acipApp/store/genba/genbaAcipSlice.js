@@ -18,9 +18,10 @@ export const getGenbaAcip = createAsyncThunk(
 export const saveGenbaAcip = createAsyncThunk(
     'genbaAcip/genba/saveGenbaAcip',
     async (row, { dispatch, getState }) => {
+        // console.log(row)
         try {
             const response = await axios.post(
-                `http://192.168.192.7:5000/genbaAcip`,
+                `http://192.168.192.7:5000/genbaAcip/`,
                 row
             )
             const data = await response.data

@@ -14,7 +14,7 @@ import dayjs from 'dayjs'
 import { styled } from '@mui/material/styles'
 
 import {
-    selectFilteredGenbas,
+    selectFilteredGenbasForChart,
     setGenbasCom,
     setGenbasDept,
     setGenbasArea,
@@ -23,6 +23,9 @@ import {
     selectGenbasUseArea,
     selectGenbasUseCom,
     selectGenbasUseDept,
+    selectGenbasCom,
+    selectGenbaDept,
+    selectGenbaArea,
 } from '../store/genba/genbaAcipSlices'
 
 import AcipDashboardMain from './AcipDashboardMain'
@@ -36,17 +39,17 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 
 function AcipDashboard() {
     const dispatch = useDispatch()
-    const [selectCom, selectDept, selectArea, selectFilter] = [
+    const [selectCom, selectDept, selectArea, selectFilter, com, dept, area] = [
         useSelector(selectGenbasUseCom),
         useSelector(selectGenbasUseDept),
         useSelector(selectGenbasUseArea),
-        useSelector(selectFilteredGenbas),
+        useSelector(selectFilteredGenbasForChart),
+        useSelector(selectGenbasCom),
+        useSelector(selectGenbaDept),
+        useSelector(selectGenbaArea),
     ]
 
     const [loading, setLoading] = useState(true)
-    const [tabValue, setTabValue] = useState('ALL')
-    const [deptVal, setDeptVal] = useState('ALL')
-    const [areaVal, setAreaVal] = useState('ALL')
 
     useEffect(() => {
         if (!selectFilter) {
@@ -55,27 +58,19 @@ function AcipDashboard() {
         setLoading(false)
     }, [selectFilter])
 
-    function handleChangeTab(event, value) {
-        setTabValue(value)
+    function handleComTab(event, value) {
         dispatch(setGenbasCom(value))
+        dispatch(setGenbasDept('ALL'))
+        dispatch(setGenbasArea('ALL'))
     }
 
     function handleDeptTab(event, value) {
-        setDeptVal(value.props.value)
         dispatch(setGenbasDept(value.props.value))
+        dispatch(setGenbasArea('ALL'))
     }
 
     function handleAreaTab(event, value) {
-        setAreaVal(value.props.value)
         dispatch(setGenbasArea(value.props.value))
-    }
-
-    const container = {
-        show: {
-            transition: {
-                staggerChildren: 0.1,
-            },
-        },
     }
 
     if (loading) {
@@ -107,58 +102,57 @@ function AcipDashboard() {
                                 </Typography>
                             </motion.div>
                         </div>
-                        <div className="flex flex-col sm:flex-row w-full sm:w-auto items-center justify-start space-y-16 sm:space-y-0 sm:space-x-16">
-                            <div className="w-full ">
-                                <Tabs
-                                    value={tabValue}
-                                    onChange={handleChangeTab}
-                                    indicatorColor="secondary"
-                                    textColor="inherit"
-                                    variant="scrollable"
-                                    scrollButtons={false}
-                                    className="w-full px-24 mx-4 min-w-0 p-24"
-                                    classes={{
-                                        indicator:
-                                            'flex justify-center bg-transparent w-full h-full',
-                                    }}
-                                    TabIndicatorProps={{
-                                        children: (
-                                            <Box
-                                                sx={{
-                                                    bgcolor: 'text.disabled',
-                                                }}
-                                                className="w-full h-full rounded-full opacity-20"
-                                            />
-                                        ),
-                                    }}
-                                >
-                                    {selectCom &&
-                                        selectCom.map((val, index) => (
-                                            <Tab
-                                                className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
-                                                disableRipple
-                                                key={index}
-                                                label={val}
-                                                value={val}
-                                            />
-                                        ))}
-                                </Tabs>
-                            </div>
-                        </div>
                     </div>
 
                     <div className="flex flex-col shrink-0 sm:flex-row items-center justify-between space-y-16 sm:space-y-0">
-                        <div className="flex flex-col sm:flex-row w-full sm:w-auto items-center justify-start space-y-16 sm:space-y-0 sm:space-x-16">
+                        <div className="flex flex-col sm:flex-row w-full sm:w-auto items-center space-y-16 sm:space-y-0 sm:space-x-16">
+                            <Tabs
+                                value={com}
+                                onChange={handleComTab}
+                                indicatorColor="secondary"
+                                textColor="inherit"
+                                variant="scrollable"
+                                scrollButtons={false}
+                                classes={{
+                                    indicator:
+                                        'flex justify-center bg-transparent w-full h-full',
+                                }}
+                                TabIndicatorProps={{
+                                    children: (
+                                        <Box
+                                            sx={{
+                                                bgcolor: 'text.disabled',
+                                            }}
+                                            className="w-full h-full rounded-full opacity-20"
+                                        />
+                                    ),
+                                }}
+                            >
+                                {selectCom.map((val, index) => (
+                                    <Tab
+                                        className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
+                                        disableRipple
+                                        key={index}
+                                        label={val}
+                                        value={val}
+                                    />
+                                ))}
+                            </Tabs>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col shrink-0 sm:flex-row items-center justify-between space-y-16 sm:space-y-0 pt-10">
+                        <div className="flex flex-col sm:flex-row w-full sm:w-auto items-center space-y-16 sm:space-y-0 sm:space-x-16">
                             <FormControl
-                                className="flex w-full sm:w-150 mx-8"
+                                className="flex w-full sm:w-256 mx-8"
                                 variant="outlined"
                             >
-                                <InputLabel>Dept</InputLabel>
+                                <InputLabel>Departement</InputLabel>
                                 <Select
                                     labelId="category-select-label"
                                     id="category-select"
                                     label="Category"
-                                    value={deptVal}
+                                    value={dept}
                                     onChange={handleDeptTab}
                                 >
                                     {selectDept.map((val, index) => (
@@ -170,7 +164,7 @@ function AcipDashboard() {
                             </FormControl>
 
                             <FormControl
-                                className="flex w-full sm:w-150 mx-8"
+                                className="flex w-full sm:w-256 mx-8"
                                 variant="outlined"
                             >
                                 <InputLabel>Area</InputLabel>
@@ -178,7 +172,7 @@ function AcipDashboard() {
                                     labelId="category-select-label"
                                     id="category-select"
                                     label="Category"
-                                    value={areaVal}
+                                    value={area}
                                     onChange={handleAreaTab}
                                 >
                                     {selectArea.map((val, index) => (
@@ -191,9 +185,7 @@ function AcipDashboard() {
                         </div>
                     </div>
 
-                    {tabValue && (
-                        <AcipDashboardMain params={{ com: tabValue }} />
-                    )}
+                    {com && <AcipDashboardMain params={{ com: com }} />}
                 </div>
             }
         ></Root>

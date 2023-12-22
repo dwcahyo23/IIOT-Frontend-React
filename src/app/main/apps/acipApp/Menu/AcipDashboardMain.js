@@ -22,7 +22,7 @@ const item = {
 function AcipDashboardMain({ params }) {
     return (
         <motion.div
-            className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-6 lg:grid-cols-6 gap-16 w-full min-w-0 p-24"
+            className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-6 lg:grid-cols-6 gap-16 w-full min-w-0 pt-24"
             variants={container}
             initial="hidden"
             animate="show"

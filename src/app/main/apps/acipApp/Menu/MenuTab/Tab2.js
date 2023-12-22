@@ -1,11 +1,19 @@
 import { useEffect, useState } from 'react'
-import { Box, Button, TextField, Grid, CardMedia } from '@mui/material'
+import {
+    Box,
+    Button,
+    TextField,
+    Grid,
+    CardMedia,
+    Typography,
+} from '@mui/material'
 import dayjs from 'dayjs'
 import { Controller, useFormContext } from 'react-hook-form'
 import _ from 'lodash'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import FuseSvgIcon from '@fuse/core/FuseSvgIcon'
 
 import { useDispatch } from 'react-redux'
 import { saveGenbaAcip } from '../../store/genba/genbaAcipSlice'
@@ -23,7 +31,12 @@ function Tab2() {
     }
 
     function handleSave(params) {
-        dispatch(saveGenbaAcip(getValues())).then((action) => {
+        // console.log(getValues('new_img1'))
+        const data = getValues()
+        const omitData = _.omit(data, ['images1', 'images2'])
+
+        // console.log(omitData)
+        dispatch(saveGenbaAcip(omitData)).then((action) => {
             if (action.payload) {
                 dispatch(
                     showMessage({
@@ -39,12 +52,96 @@ function Tab2() {
         <Box>
             <div className="flex flex-auto items-center min-w-0">
                 <div className="flex flex-col sm:flex-row items-start justify-between">
-                    <CardMedia
-                        component="img"
-                        sx={{ width: 300, height: 300 }}
-                        image={withImage()}
-                        alt="Images"
-                    />
+                    <div className="w-full">
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <CardMedia
+                                    component="img"
+                                    className="mt-8 mb-16"
+                                    sx={{ width: 300, height: 300 }}
+                                    image={withImage()}
+                                    alt="Images"
+                                />
+                            </Grid>
+                        </Grid>
+                        <Grid container spacing={2}>
+                            <Grid item xs={4}>
+                                <Controller
+                                    name="new_img1"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <Box
+                                            component="label"
+                                            htmlFor="button-file"
+                                            className="flex items-center justify-center relative w-256 h-56 rounded-16 mx-12 mt-8 mb-16 overflow-hidden cursor-pointer shadow hover:shadow-lg"
+                                        >
+                                            <input
+                                                accept="image/*"
+                                                className="hidden"
+                                                id="button-file"
+                                                type="file"
+                                                onChange={async (e) => {
+                                                    function readFileAsync() {
+                                                        return new Promise(
+                                                            (
+                                                                resolve,
+                                                                reject
+                                                            ) => {
+                                                                const file =
+                                                                    e.target
+                                                                        .files[0]
+                                                                if (!file) {
+                                                                    return
+                                                                }
+                                                                const reader =
+                                                                    new FileReader()
+
+                                                                reader.onload =
+                                                                    () => {
+                                                                        resolve(
+                                                                            {
+                                                                                mimetype:
+                                                                                    file.type,
+                                                                                data: `${btoa(
+                                                                                    reader.result
+                                                                                )}`,
+                                                                                filesize:
+                                                                                    file.size *
+                                                                                    1,
+                                                                            }
+                                                                        )
+                                                                    }
+
+                                                                reader.onerror =
+                                                                    reject
+
+                                                                reader.readAsBinaryString(
+                                                                    file
+                                                                )
+                                                            }
+                                                        )
+                                                    }
+
+                                                    const newImage =
+                                                        await readFileAsync()
+
+                                                    field.onChange(newImage)
+                                                }}
+                                            />
+                                            <FuseSvgIcon
+                                                size={20}
+                                                color="action"
+                                            >
+                                                heroicons-outline:upload
+                                            </FuseSvgIcon>
+
+                                            <Typography>upload</Typography>
+                                        </Box>
+                                    )}
+                                />
+                            </Grid>
+                        </Grid>
+                    </div>
                 </div>
 
                 <div className="flex flex-col sm:flex-row ml-16 items-end justify-between">

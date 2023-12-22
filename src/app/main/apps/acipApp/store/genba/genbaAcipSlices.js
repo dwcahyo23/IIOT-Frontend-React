@@ -30,15 +30,16 @@ const genbasAcipAdapter = createEntityAdapter({
 export const { selectAll: selectGenbasAcip, selectById: selectGenbasAcipById } =
     genbasAcipAdapter.getSelectors((state) => state.genbaAcip.genbas)
 
-const selectGenbasCom = ({ genbaAcip }) => genbaAcip.genbas.genbasCom
+export const selectGenbasCom = ({ genbaAcip }) => genbaAcip.genbas.genbasCom
 
-const selectGenbaDept = ({ genbaAcip }) => genbaAcip.genbas.genbasDept
+export const selectGenbaDept = ({ genbaAcip }) => genbaAcip.genbas.genbasDept
 
-const selectGenbaArea = ({ genbaAcip }) => genbaAcip.genbas.genbasArea
+export const selectGenbaArea = ({ genbaAcip }) => genbaAcip.genbas.genbasArea
 
-const searchText = ({ genbaAcip }) => genbaAcip.genbas.searchText
+export const searchText = ({ genbaAcip }) => genbaAcip.genbas.searchText
 
-const selectStatus = ({ genbaAcip }) => genbaAcip.genbas.genbasStatus
+export const selectGenbasStatus = ({ genbaAcip }) =>
+    genbaAcip.genbas.genbasStatus
 
 export const selectFilteredGenbas = createSelector(
     [
@@ -47,10 +48,9 @@ export const selectFilteredGenbas = createSelector(
         selectGenbasCom,
         selectGenbaDept,
         selectGenbaArea,
-        selectStatus,
+        selectGenbasStatus,
     ],
     (genbas, searchText, genbasCom, genbasDept, genbasArea, status) => {
-        console.log(searchText, status)
         function getFilter() {
             if (
                 searchText.length === 0 &&
@@ -92,19 +92,10 @@ export const selectFilteredGenbas = createSelector(
 )
 
 export const selectFilteredGenbasForChart = createSelector(
-    [
-        selectGenbasAcip,
-        searchText,
-        selectGenbasCom,
-        selectGenbaDept,
-        selectGenbaArea,
-        selectStatus,
-    ],
-    (genbas, searchText, genbasCom, genbasDept, genbasArea, status) => {
-        console.log(searchText, status)
+    [selectGenbasAcip, selectGenbasCom, selectGenbaDept, selectGenbaArea],
+    (genbas, genbasCom, genbasDept, genbasArea) => {
         function getFilter() {
             if (
-                searchText.length === 0 &&
                 genbasCom === 'ALL' &&
                 genbasDept === 'ALL' &&
                 genbasArea === 'ALL'
@@ -124,13 +115,7 @@ export const selectFilteredGenbasForChart = createSelector(
                     return false
                 }
 
-                if (val.status !== status) {
-                    return false
-                }
-
-                return val?.sheet
-                    .toLowerCase()
-                    .includes(searchText.toLowerCase())
+                return val
             })
         }
 

@@ -31,7 +31,7 @@ const schema = yup.object().shape({
     a_r5: yup.number().min(0).max(30).default(0),
 })
 
-function AcipDialog({ params }) {
+function AcipDialog({ params, useDelete }) {
     // console.log(data)
     const dispatch = useDispatch()
     const genba = useSelector(selectGenba)
@@ -64,138 +64,13 @@ function AcipDialog({ params }) {
         reset(genba)
     }, [genba, reset])
 
-    // useEffect(() => {
-    //     const genba = data.selectData
-    //     if (!data) {
-    //         return
-    //     } else {
-    //         const id = data.selectData.id_genba
-    //         dispatch(getAcipOne(id)).then((action) => {
-    //             if (action.payload) {
-    //                 _.map(_.keys(genba), (val) => {
-    //                     if (
-    //                         val == 'due_date' ||
-    //                         val == 'close_date' ||
-    //                         val == 'open_date' ||
-    //                         val == 'createdAt' ||
-    //                         val == 'updatedAt'
-    //                     ) {
-    //                         if (_.isNull(genba[val])) {
-    //                             setValue(val, dayjs(), {
-    //                                 shouldDirty: true,
-    //                             })
-    //                         } else {
-    //                             setValue(val, dayjs(genba[val]), {
-    //                                 shouldDirty: true,
-    //                             })
-    //                         }
-    //                     } else if (val == 'images1' || val == 'images2') {
-    //                         const images1 = genba['images1']
-    //                         setBeforeImage(
-    //                             `data:${images1.mimetype};base64,${images1.data}`
-    //                         )
-    //                         if (_.isArray(genba['images2'])) {
-    //                         } else {
-    //                             const images2 = genba['images2']
-    //                             setAfterImage(
-    //                                 `data:${images2.mimetype};base64,${images2.data}`
-    //                             )
-    //                         }
-    //                     } else {
-    //                         if (_.isNull(genba[val])) {
-    //                             // setValue(val, '', {
-    //                             //     shouldDirty: true,
-    //                             // })
-    //                         } else {
-    //                             setValue(val, genba[val], {
-    //                                 shouldDirty: true,
-    //                             })
-    //                         }
-    //                     }
-    //                 })
-    //             }
-    //         })
-    //     }
-    // }, [data, reset])
-
-    // function handleSave() {
-    //     dispatch(saveAcipOne(getValues()))
-    //         .then((action) => {
-    //             if (action.payload) {
-    //                 const id = data?.selectData.id_genba
-    //                 dispatch(getAcipOne(id)).then((action) => {
-    //                     if (action.payload) {
-    //                         const genba = action.payload
-    //                         _.map(_.keys(genba), (val) => {
-    //                             if (
-    //                                 val == 'due_date' ||
-    //                                 val == 'close_date' ||
-    //                                 val == 'open_date' ||
-    //                                 val == 'createdAt' ||
-    //                                 val == 'updatedAt'
-    //                             ) {
-    //                                 if (_.isNull(genba[val])) {
-    //                                     setValue(val, dayjs(), {
-    //                                         shouldDirty: true,
-    //                                     })
-    //                                 } else {
-    //                                     setValue(val, dayjs(genba[val]), {
-    //                                         shouldDirty: true,
-    //                                     })
-    //                                 }
-    //                             } else if (
-    //                                 val == 'images1' ||
-    //                                 val == 'images2'
-    //                             ) {
-    //                                 const images1 = genba['images1']
-    //                                 setBeforeImage(
-    //                                     `data:${images1.mimetype};base64,${images1.data}`
-    //                                 )
-    //                                 if (_.isArray(genba['images2'])) {
-    //                                 } else {
-    //                                     const images2 = genba['images2']
-    //                                     setAfterImage(
-    //                                         `data:${images2.mimetype};base64,${images2.data}`
-    //                                     )
-    //                                 }
-    //                             } else {
-    //                                 if (_.isNull(genba[val])) {
-    //                                     // setValue(val, '', {
-    //                                     //     shouldDirty: true,
-    //                                     // })
-    //                                 } else {
-    //                                     setValue(val, genba[val], {
-    //                                         shouldDirty: true,
-    //                                     })
-    //                                 }
-    //                             }
-    //                         })
-    //                         // console.log(action.payload)
-    //                     }
-    //                 })
-    //                 dispatch(getGenbaAcip())
-
-    //                 dispatch(
-    //                     showMessage({
-    //                         message: 'Data has been saved successfully',
-    //                         variant: 'success',
-    //                     })
-    //                 )
-    //             }
-    //         })
-    //         .catch((e) => {
-    //             dispatch(
-    //                 showMessage({
-    //                     message: `${e.message}`,
-    //                     variant: 'error',
-    //                 })
-    //             )
-    //         })
-    // }
-
     function handleTabChange(event, value) {
         setTabValue(value)
     }
+    const withDelete = (data) => {
+        useDelete(data)
+    }
+
     return (
         <FormProvider {...methods}>
             <TabContext value={tabValue}>
@@ -210,7 +85,7 @@ function AcipDialog({ params }) {
                     </TabList>
                 </Box>
                 <TabPanel value="1">
-                    <Tab1 />
+                    <Tab1 useDelete={withDelete} />
                 </TabPanel>
                 <TabPanel value="2">
                     <Tab2 />

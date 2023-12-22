@@ -26,6 +26,11 @@ import {
     selectGenbasUseArea,
     selectGenbasUseCom,
     selectGenbasUseDept,
+    selectGenbaArea,
+    selectGenbaDept,
+    selectGenbasCom,
+    selectGenbasStatus,
+    searchText,
 } from '../store/genba/genbaAcipSlices'
 
 import AcipList from './AcipList'
@@ -38,20 +43,30 @@ const Transition = forwardRef(function Transition(props, ref) {
 function Acip() {
     const dispatch = useDispatch()
     const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'))
-    const [selectCom, selectDept, selectArea, selectFilter] = [
+    const [
+        selectCom,
+        selectDept,
+        selectArea,
+        selectFilter,
+        com,
+        dept,
+        area,
+        status,
+        search,
+    ] = [
         useSelector(selectGenbasUseCom),
         useSelector(selectGenbasUseDept),
         useSelector(selectGenbasUseArea),
         useSelector(selectFilteredGenbas),
+        useSelector(selectGenbasCom),
+        useSelector(selectGenbaDept),
+        useSelector(selectGenbaArea),
+        useSelector(selectGenbasStatus),
+        useSelector(searchText),
     ]
     const [loading, setLoading] = useState(true)
     const [dialogData, setDialogData] = useState(null)
     const [open, setOpen] = useState(false)
-    const [comVal, setComVal] = useState('ALL')
-    const [deptVal, setDeptVal] = useState('ALL')
-    const [areaVal, setAreaVal] = useState('ALL')
-    const [searchVal, setSearchVal] = useState('')
-    const [statusVal, setStatusVal] = useState('Open')
 
     useEffect(() => {
         if (!selectFilter) {
@@ -61,27 +76,28 @@ function Acip() {
     }, [selectFilter])
 
     function handleComTab(event, value) {
-        setComVal(value.props.value)
         dispatch(setGenbasCom(value.props.value))
+        dispatch(setGenbasDept('ALL'))
+        dispatch(setGenbasArea('ALL'))
+        dispatch(setGenbasStatus('Open'))
     }
 
     function handleDeptTab(event, value) {
-        setDeptVal(value.props.value)
         dispatch(setGenbasDept(value.props.value))
+        dispatch(setGenbasArea('ALL'))
+        dispatch(setGenbasStatus('Open'))
     }
 
     function handleAreaTab(event, value) {
-        setAreaVal(value.props.value)
         dispatch(setGenbasArea(value.props.value))
+        dispatch(setGenbasStatus('Open'))
     }
 
     function handleSearchText(event, value) {
-        setSearchVal(event.target.value)
         dispatch(setSearchText(event.target.value))
     }
 
     function handleStatusTab(event, value) {
-        setStatusVal(event.target.value)
         dispatch(setGenbasStatus(event.target.value))
     }
 
@@ -94,6 +110,10 @@ function Acip() {
         if (reason !== 'backdropClick' && reason !== 'escapeKeyDown') {
             setOpen(false)
         }
+    }
+
+    function withDelete(data) {
+        setOpen(data)
     }
 
     if (loading) {
@@ -131,7 +151,7 @@ function Acip() {
                                     label="Search"
                                     placeholder="Search.."
                                     className="flex w-full sm:w-150 mx-8"
-                                    value={searchVal}
+                                    value={search}
                                     onChange={handleSearchText}
                                     variant="outlined"
                                     InputLabelProps={{
@@ -149,7 +169,7 @@ function Acip() {
                                         labelId="category-select-label"
                                         id="category-select"
                                         label="Category"
-                                        value={comVal}
+                                        value={com}
                                         onChange={handleComTab}
                                     >
                                         {selectCom.map((val, index) => (
@@ -169,7 +189,7 @@ function Acip() {
                                         labelId="category-select-label"
                                         id="category-select"
                                         label="Category"
-                                        value={deptVal}
+                                        value={dept}
                                         onChange={handleDeptTab}
                                     >
                                         {selectDept.map((val, index) => (
@@ -189,7 +209,7 @@ function Acip() {
                                         labelId="category-select-label"
                                         id="category-select"
                                         label="Category"
-                                        value={areaVal}
+                                        value={area}
                                         onChange={handleAreaTab}
                                     >
                                         {selectArea.map((val, index) => (
@@ -209,7 +229,7 @@ function Acip() {
                                         labelId="category-select-label"
                                         id="category-select"
                                         label="Category"
-                                        value={statusVal}
+                                        value={status}
                                         onChange={handleStatusTab}
                                     >
                                         <MenuItem value="Open" key={1}>
@@ -265,7 +285,7 @@ function Acip() {
                     </Toolbar>
                 </AppBar>
                 <div style={{ width: 900, height: 600, zIndex: 1000 }}>
-                    <AcipDialog params={dialogData} />
+                    <AcipDialog params={dialogData} useDelete={withDelete} />
                 </div>
             </Dialog>
         </div>
