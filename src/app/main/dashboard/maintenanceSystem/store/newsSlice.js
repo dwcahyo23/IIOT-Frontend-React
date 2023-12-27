@@ -8,7 +8,7 @@ import axios from 'axios'
 export const getnewsSlice = createAsyncThunk(
     'dashboard/NewsLog/getnewsSlice',
     async () => {
-        const response = await axios.get('http://192.168.192.7:5000/newsLog')
+        const response = await axios.get('http://localhost:5000/newsLog')
         const data = await response.data
         return data
     }

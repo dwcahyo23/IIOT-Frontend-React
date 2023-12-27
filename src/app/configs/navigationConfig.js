@@ -69,6 +69,18 @@ const navigationConfig = [
                 icon: 'heroicons-outline:status-online',
                 url: '/apps/scadaApp/home',
             },
+            {
+                type: 'divider',
+                id: 'divider-2',
+            },
+            {
+                id: 'apps.maintenanceApp',
+                title: 'Machines',
+                type: 'item',
+                icon: 'heroicons-outline:desktop-computer',
+                auth: authRoles.admin,
+                url: '/apps/MnApp/machines',
+            },
             // {
             //     id: 'apps.modbus',
             //     title: 'Maintenance System',

@@ -11,11 +11,11 @@ export const getApSlice = createAsyncThunk(
     async (params) => {
         //!for not in entity adapter:
         const response = await axios.get(
-            `http://192.168.192.7:5000/maintenanceDashboard/${params.com}/${params.section}`
+            `http://localhost:5000/maintenanceDashboard/${params.com}/${params.section}`
         )
         //!end
 
-        // const response = await axios.get(`http://192.168.192.7:5000/pgMaintenance`)
+        // const response = await axios.get(`http://localhost:5000/pgMaintenance`)
         const data = await response.data
         return data
     }
@@ -25,7 +25,7 @@ export const getMachineSlice = createAsyncThunk(
     'dashboard/APPG/getMachineSlice',
     async () => {
         const response = await axios.get(
-            'http://192.168.192.7:5000/maintenanceMachine'
+            'http://localhost:5000/maintenanceMachine'
         )
         const data = await response.data
         return data
