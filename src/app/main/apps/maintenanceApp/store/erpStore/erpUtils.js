@@ -22,10 +22,9 @@ export const getCountStatusErp = (params) => {
                         ? 'pass'
                         : 'fail'
                 ),
-                Brekdown_Close: _.countBy(val, (status) =>
-                    status.pri_no == '02' && status.chk_mrk == 'Y'
-                        ? 'pass'
-                        : 'fail'
+                Brekdown_Close: _.countBy(
+                    val,
+                    (status) => status.pri_no == '02'
                 ),
             }
         })
