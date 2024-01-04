@@ -6,6 +6,7 @@ import {
 } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { saveMachine, removeMachine } from './machineMnSlice'
+import _ from 'lodash'
 
 export const getMachineMnSlices = createAsyncThunk(
     'mnApp/machines/getMachines',
@@ -33,6 +34,13 @@ export const machinesCom = ({ mnApp }) => mnApp.machines.machinesCom
 
 export const machinesProcess = ({ mnApp }) => mnApp.machines.machinesProcess
 
+export const searchText = ({ mnApp }) => mnApp.machines.searchText
+
+export const machinesSection = ({ mnApp }) => mnApp.machines.machinesSection
+
+export const machinesResponbility = ({ mnApp }) =>
+    mnApp.machines.machinesResponbility
+
 export const selectMachinesCom = createSelector([selectMnMachines], (data) => {
     const x = _(data).groupBy('mch_com').keys().push('ALL').sort().value()
 
@@ -54,6 +62,65 @@ export const selectMachinesProcess = createSelector(
     }
 )
 
+export const selectMachinesSection = createSelector(
+    [selectMnMachines, machinesCom],
+    (data, com) => {
+        const x = _(data)
+            .filter((val) => val.mch_com == com && _.isString(val.section))
+            .groupBy('section')
+            .keys()
+            .push('ALL')
+            .sort()
+            .map((val) => val.toUpperCase())
+            .value()
+
+        return x
+    }
+)
+
+export const selectMachinesResponbility = createSelector(
+    [selectMnMachines, machinesCom, machinesSection],
+    (data, com, section) => {
+        const x = _(data)
+            .filter(
+                (val) => val.mch_com == com && val.section == _.toLower(section)
+            )
+            .groupBy('responsible')
+            .keys()
+            .push('ALL')
+            .sort()
+            .map((val) => val.toUpperCase())
+            .value()
+
+        return x
+    }
+)
+
+export const filteredMachines = createSelector(
+    [selectMnMachines, machinesCom, machinesProcess, searchText],
+    (data, com, proces, text) => {
+        function getFilter() {
+            if (text.length === 0 && com === 'ALL' && proces === 'ALL') {
+                return data
+            }
+            return _.filter(data, (val) => {
+                if (com !== 'ALL' && val.mch_com !== com) {
+                    return false
+                }
+
+                if (proces !== 'ALL' && val.mch_process_type !== proces) {
+                    return false
+                }
+
+                return val?.mch_code.toLowerCase().includes(text.toLowerCase())
+            })
+        }
+
+        if (data) {
+            return getFilter()
+        }
+    }
+)
 /*
  * END OF CUSTOM SELECTOR
  */
@@ -63,6 +130,9 @@ const machineMnSlices = createSlice({
     initialState: MnMachineAdapter.getInitialState({
         machinesCom: 'ALL',
         machinesProcess: 'ALL',
+        searchText: '',
+        machinesSection: 'ALL',
+        machinesResponbility: 'ALL',
     }),
     reducers: {
         setMachinesCom: {
@@ -81,6 +151,28 @@ const machineMnSlices = createSlice({
                 return { payload: event }
             },
         },
+        setMachinesSection: {
+            reducer: (state, action) => {
+                state.machinesSection = action.payload
+            },
+            prepare: (event) => {
+                return { payload: event }
+            },
+        },
+        setMachinesResponbility: {
+            reducer: (state, action) => {
+                state.machinesResponbility = action.payload
+            },
+            prepare: (event) => {
+                return { payload: event }
+            },
+        },
+        setSearchText: {
+            reducer: (state, action) => {
+                state.searchText = action.payload
+            },
+            prepare: (event) => ({ payload: event }),
+        },
     },
     extraReducers: {
         [getMachineMnSlices.fulfilled]: MnMachineAdapter.setAll,
@@ -90,6 +182,12 @@ const machineMnSlices = createSlice({
     },
 })
 
-export const { setMachinesCom, setMachinesProcess } = machineMnSlices.actions
+export const {
+    setMachinesCom,
+    setMachinesProcess,
+    setSearchText,
+    setMachinesSection,
+    setMachinesResponbility,
+} = machineMnSlices.actions
 
 export default machineMnSlices.reducer

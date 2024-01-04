@@ -1,7 +1,8 @@
 import FuseLoading from '@fuse/core/FuseLoading'
 import FusePageSimple from '@fuse/core/FusePageSimple'
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery'
-import { useEffect, useState, forwardRef } from 'react'
+import { useEffect, useState, forwardRe, useMemo, useRef } from 'react'
+import { ViewList, ViewModule } from '@mui/icons-material'
 import { motion } from 'framer-motion'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
@@ -13,6 +14,10 @@ import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import Button from '@mui/material/Button'
 import Slide from '@mui/material/Slide'
+import ReactToPrint from 'react-to-print'
+
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
+import ToggleButton from '@mui/material/ToggleButton'
 import InputLabel from '@mui/material/InputLabel'
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -22,19 +27,26 @@ import {
     selectMachinesProcess,
     machinesCom,
     machinesProcess,
-} from '../store/machineStore/machineMnSlices'
+    filteredMachines,
+} from '../../store/machineStore/machineMnSlices'
+
+import CardMachine from '../../components/CardMachine'
+import PrintMaintenanceMachine from './PrintMaintenanceMachine'
 
 function MaintenanceAppMachines() {
     const dispatch = useDispatch()
+    const componentRef = useRef()
+    const [view, setView] = useState('list')
 
     const [useCom, useProcess] = [
         useSelector(machinesCom),
         useSelector(machinesProcess),
     ]
 
-    const [selectCom, selectProcess] = [
+    const [selectCom, selectProcess, selectData] = [
         useSelector(selectMachinesCom),
         useSelector(selectMachinesProcess),
+        useSelector(filteredMachines),
     ]
 
     const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'))
@@ -46,6 +58,29 @@ function MaintenanceAppMachines() {
 
     function handleProcessTab(event, value) {
         dispatch(setMachinesProcess(value.props.value))
+    }
+
+    function handleView(event, value) {
+        setView(value)
+    }
+
+    const container = {
+        show: {
+            transition: {
+                staggerChildren: 0.1,
+            },
+        },
+    }
+
+    const item = {
+        hidden: {
+            opacity: 0,
+            y: 20,
+        },
+        show: {
+            opacity: 1,
+            y: 0,
+        },
     }
 
     return (
@@ -76,6 +111,24 @@ function MaintenanceAppMachines() {
                                 </motion.div>
                             </div>
                             <div className="flex flex-col sm:flex-row w-full sm:w-auto items-center justify-start space-y-16 sm:space-y-0 sm:space-x-16">
+                                <ReactToPrint
+                                    trigger={() => (
+                                        <Button
+                                            className="px-16 min-w-100"
+                                            variant="outlined"
+                                            color="secondary"
+                                        >
+                                            Print
+                                        </Button>
+                                    )}
+                                    content={() => componentRef.current}
+                                    pageStyle="@page { size: auto; margin: 0mm; } @media print { body { -webkit-print-color-adjust: exact; padding: 40px !important; } }"
+                                />
+                                <PrintMaintenanceMachine
+                                    ref={componentRef}
+                                    params={selectData}
+                                />
+
                                 <TextField
                                     label="Search"
                                     placeholder="Search.."
@@ -129,24 +182,61 @@ function MaintenanceAppMachines() {
                                         ))}
                                     </Select>
                                 </FormControl>
+
+                                <ToggleButtonGroup
+                                    value={view}
+                                    exclusive
+                                    onChange={handleView}
+                                >
+                                    <ToggleButton
+                                        value="module"
+                                        aria-label="module"
+                                    >
+                                        <ViewModule />
+                                    </ToggleButton>
+
+                                    <ToggleButton
+                                        value="list"
+                                        aria-label="list"
+                                    >
+                                        <ViewList />
+                                    </ToggleButton>
+                                </ToggleButtonGroup>
                             </div>
                         </div>
 
-                        {/* {selectFilter.length > 0 ? (
-                            <AcipList
-                                params={selectFilter}
-                                paramsId={paramsId}
-                            />
-                        ) : ( */}
-                        <div className="flex flex-1 items-center justify-center">
-                            <Typography
-                                color="text.secondary"
-                                className="text-24 mt-32 my-32"
-                            >
-                                N/A
-                            </Typography>
-                        </div>
-                        {/* )} */}
+                        {useMemo(() => {
+                            return selectData.length > 0 ? (
+                                <motion.div
+                                    className="flex grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-16 mt-16 sm:mt-16"
+                                    variants={container}
+                                    initial="hidden"
+                                    animate="show"
+                                >
+                                    {selectData.map((data) => {
+                                        return (
+                                            <motion.div
+                                                variants={item}
+                                                key={data.uuid}
+                                            >
+                                                <CardMachine
+                                                    params={{ ...data }}
+                                                />
+                                            </motion.div>
+                                        )
+                                    })}
+                                </motion.div>
+                            ) : (
+                                <div className="flex flex-1 items-center justify-center">
+                                    <Typography
+                                        color="text.secondary"
+                                        className="text-24 mt-32 my-32"
+                                    >
+                                        N/A
+                                    </Typography>
+                                </div>
+                            )
+                        }, [selectData])}
                     </div>
                 }
                 scroll={isMobile ? 'normal' : 'page'}

@@ -74,7 +74,15 @@ const navigationConfig = [
                 id: 'divider-2',
             },
             {
-                id: 'apps.maintenanceApp',
+                id: 'apps.maintenanceAppErps',
+                title: 'Work Order',
+                type: 'item',
+                icon: 'heroicons-outline:desktop-computer',
+                auth: authRoles.admin,
+                url: '/apps/MnApp/erps',
+            },
+            {
+                id: 'apps.maintenanceAppMachines',
                 title: 'Machines',
                 type: 'item',
                 icon: 'heroicons-outline:desktop-computer',

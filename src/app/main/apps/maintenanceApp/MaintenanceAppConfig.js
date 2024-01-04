@@ -4,7 +4,10 @@ import { authRoles } from 'src/app/auth'
 
 import MaintenanceApp from './MaintenanceApp'
 import routes from 'app/configs/routesConfig'
-const MaintenanceMachines = lazy(() => import('./menu/MaintenanceAppMachines'))
+const MaintenanceMachines = lazy(() =>
+    import('./menu/machine/MaintenanceAppMachines')
+)
+const MaintenanceErps = lazy(() => import('./menu/erp/MaintenanceAppErps'))
 
 const MaintenanceAppConfig = {
     setting: {
@@ -21,6 +24,10 @@ const MaintenanceAppConfig = {
                     element: (
                         <Navigate to="/apps/maintenanceApp/menu/MaintenanceAppMachines" />
                     ),
+                },
+                {
+                    path: 'erps',
+                    element: <MaintenanceErps />,
                 },
                 {
                     path: 'machines',
