@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Typography } from '@mui/material'
 
 import DataChart from '../../components/DataChart'
+import ListWorkOrder from '../../components/ListWorkOrder'
 
 import { filterChartErps } from '../../store/erpStore/erpMnSlices'
 
@@ -23,15 +24,17 @@ const item = {
 
 function MaintenanceAppErpMain({ params }) {
     const filterChart = useSelector(filterChartErps)
-    console.log(filterChart)
     return (
         <motion.div
-            className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-6 lg:grid-cols-6 gap-16 w-full min-w-0 pt-24"
+            className="grid grid-cols-1 sm:grid-cols-6 md:grid-cols-8 gap-16 w-full min-w-0 pt-24"
             variants={container}
             initial="hidden"
             animate="show"
         >
-            <motion.div variants={item} className="sm:col-span-2 md:col-span-4">
+            <motion.div variants={item} className="sm:col-span-2 md:col-span-3">
+                <ListWorkOrder />
+            </motion.div>
+            <motion.div variants={item} className="sm:col-span-4 md:col-span-5">
                 <DataChart params={{ data: filterChart }} />
             </motion.div>
         </motion.div>

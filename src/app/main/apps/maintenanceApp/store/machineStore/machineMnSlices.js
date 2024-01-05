@@ -62,22 +62,6 @@ export const selectMachinesProcess = createSelector(
     }
 )
 
-export const selectMachinesSection = createSelector(
-    [selectMnMachines, machinesCom],
-    (data, com) => {
-        const x = _(data)
-            .filter((val) => val.mch_com == com && _.isString(val.section))
-            .groupBy('section')
-            .keys()
-            .push('ALL')
-            .sort()
-            .map((val) => val.toUpperCase())
-            .value()
-
-        return x
-    }
-)
-
 export const selectMachinesResponbility = createSelector(
     [selectMnMachines, machinesCom, machinesSection],
     (data, com, section) => {

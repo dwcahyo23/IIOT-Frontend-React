@@ -17,15 +17,6 @@ export const getCountStatusErp = (params) => {
             return {
                 Open: _.countBy(val, (status) => status.chk_mark == 'N'),
                 Close: _.countBy(val, (status) => status.chk_mark == 'Y'),
-                Brekdown_Open: _.countBy(val, (status) =>
-                    status.pri_no == '02' && status.chk_mrk == 'N'
-                        ? 'pass'
-                        : 'fail'
-                ),
-                Brekdown_Close: _.countBy(
-                    val,
-                    (status) => status.pri_no == '02'
-                ),
             }
         })
         .value()

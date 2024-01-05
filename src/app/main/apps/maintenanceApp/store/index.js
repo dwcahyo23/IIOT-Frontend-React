@@ -10,7 +10,7 @@ import spareparts from './sparepartStore/sparepartMnSlices'
 import sparepart from './sparepartStore/sparepartMnSlice'
 import stoks from './stokStore/stokMnSlices'
 import stok from './stokStore/stokMnSlice'
-
+import users from './userStore/userMnSlices'
 const reducer = combineReducers({
     erps,
     machines,
@@ -23,6 +23,7 @@ const reducer = combineReducers({
     sparepart,
     stoks,
     stok,
+    users,
 })
 
 export default reducer

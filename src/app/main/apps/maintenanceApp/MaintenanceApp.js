@@ -8,6 +8,7 @@ import { getReportSlices } from './store/reportStore/reportMnSlices'
 import { getRequestSlices } from './store/requestStore/requestMnSlices'
 import { getSparepartSlices } from './store/sparepartStore/sparepartMnSlices'
 import { getStokSlices } from './store/stokStore/stokMnSlices'
+import { getUsersMn } from './store/userStore/userMnSlices'
 import reducer from './store'
 
 function MaintenanceApp() {
@@ -20,6 +21,7 @@ function MaintenanceApp() {
         dispatch(getRequestSlices())
         dispatch(getSparepartSlices())
         dispatch(getStokSlices())
+        dispatch(getUsersMn())
     }, [dispatch])
 
     return <Outlet />

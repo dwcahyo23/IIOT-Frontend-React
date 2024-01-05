@@ -8,7 +8,7 @@ import axios from 'axios'
 import { removeSparepart, saveSparepart } from './sparepartMnSlice'
 
 export const getSparepartSlices = createAsyncThunk(
-    'mnApp/sparepart/getSpareparts',
+    'mnApp/spareparts/getSpareparts',
     async () => {
         const response = await axios.get(`http://localhost:5000/mnsparepart`)
 
@@ -25,10 +25,10 @@ const MnSparepartAdapter = createEntityAdapter({
 export const {
     selectAll: selectMnSpareparts,
     selectById: selectMnSparepartsById,
-} = MnSparepartAdapter.getSelectors((state) => state.mnApp.sparepart)
+} = MnSparepartAdapter.getSelectors((state) => state.mnApp.spareparts)
 
 const sparepartMnSlices = createSlice({
-    name: 'mnApp/sparepart',
+    name: 'mnApp/spareparts',
     initialState: MnSparepartAdapter.getInitialState({}),
     reducers: {},
     extraReducers: {

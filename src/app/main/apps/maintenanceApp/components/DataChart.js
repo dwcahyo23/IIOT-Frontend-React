@@ -42,8 +42,8 @@ function DataChart({ params }) {
             </div>
             <div className="flex items-center justify-center px-8 pt-12">
                 <BarChart
-                    width={1000}
-                    height={400}
+                    width={900}
+                    height={460}
                     data={data}
                     margin={{
                         top: 5,

@@ -20,6 +20,8 @@ export const getStokSlices = createAsyncThunk(
 
 const MnStokAdapter = createEntityAdapter({
     selectId: (data) => data.uuid,
+    // sortComparer: (a, b) => a.title.localeCompare(b.title),
+    sortComparer: (a, b) => a.mat_name.localeCompare(b.mat_name),
 })
 
 export const { selectAll: selectMnStoks, selectById: selectMnStoksById } =

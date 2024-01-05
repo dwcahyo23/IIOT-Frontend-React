@@ -16,6 +16,7 @@
         "@mui/x-data-grid": "^6.8.0",
         "@mui/x-date-pickers": "^6.8.0",
         "@reduxjs/toolkit": "1.8.6",
+        "@syncfusion/ej2-react-kanban": "^24.1.43",
         "apexcharts": "^3.41.0",
         "autosuggest-highlight": "3.3.4",
         "axios": "1.2.1",

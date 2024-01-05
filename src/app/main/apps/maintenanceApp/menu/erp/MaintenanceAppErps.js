@@ -15,10 +15,15 @@ import dayjs from 'dayjs'
 import { styled } from '@mui/material/styles'
 
 import {
-    selectMnErps,
     selectErpYear,
+    selectErpPriNo,
+    selectErpMonth,
     erpYear,
+    erpPrio,
+    erpMonth,
     setErpYear,
+    setErpPrio,
+    setErpMonth,
     filteredErps,
     filterChartErps,
     erpPending,
@@ -34,7 +39,6 @@ import {
     setMachinesResponbility,
     selectMachinesCom,
     selectMnMachines,
-    selectMachinesSection,
     selectMachinesResponbility,
 } from '../../store/machineStore/machineMnSlices'
 
@@ -64,10 +68,22 @@ function MaintenanceAppErps() {
         useSelector(filterChartErps),
     ]
 
-    const [selectYear, useYear, isPending] = [
+    const [
+        selectMonth,
+        useMonth,
+        selectYear,
+        useYear,
+        isPending,
+        selectPrio,
+        usePrio,
+    ] = [
+        useSelector(selectErpMonth),
+        useSelector(erpMonth),
         useSelector(selectErpYear),
         useSelector(erpYear),
         useSelector(erpPending),
+        useSelector(selectErpPriNo),
+        useSelector(erpPrio),
     ]
 
     const [selectCom, useCom] = [
@@ -75,10 +91,7 @@ function MaintenanceAppErps() {
         useSelector(machinesCom),
     ]
 
-    const [selectSection, useSection] = [
-        useSelector(selectMachinesSection),
-        useSelector(machinesSection),
-    ]
+    const [useSection] = [useSelector(machinesSection)]
 
     const [selectResponbility, useResponbility] = [
         useSelector(selectMachinesResponbility),
@@ -94,7 +107,7 @@ function MaintenanceAppErps() {
 
     function handleComTab(event, value) {
         dispatch(setMachinesCom(value))
-        dispatch(setMachinesSection('ALL'))
+        // dispatch(setMachinesSection('ALL'))
         dispatch(setMachinesResponbility('ALL'))
     }
 
@@ -109,8 +122,14 @@ function MaintenanceAppErps() {
 
     function handleYear(event, value) {
         dispatch(setErpYear(value.props.value))
-        dispatch(setMachinesSection('ALL'))
-        dispatch(setMachinesResponbility('ALL'))
+        // dispatch(setMachinesSection('ALL'))
+        // dispatch(setMachinesResponbility('ALL'))
+    }
+
+    function handlePrio(event, value) {
+        dispatch(setErpPrio(value.props.value))
+        // dispatch(setMachinesSection('ALL'))
+        // dispatch(setMachinesResponbility('ALL'))
     }
 
     if (loading) {
@@ -120,7 +139,7 @@ function MaintenanceAppErps() {
     return (
         <Root
             content={
-                <div className="flex flex-col flex-1 w-full mx-auto px-24 pt-24 sm:p-40">
+                <div className="flex flex-col flex-1 w-full mx-auto px-16 pt-8 sm:p-40">
                     <div className="flex flex-col shrink-0 sm:flex-row items-center justify-between space-y-16 sm:space-y-0">
                         <div className="flex items-center max-w-full">
                             <motion.div
@@ -214,9 +233,29 @@ function MaintenanceAppErps() {
                                 value={useSection}
                                 onChange={handleSection}
                             >
-                                {selectSection.map((val, index) => (
-                                    <MenuItem value={val} key={index}>
-                                        {val}
+                                <MenuItem value="ALL">ALL</MenuItem>
+                                <MenuItem value="machinery">MACHINERY</MenuItem>
+                                <MenuItem value="utility">UTILITY</MenuItem>
+                                <MenuItem value="workshop">WORKSHOP</MenuItem>
+                            </Select>
+                        </FormControl>
+
+                        <FormControl
+                            className="flex w-full sm:w-auto mx-8"
+                            variant="outlined"
+                        >
+                            <InputLabel>Priority</InputLabel>
+
+                            <Select
+                                labelId="category-select-label"
+                                id="category-select"
+                                label="Category"
+                                value={usePrio}
+                                onChange={handlePrio}
+                            >
+                                {selectPrio.map((val, index) => (
+                                    <MenuItem value={val.val} key={index}>
+                                        {val.label}
                                     </MenuItem>
                                 ))}
                             </Select>
@@ -235,11 +274,28 @@ function MaintenanceAppErps() {
                                 value={useResponbility}
                                 onChange={handleResponbility}
                             >
-                                {selectResponbility.map((val, index) => (
-                                    <MenuItem value={val} key={index}>
-                                        {val}
-                                    </MenuItem>
-                                ))}
+                                {selectResponbility.map((val, index) =>
+                                    val === 'ALL' && useCom === 'ALL' ? (
+                                        <MenuItem value={val} key={index}>
+                                            SURYADI | DEPARTEMENT HEAD
+                                        </MenuItem>
+                                    ) : val === 'ALL' && useCom === 'GM2' ? (
+                                        <MenuItem value={val} key={index}>
+                                            SADRI | SECTION HEAD
+                                        </MenuItem>
+                                    ) : val === 'ALL' &&
+                                      (useCom === 'GM1' ||
+                                          useCom === 'GM3' ||
+                                          useCom === 'GM5') ? (
+                                        <MenuItem value={val} key={index}>
+                                            BENYAMIN | SECTION HEAD
+                                        </MenuItem>
+                                    ) : (
+                                        <MenuItem value={val} key={index}>
+                                            {val}
+                                        </MenuItem>
+                                    )
+                                )}
                             </Select>
                         </FormControl>
                     </div>

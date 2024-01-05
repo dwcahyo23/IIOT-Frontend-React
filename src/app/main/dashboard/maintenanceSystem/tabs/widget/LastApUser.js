@@ -294,7 +294,7 @@ function LastApUser({ data }) {
                 >
                     <ListItemText>
                         <Typography className="text-13 mt-2 line-clamp-2">
-                            {`${index + 1}. ${filteredText[index].sheet_no}|${
+                            {`${index + 1}. ${filteredText[index].sheet_no} | ${
                                 filteredText[index].mch_no
                             }`}
                         </Typography>
