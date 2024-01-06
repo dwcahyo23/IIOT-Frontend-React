@@ -16,7 +16,7 @@ export const getReport = createAsyncThunk(
 
 export const saveReport = createAsyncThunk(
     'mnApp/report/saveReport',
-    async (row, { dispatch, getState }) => {
+    async (row, { dispatch, getState, rejectWithValue }) => {
         try {
             const response = await axios.patch(
                 `http://localhost:5000/mnreportid/${row.sheet_no}`,
@@ -26,35 +26,49 @@ export const saveReport = createAsyncThunk(
 
             return data
         } catch (error) {
-            console.log(error)
+            return rejectWithValue(error)
         }
     }
 )
 
 export const removeReport = createAsyncThunk(
     'mnApp/report/removeReport',
-    async (uuid, { dispatch, getState }) => {
-        const response = await axios.delete(
-            `http://localhost:5000/mnreportid/${uuid}`
-        )
+    async (uuid, { dispatch, getState, rejectWithValue }) => {
+        try {
+            const response = await axios.delete(
+                `http://localhost:5000/mnreportid/${uuid}`
+            )
 
-        await response.data
+            await response.data
 
-        return uuid
+            return uuid
+        } catch (error) {
+            return rejectWithValue(error)
+        }
     }
 )
 
 const reportMnSlice = createSlice({
     name: 'mnApp/report',
-    initialState: null,
+    initialState: {
+        pending: false,
+    },
     reducers: {},
     extraReducers: {
+        [saveReport.pending]: (state, action) => {
+            state.pending = true
+        },
+        [saveReport.fulfilled]: (state, action) => {
+            state.pending = false
+            action.payload
+        },
         [getReport.fulfilled]: (state, action) => action.payload,
-        [saveReport.fulfilled]: (state, action) => action.payload,
         [removeReport.fulfilled]: (state, action) => null,
     },
 })
 
 export const selectReport = ({ mnApp }) => mnApp.report
+
+export const saveReportPending = ({ mnApp }) => mnApp.report.pending
 
 export default reportMnSlice.reducer

@@ -8,6 +8,9 @@ import {
     Button,
     Rating,
 } from '@mui/material'
+import { Save } from '@mui/icons-material'
+import { Print } from '@mui/icons-material'
+import { LoadingButton } from '@mui/lab'
 import {
     Controller,
     useFormContext,
@@ -21,7 +24,10 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { useDispatch, useSelector } from 'react-redux'
 import ReactToPrint from 'react-to-print'
 import { showMessage } from 'app/store/fuse/messageSlice'
-
+import {
+    saveReport,
+    saveReportPending,
+} from '../../store/reportStore/reportMnSlice'
 import { selectUser } from 'app/store/userSlice'
 import _ from 'lodash'
 
@@ -32,39 +38,34 @@ function DialogMenu2({ params }) {
     const dispatch = useDispatch()
     const componentRef = useRef()
     const user = useSelector(selectUser)
+    const isPending = useSelector(saveReportPending)
     const { control, formState, getValues, setValue, resetField } = methods
     const [disRep, setDisRep] = useState(true)
 
-    const report = getValues('report_index')
-
     useEffect(() => {
         setDisRep(
-            _.some(params.data?.request_index, ['audit_request', 'N']) ||
-                _.isNull(params.data?.chk_date)
+            _.some(params?.request_index, ['audit_request', 'N']) ||
+                _.isNull(params.chk_mark)
         )
     }, [params])
 
     function handleSaveReport() {
-        console.log(getValues('report_index'))
-        // console.log(getValues('report'))
-        // dispatch(saveMnOne(getValues('report'))).then((action) => {
-        //     if (!action.payload.errors) {
-        //         dispatch(
-        //             showMessage({
-        //                 message: 'Data saved successfully',
-        //                 variant: 'success',
-        //             })
-        //         )
-        //     } else {
-        //         const errors = action.payload.errors[0].message
-        //         dispatch(
-        //             showMessage({
-        //                 message: errors,
-        //                 variant: 'error',
-        //             })
-        //         )
-        //     }
-        // })
+        dispatch(saveReport(getValues('report_index'))).then((action) => {
+            if (action.meta.requestStatus === 'rejected') {
+                dispatch(
+                    showMessage({
+                        message: action.payload.message,
+                        variant: 'error',
+                    })
+                )
+            }
+            dispatch(
+                showMessage({
+                    message: 'Data saved successfully',
+                    variant: 'success',
+                })
+            )
+        })
     }
 
     return (
@@ -73,6 +74,7 @@ function DialogMenu2({ params }) {
                 <Grid item xs={2}>
                     <Controller
                         name="report_index.sheet_no"
+                        defaultValue={params.sheet_no}
                         control={control}
                         render={({ field }) => (
                             <TextField
@@ -93,6 +95,7 @@ function DialogMenu2({ params }) {
                     <Controller
                         name="report_index.date_report"
                         control={control}
+                        defaultValue={params.ymd}
                         render={({ field }) => (
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DateTimePicker
@@ -119,6 +122,7 @@ function DialogMenu2({ params }) {
                 <Grid item xs={3}>
                     <Controller
                         name="report_index.date_target"
+                        defaultValue={dayjs()}
                         control={control}
                         render={({ field }) => (
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -144,7 +148,8 @@ function DialogMenu2({ params }) {
                 </Grid>
                 <Grid item xs={2}>
                     <Controller
-                        name="mch_index.mch_code"
+                        name="report_index.mch_code"
+                        defaultValue={params?.mch_index.mch_code}
                         control={control}
                         render={({ field }) => (
                             <TextField
@@ -163,7 +168,8 @@ function DialogMenu2({ params }) {
                 </Grid>
                 <Grid item xs={2}>
                     <Controller
-                        name="mch_index.mch_com"
+                        name="report_index.mch_com"
+                        defaultValue={params?.mch_index.mch_com}
                         control={control}
                         render={({ field }) => (
                             <TextField
@@ -353,9 +359,10 @@ function DialogMenu2({ params }) {
                     />
                 </Grid>
                 <Grid item xs={3}>
-                    {_.isNull(report?.date_finish) == false ? (
+                    {params.chk_mark == 'Y' && (
                         <Controller
                             name="report_index.date_finish"
+                            defaultValue={dayjs()}
                             control={control}
                             render={({ field }) => (
                                 <LocalizationProvider
@@ -380,11 +387,8 @@ function DialogMenu2({ params }) {
                                 </LocalizationProvider>
                             )}
                         />
-                    ) : (
-                        ''
                     )}
                 </Grid>
-                `
             </Grid>
             <Grid container spacing={2}>
                 <Grid item xs={2}>
@@ -392,27 +396,23 @@ function DialogMenu2({ params }) {
                     <Rating
                         name="Rating"
                         readOnly
-                        value={report?.feedback_score || 0}
+                        value={params?.report_index?.feedback_score || 0}
                     />
                 </Grid>
-                {/* <Grid item xs={2}>
-                    <Typography>{report?.feedback_note}</Typography>
-                </Grid>
-                <Grid item xs={2}>
-                    <Typography>{report?.feedback_user}</Typography>
-                </Grid> */}
             </Grid>
 
             <Grid container spacing={2}>
                 <Grid item xs={4}>
-                    <Button
-                        className="whitespace-nowrap mb-16"
+                    <LoadingButton
                         variant="contained"
                         color="secondary"
+                        loading={isPending}
+                        loadingPosition="start"
+                        startIcon={<Save />}
                         onClick={handleSaveReport}
                     >
-                        Save
-                    </Button>
+                        <span>SAVE</span>
+                    </LoadingButton>
                 </Grid>
                 <Grid item xs={4}>
                     <ReactToPrint
@@ -421,8 +421,9 @@ function DialogMenu2({ params }) {
                                 className="px-16 min-w-100"
                                 variant="contained"
                                 color="secondary"
+                                startIcon={<Print />}
                             >
-                                Print
+                                PRINT
                             </Button>
                         )}
                         content={() => componentRef.current}

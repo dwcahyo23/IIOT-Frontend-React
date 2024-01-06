@@ -26,13 +26,7 @@ import { List } from 'react-virtualized'
 import { useDispatch, useSelector } from 'react-redux'
 import _ from 'lodash'
 
-import {
-    selectMnUsers,
-    selectMnUsersById,
-} from '../store/userStore/userMnSlices'
-
 import StatusChip from './StatusChip'
-
 import {
     filteredErpsByMonth,
     erpMonth,
@@ -41,7 +35,8 @@ import {
     searchText,
     setSearchText,
 } from '../store/erpStore/erpMnSlices'
-import DialogWorkOrderMenu from './DialogWorOrderMenu'
+import DialogWorkOrderMenu from './DialogMenu/DialogWorOrderMenu'
+import FuseLoading from '@fuse/core/FuseLoading'
 
 const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />
@@ -133,6 +128,10 @@ function ListWorkOrder() {
                 </ListItemButton>
             </ListItem>
         )
+    }
+
+    if (filterData.length < 1) {
+        return <FuseLoading />
     }
 
     return (

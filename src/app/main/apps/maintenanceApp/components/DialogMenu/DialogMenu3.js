@@ -10,6 +10,7 @@ import {
     Button,
     FormControlLabel,
 } from '@mui/material'
+import { LoadingButton } from '@mui/lab'
 import {
     Controller,
     useFormContext,
@@ -17,6 +18,7 @@ import {
     useWatch,
 } from 'react-hook-form'
 import dayjs from 'dayjs'
+import { Save } from '@mui/icons-material'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -25,7 +27,10 @@ import VirtualizedData from 'src/app/main/apps/maintenanceSystem/machineTab/util
 
 import { showMessage } from 'app/store/fuse/messageSlice'
 import { selectMnStoks } from '../../store/stokStore/stokMnSlices'
-
+import {
+    saveRequestPending,
+    saveRequest,
+} from '../../store/requestStore/requestMnSlice'
 import { selectUser } from 'app/store/userSlice'
 import _ from 'lodash'
 import { Watch } from '@mui/icons-material'
@@ -34,6 +39,7 @@ function DialogMenu3({ params }) {
     const methods = useFormContext()
     const dispatch = useDispatch()
     const user = useSelector(selectUser)
+    const isPending = useSelector(saveRequestPending)
     const stock = useSelector(selectMnStoks)
     const { control, formState, getValues, setValue, unregister } = methods
     const [hidSparepart, setHidSparepart] = useState(false)
@@ -50,8 +56,8 @@ function DialogMenu3({ params }) {
         control,
     })
 
-    const watchRequest = useWatch({ control, name: 'request_index' })
-    const { item_stock, audit_request, mre_request, item_ready } = watchRequest
+    const watchRequest = useWatch({ control, name: 'request' })
+    const { item_stock } = watchRequest
 
     useEffect(() => {
         item_stock == '#0 ADD NEW ITEM'
@@ -64,41 +70,8 @@ function DialogMenu3({ params }) {
             : setHasLifeTime(false)
     }, [item_stock, sparepart_index])
 
-    useEffect(() => {
-        mre_request && mre_request.length > 3
-            ? setValue(
-                  'request_index.date_mre_request',
-                  dayjs().format('YYYY-MM-DD HH:mm:ss')
-              )
-            : setValue('request_index.date_mre_request', null)
-    }, [mre_request])
-
-    useEffect(() => {
-        item_ready == 'Y'
-            ? setValue(
-                  'request_index.date_ready_request',
-                  dayjs().format('YYYY-MM-DD HH:mm:ss')
-              )
-            : setValue('request_index.date_ready_request', null)
-    }, [item_ready])
-
-    useEffect(() => {
-        if (audit_request == 'Y') {
-            setValue('request_index.user_req2', user.data.displayName)
-            setValue(
-                'request_index.date_audit_request',
-                dayjs().format('YYYY-MM-DD HH:mm:ss')
-            )
-        } else {
-            setValue('request_index.user_req2', '')
-            setValue('request_index.date_audit_request', null)
-        }
-    }, [audit_request])
-
     function handleSaveRequest() {
-        // console.log(getValues('request_index'))
-        // console.log(getValues('sparepart'))
-        console.log(getValues('request_index'))
+        console.log(getValues('request'))
         // dispatch(
         //     saveMnOneRequest({
         //         row: { uuid_request: uuid, ...getValues('request_index') },
@@ -187,8 +160,8 @@ function DialogMenu3({ params }) {
             <Grid container spacing={2}>
                 <Grid item xs={3}>
                     <Controller
-                        name="request_index.sheet_no"
-                        // defaultValue={params.data.sheet_no}
+                        name="request.sheet_no"
+                        defaultValue={params.sheet_no}
                         control={control}
                         render={({ field }) => (
                             <TextField
@@ -206,8 +179,9 @@ function DialogMenu3({ params }) {
                 </Grid>
                 <Grid item xs={2}>
                     <Controller
-                        name="request_index.category_request"
+                        name="request.category_request"
                         control={control}
+                        defaultValue={params.pri_no}
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -227,8 +201,9 @@ function DialogMenu3({ params }) {
                 </Grid>
                 <Grid item xs={3}>
                     <Controller
-                        name="request_index.date_request"
+                        name="request.date_request"
                         control={control}
+                        defaultValue={dayjs()}
                         render={({ field }) => (
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DateTimePicker
@@ -253,8 +228,9 @@ function DialogMenu3({ params }) {
                 </Grid>
                 <Grid item xs={2}>
                     <Controller
-                        name="request_index.mch_code"
+                        name="request.mch_code"
                         control={control}
+                        defaultValue={params?.mch_index.mch_code}
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -274,7 +250,8 @@ function DialogMenu3({ params }) {
                 </Grid>
                 <Grid item xs={2}>
                     <Controller
-                        name="request_index.mch_com"
+                        name="request.mch_com"
+                        defaultValue={params?.mch_index.mch_com}
                         control={control}
                         render={({ field }) => (
                             <TextField
@@ -297,7 +274,7 @@ function DialogMenu3({ params }) {
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Controller
-                        name="request_index.item_stock"
+                        name="request.item_stock"
                         control={control}
                         render={({ field }) => (
                             <VirtualizedData field={field} data={stock} />
@@ -307,7 +284,7 @@ function DialogMenu3({ params }) {
                 {!hidSparepart && (
                     <Grid item xs={12}>
                         <Controller
-                            name="request_index.new_sparepart"
+                            name="request.new_sparepart"
                             control={control}
                             render={({ field }) => (
                                 <TextField
@@ -328,7 +305,7 @@ function DialogMenu3({ params }) {
             <Grid container spacing={2}>
                 <Grid item xs={6}>
                     <Controller
-                        name="request_index.item_name"
+                        name="request.item_name"
                         control={control}
                         defaultValue=""
                         render={({ field }) => (
@@ -349,7 +326,7 @@ function DialogMenu3({ params }) {
                 </Grid>
                 <Grid item xs={2}>
                     <Controller
-                        name="request_index.item_qty"
+                        name="request.item_qty"
                         defaultValue={1}
                         control={control}
                         render={({ field }) => (
@@ -368,7 +345,7 @@ function DialogMenu3({ params }) {
                 </Grid>
                 <Grid item xs={2}>
                     <Controller
-                        name="request_index.item_uom"
+                        name="request.item_uom"
                         defaultValue="PCS"
                         control={control}
                         render={({ field }) => (
@@ -387,7 +364,7 @@ function DialogMenu3({ params }) {
                 </Grid>
                 <Grid item xs={2}>
                     <Controller
-                        name="request_index.user_req1"
+                        name="request.user_req1"
                         defaultValue={user.data.displayName}
                         control={control}
                         render={({ field }) => (
@@ -553,7 +530,7 @@ function DialogMenu3({ params }) {
                                     getOptionLabel={(option) =>
                                         `${option.bom} || ${option.item_name} || ${option.remarks}}`
                                     }
-                                    value={_.isNu}
+                                    // value={_.isNul}
                                     onChange={(_, data) =>
                                         field.onChange(data.uuid)
                                     }
@@ -574,7 +551,7 @@ function DialogMenu3({ params }) {
             <Grid container spacing={2}>
                 <Grid item xs={2}>
                     <Controller
-                        name="request_index.audit_request"
+                        name="request.audit_request"
                         defaultValue="N"
                         control={control}
                         render={({ field }) => (
@@ -605,15 +582,17 @@ function DialogMenu3({ params }) {
                 </Grid>
 
                 <Grid item xs={4}>
-                    <Button
+                    <LoadingButton
                         className="whitespace-nowrap mb-16 mt-16"
                         variant="contained"
                         color="secondary"
                         disabled={!isDirty && !isValid}
+                        loading={isPending}
                         onClick={handleSaveRequest}
+                        startIcon={<Save />}
                     >
-                        Save
-                    </Button>
+                        <span>SAVE</span>
+                    </LoadingButton>
                 </Grid>
             </Grid>
         </Box>

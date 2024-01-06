@@ -7,18 +7,18 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useForm, FormProvider } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import _ from 'lodash'
 
-import { selectUser } from 'app/store/userSlice'
-import { showMessage } from 'app/store/fuse/messageSlice'
-
-import DialogMenu1 from './DialogMenu/DialogMenu1'
-import DialogMenu2 from './DialogMenu/DialogMenu2'
-import DialogMenu3 from './DialogMenu/DialogMenu3'
+import { filteredErpsByMonth } from '../../store/erpStore/erpMnSlices'
+import DialogMenu1 from './DialogMenu1'
+import DialogMenu2 from './DialogMenu2'
+import DialogMenu3 from './DialogMenu3'
 
 const schema = yup.object().shape({})
 
 function DialogWorkOrderMenu({ params }) {
     const dispatch = useDispatch()
+    const filterData = useSelector(filteredErpsByMonth)
     const [tabValue, setTabValue] = useState('1')
 
     const methods = useForm({
@@ -32,12 +32,13 @@ function DialogWorkOrderMenu({ params }) {
     const { errors, isValid } = formState
 
     useEffect(() => {
-        if (!params) {
+        const data = _.find(filterData, { sheet_no: params.data.sheet_no })
+        if (!data) {
             return
         }
-        reset(params.data)
-        console.log(params.data)
-    }, [params, reset])
+        reset(data)
+        console.log(data)
+    }, [params, filterData, reset])
 
     function handleTabChange(event, value) {
         setTabValue(value)

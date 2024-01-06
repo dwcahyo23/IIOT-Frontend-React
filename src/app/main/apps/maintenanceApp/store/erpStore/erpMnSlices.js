@@ -310,10 +310,9 @@ export const filteredErps = createSelector(
                     return false
                 }
 
+                //? belum nemu filter workshop find all
                 if (section == 'workshop') {
-                    return val?.sheet_no
-                        .toLowerCase()
-                        .includes(text.toLowerCase())
+                    return val
                 }
 
                 return val

@@ -8,6 +8,9 @@ const MaintenanceMachines = lazy(() =>
     import('./menu/machine/MaintenanceAppMachines')
 )
 const MaintenanceErps = lazy(() => import('./menu/erp/MaintenanceAppErps'))
+const MaintenanceInventory = lazy(() =>
+    import('./menu/inventory/MaintenanceAppInventory')
+)
 
 const MaintenanceAppConfig = {
     setting: {
@@ -28,6 +31,10 @@ const MaintenanceAppConfig = {
                 {
                     path: 'erps',
                     element: <MaintenanceErps />,
+                },
+                {
+                    path: 'inventories',
+                    element: <MaintenanceInventory />,
                 },
                 {
                     path: 'machines',

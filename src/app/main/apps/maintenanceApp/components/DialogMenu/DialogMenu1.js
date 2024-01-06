@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { Box, Grid, TextField, MenuItem, Button } from '@mui/material'
-import dayjs from 'dayjs'
 import ReactToPrint from 'react-to-print'
+import { Print } from '@mui/icons-material'
 
 import DialogMenu1Print from './DialogMenu1Print'
 
@@ -18,8 +18,9 @@ function DialogMenu1({ params }) {
                                 className="px-16 min-w-100"
                                 variant="contained"
                                 color="secondary"
+                                startIcon={<Print />}
                             >
-                                Print
+                                PRINT
                             </Button>
                         )}
                         content={() => componentRef.current}

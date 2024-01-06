@@ -20,6 +20,7 @@ export const getReportSlices = createAsyncThunk(
 
 const MnReportAdapter = createEntityAdapter({
     selectId: (data) => data.sheet_no,
+    sortComparer: (a, b) => a.sheet_no.localeCompare(b.sheet_no),
 })
 
 export const { selectAll: selectMnReports, selectById: selectMnReportsById } =

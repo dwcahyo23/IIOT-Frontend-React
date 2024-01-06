@@ -46,15 +46,25 @@ export const removeRequest = createAsyncThunk(
 
 const requestMnSlice = createSlice({
     name: 'mnApp/request',
-    initialState: null,
+    initialState: {
+        pending: false,
+    },
     reducers: {},
     extraReducers: {
+        [saveRequest.pending]: (state, action) => {
+            state.pending = true
+        },
+        [saveRequest.fulfilled]: (state, action) => {
+            state.pending = false
+            action.payload
+        },
         [getRequest.fulfilled]: (state, action) => action.payload,
-        [saveRequest.fulfilled]: (state, action) => action.payload,
         [removeRequest.fulfilled]: (state, action) => null,
     },
 })
 
 export const selectRequest = ({ mnApp }) => mnApp.request
+
+export const saveRequestPending = ({ mnApp }) => mnApp.request.pending
 
 export default requestMnSlice.reducer
