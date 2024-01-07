@@ -346,6 +346,101 @@ export const filteredErpsByMonth = createSelector(
     }
 )
 
+export const filterErpsKanban = createSelector(
+    [filteredErpsByMonth],
+    (data) => {
+        const kanban = {
+            columns: [
+                {
+                    id: 1,
+                    title: 'Open',
+                    cards: [],
+                },
+                {
+                    id: 2,
+                    title: 'Request PP',
+                    cards: [],
+                },
+                {
+                    id: 3,
+                    title: 'Requst PO',
+                    cards: [],
+                },
+                {
+                    id: 4,
+                    title: 'Close',
+                    cards: [],
+                },
+            ],
+        }
+
+        function getFilter() {
+            _.forEach(data, (val, index) => {
+                if (val.chk_mark == 'N' && val.request_index.length < 1) {
+                    const obj = _.find(kanban.columns, { id: 1 })
+                    obj.cards.push({
+                        id: index,
+                        title: `${val.sheet_no} | ${val.mch_no}`,
+                        description: _.toUpper(val.memo),
+                        memo: '',
+                    })
+                }
+
+                if (val.chk_mark == 'N' && val.request_index.length > 0) {
+                    const memo1 = []
+                    const memo2 = []
+                    _.map(val.request_index, (req) => {
+                        if (
+                            _.startsWith(req.mre_request, 'M') == true &&
+                            _.isNull(req.date_mre_request) == false
+                        ) {
+                            memo1.push({
+                                sparepart: _.toUpper(req.item_stock),
+                                mre: _.toUpper(req.mre_request),
+                            })
+                        }
+                        memo2.push({
+                            sparepart: _.toUpper(req.item_stock),
+                        })
+                    })
+
+                    const obj1 = _.find(kanban.columns, { id: 3 })
+                    obj1.cards.push({
+                        id: index,
+                        title: `${val.sheet_no} | ${val.mch_no}`,
+                        description: _.toUpper(val.memo),
+                        memo: memo1,
+                    })
+
+                    const obj2 = _.find(kanban.columns, { id: 2 })
+                    obj2.cards.push({
+                        id: index,
+                        title: `${val.sheet_no} | ${val.mch_no}`,
+                        description: _.toUpper(val.memo),
+                        memo: memo2,
+                    })
+                }
+
+                if (val.chk_mark == 'Y') {
+                    const obj = _.find(kanban.columns, { id: 4 })
+                    obj.cards.push({
+                        id: index,
+                        title: `${val.sheet_no} | ${val.mch_no}`,
+                        description: _.toUpper(val.memo),
+                        memo: '',
+                    })
+                }
+            })
+
+            return kanban
+        }
+
+        if (data.length > 0) {
+            return getFilter()
+        }
+    }
+)
+
 export const filterChartErps = createSelector([filteredErps], (data) => {
     function getChart() {
         const month = getMonthErp()

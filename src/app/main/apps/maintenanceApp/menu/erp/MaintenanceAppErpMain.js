@@ -6,6 +6,7 @@ import { Typography } from '@mui/material'
 
 import DataChart from '../../components/DataChart'
 import ListWorkOrder from '../../components/ListWorkOrder'
+import MaintenanceAppErpKanban from './MaintenanceAppErpKanban'
 
 import { filterChartErps } from '../../store/erpStore/erpMnSlices'
 
@@ -36,6 +37,9 @@ function MaintenanceAppErpMain({ params }) {
             </motion.div>
             <motion.div variants={item} className="sm:col-span-4 md:col-span-5">
                 <DataChart params={{ data: filterChart }} />
+            </motion.div>
+            <motion.div variants={item} className="sm:col-span-6 md:col-span-8">
+                <MaintenanceAppErpKanban />
             </motion.div>
         </motion.div>
     )

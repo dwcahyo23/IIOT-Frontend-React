@@ -130,9 +130,9 @@ function ListWorkOrder() {
         )
     }
 
-    if (filterData.length < 1) {
-        return <FuseLoading />
-    }
+    // if (filterData.length < 1) {
+    //     return <FuseLoading />
+    // }
 
     return (
         <div>

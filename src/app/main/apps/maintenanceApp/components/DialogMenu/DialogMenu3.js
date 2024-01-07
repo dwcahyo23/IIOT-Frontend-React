@@ -57,18 +57,19 @@ function DialogMenu3({ params }) {
     })
 
     const watchRequest = useWatch({ control, name: 'request' })
-    const { item_stock } = watchRequest
+    // const { item_stock } = watchRequest
+    console.log(watchRequest)
 
-    useEffect(() => {
-        item_stock == '#0 ADD NEW ITEM'
-            ? setHidSparepart(false)
-            : setHidSparepart(true)
+    // useEffect(() => {
+    //     item_stock == '#0 ADD NEW ITEM'
+    //         ? setHidSparepart(false)
+    //         : setHidSparepart(true)
 
-        let itemLifeTime = sparepart_index.map((data) => data.item_name)
-        _.includes(itemLifeTime, item_stock) == true
-            ? setHasLifeTime(true)
-            : setHasLifeTime(false)
-    }, [item_stock, sparepart_index])
+    //     let itemLifeTime = sparepart_index.map((data) => data.item_name)
+    //     _.includes(itemLifeTime, item_stock) == true
+    //         ? setHasLifeTime(true)
+    //         : setHasLifeTime(false)
+    // }, [item_stock, sparepart_index])
 
     function handleSaveRequest() {
         console.log(getValues('request'))

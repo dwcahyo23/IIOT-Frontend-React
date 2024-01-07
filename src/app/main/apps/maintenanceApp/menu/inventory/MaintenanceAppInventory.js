@@ -14,6 +14,8 @@ import InputLabel from '@mui/material/InputLabel'
 import dayjs from 'dayjs'
 import { styled } from '@mui/material/styles'
 import { useThemeMediaQuery } from '@fuse/hooks'
+import Board, { moveCard } from '@asseinfo/react-kanban'
+import '@asseinfo/react-kanban/dist/styles.css'
 
 import {
     machinesCom,
@@ -52,6 +54,7 @@ function MaintenanceAppInventory() {
     function handleComTab(event, value) {
         dispatch(setMachinesCom(value))
     }
+
     return (
         <Root
             content={
