@@ -5,10 +5,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Typography } from '@mui/material'
 
 import DataChart from '../../components/DataChart'
-import ListWorkOrder from '../../components/ListWorkOrder'
-import MaintenanceAppErpKanban from './MaintenanceAppErpKanban'
+import ListInventory from '../../components/ListInventory'
 
-import { filterChartErps } from '../../store/erpStore/erpMnSlices'
+import { filteredRequestChart } from '../../store/erpStore/erpMnSlices'
 
 const container = {
     show: {
@@ -23,8 +22,8 @@ const item = {
     show: { opacity: 1, y: 0 },
 }
 
-function MaintenanceAppErpMain() {
-    const filterChart = useSelector(filterChartErps)
+function MaintenanceAppInventoryMain() {
+    const filterChart = useSelector(filteredRequestChart)
     return (
         <motion.div
             className="grid grid-cols-1 sm:grid-cols-6 md:grid-cols-8 gap-16 w-full min-w-0 pt-24"
@@ -32,17 +31,21 @@ function MaintenanceAppErpMain() {
             initial="hidden"
             animate="show"
         >
+            <motion.div
+                variants={item}
+                className="sm:col-span-6 md:col-span-8"
+            ></motion.div>
             <motion.div variants={item} className="sm:col-span-2 md:col-span-3">
-                <ListWorkOrder />
+                <ListInventory />
             </motion.div>
             <motion.div variants={item} className="sm:col-span-4 md:col-span-5">
                 <DataChart params={{ data: filterChart }} />
             </motion.div>
-            <motion.div variants={item} className="sm:col-span-6 md:col-span-8">
+            {/* <motion.div variants={item} className="sm:col-span-6 md:col-span-8">
                 <MaintenanceAppErpKanban />
-            </motion.div>
+            </motion.div> */}
         </motion.div>
     )
 }
 
-export default MaintenanceAppErpMain
+export default MaintenanceAppInventoryMain

@@ -33,12 +33,12 @@ const MaintenanceAppConfig = {
                     element: <MaintenanceErps />,
                 },
                 {
-                    path: 'inventories',
-                    element: <MaintenanceInventory />,
-                },
-                {
                     path: 'machines',
                     element: <MaintenanceMachines />,
+                },
+                {
+                    path: 'inventories',
+                    element: <MaintenanceInventory />,
                 },
             ],
         },

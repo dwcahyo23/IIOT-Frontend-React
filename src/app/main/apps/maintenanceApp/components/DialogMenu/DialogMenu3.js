@@ -41,7 +41,8 @@ function DialogMenu3({ params }) {
     const user = useSelector(selectUser)
     const isPending = useSelector(saveRequestPending)
     const stock = useSelector(selectMnStoks)
-    const { control, formState, getValues, setValue, unregister } = methods
+    const { control, formState, getValues, setValue, unregister, watch } =
+        methods
     const [hidSparepart, setHidSparepart] = useState(false)
     const [hasLifeTime, setHasLifeTime] = useState(false)
     const [withMonitor, setWithMonitor] = useState(false)
@@ -56,9 +57,18 @@ function DialogMenu3({ params }) {
         control,
     })
 
-    const watchRequest = useWatch({ control, name: 'request' })
-    // const { item_stock } = watchRequest
-    console.log(watchRequest)
+    const watchRequest = watch('request.item_stock')
+
+    useEffect(() => {
+        if (
+            _.isUndefined(watchRequest) === false &&
+            watchRequest !== '#0 ADD NEW ITEM'
+        ) {
+            setHidSparepart(true)
+        } else {
+            setHidSparepart(false)
+        }
+    }, [watchRequest, hidSparepart])
 
     // useEffect(() => {
     //     item_stock == '#0 ADD NEW ITEM'
@@ -73,6 +83,13 @@ function DialogMenu3({ params }) {
 
     function handleSaveRequest() {
         console.log(getValues('request'))
+        const data = _.map(getValues('request'), (val) => {
+            if (val.item_stock === '#0 ADD NEW ITEM') {
+                return { ...val, item_stock: val.new_sparepart }
+            }
+        })
+        console.log(data)
+
         // dispatch(
         //     saveMnOneRequest({
         //         row: { uuid_request: uuid, ...getValues('request_index') },
@@ -276,6 +293,7 @@ function DialogMenu3({ params }) {
                 <Grid item xs={12}>
                     <Controller
                         name="request.item_stock"
+                        defaultValue="#0 ADD NEW ITEM"
                         control={control}
                         render={({ field }) => (
                             <VirtualizedData field={field} data={stock} />
@@ -286,6 +304,7 @@ function DialogMenu3({ params }) {
                     <Grid item xs={12}>
                         <Controller
                             name="request.new_sparepart"
+                            defaultValue=""
                             control={control}
                             render={({ field }) => (
                                 <TextField

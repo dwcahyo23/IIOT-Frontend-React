@@ -11,11 +11,30 @@ import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 import InputLabel from '@mui/material/InputLabel'
+import { Refresh } from '@mui/icons-material'
 import dayjs from 'dayjs'
 import { styled } from '@mui/material/styles'
 import { useThemeMediaQuery } from '@fuse/hooks'
-import Board, { moveCard } from '@asseinfo/react-kanban'
-import '@asseinfo/react-kanban/dist/styles.css'
+
+import {
+    getRequestSlices,
+    requestsPending,
+} from '../../store/requestStore/requestMnSlices'
+
+import {
+    selectErpYear,
+    selectErpPriNo,
+    selectErpMonth,
+    erpYear,
+    erpPrio,
+    erpMonth,
+    setErpYear,
+    setErpPrio,
+    setErpMonth,
+    erpPending,
+    filteredRequestErp,
+    getErpMnSlices,
+} from '../../store/erpStore/erpMnSlices'
 
 import {
     machinesCom,
@@ -29,6 +48,9 @@ import {
     selectMnMachines,
     selectMachinesResponbility,
 } from '../../store/machineStore/machineMnSlices'
+
+import MaintenanceAppInventoryMain from './MaintenanceAppInventoryMain'
+import { LoadingButton } from '@mui/lab'
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
     '& .FusePageSimple-header': {
@@ -46,13 +68,71 @@ function MaintenanceAppInventory() {
     const dispatch = useDispatch()
     const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'))
 
+    const filterData = useSelector(filteredRequestErp)
+    const [
+        selectMonth,
+        useMonth,
+        selectYear,
+        useYear,
+        isPending,
+        selectPrio,
+        usePrio,
+    ] = [
+        useSelector(selectErpMonth),
+        useSelector(erpMonth),
+        useSelector(selectErpYear),
+        useSelector(erpYear),
+        useSelector(erpPending),
+        useSelector(selectErpPriNo),
+        useSelector(erpPrio),
+    ]
+
     const [selectCom, useCom] = [
         useSelector(selectMachinesCom),
         useSelector(machinesCom),
     ]
 
+    const [useSection] = [useSelector(machinesSection)]
+
+    const [selectResponbility, useResponbility] = [
+        useSelector(selectMachinesResponbility),
+        useSelector(machinesResponbility),
+    ]
+
     function handleComTab(event, value) {
         dispatch(setMachinesCom(value))
+    }
+
+    function handleComTab(event, value) {
+        dispatch(setMachinesCom(value))
+        // dispatch(setMachinesSection('ALL'))
+        dispatch(setMachinesResponbility('ALL'))
+    }
+
+    function handleSection(event, value) {
+        dispatch(setMachinesSection(value.props.value))
+        dispatch(setMachinesResponbility('ALL'))
+    }
+
+    function handleResponbility(event, value) {
+        dispatch(setMachinesResponbility(value.props.value))
+    }
+
+    function handleYear(event, value) {
+        dispatch(setErpYear(value.props.value))
+        // dispatch(setMachinesSection('ALL'))
+        // dispatch(setMachinesResponbility('ALL'))
+    }
+
+    function handlePrio(event, value) {
+        dispatch(setErpPrio(value.props.value))
+        // dispatch(setMachinesSection('ALL'))
+        // dispatch(setMachinesResponbility('ALL'))
+    }
+
+    function reload(event, value) {
+        dispatch(getErpMnSlices())
+        dispatch(getRequestSlices())
     }
 
     return (
@@ -117,7 +197,133 @@ function MaintenanceAppInventory() {
                         </Tabs>
                     </div>
 
-                    <div className="flex flex-1 justify-start my-16 lg:my-0"></div>
+                    <div className="flex flex-1 justify-start my-16 lg:my-0">
+                        <FormControl
+                            className="flex w-full sm:w-auto mx-8"
+                            variant="outlined"
+                        >
+                            <InputLabel>Year</InputLabel>
+
+                            <Select
+                                labelId="category-select-label"
+                                id="category-select"
+                                label="Category"
+                                value={useYear}
+                                onChange={handleYear}
+                            >
+                                {selectYear.map((val, index) => (
+                                    <MenuItem value={val} key={index}>
+                                        {val}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+
+                        <FormControl
+                            className="flex w-full sm:w-auto mx-8"
+                            variant="outlined"
+                        >
+                            <InputLabel>Section</InputLabel>
+
+                            <Select
+                                labelId="category-select-label"
+                                id="category-select"
+                                label="Category"
+                                value={useSection}
+                                onChange={handleSection}
+                            >
+                                <MenuItem value="ALL">ALL</MenuItem>
+                                <MenuItem value="machinery">MACHINERY</MenuItem>
+                                <MenuItem value="utility">UTILITY</MenuItem>
+                                <MenuItem value="workshop">WORKSHOP</MenuItem>
+                            </Select>
+                        </FormControl>
+
+                        <FormControl
+                            className="flex w-full sm:w-auto mx-8"
+                            variant="outlined"
+                        >
+                            <InputLabel>Priority</InputLabel>
+
+                            <Select
+                                labelId="category-select-label"
+                                id="category-select"
+                                label="Category"
+                                value={usePrio}
+                                onChange={handlePrio}
+                            >
+                                {selectPrio.map((val, index) => (
+                                    <MenuItem value={val.val} key={index}>
+                                        {val.label}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+
+                        <FormControl
+                            className="flex w-full sm:w-auto mx-8"
+                            variant="outlined"
+                        >
+                            <InputLabel>User</InputLabel>
+
+                            <Select
+                                labelId="category-select-label"
+                                id="category-select"
+                                label="Category"
+                                value={useResponbility}
+                                onChange={handleResponbility}
+                            >
+                                {selectResponbility.map((val, index) =>
+                                    val === 'ALL' && useCom === 'ALL' ? (
+                                        <MenuItem value={val} key={index}>
+                                            SURYADI | DEPARTEMENT HEAD
+                                        </MenuItem>
+                                    ) : val === 'ALL' && useCom === 'GM2' ? (
+                                        <MenuItem value={val} key={index}>
+                                            SADRI | SECTION HEAD
+                                        </MenuItem>
+                                    ) : val === 'ALL' &&
+                                      useSection !== 'workshop' &&
+                                      (useCom === 'GM1' ||
+                                          useCom === 'GM3' ||
+                                          useCom === 'GM5') ? (
+                                        <MenuItem value={val} key={index}>
+                                            BENYAMIN | SECTION HEAD
+                                        </MenuItem>
+                                    ) : val === 'ALL' &&
+                                      useSection === 'workshop' &&
+                                      (useCom === 'GM1' ||
+                                          useCom === 'GM3' ||
+                                          useCom === 'GM5') ? (
+                                        <MenuItem value={val} key={index}>
+                                            RAHMAT HIDAYAT | SECTION HEAD
+                                        </MenuItem>
+                                    ) : (
+                                        <MenuItem value={val} key={index}>
+                                            {val}
+                                        </MenuItem>
+                                    )
+                                )}
+                            </Select>
+                        </FormControl>
+
+                        <LoadingButton
+                            variant="outline"
+                            color="secondary"
+                            loading={isPending}
+                            loadingPosition="start"
+                            startIcon={<Refresh />}
+                            onClick={reload}
+                        >
+                            <span>Reload</span>
+                        </LoadingButton>
+                    </div>
+
+                    {filterData.length > 0 ? (
+                        <MaintenanceAppInventoryMain />
+                    ) : (
+                        <FuseLoading />
+                    )}
                 </div>
             }
             scroll={isMobile ? 'normal' : 'page'}

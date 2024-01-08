@@ -26,12 +26,20 @@ const MnRequestAdapter = createEntityAdapter({
 export const { selectAll: selectMnRequests, selectById: selectMnRequestsById } =
     MnRequestAdapter.getSelectors((state) => state.mnApp.requests)
 
+export const requestsPending = ({ mnApp }) => mnApp.requests.pending
+
 const requestMnSlices = createSlice({
     name: 'mnApp/requests',
-    initialState: MnRequestAdapter.getInitialState({}),
+    initialState: MnRequestAdapter.getInitialState({ pending: false }),
     reducers: {},
     extraReducers: {
-        [getRequestSlices.fulfilled]: MnRequestAdapter.setAll,
+        [getRequestSlices.fulfilled]: (state, action) => {
+            state.pending = false
+            MnRequestAdapter.setAll(state, action.payload)
+        },
+        [getRequestSlices.pending]: (state, action) => {
+            state.pending = true
+        },
         [saveRequest.fulfilled]: MnRequestAdapter.upsertOne,
         [removeRequest.fulfilled]: (state, action) =>
             MnRequestAdapter.removeOne(state, action.payload),

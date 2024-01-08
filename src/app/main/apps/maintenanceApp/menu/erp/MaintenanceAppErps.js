@@ -11,6 +11,8 @@ import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 import InputLabel from '@mui/material/InputLabel'
+import { LoadingButton } from '@mui/lab'
+import { Refresh } from '@mui/icons-material'
 import dayjs from 'dayjs'
 import { styled } from '@mui/material/styles'
 
@@ -27,6 +29,7 @@ import {
     filteredErps,
     filterChartErps,
     erpPending,
+    getErpMnSlices,
 } from '../../store/erpStore/erpMnSlices'
 
 import {
@@ -60,7 +63,6 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 function MaintenanceAppErps() {
     const dispatch = useDispatch()
     const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'))
-
     const [loading, setLoading] = useState(true)
 
     const [filterData, filterChart] = [
@@ -132,8 +134,8 @@ function MaintenanceAppErps() {
         // dispatch(setMachinesResponbility('ALL'))
     }
 
-    if (loading) {
-        return <FuseLoading />
+    function reload(event, value) {
+        dispatch(getErpMnSlices())
     }
 
     return (
@@ -284,11 +286,20 @@ function MaintenanceAppErps() {
                                             SADRI | SECTION HEAD
                                         </MenuItem>
                                     ) : val === 'ALL' &&
+                                      useSection !== 'workshop' &&
                                       (useCom === 'GM1' ||
                                           useCom === 'GM3' ||
                                           useCom === 'GM5') ? (
                                         <MenuItem value={val} key={index}>
                                             BENYAMIN | SECTION HEAD
+                                        </MenuItem>
+                                    ) : val === 'ALL' &&
+                                      useSection === 'workshop' &&
+                                      (useCom === 'GM1' ||
+                                          useCom === 'GM3' ||
+                                          useCom === 'GM5') ? (
+                                        <MenuItem value={val} key={index}>
+                                            RAHMAT HIDAYAT | SECTION HEAD
                                         </MenuItem>
                                     ) : (
                                         <MenuItem value={val} key={index}>
@@ -298,10 +309,23 @@ function MaintenanceAppErps() {
                                 )}
                             </Select>
                         </FormControl>
+
+                        <LoadingButton
+                            variant="outline"
+                            color="secondary"
+                            loading={isPending}
+                            loadingPosition="start"
+                            startIcon={<Refresh />}
+                            onClick={reload}
+                        >
+                            <span>Reload</span>
+                        </LoadingButton>
                     </div>
 
-                    {filterData && (
-                        <MaintenanceAppErpMain params={{ data: filterData }} />
+                    {filterData.length > 0 ? (
+                        <MaintenanceAppErpMain />
+                    ) : (
+                        <FuseLoading />
                     )}
                 </div>
             }

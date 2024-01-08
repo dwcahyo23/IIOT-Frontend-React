@@ -17,6 +17,27 @@ export const getCountStatusErp = (params) => {
             return {
                 Open: _.countBy(val, (status) => status.chk_mark == 'N'),
                 Close: _.countBy(val, (status) => status.chk_mark == 'Y'),
+                Sum: _.countBy(val, (status) => (status ? 'true' : 'false')),
+            }
+        })
+        .value()
+    return chart
+}
+
+export const getCountStatusRequest = (params) => {
+    const chart = _(params)
+        .groupBy((val) => dayjs(val.createdAt).format('MMMM'))
+        .mapValues((val) => {
+            return {
+                Open: _.countBy(val, (status) => status.audit_request == 'N'),
+                Close: _.countBy(val, (status) => status.audit_request == 'Y'),
+                Sum: _.countBy(val, (status) => status.audit_request !== 'C'),
+                MRE: _.countBy(
+                    val,
+                    (status) =>
+                        status?.mre_request.length > 3 &&
+                        status.audit_request == 'N'
+                ),
             }
         })
         .value()

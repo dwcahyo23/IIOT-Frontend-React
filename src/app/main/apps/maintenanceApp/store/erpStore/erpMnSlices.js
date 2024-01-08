@@ -14,7 +14,11 @@ import {
     machinesSection,
 } from '../machineStore/machineMnSlices'
 
-import { getCountStatusErp, getMonthErp } from './erpUtils'
+import {
+    getCountStatusErp,
+    getCountStatusRequest,
+    getMonthErp,
+} from './erpUtils'
 
 import { selectMnReports } from '../reportStore/reportMnSlices'
 
@@ -40,8 +44,65 @@ const MnErpAdapter = createEntityAdapter({
 export const { selectAll: selectMnErps, selectById: selectMnErpsById } =
     MnErpAdapter.getSelectors((state) => state.mnApp.erps)
 
+const erpMnSlices = createSlice({
+    name: 'mnApp/erps',
+    initialState: MnErpAdapter.getInitialState({
+        erpDepNo: 'ALL',
+        searchText: '',
+        erpYear: 'ALL',
+        erpPrio: 'ALL',
+        erpMonth: 'January',
+        pending: false,
+    }),
+    reducers: {
+        setErpDepNo: {
+            reducer: (state, action) => {
+                state.erpDepNo = action.payload
+            },
+            prepare: (event) => {
+                return { payload: event }
+            },
+        },
+        setErpYear: {
+            reducer: (state, action) => {
+                state.erpYear = action.payload
+            },
+            prepare: (event) => {
+                return { payload: event }
+            },
+        },
+        setSearchText: {
+            reducer: (state, action) => {
+                state.searchText = action.payload
+            },
+            prepare: (event) => ({ payload: event }),
+        },
+        setErpPrio: {
+            reducer: (state, action) => {
+                state.erpPrio = action.payload
+            },
+            prepare: (event) => ({ payload: event }),
+        },
+        setErpMonth: {
+            reducer: (state, action) => {
+                state.erpMonth = action.payload
+            },
+            prepare: (event) => ({ payload: event }),
+        },
+    },
+    extraReducers: {
+        [getErpMnSlices.fulfilled]: (state, action) => {
+            state.pending = false
+            MnErpAdapter.setAll(state, action.payload)
+        },
+        [getErpMnSlices.pending]: (state, action) => {
+            state.pending = true
+        },
+    },
+})
+
 /*
- * CREATE CUSTOM SELECTOR
+ * CREATE CUSTOM SELECTOR ERP
  */
 
 export const erpDepNo = ({ mnApp }) => mnApp.erps.erpDepNo
@@ -257,7 +318,9 @@ const dataUtils = createSelector(
             }
         })
 
-        return x
+        if (erps) {
+            return x
+        }
     }
 )
 
@@ -441,86 +504,250 @@ export const filterErpsKanban = createSelector(
     }
 )
 
-export const filterChartErps = createSelector([filteredErps], (data) => {
-    function getChart() {
-        const month = getMonthErp()
+export const filterChartErps = createSelector(
+    [filteredErps, machinesCom],
+    (data, com) => {
+        function getChart() {
+            const month = getMonthErp()
 
-        const chart = getCountStatusErp(data)
+            const chart = getCountStatusErp(data)
 
-        const x = _.map(month, (val) => {
+            const x = _.map(month, (val) => {
+                return {
+                    name: val.substring(0, 3),
+                    data: chart[val] || { Open: 0, Close: 0 },
+                    kpi: com == 'GM2' ? 120 : 100,
+                    title: 'Work Order Chart',
+                }
+            })
+
+            return x
+        }
+
+        if (data) {
+            return getChart()
+        }
+    }
+)
+
+/*
+ * CREATE CUSTOM SELECTOR FOR REQUEST
+ */
+
+const dataUtilsRequestErp = createSelector([dataUtils], (data) => {
+    const x = _.filter(data, (val) => {
+        if (val.request_index.length > 0) {
+            return val
+        }
+    })
+
+    if (data) {
+        return x
+    }
+})
+
+const dataUtilsRequest = createSelector(
+    [selectMnRequests, selectMnMachines, selectMnErps],
+    (request, machines, erp) => {
+        const x = _.map(request, (val) => {
             return {
-                name: val.substring(0, 3),
-                data: chart[val] || { Open: 0, Close: 0 },
+                ...val,
+                mch_index: _.find(machines, {
+                    mch_code: val.mch_code,
+                    mch_com: val.mch_com,
+                }),
+                erp_index: _.find(erp, { sheet_no: val.sheet_no }),
             }
         })
 
-        return x
+        if (erp.length > 0) {
+            return x
+        }
     }
+)
 
-    if (data) {
-        return getChart()
+const filteredRequest = createSelector(
+    [
+        dataUtilsRequest,
+        erpYear,
+        erpPrio,
+        machinesCom,
+        machinesSection,
+        machinesResponbility,
+    ],
+    (data, year, prio, com, section, responsible) => {
+        function getFilter() {
+            if (
+                com === 'ALL' &&
+                responsible === 'ALL' &&
+                section === 'ALL' &&
+                year === 'ALL' &&
+                prio === 'ALL'
+            ) {
+                return data
+            }
+            return _.filter(data, (val) => {
+                if (com !== 'ALL' && val.mch_com !== com) {
+                    return false
+                }
+
+                if (
+                    year !== 'ALL' &&
+                    dayjs(val.createdAt).format('YYYY') !== year
+                ) {
+                    return false
+                }
+
+                if (prio !== 'ALL' && val?.erp_index?.pri_no !== prio) {
+                    return false
+                }
+
+                if (
+                    section !== 'ALL' &&
+                    section !== 'workshop' &&
+                    val?.mch_index?.section !== section
+                ) {
+                    return false
+                }
+
+                if (
+                    responsible !== 'ALL' &&
+                    val?.mch_index?.responsible.toLowerCase() !==
+                        responsible.toLowerCase()
+                ) {
+                    return false
+                }
+
+                //? belum nemu filter workshop find all
+                if (section == 'workshop') {
+                    return val
+                }
+
+                return val
+            })
+        }
+
+        if (data) {
+            return getFilter()
+        }
     }
-})
+)
+
+export const filteredRequestErp = createSelector(
+    [
+        dataUtilsRequestErp,
+        comUtils,
+        erpPrio,
+        machinesSection,
+        machinesResponbility,
+        erpYear,
+    ],
+    (data, com, prio, section, responsible, year) => {
+        function getFilter() {
+            if (
+                com === 'ALL' &&
+                responsible === 'ALL' &&
+                section === 'ALL' &&
+                year === 'ALL' &&
+                prio === 'ALL'
+            ) {
+                return data
+            }
+            return _.filter(data, (val) => {
+                if (com !== 'ALL' && val.com_no !== com) {
+                    return false
+                }
+
+                if (year !== 'ALL' && dayjs(val.ymd).format('YYYY') !== year) {
+                    return false
+                }
+
+                if (prio !== 'ALL' && val.pri_no !== prio) {
+                    return false
+                }
+
+                if (
+                    section !== 'ALL' &&
+                    section !== 'workshop' &&
+                    val?.mch_index?.section !== section
+                ) {
+                    return false
+                }
+
+                if (
+                    responsible !== 'ALL' &&
+                    val?.mch_index?.responsible.toLowerCase() !==
+                        responsible.toLowerCase()
+                ) {
+                    return false
+                }
+
+                //? belum nemu filter workshop find all
+                if (section == 'workshop') {
+                    return val
+                }
+
+                return val
+            })
+        }
+
+        if (data) {
+            return getFilter()
+        }
+    }
+)
+
+export const filteredRequestByMonth = createSelector(
+    [filteredRequestErp, searchText, erpMonth],
+    (data, text, month) => {
+        function getFilter() {
+            if (text.length === 0 && !month) {
+                return data
+            }
+            return _.filter(data, (val) => {
+                if (month && dayjs(val.ymd).format('MMMM') !== month) {
+                    return false
+                }
+
+                return val?.sheet_no.toLowerCase().includes(text.toLowerCase())
+            })
+        }
+        if (data) {
+            return getFilter()
+        }
+    }
+)
+
+export const filteredRequestChart = createSelector(
+    [filteredRequest],
+    (data) => {
+        function getChart() {
+            const month = getMonthErp()
+
+            const chart = getCountStatusRequest(data)
+
+            const x = _.map(month, (val) => {
+                return {
+                    name: val.substring(0, 3),
+                    data: chart[val] || { Open: 0, Close: 0 },
+                    kpi: '',
+                    title: 'Request Sparepart Chart',
+                }
+            })
+
+            return x
+        }
+
+        if (data) {
+            console.log(getChart())
+            return getChart()
+        }
+    }
+)
 
 /*
  * END OF CUSTOM SELECTOR
  */
-
-const erpMnSlices = createSlice({
-    name: 'mnApp/erps',
-    initialState: MnErpAdapter.getInitialState({
-        erpDepNo: 'ALL',
-        searchText: '',
-        erpYear: 'ALL',
-        erpPrio: 'ALL',
-        erpMonth: 'January',
-    }),
-    reducers: {
-        setErpDepNo: {
-            reducer: (state, action) => {
-                state.erpDepNo = action.payload
-            },
-            prepare: (event) => {
-                return { payload: event }
-            },
-        },
-        setErpYear: {
-            reducer: (state, action) => {
-                state.erpYear = action.payload
-            },
-            prepare: (event) => {
-                return { payload: event }
-            },
-        },
-        setSearchText: {
-            reducer: (state, action) => {
-                state.searchText = action.payload
-            },
-            prepare: (event) => ({ payload: event }),
-        },
-        setErpPrio: {
-            reducer: (state, action) => {
-                state.erpPrio = action.payload
-            },
-            prepare: (event) => ({ payload: event }),
-        },
-        setErpMonth: {
-            reducer: (state, action) => {
-                state.erpMonth = action.payload
-            },
-            prepare: (event) => ({ payload: event }),
-        },
-    },
-    extraReducers: {
-        [getErpMnSlices.fulfilled]: (state, action) => {
-            state.pending = false
-            MnErpAdapter.setAll(state, action.payload)
-        },
-        [getErpMnSlices.pending]: (state, action) => {
-            state.pending = true
-        },
-    },
-})
 
 export const {
     setErpDepNo,
