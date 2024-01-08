@@ -24,13 +24,13 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { useDispatch, useSelector } from 'react-redux'
 import VirtualizedData from 'src/app/main/apps/maintenanceSystem/machineTab/utils/VirtualizedData'
-
 import { showMessage } from 'app/store/fuse/messageSlice'
 import { selectMnStoks } from '../../store/stokStore/stokMnSlices'
 import {
     saveRequestPending,
     saveRequest,
 } from '../../store/requestStore/requestMnSlice'
+import { saveSparepart } from '../../store/sparepartStore/sparepartMnSlice'
 import { selectUser } from 'app/store/userSlice'
 import _ from 'lodash'
 import { Watch } from '@mui/icons-material'
@@ -65,16 +65,18 @@ function DialogMenu3({ params }) {
             watchRequest !== '#0 ADD NEW ITEM'
         ) {
             setHidSparepart(true)
+            let itemLifeTime = sparepart_index.map((data) => data.item_name)
+            _.includes(itemLifeTime, watchRequest) == true
+                ? setHasLifeTime(true)
+                : setHasLifeTime(false)
         } else {
             setHidSparepart(false)
         }
-    }, [watchRequest, hidSparepart])
+
+        console.log(sparepart_index)
+    }, [watchRequest, hidSparepart, sparepart_index])
 
     // useEffect(() => {
-    //     item_stock == '#0 ADD NEW ITEM'
-    //         ? setHidSparepart(false)
-    //         : setHidSparepart(true)
-
     //     let itemLifeTime = sparepart_index.map((data) => data.item_name)
     //     _.includes(itemLifeTime, item_stock) == true
     //         ? setHasLifeTime(true)
@@ -82,13 +84,49 @@ function DialogMenu3({ params }) {
     // }, [item_stock, sparepart_index])
 
     function handleSaveRequest() {
-        console.log(getValues('request'))
-        const data = _.map(getValues('request'), (val) => {
-            if (val.item_stock === '#0 ADD NEW ITEM') {
-                return { ...val, item_stock: val.new_sparepart }
+        function setRequest() {
+            const data = getValues('request')
+            if (data.item_stock == '#0 ADD NEW ITEM') {
+                data.item_stock = data.new_sparepart
+                const { new_sparepart, ...newObj } = {
+                    ...data,
+                    uuid_request: uuid,
+                }
+                return newObj
+            } else {
+                const { new_sparepart, ...newObj } = {
+                    ...data,
+                    uuid_request: uuid,
+                }
+                return newObj
+            }
+        }
+
+        dispatch(saveRequest(setRequest())).then((action) => {
+            if (action.payload) {
+                dispatch(
+                    showMessage({
+                        message: 'Data saved successfully',
+                        variant: 'success',
+                    })
+                )
             }
         })
-        console.log(data)
+
+        if (withMonitor) {
+            dispatch({ ...getValues('request'), uuid_request: uuid }).then(
+                (action) => {
+                    if (action.payload) {
+                        dispatch(
+                            showMessage({
+                                message: 'Data saved successfully',
+                                variant: 'success',
+                            })
+                        )
+                    }
+                }
+            )
+        }
 
         // dispatch(
         //     saveMnOneRequest({
