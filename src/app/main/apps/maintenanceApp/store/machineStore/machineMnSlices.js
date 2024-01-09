@@ -11,7 +11,7 @@ import _ from 'lodash'
 export const getMachineMnSlices = createAsyncThunk(
     'mnApp/machines/getMachines',
     async () => {
-        const response = await axios.get(`http://localhost:5000/mnmachine`)
+        const response = await axios.get(`http://192.168.192.7:5000/mnmachine`)
 
         const data = await response.data
 

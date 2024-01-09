@@ -49,6 +49,10 @@ function MaintenanceAppMachines() {
         useSelector(filteredMachines),
     ]
 
+    useEffect(() => {
+        dispatch(setMachinesCom('GM1'))
+    }, [])
+
     const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'))
 
     function handleComTab(event, value) {
@@ -62,25 +66,6 @@ function MaintenanceAppMachines() {
 
     function handleView(event, value) {
         setView(value)
-    }
-
-    const container = {
-        show: {
-            transition: {
-                staggerChildren: 0.1,
-            },
-        },
-    }
-
-    const item = {
-        hidden: {
-            opacity: 0,
-            y: 20,
-        },
-        show: {
-            opacity: 1,
-            y: 0,
-        },
     }
 
     return (
@@ -205,38 +190,19 @@ function MaintenanceAppMachines() {
                             </div>
                         </div>
 
-                        {useMemo(() => {
-                            return selectData.length > 0 ? (
-                                <motion.div
-                                    className="flex grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-16 mt-16 sm:mt-16"
-                                    variants={container}
-                                    initial="hidden"
-                                    animate="show"
-                                >
-                                    {selectData.map((data) => {
-                                        return (
-                                            <motion.div
-                                                variants={item}
-                                                key={data.uuid}
-                                            >
-                                                <CardMachine
-                                                    params={{ ...data }}
-                                                />
-                                            </motion.div>
-                                        )
-                                    })}
-                                </motion.div>
-                            ) : (
-                                <div className="flex flex-1 items-center justify-center">
-                                    <Typography
-                                        color="text.secondary"
-                                        className="text-24 mt-32 my-32"
-                                    >
-                                        N/A
-                                    </Typography>
-                                </div>
-                            )
-                        }, [selectData])}
+                        {selectData.length > 0 ? (
+                            <div className="flex grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-16 mt-16 sm:mt-16">
+                                {selectData.map((data) => {
+                                    return (
+                                        <div key={data.uuid}>
+                                            <CardMachine params={{ ...data }} />
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        ) : (
+                            <FuseLoading />
+                        )}
                     </div>
                 }
                 scroll={isMobile ? 'normal' : 'page'}

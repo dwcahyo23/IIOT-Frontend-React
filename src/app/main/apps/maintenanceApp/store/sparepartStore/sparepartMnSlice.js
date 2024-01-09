@@ -5,7 +5,7 @@ export const getSparepart = createAsyncThunk(
     'mnApp/sparepart/getSparepart',
     async (uuid) => {
         const response = await axios.get(
-            `http://localhost:5000/mnsparepartid/${uuid}`
+            `http://192.168.192.7:5000/mnsparepartid/${uuid}`
         )
 
         const data = await response.data
@@ -19,7 +19,7 @@ export const saveSparepart = createAsyncThunk(
     async (row, { dispatch, getState }) => {
         try {
             const response = await axios.patch(
-                `http://localhost:5000/mnsparepartid/${row.sheet_no}`,
+                `http://192.168.192.7:5000/mnsparepartid/${row.sheet_no}`,
                 row
             )
             const data = await response.data
@@ -35,7 +35,7 @@ export const removeSparepart = createAsyncThunk(
     'mnApp/sparepart/removeSparepart',
     async (uuid, { dispatch, getState }) => {
         const response = await axios.delete(
-            `http://localhost:5000/mnsparepartid/${uuid}`
+            `http://192.168.192.7:5000/mnsparepartid/${uuid}`
         )
 
         await response.data

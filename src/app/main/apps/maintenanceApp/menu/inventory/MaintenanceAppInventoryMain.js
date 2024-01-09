@@ -6,9 +6,13 @@ import { Typography } from '@mui/material'
 
 import DataChart from '../../components/DataChart'
 import ListInventory from '../../components/ListInventory'
-
-import { filteredRequestChart } from '../../store/erpStore/erpMnSlices'
-
+import {
+    filteredRequestChart,
+    filteredRequestByMonth,
+} from '../../store/erpStore/erpMnSlices'
+import { machinesCom } from '../../store/machineStore/machineMnSlices'
+import { selectMnUsers } from '../../store/userStore/userMnSlices'
+import CardAvatar from '../../components/CardAvatar'
 const container = {
     show: {
         transition: {
@@ -23,6 +27,26 @@ const item = {
 }
 
 function MaintenanceAppInventoryMain() {
+    const [useCom, useUser, filteredData] = [
+        useSelector(machinesCom),
+        useSelector(selectMnUsers),
+        useSelector(filteredRequestByMonth),
+    ]
+    const [withUser, setWithUser] = useState(null)
+    const [withParams, setWithParams] = useState(null)
+
+    useEffect(() => {
+        if (useCom == 'GM2') {
+            setWithUser(_.find(useUser, { id: 21 }))
+        } else {
+            setWithUser(_.find(useUser, { id: 20 }))
+        }
+        if (filteredData) {
+            setWithParams(filteredData)
+        }
+        // console.log(filteredData)
+    }, [useCom, useUser, filteredData])
+
     const filterChart = useSelector(filteredRequestChart)
     return (
         <motion.div
@@ -31,10 +55,15 @@ function MaintenanceAppInventoryMain() {
             initial="hidden"
             animate="show"
         >
-            <motion.div
-                variants={item}
-                className="sm:col-span-6 md:col-span-8"
-            ></motion.div>
+            <motion.div variants={item} className="sm:col-span-6 md:col-span-8">
+                {!_.isNull(withUser) && (
+                    <CardAvatar
+                        user={withUser}
+                        params={withParams}
+                        section="inventories"
+                    />
+                )}
+            </motion.div>
             <motion.div variants={item} className="sm:col-span-2 md:col-span-3">
                 <ListInventory />
             </motion.div>

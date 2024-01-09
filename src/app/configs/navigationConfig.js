@@ -9,35 +9,28 @@ import { authRoles } from '../auth'
 // i18next.addResourceBundle('ar', 'navigation', ar)
 
 const navigationConfig = [
-    {
-        id: 'dashboards',
-        title: 'Dashboards',
-        type: 'group',
-        icon: 'heroicons-outline:home',
-        translate: 'DASHBOARDS',
-        children: [
-            {
-                id: 'dashboards.project',
-                title: 'Maintenance System',
-                type: 'item',
-                auth: authRoles.admin,
-                icon: 'heroicons-outline:clipboard-check',
-                url: '/dashboards/maintenance',
-            },
-            {
-                id: 'dashboards.projectAcip',
-                title: 'Acip System',
-                type: 'item',
-                auth: authRoles.acip,
-                icon: 'heroicons-outline:clipboard-check',
-                url: '/apps/acipApp/dashboard',
-            },
-        ],
-    },
-    {
-        type: 'divider',
-        id: 'divider-2',
-    },
+    // {
+    //     id: 'dashboards',
+    //     title: 'Dashboards',
+    //     type: 'group',
+    //     icon: 'heroicons-outline:home',
+    //     translate: 'DASHBOARDS',
+    //     children: [
+    //         {
+    //             id: 'dashboards.project',
+    //             title: 'Maintenance System',
+    //             type: 'item',
+    //             auth: authRoles.admin,
+    //             icon: 'heroicons-outline:clipboard-check',
+    //             url: '/dashboards/maintenance',
+    //         },
+
+    //     ],
+    // },
+    // {
+    //     type: 'divider',
+    //     id: 'divider-2',
+    // },
     {
         id: 'apps',
         title: 'Applications',
@@ -46,38 +39,10 @@ const navigationConfig = [
         translate: 'APPLICATIONS',
         children: [
             {
-                id: 'apps.maintenanceSystem',
-                title: 'Maintenance Machine',
-                type: 'item',
-                icon: 'heroicons-outline:desktop-computer',
-                auth: authRoles.admin,
-                url: '/apps/maintenanceSystem',
-            },
-            {
-                id: 'apps.acipApp',
-                title: 'Genba Acip',
-                type: 'item',
-                icon: 'heroicons-outline:desktop-computer',
-                auth: authRoles.acip,
-                url: '/apps/acipApp/acip',
-            },
-            {
-                id: 'apps.scadaApp',
-                title: 'Andon System',
-                type: 'item',
-                auth: authRoles.user,
-                icon: 'heroicons-outline:status-online',
-                url: '/apps/scadaApp/home',
-            },
-            {
-                type: 'divider',
-                id: 'divider-2',
-            },
-            {
                 id: 'apps.maintenanceAppErps',
                 title: 'Work Order',
                 type: 'item',
-                icon: 'heroicons-outline:desktop-computer',
+                icon: 'heroicons-outline:presentation-chart-bar',
                 auth: authRoles.admin,
                 url: '/apps/MnApp/erps',
             },
@@ -85,7 +50,7 @@ const navigationConfig = [
                 id: 'apps.maintenanceAppInventories',
                 title: 'Inventories',
                 type: 'item',
-                icon: 'heroicons-outline:desktop-computer',
+                icon: 'heroicons-outline:shopping-cart',
                 auth: authRoles.admin,
                 url: '/apps/MnApp/inventories',
             },
@@ -97,6 +62,44 @@ const navigationConfig = [
                 auth: authRoles.admin,
                 url: '/apps/MnApp/machines',
             },
+
+            // {
+            //     id: 'apps.maintenanceSystem',
+            //     title: 'Maintenance Machine',
+            //     type: 'item',
+            //     icon: 'heroicons-outline:desktop-computer',
+            //     auth: authRoles.admin,
+            //     url: '/apps/maintenanceSystem',
+            // },
+            {
+                id: 'dashboards.projectAcip',
+                title: 'Acip System',
+                type: 'item',
+                auth: authRoles.acip,
+                icon: 'heroicons-outline:clipboard-check',
+                url: '/apps/acipApp/dashboard',
+            },
+            {
+                id: 'apps.acipApp',
+                title: 'Genba Acip',
+                type: 'item',
+                icon: 'heroicons-outline:desktop-computer',
+                auth: authRoles.acip,
+                url: '/apps/acipApp/acip',
+            },
+            {
+                id: 'apps.scadaApp',
+                title: 'Andon 3VIEW',
+                type: 'item',
+                auth: authRoles.user,
+                icon: 'heroicons-outline:desktop-computer',
+                url: '/apps/scadaApp/home',
+            },
+            {
+                type: 'divider',
+                id: 'divider-2',
+            },
+
             // {
             //     id: 'apps.modbus',
             //     title: 'Maintenance System',

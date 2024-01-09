@@ -264,7 +264,7 @@ function MaintenanceAppInventory() {
                             className="flex w-full sm:w-auto mx-8"
                             variant="outlined"
                         >
-                            <InputLabel>User</InputLabel>
+                            <InputLabel>Order By</InputLabel>
 
                             <Select
                                 labelId="category-select-label"

@@ -8,7 +8,7 @@ import axios from 'axios'
 import { saveScw, removeScw } from './scwProductionSlice'
 
 export const getScwSlices = createAsyncThunk('pdApp/scw/getScws', async () => {
-    const response = await axios.get(`http://localhost:5000/ProductionScw`)
+    const response = await axios.get(`http://192.168.192.7:5000/ProductionScw`)
 
     const data = await response.data
 

@@ -153,7 +153,7 @@ function MaintenanceAppErps() {
                                 }}
                             >
                                 <Typography className="text-16 sm:text-20 truncate font-semibold">
-                                    Work Order Maintenance
+                                    Work Order Maintenance | FO-03-04-01
                                 </Typography>
                                 <Typography
                                     variant="caption"

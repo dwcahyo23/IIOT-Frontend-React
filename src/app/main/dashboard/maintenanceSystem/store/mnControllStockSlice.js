@@ -6,7 +6,7 @@ export const getMnControllStock = createAsyncThunk(
     'dashboard/MnControllStock/getMnControllStock',
     async () => {
         const response = await axios.get(
-            `http://localhost:5000/maintenanceControlStock`
+            `http://192.168.192.7:5000/maintenanceControlStock`
         )
 
         const data = await response.data
@@ -20,7 +20,7 @@ export const saveMnControllStock = createAsyncThunk(
     async (row, { dispatch, getState }) => {
         try {
             const response = await axios.post(
-                `http://localhost:5000/maintenanceControlStock`,
+                `http://192.168.192.7:5000/maintenanceControlStock`,
                 row
             )
             const data = await response.data
@@ -36,7 +36,7 @@ export const updateStockControl = createAsyncThunk(
     async (row, { dispatch, getState }) => {
         try {
             const response = await axios.post(
-                `http://localhost:5000/maintenanceControlUpdateStock`,
+                `http://192.168.192.7:5000/maintenanceControlUpdateStock`,
                 row
             )
             const data = await response.data
