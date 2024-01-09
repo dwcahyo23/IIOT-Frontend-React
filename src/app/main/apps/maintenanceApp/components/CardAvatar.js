@@ -9,14 +9,18 @@ function CardAvatar({ user, params, section }) {
         if (filter === 'inventories') {
             const total = _.countBy(data, (val) => (val ? 'pass' : 'fail'))
             const audit = _.countBy(data, (val) =>
-                _.some(val.request_index, { audit_request: 'N' })
-                    ? 'audit'
-                    : 'naudit'
+                val.audit_request == 'Y' ? 'audit' : 'naudit'
             )
+
+            // const audit = _.countBy(data, (val) =>
+            //     _.some(val.request_index, { audit_request: 'N' })
+            //         ? 'audit'
+            //         : 'naudit'
+            // )
             return {
                 total: total.pass,
-                audit: audit.naudit,
-                naudit: audit.audit,
+                audit: audit.audit,
+                naudit: audit.naudit,
             }
         }
         if (filter === 'work orders') {
