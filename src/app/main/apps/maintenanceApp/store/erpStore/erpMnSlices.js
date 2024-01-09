@@ -651,10 +651,62 @@ const dataUtilsRequestErp = createSelector([dataUtils], (data) => {
     }
 })
 
+// const dataUtils = createSelector(
+//     [
+//         selectMnErps,
+//         selectMnMachines,
+//         selectMnReports,
+//         selectMnRequests,
+//         selectMnSpareparts,
+//     ],
+//     (erps, machines, reports, requests, spareparts) => {
+//         const x = _.map(erps, (val) => {
+//             return {
+//                 ...val,
+//                 mch_index: _.find(machines, {
+//                     mch_code: val.mch_no,
+//                     mch_com:
+//                         val.com_no == '01'
+//                             ? 'GM1'
+//                             : val.com_no == '02'
+//                             ? 'GM2'
+//                             : val.com_no == '03'
+//                             ? 'GM3'
+//                             : 'GM5',
+//                 }),
+//                 report_index: _.find(reports, {
+//                     sheet_no: val.sheet_no,
+//                 }),
+//                 request_index: _.filter(requests, { sheet_no: val.sheet_no }),
+//                 sparepart_index: _.filter(spareparts, {
+//                     mch_code: val.mch_no,
+//                     mch_com:
+//                         val.com_no == '01'
+//                             ? 'GM1'
+//                             : val.com_no == '02'
+//                             ? 'GM2'
+//                             : val.com_no == '03'
+//                             ? 'GM3'
+//                             : 'GM5',
+//                 }),
+//             }
+//         })
+
+//         if (erps) {
+//             return x
+//         }
+//     }
+// )
+
 const dataUtilsRequest = createSelector(
     [selectMnRequests, selectMnMachines, selectMnErps],
     (request, machines, erp) => {
-        const x = _.map(request, (val) => {
+        const x = _.filter(request, (val) => {
+            if (val.audit_request !== 'C') {
+                return val
+            }
+        })
+        const y = _.map(x, (val) => {
             return {
                 ...val,
                 mch_index: _.find(machines, {
@@ -662,14 +714,103 @@ const dataUtilsRequest = createSelector(
                     mch_com: val.mch_com,
                 }),
                 erp_index: _.find(erp, { sheet_no: val.sheet_no }),
+                request_index: _.filter(request, { sheet_no: val.sheet_no }),
             }
         })
 
         if (erp.length > 0) {
-            return x
+            return y
         }
     }
 )
+
+//? BY ERP APSHEET
+export const filteredRequestErp = createSelector(
+    [
+        dataUtilsRequestErp,
+        comUtils,
+        erpPrio,
+        machinesSection,
+        machinesResponbility,
+        erpYear,
+    ],
+    (data, com, prio, section, responsible, year) => {
+        function getFilter() {
+            if (
+                com === 'ALL' &&
+                responsible === 'ALL' &&
+                section === 'ALL' &&
+                year === 'ALL' &&
+                prio === 'ALL'
+            ) {
+                return data
+            }
+            return _.filter(data, (val) => {
+                if (com !== 'ALL' && val.com_no !== com) {
+                    return false
+                }
+
+                if (year !== 'ALL' && dayjs(val.ymd).format('YYYY') !== year) {
+                    return false
+                }
+
+                if (prio !== 'ALL' && val.pri_no !== prio) {
+                    return false
+                }
+
+                if (
+                    section !== 'ALL' &&
+                    section !== 'workshop' &&
+                    val?.mch_index?.section !== section
+                ) {
+                    return false
+                }
+
+                if (
+                    responsible !== 'ALL' &&
+                    val?.mch_index?.responsible.toLowerCase() !==
+                        responsible.toLowerCase()
+                ) {
+                    return false
+                }
+
+                //? belum nemu filter workshop find all
+                if (section == 'workshop') {
+                    return val
+                }
+
+                return val
+            })
+        }
+
+        if (data) {
+            return getFilter()
+        }
+    }
+)
+
+export const filteredRequestErpByMonth = createSelector(
+    [filteredRequestErp, searchText, erpMonth],
+    (data, text, month) => {
+        function getFilter() {
+            if (text.length === 0 && !month) {
+                return data
+            }
+            return _.filter(data, (val) => {
+                if (month && dayjs(val.ymd).format('MMMM') !== month) {
+                    return false
+                }
+
+                return val?.sheet_no.toLowerCase().includes(text.toLowerCase())
+            })
+        }
+        if (data) {
+            return getFilter()
+        }
+    }
+)
+
+//? BY APREQUEST
 
 const filteredRequest = createSelector(
     [
@@ -738,83 +879,43 @@ const filteredRequest = createSelector(
     }
 )
 
-export const filteredRequestErp = createSelector(
-    [
-        dataUtilsRequestErp,
-        comUtils,
-        erpPrio,
-        machinesSection,
-        machinesResponbility,
-        erpYear,
-    ],
-    (data, com, prio, section, responsible, year) => {
-        function getFilter() {
-            if (
-                com === 'ALL' &&
-                responsible === 'ALL' &&
-                section === 'ALL' &&
-                year === 'ALL' &&
-                prio === 'ALL'
-            ) {
-                return data
-            }
-            return _.filter(data, (val) => {
-                if (com !== 'ALL' && val.com_no !== com) {
-                    return false
-                }
-
-                if (year !== 'ALL' && dayjs(val.ymd).format('YYYY') !== year) {
-                    return false
-                }
-
-                if (prio !== 'ALL' && val.pri_no !== prio) {
-                    return false
-                }
-
-                if (
-                    section !== 'ALL' &&
-                    section !== 'workshop' &&
-                    val?.mch_index?.section !== section
-                ) {
-                    return false
-                }
-
-                if (
-                    responsible !== 'ALL' &&
-                    val?.mch_index?.responsible.toLowerCase() !==
-                        responsible.toLowerCase()
-                ) {
-                    return false
-                }
-
-                //? belum nemu filter workshop find all
-                if (section == 'workshop') {
-                    return val
-                }
-
-                return val
-            })
-        }
-
-        if (data) {
-            return getFilter()
-        }
-    }
-)
-
 export const filteredRequestByMonth = createSelector(
-    [filteredRequestErp, searchText, erpMonth],
+    [filteredRequest, searchText, erpMonth],
     (data, text, month) => {
         function getFilter() {
             if (text.length === 0 && !month) {
                 return data
             }
             return _.filter(data, (val) => {
-                if (month && dayjs(val.ymd).format('MMMM') !== month) {
+                if (month && dayjs(val.createdAt).format('MMMM') !== month) {
                     return false
                 }
 
-                return val?.sheet_no.toLowerCase().includes(text.toLowerCase())
+                // return val?.sheet_no.toLowerCase().includes(text.toLowerCase())
+                if (
+                    (!_.isUndefined(val.sheet_no) &&
+                        val.sheet_no
+                            .toLowerCase()
+                            .includes(text.toLowerCase())) ||
+                    (!_.isUndefined(val.mch_no) &&
+                        val.mch_no
+                            .toLowerCase()
+                            .includes(text.toLowerCase())) ||
+                    (!_.isUndefined(val.mch_code) &&
+                        val.mch_code
+                            .toLowerCase()
+                            .includes(text.toLowerCase())) ||
+                    (!_.isUndefined(val.user_req1) &&
+                        val.user_req1
+                            .toLowerCase()
+                            .includes(text.toLowerCase())) ||
+                    (!_.isUndefined(val.mre_request) &&
+                        val.mre_request
+                            .toLowerCase()
+                            .includes(text.toLowerCase()))
+                ) {
+                    return val
+                }
             })
         }
         if (data) {

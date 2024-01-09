@@ -44,7 +44,6 @@ function MaintenanceAppInventoryMain() {
         if (filteredData) {
             setWithParams(filteredData)
         }
-        // console.log(filteredData)
     }, [useCom, useUser, filteredData])
 
     const filterChart = useSelector(filteredRequestChart)
@@ -64,12 +63,10 @@ function MaintenanceAppInventoryMain() {
                     />
                 )}
             </motion.div>
-            <motion.div variants={item} className="sm:col-span-2 md:col-span-3">
+            <motion.div variants={item} className="sm:col-span-6 md:col-span-8">
                 <ListInventory />
             </motion.div>
-            <motion.div variants={item} className="sm:col-span-4 md:col-span-5">
-                <DataChart params={{ data: filterChart }} />
-            </motion.div>
+
             {/* <motion.div variants={item} className="sm:col-span-6 md:col-span-8">
                 <MaintenanceAppErpKanban />
             </motion.div> */}

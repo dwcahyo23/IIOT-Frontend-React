@@ -34,6 +34,7 @@ import {
     erpPending,
     filteredRequestErp,
     getErpMnSlices,
+    filteredRequestChart,
 } from '../../store/erpStore/erpMnSlices'
 
 import {
@@ -51,6 +52,7 @@ import {
 
 import MaintenanceAppInventoryMain from './MaintenanceAppInventoryMain'
 import { LoadingButton } from '@mui/lab'
+import DataChart from '../../components/DataChart'
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
     '& .FusePageSimple-header': {
@@ -77,6 +79,7 @@ function MaintenanceAppInventory() {
         isPending,
         selectPrio,
         usePrio,
+        filterChart,
     ] = [
         useSelector(selectErpMonth),
         useSelector(erpMonth),
@@ -85,6 +88,7 @@ function MaintenanceAppInventory() {
         useSelector(erpPending),
         useSelector(selectErpPriNo),
         useSelector(erpPrio),
+        useSelector(filteredRequestChart),
     ]
 
     const [selectCom, useCom] = [
@@ -161,6 +165,21 @@ function MaintenanceAppInventory() {
                             </motion.div>
                         </div>
                     </div>
+
+                    {filterData.length > 0 && (
+                        <div className="grid grid-cols-1 sm:grid-cols-6 md:grid-cols-8 gap-16 w-full min-w-0 p-24">
+                            <motion.div
+                                className="sm:col-span-6 md:col-span-8"
+                                initial={{ x: -20 }}
+                                animate={{
+                                    x: 0,
+                                    transition: { delay: 0.3 },
+                                }}
+                            >
+                                <DataChart params={{ data: filterChart }} />
+                            </motion.div>
+                        </div>
+                    )}
 
                     <div className="flex flex-1 justify-start my-16 lg:my-0">
                         <Tabs

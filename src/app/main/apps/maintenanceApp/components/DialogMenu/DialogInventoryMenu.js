@@ -36,6 +36,7 @@ function DialogInventoryMenu({ params }) {
             return
         }
         reset(data)
+        console.log(data)
     }, [params, filterData, reset])
 
     function handleTabChange(event, value) {

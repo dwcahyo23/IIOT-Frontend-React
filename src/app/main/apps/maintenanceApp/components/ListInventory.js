@@ -54,6 +54,10 @@ function ListInventory() {
         useSelector(searchText),
     ]
 
+    useEffect(() => {
+        // console.log(filterData)
+    }, [filterData])
+
     function handleMonth(event, value) {
         dispatch(setErpMonth(value.props.value))
     }
@@ -85,28 +89,31 @@ function ListInventory() {
                 >
                     <ListItemText>
                         <Typography className="text-13 mt-2 line-clamp-2">
-                            {`${index + 1}. ${filterData[index].sheet_no}|${
-                                filterData[index].mch_no
-                            }`}
+                            {`${index + 1}. ${filterData[index].sheet_no} | ${
+                                filterData[index].mch_code
+                            } |${filterData[index].user_req1} | ${
+                                _.isNull(filterData[index].item_stock)
+                                    ? filterData[index].item_name
+                                    : filterData[index].item_stock
+                            } | ${filterData[index].item_qty}  ${
+                                filterData[index].item_uom
+                            } | ${filterData[index].mre_request}`}
                         </Typography>
                     </ListItemText>
 
-                    {_.some(filterData[index].request_index, {
-                        audit_request: 'N',
-                    }) == true ? (
-                        <StatusChip id="N" />
-                    ) : (
+                    {filterData[index].audit_request == 'Y' ? (
                         <StatusChip id="Y" />
+                    ) : (
+                        <StatusChip id="N" />
                     )}
 
-                    {/* {_.every(filterData[index].request_index, [
-                        'audit_request',
-                        'Y',
-                    ]) == false ? (
-                        <StatusChip id="N" />
-                    ) : (
-                        <StatusChip id="Y" />
-                    )} */}
+                    {filterData[index].mre_request?.length > 0 && (
+                        <StatusChip id="MRE" />
+                    )}
+                    {filterData[index].item_ready == 'Y' &&
+                        filterData[index].audit_request == 'N' && (
+                            <StatusChip id="Ready" />
+                        )}
                 </ListItemButton>
             </ListItem>
         )
