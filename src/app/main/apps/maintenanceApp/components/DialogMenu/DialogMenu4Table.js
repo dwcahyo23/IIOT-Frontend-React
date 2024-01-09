@@ -155,7 +155,7 @@ function CustomToolbar(props) {
         const x = _.map(selection, (val) => {
             const obj = {
                 ...val,
-                item_ready: 'Y',
+                item_ready: 'N',
                 mre_request: data.mre_request,
                 date_mre_request: dayjs(),
             }

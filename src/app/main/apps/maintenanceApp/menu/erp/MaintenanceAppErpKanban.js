@@ -9,7 +9,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import _ from 'lodash'
 import { motion } from 'framer-motion'
 
-import { indigo, red, green, blue, orange } from '@mui/material/colors'
+import { indigo, red, green, blue, orange, yellow } from '@mui/material/colors'
 
 import {
     filteredErpsByMonth,
@@ -50,6 +50,10 @@ function getColor(params) {
     }
 
     if (params === 4) {
+        return orange[600]
+    }
+
+    if (params === 5) {
         return green[600]
     }
 }
@@ -72,7 +76,7 @@ function MaintenanceAppErpKanban() {
             ) {
                 return (
                     <motion.div
-                        className="grid grid-cols-1 sm:grid-cols-8 gap-16 w-full min-w-0 pt-24"
+                        className="grid grid-cols-1 sm:grid-cols-5 gap-16 w-full min-w-0 pt-24"
                         variants={container}
                         initial="hidden"
                         animate="show"
@@ -81,7 +85,7 @@ function MaintenanceAppErpKanban() {
                             <motion.div
                                 variants={item}
                                 key={index}
-                                className="sm:col-span-2"
+                                className="sm:col-span-1"
                             >
                                 <Paper className="flex flex-col flex-auto shadow rounded-2xl py-16 overflow-hidden">
                                     <div className="flex items-center justify-center px-8 pt-8">
