@@ -15,8 +15,8 @@ function CardAvatar({ user, params, section }) {
             )
             return {
                 total: total.pass,
-                audit: audit.audit,
-                naudit: audit.naudit,
+                audit: audit.naudit,
+                naudit: audit.audit,
             }
         }
         if (filter === 'work orders') {
@@ -65,7 +65,7 @@ function CardAvatar({ user, params, section }) {
                 <CardAvatarResume
                     params={{
                         title: 'AP-Sheet',
-                        count: data.naudit,
+                        count: data.audit,
                         name: 'Audit',
                         colorHg: green[400],
                         colorLw: green[300],
@@ -76,7 +76,7 @@ function CardAvatar({ user, params, section }) {
                 <CardAvatarResume
                     params={{
                         title: 'AP-Sheet',
-                        count: data.audit,
+                        count: data.naudit,
                         name: 'Naudit',
                         colorHg: red[400],
                         colorLw: red[300],
