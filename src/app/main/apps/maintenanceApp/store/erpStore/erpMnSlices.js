@@ -373,9 +373,12 @@ export const filteredErps = createSelector(
                     return false
                 }
 
-                //? belum nemu filter workshop find all
                 if (section == 'workshop') {
-                    return val
+                    return (
+                        val.pri_no == '04' ||
+                        val.pri_no == '05' ||
+                        val.pri_no == '07'
+                    )
                 }
 
                 return val
@@ -400,7 +403,23 @@ export const filteredErpsByMonth = createSelector(
                     return false
                 }
 
-                return val?.sheet_no.toLowerCase().includes(text.toLowerCase())
+                // return val?.sheet_no.toLowerCase().includes(text.toLowerCase())
+
+                // return val?.sheet_no.toLowerCase().includes(text.toLowerCase())
+                if (
+                    (!_.isUndefined(val.sheet_no) &&
+                        val.sheet_no
+                            .toLowerCase()
+                            .includes(text.toLowerCase())) ||
+                    (!_.isUndefined(val.mch_no) &&
+                        val.mch_no
+                            .toLowerCase()
+                            .includes(text.toLowerCase())) ||
+                    (!_.isUndefined(val.mch_code) &&
+                        val.mch_code.toLowerCase().includes(text.toLowerCase()))
+                ) {
+                    return val
+                }
             })
         }
         if (data) {
@@ -651,53 +670,6 @@ const dataUtilsRequestErp = createSelector([dataUtils], (data) => {
     }
 })
 
-// const dataUtils = createSelector(
-//     [
-//         selectMnErps,
-//         selectMnMachines,
-//         selectMnReports,
-//         selectMnRequests,
-//         selectMnSpareparts,
-//     ],
-//     (erps, machines, reports, requests, spareparts) => {
-//         const x = _.map(erps, (val) => {
-//             return {
-//                 ...val,
-//                 mch_index: _.find(machines, {
-//                     mch_code: val.mch_no,
-//                     mch_com:
-//                         val.com_no == '01'
-//                             ? 'GM1'
-//                             : val.com_no == '02'
-//                             ? 'GM2'
-//                             : val.com_no == '03'
-//                             ? 'GM3'
-//                             : 'GM5',
-//                 }),
-//                 report_index: _.find(reports, {
-//                     sheet_no: val.sheet_no,
-//                 }),
-//                 request_index: _.filter(requests, { sheet_no: val.sheet_no }),
-//                 sparepart_index: _.filter(spareparts, {
-//                     mch_code: val.mch_no,
-//                     mch_com:
-//                         val.com_no == '01'
-//                             ? 'GM1'
-//                             : val.com_no == '02'
-//                             ? 'GM2'
-//                             : val.com_no == '03'
-//                             ? 'GM3'
-//                             : 'GM5',
-//                 }),
-//             }
-//         })
-
-//         if (erps) {
-//             return x
-//         }
-//     }
-// )
-
 const dataUtilsRequest = createSelector(
     [selectMnRequests, selectMnMachines, selectMnErps],
     (request, machines, erp) => {
@@ -864,9 +836,12 @@ const filteredRequest = createSelector(
                     return false
                 }
 
-                //? belum nemu filter workshop find all
                 if (section == 'workshop') {
-                    return val
+                    return (
+                        val.pri_no == '04' ||
+                        val.pri_no == '05' ||
+                        val.pri_no == '07'
+                    )
                 }
 
                 return val

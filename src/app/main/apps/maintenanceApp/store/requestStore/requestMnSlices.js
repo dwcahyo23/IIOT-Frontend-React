@@ -20,7 +20,7 @@ export const getRequestSlices = createAsyncThunk(
 
 const MnRequestAdapter = createEntityAdapter({
     selectId: (data) => data.uuid_request,
-    sortComparer: (a, b) => a.uuid_request.localeCompare(b.uuid_request),
+    sortComparer: (a, b) => a.sheet_no.localeCompare(b.sheet_no),
 })
 
 export const { selectAll: selectMnRequests, selectById: selectMnRequestsById } =

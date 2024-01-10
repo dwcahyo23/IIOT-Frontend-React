@@ -91,7 +91,9 @@ function ListInventory() {
                         <Typography className="text-13 mt-2 line-clamp-2">
                             {`${index + 1}. ${filterData[index].sheet_no} | ${
                                 filterData[index].mch_code
-                            } |${filterData[index].user_req1} | ${
+                            } | ${filterData[index]?.mch_index?.mch_name} | ${
+                                filterData[index].user_req1
+                            } | ${
                                 _.isNull(filterData[index].item_stock)
                                     ? filterData[index].item_name
                                     : filterData[index].item_stock

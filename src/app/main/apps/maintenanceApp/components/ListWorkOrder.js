@@ -99,16 +99,11 @@ function ListWorkOrder() {
                         <StatusChip id="R" />
                     )}
 
-                    {filterData[index].request_index.length < 1 ? (
-                        <div></div>
-                    ) : _.every(filterData[index].request_index.audit_request, [
-                          'audit_request',
-                          'Y',
-                      ]) == false ? (
-                        <div></div>
-                    ) : (
-                        <StatusChip id="S" />
-                    )}
+                    {filterData[index].request_index.length > 0 &&
+                        _.some(filterData[index].request_index, [
+                            'audit_request',
+                            'N',
+                        ]) && <StatusChip id="S" />}
 
                     {filterData[index].chk_mark == 'N' ? (
                         <StatusChip
