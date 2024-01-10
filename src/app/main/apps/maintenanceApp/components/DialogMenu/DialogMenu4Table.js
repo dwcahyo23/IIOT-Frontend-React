@@ -35,6 +35,7 @@ import {
 } from '../../store/requestStore/requestMnSlice'
 import { useSelector } from 'react-redux'
 import { Save } from '@mui/icons-material'
+import { selectMnUsers } from '../../store/userStore/userMnSlices'
 
 function customCheckbox(theme) {
     return {
@@ -81,117 +82,27 @@ function customCheckbox(theme) {
     }
 }
 
-function sendMsg(selection) {
-    if (selection.length > 0) {
-        let msg = `*Permintaan Sparepart*`
-        msg += `\n\n${selection[0].sheet_no} |  ${selection[0].category_request}`
-        msg += `\n${selection[0].mch_code} | ${
-            selection[0].user_req1
-        } | ${dayjs(selection[0].createdAt).format('DD/MM/YYYY HH:mm:ss')} `
-        msg += `\n\nList permintaan:`
-        _.forEach(selection, (entry, idx) => {
-            msg += `\n*${idx + 1}.)* *${
-                _.isNull(entry.item_stock) == false
-                    ? entry.item_stock
-                    : entry.name
-            }* | ${entry.item_qty} ${entry.item_uom} | ${
-                entry.item_ready == 'Y' ? '✅' : '❌'
-            } `
-            if (entry.audit_request == 'N') {
-                if (
-                    _.isNull(entry.mre_request) == false &&
-                    entry.mre_request.length > 3
-                ) {
-                    msg += `\n↑ Sudah terbit MRE, _*${entry.mre_request}*_`
-                    msg += `\n${dayjs(entry.date_mre_request).format(
-                        'DD/MM/YY HH:mm:ss\n'
-                    )}`
-                }
-                if (entry.item_ready == 'Y') {
-                    msg += `\n ↑ Sudah digudang, silahkan diambil`
-                    msg += `\n${dayjs(entry.ready_request).format(
-                        'DD/MM/YY HH:mm:ss\n'
-                    )}`
-                }
-            } else {
-                msg += `\n ↑ Sudah audit, by ${entry.user_req2}`
-                msg += `\n${dayjs(entry.date_audit_request).format(
-                    'DD/MM/YY HH:mm:ss\n'
-                )}`
-            }
-        })
-        if (
-            selection[0].mch_com == 'GM1' ||
-            selection[0].mch_com == 'GM3' ||
-            selection[0].mch_com == 'GM5'
-        ) {
-            axios.post('http://192.168.192.7:5010/send-message-group', {
-                name: 'GM1 PENANGANAN SPAREPART',
-                // number: '082124610363',
-                message: msg,
-            })
-        } else if (selection[0].mch_com == 'GM2') {
-            axios.post('http://192.168.192.7:5010/send-message-group', {
-                name: 'GM2 PENANGANAN SPAREPART',
-                // number: '082124610363',
-                message: msg,
-            })
-        }
-    }
-}
-
 function CustomToolbar(props) {
     const { user, selection } = props
     const isRoleUser = user.userRole == 'Inventory Maintenance' ? false : true
     const dispatch = useDispatch()
     const [open, setOpen] = useState(false)
     const isPending = useSelector(saveRequestPending)
+    const isUser = useSelector(selectMnUsers)
 
     const { handleSubmit, register } = useForm({
         shouldUseNativeValidation: true,
     })
 
-    const onSubmit = async (data) => {
-        const x = _.map(selection, (val) => {
-            const obj = {
-                ...val,
-                item_ready: 'N',
-                mre_request: data.mre_request,
-                date_mre_request: dayjs(),
-            }
-            dispatch(saveRequest(obj)).then((action) => {
-                if (action.payload) {
-                    dispatch(
-                        showMessage({
-                            message: 'Data successfully saved',
-                            variant: 'success',
-                        })
-                    )
-                }
-            })
-            return obj
-        })
-
-        sendMsg(x)
-    }
-
-    const handleWa = () => {
-        const { rows, column, selection } = props
-        if (selection.length < 1) {
-            dispatch(
-                showMessage({
-                    message: 'Selection cannot be empty',
-                    variant: 'error',
-                })
-            )
-        } else {
+    function sendMsg(o) {
+        if (o.length > 0) {
             let msg = `*Permintaan Sparepart*`
-            msg += `\n\n${selection[0].sheet_no} |  ${selection[0].category_request}`
-            msg += `\n${selection[0].mch_code} | ${
-                selection[0].user_req1
-            } | ${dayjs(selection[0].createdAt).format('DD/MM/YYYY HH:mm:ss')} `
+            msg += `\n\n${o[0].sheet_no} |  ${o[0].category_request}`
+            msg += `\n${o[0].mch_code} | ${o[0].user_req1} | ${dayjs(
+                o[0].createdAt
+            ).format('DD/MM/YYYY HH:mm:ss')} `
             msg += `\n\nList permintaan:`
-            _.forEach(selection, (entry, idx) => {
+            _.forEach(o, (entry, idx) => {
                 msg += `\n*${idx + 1}.)* *${
                     _.isNull(entry.item_stock) == false
                         ? entry.item_stock
@@ -216,16 +127,15 @@ function CustomToolbar(props) {
                         )}`
                     }
                 } else {
-                    msg += `\n ↑ Sudah audit, by ${entry.user_req2}`
-                    msg += `\n${dayjs(entry.date_audit_request).format(
-                        'DD/MM/YY HH:mm:ss\n'
-                    )}`
+                    msg += `\n ↑ Sudah audit ${dayjs(
+                        entry.date_audit_request
+                    ).format('DD/MM/YY HH:mm\n')}`
                 }
             })
             if (
-                selection[0].mch_com == 'GM1' ||
-                selection[0].mch_com == 'GM3' ||
-                selection[0].mch_com == 'GM5'
+                o[0].mch_com == 'GM1' ||
+                o[0].mch_com == 'GM3' ||
+                o[0].mch_com == 'GM5'
             ) {
                 axios
                     .post('http://192.168.192.7:5010/send-message-group', {
@@ -242,7 +152,6 @@ function CustomToolbar(props) {
                         )
                     )
                     .catch((e) => {
-                        // console.log(e)
                         dispatch(
                             showMessage({
                                 message: `${e.message}`,
@@ -250,7 +159,7 @@ function CustomToolbar(props) {
                             })
                         )
                     })
-            } else if (selection[0].mch_com == 'GM2') {
+            } else if (o[0].mch_com == 'GM2') {
                 axios
                     .post('http://192.168.192.7:5010/send-message-group', {
                         name: 'GM2 PENANGANAN SPAREPART',
@@ -277,6 +186,30 @@ function CustomToolbar(props) {
         }
     }
 
+    const onSubmit = async (data) => {
+        const x = _.map(selection, (val) => {
+            const obj = {
+                ...val,
+                item_ready: 'N',
+                mre_request: data.mre_request,
+                date_mre_request: dayjs(),
+            }
+            dispatch(saveRequest(obj)).then((action) => {
+                if (action.payload) {
+                    dispatch(
+                        showMessage({
+                            message: 'Data successfully saved',
+                            variant: 'success',
+                        })
+                    )
+                }
+            })
+            return obj
+        })
+
+        sendMsg(x)
+    }
+
     const handleOptions = (options) => {
         const { selection, user } = props
 
@@ -289,6 +222,9 @@ function CustomToolbar(props) {
             )
         } else {
             const x = _.map(selection, (val) => {
+                if (options === 'whatsapp') {
+                    return val
+                }
                 if (options === 'ready') {
                     const obj = {
                         ...val,
@@ -345,6 +281,7 @@ function CustomToolbar(props) {
                     return obj
                 }
             })
+            // console.log(x)
             sendMsg(x)
         }
     }
@@ -365,7 +302,7 @@ function CustomToolbar(props) {
                     color="primary"
                     variant="outlined"
                     startIcon={<WhatsAppIcon />}
-                    onClick={handleWa}
+                    onClick={() => handleOptions('whatsapp')}
                 >
                     Whatsapp
                 </Button>
@@ -437,10 +374,6 @@ function CustomToolbar(props) {
                         >
                             <span>Save</span>
                         </LoadingButton>
-
-                        {/* <Button color="primary" type="submit">
-                            Save
-                        </Button> */}
                     </form>
                 </DialogContent>
             </Dialog>

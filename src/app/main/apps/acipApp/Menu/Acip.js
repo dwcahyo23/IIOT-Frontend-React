@@ -23,13 +23,16 @@ import {
     setGenbasArea,
     setSearchText,
     setGenbasStatus,
+    setGenbasYear,
     selectGenbasUseArea,
     selectGenbasUseCom,
     selectGenbasUseDept,
+    selectGenbasUseYear,
     selectGenbaArea,
     selectGenbaDept,
     selectGenbasCom,
     selectGenbasStatus,
+    selectGenbaYear,
     searchText,
 } from '../store/genba/genbaAcipSlices'
 
@@ -48,21 +51,25 @@ function Acip() {
         selectDept,
         selectArea,
         selectFilter,
+        selectYear,
         com,
         dept,
         area,
         status,
         search,
+        year,
     ] = [
         useSelector(selectGenbasUseCom),
         useSelector(selectGenbasUseDept),
         useSelector(selectGenbasUseArea),
         useSelector(selectFilteredGenbas),
+        useSelector(selectGenbasUseYear),
         useSelector(selectGenbasCom),
         useSelector(selectGenbaDept),
         useSelector(selectGenbaArea),
         useSelector(selectGenbasStatus),
         useSelector(searchText),
+        useSelector(selectGenbaYear),
     ]
     const [loading, setLoading] = useState(true)
     const [dialogData, setDialogData] = useState(null)
@@ -95,6 +102,10 @@ function Acip() {
 
     function handleSearchText(event, value) {
         dispatch(setSearchText(event.target.value))
+    }
+
+    function handleYearTab(event, value) {
+        dispatch(setGenbasYear(event.target.value))
     }
 
     function handleStatusTab(event, value) {
@@ -158,6 +169,26 @@ function Acip() {
                                         shrink: true,
                                     }}
                                 />
+
+                                <FormControl
+                                    className="flex w-full sm:w-150 mx-8"
+                                    variant="outlined"
+                                >
+                                    <InputLabel>Year</InputLabel>
+                                    <Select
+                                        labelId="category-select-label"
+                                        id="category-select"
+                                        label="Category"
+                                        value={year}
+                                        onChange={handleYearTab}
+                                    >
+                                        {selectYear.map((val, index) => (
+                                            <MenuItem value={val} key={index}>
+                                                {val}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
 
                                 <FormControl
                                     className="flex w-full sm:w-150 mx-8"
@@ -232,10 +263,13 @@ function Acip() {
                                         value={status}
                                         onChange={handleStatusTab}
                                     >
-                                        <MenuItem value="Open" key={1}>
+                                        <MenuItem value="ALL" key={1}>
+                                            ALL
+                                        </MenuItem>
+                                        <MenuItem value="Open" key={2}>
                                             Open
                                         </MenuItem>
-                                        <MenuItem value="Close" key={2}>
+                                        <MenuItem value="Close" key={3}>
                                             Close
                                         </MenuItem>
                                     </Select>

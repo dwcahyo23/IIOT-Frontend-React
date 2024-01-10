@@ -20,9 +20,12 @@ import {
     setGenbasArea,
     setSearchText,
     setGenbasStatus,
+    setGenbasYear,
     selectGenbasUseArea,
     selectGenbasUseCom,
     selectGenbasUseDept,
+    selectGenbasUseYear,
+    selectGenbaYear,
     selectGenbasCom,
     selectGenbaDept,
     selectGenbaArea,
@@ -39,14 +42,26 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 
 function AcipDashboard() {
     const dispatch = useDispatch()
-    const [selectCom, selectDept, selectArea, selectFilter, com, dept, area] = [
+    const [
+        selectCom,
+        selectDept,
+        selectArea,
+        selectFilter,
+        selectYear,
+        com,
+        dept,
+        area,
+        year,
+    ] = [
         useSelector(selectGenbasUseCom),
         useSelector(selectGenbasUseDept),
         useSelector(selectGenbasUseArea),
         useSelector(selectFilteredGenbasForChart),
+        useSelector(selectGenbasUseYear),
         useSelector(selectGenbasCom),
         useSelector(selectGenbaDept),
         useSelector(selectGenbaArea),
+        useSelector(selectGenbaYear),
     ]
 
     const [loading, setLoading] = useState(true)
@@ -71,6 +86,10 @@ function AcipDashboard() {
 
     function handleAreaTab(event, value) {
         dispatch(setGenbasArea(value.props.value))
+    }
+
+    function handleYearTab(event, value) {
+        dispatch(setGenbasYear(event.target.value))
     }
 
     if (loading) {
@@ -143,6 +162,25 @@ function AcipDashboard() {
 
                     <div className="flex flex-col shrink-0 sm:flex-row items-center justify-between space-y-16 sm:space-y-0 pt-10">
                         <div className="flex flex-col sm:flex-row w-full sm:w-auto items-center space-y-16 sm:space-y-0 sm:space-x-16">
+                            <FormControl
+                                className="flex w-full sm:w-256 mx-8"
+                                variant="outlined"
+                            >
+                                <InputLabel>Year</InputLabel>
+                                <Select
+                                    labelId="category-select-label"
+                                    id="category-select"
+                                    label="Category"
+                                    value={year}
+                                    onChange={handleYearTab}
+                                >
+                                    {selectYear.map((val, index) => (
+                                        <MenuItem value={val} key={index}>
+                                            {val}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
                             <FormControl
                                 className="flex w-full sm:w-256 mx-8"
                                 variant="outlined"

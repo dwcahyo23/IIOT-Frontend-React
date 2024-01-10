@@ -4,14 +4,17 @@ import { useSelector } from 'react-redux'
 import {
     BarChart,
     Bar,
+    ComposedChart,
     Rectangle,
     XAxis,
     YAxis,
     CartesianGrid,
     Tooltip,
     Legend,
+    Line,
 } from 'recharts'
 import { Paper, Typography } from '@mui/material'
+import { indigo, green, grey, red } from '@mui/material/colors'
 
 import { selectChartFilteredGenbasCom } from '../../store/genba/genbaAcipSlices'
 
@@ -31,39 +34,43 @@ function ChartBar() {
     }
 
     return (
-        <Paper className="flex flex-col flex-auto shadow rounded-2xl overflow-hidden">
-            <div className="flex items-center justify-center px-8 pt-12">
+        <Paper className="flex flex-col flex-auto shadow rounded-2xl overflow-hidden p-8">
+            <div className="flex items-center justify-center p-8">
                 <Typography
                     className="px-16 text-lg font-medium tracking-tight leading-6 truncate"
                     color="text.secondary"
                 >
-                    Genba Findings Resume
+                    GENBA FINDINGS STATUS
                 </Typography>
             </div>
-            <div className="flex items-center justify-center px-8 pt-12">
-                <BarChart
-                    width={1000}
-                    height={400}
-                    data={data}
-                    margin={{
-                        top: 5,
-                        right: 30,
-                        left: 20,
-                        bottom: 5,
-                    }}
-                >
+            <div className="flex items-center justify-center">
+                <ComposedChart width={1300} height={400} data={data}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
-                    <YAxis />
+                    <YAxis yAxisId="left" />
+                    <YAxis yAxisId="right" orientation="right" />
                     <Tooltip />
                     <Legend />
                     <Bar
+                        yAxisId="left"
                         dataKey="data.Close.true"
                         name="Close"
-                        fill="#5cb85c"
+                        fill={green[400]}
                     />
-                    <Bar dataKey="data.Open.true" name="Open" fill="#d9534f" />
-                </BarChart>
+                    <Bar
+                        yAxisId="left"
+                        dataKey="data.Open.true"
+                        name="Open"
+                        fill={red[400]}
+                    />
+                    <Line
+                        yAxisId="right"
+                        type="monotone"
+                        name="Total"
+                        dataKey="data.Sum.true"
+                        stroke={indigo[500]}
+                    />
+                </ComposedChart>
             </div>
         </Paper>
     )

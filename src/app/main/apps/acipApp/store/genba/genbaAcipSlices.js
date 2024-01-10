@@ -36,6 +36,8 @@ export const selectGenbaDept = ({ genbaAcip }) => genbaAcip.genbas.genbasDept
 
 export const selectGenbaArea = ({ genbaAcip }) => genbaAcip.genbas.genbasArea
 
+export const selectGenbaYear = ({ genbaAcip }) => genbaAcip.genbas.genbasYear
+
 export const searchText = ({ genbaAcip }) => genbaAcip.genbas.searchText
 
 export const selectGenbasStatus = ({ genbaAcip }) =>
@@ -49,15 +51,17 @@ export const selectFilteredGenbas = createSelector(
         selectGenbaDept,
         selectGenbaArea,
         selectGenbasStatus,
+        selectGenbaYear,
     ],
-    (genbas, searchText, genbasCom, genbasDept, genbasArea, status) => {
+    (genbas, searchText, genbasCom, genbasDept, genbasArea, status, year) => {
         function getFilter() {
             if (
                 searchText.length === 0 &&
                 genbasCom === 'ALL' &&
                 genbasDept === 'ALL' &&
                 genbasArea === 'ALL' &&
-                !status
+                year === 'ALL' &&
+                status === 'ALL'
             ) {
                 return genbas
             }
@@ -70,11 +74,18 @@ export const selectFilteredGenbas = createSelector(
                     return false
                 }
 
+                if (
+                    year !== 'ALL' &&
+                    dayjs(val.createdAt).format('YYYY') !== year
+                ) {
+                    return false
+                }
+
                 if (genbasArea !== 'ALL' && val.area !== genbasArea) {
                     return false
                 }
 
-                if (val.status !== status) {
+                if (status !== 'ALL' && val.status !== status) {
                     return false
                 }
 
@@ -135,7 +146,10 @@ export const selectChartFilteredGenbasCom = createSelector(
             const chart = getCountStatusAcip(genbas)
 
             const x = _.map(month, (val) => {
-                return { name: val, data: chart[val] || { Open: 0, Close: 0 } }
+                return {
+                    name: val.substring(0, 3),
+                    data: chart[val] || { Open: 0, Close: 0 },
+                }
             })
 
             return x
@@ -162,6 +176,20 @@ export const selectGenbasUseCom = createSelector(
             .value()
 
         return com
+    }
+)
+
+export const selectGenbasUseYear = createSelector(
+    [selectGenbasAcip],
+    (genbas) => {
+        const x = _(genbas)
+            .groupBy((val) => dayjs(val.createdAt).format('YYYY'))
+            .keys()
+            .push('ALL')
+            .sort()
+            .value()
+
+        return x
     }
 )
 
@@ -202,7 +230,8 @@ const genbaAcipSlices = createSlice({
         genbasDept: 'ALL',
         genbasArea: 'ALL',
         searchText: '',
-        genbasStatus: 'Open',
+        genbasStatus: 'ALL',
+        genbasYear: 'ALL',
     }),
     reducers: {
         setGenbasCom: {
@@ -237,6 +266,12 @@ const genbaAcipSlices = createSlice({
             },
             prepare: (event) => ({ payload: event }),
         },
+        setGenbasYear: {
+            reducer: (state, action) => {
+                state.genbasYear = action.payload
+            },
+            prepare: (event) => ({ payload: event }),
+        },
     },
     extraReducers: {
         [getGenbasAcip.fulfilled]: genbasAcipAdapter.setAll,
@@ -252,6 +287,7 @@ export const {
     setGenbasArea,
     setSearchText,
     setGenbasStatus,
+    setGenbasYear,
 } = genbaAcipSlices.actions
 
 export default genbaAcipSlices.reducer

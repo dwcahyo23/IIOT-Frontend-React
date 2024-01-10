@@ -483,6 +483,7 @@ export const filterErpsKanban = createSelector(
                             data.audit_request === 'N'
                         ) {
                             return memo.push({
+                                id: i,
                                 sparepart: _.toUpper(data.item_stock),
                                 mre: _.toUpper(data.mre_request),
                             })
