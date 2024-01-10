@@ -2,7 +2,7 @@ import FusePageSimple from '@fuse/core/FusePageSimple'
 import FuseLoading from '@fuse/core/FuseLoading'
 import { motion } from 'framer-motion'
 import _ from 'lodash'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Tabs, Tab, Box, OutlinedInput } from '@mui/material'
 import TextField from '@mui/material/TextField'
@@ -276,37 +276,77 @@ function MaintenanceAppErps() {
                                 value={useResponbility}
                                 onChange={handleResponbility}
                             >
-                                {selectResponbility.map((val, index) =>
-                                    val === 'ALL' && useCom === 'ALL' ? (
-                                        <MenuItem value={val} key={index}>
-                                            SURYADI | DEPARTEMENT HEAD
-                                        </MenuItem>
-                                    ) : val === 'ALL' && useCom === 'GM2' ? (
-                                        <MenuItem value={val} key={index}>
-                                            SADRI | SECTION HEAD
-                                        </MenuItem>
-                                    ) : val === 'ALL' &&
-                                      useSection !== 'workshop' &&
-                                      (useCom === 'GM1' ||
-                                          useCom === 'GM3' ||
-                                          useCom === 'GM5') ? (
-                                        <MenuItem value={val} key={index}>
-                                            BENYAMIN | SECTION HEAD
-                                        </MenuItem>
-                                    ) : val === 'ALL' &&
-                                      useSection === 'workshop' &&
-                                      (useCom === 'GM1' ||
-                                          useCom === 'GM3' ||
-                                          useCom === 'GM5') ? (
-                                        <MenuItem value={val} key={index}>
-                                            RAHMAT HIDAYAT | SECTION HEAD
-                                        </MenuItem>
-                                    ) : (
-                                        <MenuItem value={val} key={index}>
-                                            {val}
-                                        </MenuItem>
-                                    )
-                                )}
+                                {selectResponbility.map((val, index) => {
+                                    if (useCom === 'ALL' && val === 'ALL') {
+                                        return (
+                                            <MenuItem value={val} key={index}>
+                                                SURYADI | DEPARTEMENT HEAD
+                                            </MenuItem>
+                                        )
+                                    } else if (
+                                        useCom === 'GM1' &&
+                                        val === 'ALL'
+                                    ) {
+                                        if (useSection == 'workshop') {
+                                            return (
+                                                <MenuItem
+                                                    value={val}
+                                                    key={index}
+                                                >
+                                                    R HIDAYAT | SECTION HEAD
+                                                </MenuItem>
+                                            )
+                                        } else {
+                                            return (
+                                                <MenuItem
+                                                    value={val}
+                                                    key={index}
+                                                >
+                                                    BENYAMIN | SECTION HEAD
+                                                </MenuItem>
+                                            )
+                                        }
+                                    } else if (
+                                        useCom === 'GM2' &&
+                                        val === 'ALL'
+                                    ) {
+                                        return (
+                                            <MenuItem value={val} key={index}>
+                                                SADRI | SECTION HEAD
+                                            </MenuItem>
+                                        )
+                                    } else if (
+                                        (useCom === 'GM3' ||
+                                            useCom === 'GM5') &&
+                                        val === 'ALL'
+                                    ) {
+                                        if (useSection == 'workshop') {
+                                            return (
+                                                <MenuItem
+                                                    value={val}
+                                                    key={index}
+                                                >
+                                                    R HIDAYAT | SECTION HEAD
+                                                </MenuItem>
+                                            )
+                                        } else {
+                                            return (
+                                                <MenuItem
+                                                    value={val}
+                                                    key={index}
+                                                >
+                                                    Vacancy
+                                                </MenuItem>
+                                            )
+                                        }
+                                    } else {
+                                        return (
+                                            <MenuItem value={val} key={index}>
+                                                {val}
+                                            </MenuItem>
+                                        )
+                                    }
+                                })}
                             </Select>
                         </FormControl>
 

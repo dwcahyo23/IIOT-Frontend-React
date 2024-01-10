@@ -59,11 +59,17 @@ function MaintenanceAppErpMain() {
                     } else {
                         setWithUser(_.find(useUser, { id: 8 }))
                     }
-                } else if (useCom !== 'GM2') {
+                } else if (useCom === 'GM1') {
                     if (useSection === 'workshop') {
                         setWithUser(_.find(useUser, { id: 17 }))
                     } else {
                         setWithUser(_.find(useUser, { id: 5 }))
+                    }
+                } else if (useCom !== 'GM1' && useCom !== 'GM2') {
+                    if (useSection === 'workshop') {
+                        setWithUser(_.find(useUser, { id: 17 }))
+                    } else {
+                        setWithUser(_.find(useUser, { id: 39 }))
                     }
                 }
             }
