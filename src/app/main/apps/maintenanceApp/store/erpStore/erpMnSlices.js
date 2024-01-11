@@ -680,14 +680,15 @@ const dataUtilsRequest = createSelector(
             }
         })
         const y = _.map(x, (val) => {
+            const erp_index = _.find(erp, { sheet_no: val.sheet_no })
             return {
                 ...val,
                 mch_index: _.find(machines, {
                     mch_code: val.mch_code,
                     mch_com: val.mch_com,
                 }),
-                erp_index: _.find(erp, { sheet_no: val.sheet_no }),
                 request_index: _.filter(request, { sheet_no: val.sheet_no }),
+                ...erp_index,
             }
         })
 

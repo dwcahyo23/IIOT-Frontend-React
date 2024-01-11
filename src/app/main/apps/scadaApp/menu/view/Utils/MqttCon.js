@@ -22,6 +22,7 @@ function MqttCon({ paloadTopic }) {
 
     useEffect(() => {
         setClient(mqtt.connect(host, options))
+        console.log(mqtt.connect(host, options))
     }, [])
 
     useEffect(() => {

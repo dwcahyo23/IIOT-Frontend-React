@@ -526,7 +526,7 @@ const DialogMenu1Print = forwardRef((props, ref) => {
                                         align="center"
                                     >
                                         {_.capitalize(
-                                            data.machine?.responsible
+                                            data.mch_index?.responsible
                                         )}
                                     </Typography>
                                 </td>

@@ -78,6 +78,7 @@ function DataChart({ params }) {
                     <Bar
                         yAxisId="left"
                         dataKey="data.Open.true"
+                        stackId="openStack"
                         name="Open"
                         fill={red[500]}
                     />
@@ -85,6 +86,7 @@ function DataChart({ params }) {
                         <Bar
                             yAxisId="left"
                             dataKey="data.MRE.true"
+                            stackId="openStack"
                             name="MRE PO"
                             fill={orange[600]}
                         />
