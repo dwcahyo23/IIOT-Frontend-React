@@ -874,8 +874,8 @@ export const filteredRequestByMonth = createSelector(
                         val.sheet_no
                             .toLowerCase()
                             .includes(text.toLowerCase())) ||
-                    (!_.isUndefined(val.mch_no) &&
-                        val.mch_no
+                    (!_.isNull(val.item_stock) &&
+                        val.item_stock
                             .toLowerCase()
                             .includes(text.toLowerCase())) ||
                     (!_.isUndefined(val.mch_code) &&

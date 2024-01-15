@@ -62,6 +62,14 @@ const navigationConfig = [
                 auth: authRoles.admin,
                 url: '/apps/MnApp/machines',
             },
+            {
+                id: 'apps.e3viewAppMachineInfo',
+                title: '3View',
+                type: 'item',
+                icon: 'heroicons-outline:presentation-chart-bar',
+                auth: authRoles.admin,
+                url: '/apps/e3ivewApp/',
+            },
 
             // {
             //     id: 'apps.maintenanceSystem',
