@@ -44,7 +44,7 @@ const navigationConfig = [
                 type: 'item',
                 icon: 'heroicons-outline:presentation-chart-bar',
                 auth: authRoles.admin,
-                url: '/apps/MnApp/erps',
+                url: '/apps/maintenanceApp/erps',
             },
             {
                 id: 'apps.maintenanceAppInventories',
@@ -52,7 +52,7 @@ const navigationConfig = [
                 type: 'item',
                 icon: 'heroicons-outline:shopping-cart',
                 auth: authRoles.admin,
-                url: '/apps/MnApp/inventories',
+                url: '/apps/maintenanceApp/inventories',
             },
             {
                 id: 'apps.maintenanceAppMachines',
@@ -60,7 +60,7 @@ const navigationConfig = [
                 type: 'item',
                 icon: 'heroicons-outline:desktop-computer',
                 auth: authRoles.admin,
-                url: '/apps/MnApp/machines',
+                url: '/apps/maintenanceApp/machines',
             },
             {
                 id: 'apps.e3viewAppMachineInfo',

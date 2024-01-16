@@ -11,6 +11,9 @@ const MaintenanceErps = lazy(() => import('./menu/erp/MaintenanceAppErps'))
 const MaintenanceInventory = lazy(() =>
     import('./menu/inventory/MaintenanceAppInventory')
 )
+const DialogErps = lazy(() =>
+    import('./components/DialogMenu/DialogWorOrderMenu.js')
+)
 
 const MaintenanceAppConfig = {
     setting: {
@@ -19,14 +22,12 @@ const MaintenanceAppConfig = {
     auth: authRoles.admin,
     routes: [
         {
-            path: 'apps/MnApp',
+            path: 'apps/maintenanceApp',
             element: <MaintenanceApp />,
             children: [
                 {
                     path: '',
-                    element: (
-                        <Navigate to="/apps/maintenanceApp/menu/MaintenanceAppMachines" />
-                    ),
+                    element: <Navigate to="/apps/maintenanceApp/erps" />,
                 },
                 {
                     path: 'erps',
@@ -39,6 +40,11 @@ const MaintenanceAppConfig = {
                 {
                     path: 'inventories',
                     element: <MaintenanceInventory />,
+                },
+
+                {
+                    path: 'machinesId/:id/:com',
+                    element: <DialogErps />,
                 },
             ],
         },

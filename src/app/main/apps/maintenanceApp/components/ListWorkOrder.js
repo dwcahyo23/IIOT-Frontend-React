@@ -47,6 +47,10 @@ function ListWorkOrder() {
     const [open, setOpen] = useState(false)
     const [selectData, setSelectData] = useState(null)
 
+    useEffect(() => {
+        console.log(selectData)
+    }, [selectData])
+
     const [filterData, selectMonth, useMonth, search] = [
         useSelector(filteredErpsByMonth),
         useSelector(selectErpMonth),

@@ -194,7 +194,7 @@ function MachineChildren(props) {
                                     aria-label="lab API tabs example"
                                 >
                                     <Tab label="Machine" value="1" />
-                                    <Tab label="Sparepart" value="2" />
+                                    {/* <Tab label="Sparepart" value="2" /> */}
                                     <Tab label="AP-Sheet" value="3" />
                                     <Tab label="AP-History" value="6" />
                                 </TabList>
@@ -204,11 +204,11 @@ function MachineChildren(props) {
                                     <MaintenanceMachine />
                                 </div>
                             </TabPanel>
-                            <TabPanel value="2">
+                            {/* <TabPanel value="2">
                                 <div style={{ width: '100%', height: 500 }}>
                                     <MaintenanceSparepart />
                                 </div>
-                            </TabPanel>
+                            </TabPanel> */}
                             <TabPanel value="3">
                                 <div style={{ width: '100%', height: 500 }}>
                                     <MaintenanceApsheet

@@ -8,6 +8,7 @@ import { useForm, FormProvider } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import _ from 'lodash'
+import { Link, useParams } from 'react-router-dom'
 
 import { filteredErpsByMonth } from '../../store/erpStore/erpMnSlices'
 import DialogMenu1 from './DialogMenu1'
@@ -21,6 +22,7 @@ function DialogWorkOrderMenu({ params }) {
     const dispatch = useDispatch()
     const filterData = useSelector(filteredErpsByMonth)
     const [tabValue, setTabValue] = useState('1')
+    const routeParams = useParams()
 
     const methods = useForm({
         mode: 'onChange',
@@ -34,12 +36,12 @@ function DialogWorkOrderMenu({ params }) {
 
     useEffect(() => {
         const data = _.find(filterData, { sheet_no: params.data.sheet_no })
+
         if (!data) {
             return
         }
         reset(data)
-        console.log(data)
-    }, [params, filterData, reset])
+    }, [params, filterData, reset, routeParams])
 
     function handleTabChange(event, value) {
         setTabValue(value)
