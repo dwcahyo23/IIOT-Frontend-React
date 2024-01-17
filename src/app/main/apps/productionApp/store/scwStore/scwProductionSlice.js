@@ -53,4 +53,4 @@ const scwProductionSlice = createSlice({
     },
 })
 
-// export const selectScw = ({ pdApp }) => pdApp.Scw
+export default scwProductionSlice.reducer
