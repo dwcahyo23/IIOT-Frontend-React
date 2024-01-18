@@ -3,6 +3,7 @@ import scw from './scwStore/scwProductionSlice'
 import scws from './scwStore/scwProductionSlices'
 
 const reducer = combineReducers({
+    scw,
     scws,
 })
 

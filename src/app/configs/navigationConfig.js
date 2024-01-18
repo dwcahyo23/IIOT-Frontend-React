@@ -108,6 +108,15 @@ const navigationConfig = [
                 id: 'divider-2',
             },
 
+            {
+                id: 'apps.pdApp',
+                title: 'Production',
+                type: 'item',
+                icon: 'heroicons-outline:presentation-chart-bar',
+                auth: authRoles.admin,
+                url: '/apps/productionApp',
+            },
+
             // {
             //     id: 'apps.modbus',
             //     title: 'Maintenance System',

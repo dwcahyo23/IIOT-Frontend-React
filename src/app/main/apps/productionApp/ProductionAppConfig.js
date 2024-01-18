@@ -3,7 +3,6 @@ import { Navigate } from 'react-router-dom'
 import { authRoles } from 'src/app/auth'
 
 import ProductionApp from './ProductionApp'
-import routes from 'app/configs/routesConfig'
 const ProductionMachines = lazy(() => import('./menu/ProductionAppMachines'))
 
 const ProductionAppConfig = {
@@ -13,14 +12,12 @@ const ProductionAppConfig = {
     auth: authRoles.admin,
     routes: [
         {
-            path: 'apps/PdApp',
+            path: 'apps/productionApp',
             element: <ProductionApp />,
             children: [
                 {
                     path: '',
-                    element: (
-                        <Navigate to="/apps/PrductionApp/menu/ProductionAppMachines" />
-                    ),
+                    element: <Navigate to="/apps/productionApp/production" />,
                 },
                 {
                     path: 'production',
