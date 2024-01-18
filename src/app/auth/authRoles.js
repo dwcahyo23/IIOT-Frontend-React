@@ -6,6 +6,8 @@ const authRoles = {
     staff: ['admin', 'staff'],
     user: ['admin', 'staff', 'user'],
     acip: ['acip'],
+    production: ['production'],
+    maintenance: ['maintenance'],
     onlyGuest: [],
 }
 

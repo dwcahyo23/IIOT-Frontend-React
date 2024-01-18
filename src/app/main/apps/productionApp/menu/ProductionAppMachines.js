@@ -1,30 +1,38 @@
 import React from 'react'
 import { useForm, Controller } from 'react-hook-form'
-import {
-    TextField,
-    Select,
-    Button,
-    Box,
-    Typography,
-    Paper,
-    Grid,
-    MenuItem,
-} from '@mui/material'
-import FusePageSimple from '@fuse/core/FusePageSimple'
+import { TextField, Button, Typography, Grid, MenuItem } from '@mui/material'
 import { styled } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import { motion } from 'framer-motion'
 import FusePageCarded from '@fuse/core/FusePageCarded'
+import { saveScw } from '../store/scwStore/scwProductionSlice'
+import FuseUtils from '@fuse/utils/FuseUtils'
+import { showMessage } from 'app/store/fuse/messageSlice'
 
 function ProductionAppMachines() {
     const dispatch = useDispatch()
     const { control, handleSubmit } = useForm({
-        defaultValues: {
-            firstName: '',
-            select: {},
-        },
+        defaultValues: {},
     })
-    const onSubmit = (data) => console.log(data)
+    const uuid = FuseUtils.generateGUID()
+    const onSubmit = (data) => {
+        dispatch(saveScw({ uuid, ...data })).then((action) => {
+            if (action.meta.requestStatus === 'rejected') {
+                dispatch(
+                    showMessage({
+                        message: action.payload.message,
+                        variant: 'error',
+                    })
+                )
+            }
+            dispatch(
+                showMessage({
+                    message: 'Data saved successfully',
+                    variant: 'success',
+                })
+            )
+        })
+    }
 
     return (
         <FusePageCarded
@@ -41,13 +49,13 @@ function ProductionAppMachines() {
                                 }}
                             >
                                 <Typography className="text-16 sm:text-20 truncate font-semibold">
-                                    Work Order Maintenance | FO-03-04-01
+                                    Production SCW
                                 </Typography>
                                 <Typography
                                     variant="caption"
                                     className="font-medium"
                                 >
-                                    Maintenance App | PT Garuda Metalindo.Tbk
+                                    Production App | PT Garuda Metalindo.Tbk
                                 </Typography>
                             </motion.div>
                         </div>
