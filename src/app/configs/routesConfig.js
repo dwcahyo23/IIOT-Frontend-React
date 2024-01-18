@@ -28,7 +28,7 @@ const routes = [
     ),
     {
         path: '/',
-        element: <Navigate to="/apps/MnApp/erps" />,
+        element: <Navigate to="/" />,
         auth: settingsConfig.defaultAuth,
     },
     {
