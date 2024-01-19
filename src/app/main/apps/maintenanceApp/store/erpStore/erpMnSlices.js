@@ -53,6 +53,7 @@ const erpMnSlices = createSlice({
         erpPrio: 'ALL',
         erpMonth: 'January',
         pending: false,
+        reqStatus: 'ALL',
     }),
     reducers: {
         setErpDepNo: {
@@ -89,6 +90,13 @@ const erpMnSlices = createSlice({
             },
             prepare: (event) => ({ payload: event }),
         },
+
+        setReqStatus: {
+            reducer: (state, action) => {
+                state.reqStatus = action.payload
+            },
+            prepare: (event) => ({ payload: event }),
+        },
     },
     extraReducers: {
         [getErpMnSlices.fulfilled]: (state, action) => {
@@ -104,18 +112,13 @@ const erpMnSlices = createSlice({
 /*
  * CREATE CUSTOM SELECTOR ERP
  */
-
 export const erpDepNo = ({ mnApp }) => mnApp.erps.erpDepNo
-
 export const erpYear = ({ mnApp }) => mnApp.erps.erpYear
-
 export const searchText = ({ mnApp }) => mnApp.erps.searchText
-
 export const erpPending = ({ mnApp }) => mnApp.erps.pending
-
 export const erpPrio = ({ mnApp }) => mnApp.erps.erpPrio
-
 export const erpMonth = ({ mnApp }) => mnApp.erps.erpMonth
+export const reqStatus = ({ mnApp }) => mnApp.erps.reqStatus
 
 export const selectErpYear = createSelector(
     [selectMnErps, machinesCom],
@@ -395,7 +398,7 @@ export const filteredErpsByMonth = createSelector(
     [filteredErps, searchText, erpMonth],
     (data, text, month) => {
         function getFilter() {
-            if (text.length === 0 && !month) {
+            if (text.length === 0 && month == 'ALL') {
                 return data
             }
             return _.filter(data, (val) => {
@@ -445,7 +448,7 @@ export const filterErpsKanban = createSelector(
                 },
                 {
                     id: 3,
-                    title: 'Requst PO',
+                    title: 'MRE',
                     cards: [],
                 },
                 {
@@ -693,100 +696,101 @@ const dataUtilsRequest = createSelector(
         })
 
         if (erp.length > 0) {
+            console.log(y)
             return y
         }
     }
 )
 
 //? BY ERP APSHEET
-export const filteredRequestErp = createSelector(
-    [
-        dataUtilsRequestErp,
-        comUtils,
-        erpPrio,
-        machinesSection,
-        machinesResponbility,
-        erpYear,
-    ],
-    (data, com, prio, section, responsible, year) => {
-        function getFilter() {
-            if (
-                com === 'ALL' &&
-                responsible === 'ALL' &&
-                section === 'ALL' &&
-                year === 'ALL' &&
-                prio === 'ALL'
-            ) {
-                return data
-            }
-            return _.filter(data, (val) => {
-                if (com !== 'ALL' && val.com_no !== com) {
-                    return false
-                }
+// export const filteredRequestErp = createSelector(
+//     [
+//         dataUtilsRequestErp,
+//         comUtils,
+//         erpPrio,
+//         machinesSection,
+//         machinesResponbility,
+//         erpYear,
+//     ],
+//     (data, com, prio, section, responsible, year) => {
+//         function getFilter() {
+//             if (
+//                 com === 'ALL' &&
+//                 responsible === 'ALL' &&
+//                 section === 'ALL' &&
+//                 year === 'ALL' &&
+//                 prio === 'ALL'
+//             ) {
+//                 return data
+//             }
+//             return _.filter(data, (val) => {
+//                 if (com !== 'ALL' && val.com_no !== com) {
+//                     return false
+//                 }
 
-                if (year !== 'ALL' && dayjs(val.ymd).format('YYYY') !== year) {
-                    return false
-                }
+//                 if (year !== 'ALL' && dayjs(val.ymd).format('YYYY') !== year) {
+//                     return false
+//                 }
 
-                if (prio !== 'ALL' && val.pri_no !== prio) {
-                    return false
-                }
+//                 if (prio !== 'ALL' && val.pri_no !== prio) {
+//                     return false
+//                 }
 
-                if (
-                    section !== 'ALL' &&
-                    section !== 'workshop' &&
-                    val?.mch_index?.section !== section
-                ) {
-                    return false
-                }
+//                 if (
+//                     section !== 'ALL' &&
+//                     section !== 'workshop' &&
+//                     val?.mch_index?.section !== section
+//                 ) {
+//                     return false
+//                 }
 
-                if (
-                    responsible !== 'ALL' &&
-                    val?.mch_index?.responsible.toLowerCase() !==
-                        responsible.toLowerCase()
-                ) {
-                    return false
-                }
+//                 if (
+//                     responsible !== 'ALL' &&
+//                     val?.mch_index?.responsible.toLowerCase() !==
+//                         responsible.toLowerCase()
+//                 ) {
+//                     return false
+//                 }
 
-                //? belum nemu filter workshop find all
-                if (section == 'workshop') {
-                    return val
-                }
+//                 //? belum nemu filter workshop find all
+//                 if (section == 'workshop') {
+//                     return val
+//                 }
 
-                return val
-            })
-        }
+//                 return val
+//             })
+//         }
 
-        if (data) {
-            return getFilter()
-        }
-    }
-)
+//         if (data) {
+//             return getFilter()
+//         }
+//     }
+// )
 
-export const filteredRequestErpByMonth = createSelector(
-    [filteredRequestErp, searchText, erpMonth],
-    (data, text, month) => {
-        function getFilter() {
-            if (text.length === 0 && !month) {
-                return data
-            }
-            return _.filter(data, (val) => {
-                if (month && dayjs(val.ymd).format('MMMM') !== month) {
-                    return false
-                }
+// export const filteredRequestErpByMonth = createSelector(
+//     [filteredRequestErp, searchText, erpMonth],
+//     (data, text, month) => {
+//         function getFilter() {
+//             if (text.length === 0 && month == 'ALL') {
+//                 return data
+//             }
+//             return _.filter(data, (val) => {
+//                 if (month && dayjs(val.ymd).format('MMMM') !== month) {
+//                     return false
+//                 }
 
-                return val?.sheet_no.toLowerCase().includes(text.toLowerCase())
-            })
-        }
-        if (data) {
-            return getFilter()
-        }
-    }
-)
+//                 return val?.sheet_no.toLowerCase().includes(text.toLowerCase())
+//             })
+//         }
+//         if (data) {
+//             return getFilter()
+//         }
+//     }
+// )
 
 //? BY APREQUEST
 
-const filteredRequest = createSelector(
+export const filteredRequest = createSelector(
     [
         dataUtilsRequest,
         erpYear,
@@ -794,15 +798,17 @@ const filteredRequest = createSelector(
         machinesCom,
         machinesSection,
         machinesResponbility,
+        reqStatus,
     ],
-    (data, year, prio, com, section, responsible) => {
+    (data, year, prio, com, section, responsible, status) => {
         function getFilter() {
             if (
                 com === 'ALL' &&
                 responsible === 'ALL' &&
                 section === 'ALL' &&
                 year === 'ALL' &&
-                prio === 'ALL'
+                prio === 'ALL' &&
+                status === 'ALL'
             ) {
                 return data
             }
@@ -838,12 +844,36 @@ const filteredRequest = createSelector(
                     return false
                 }
 
-                if (section == 'workshop') {
+                if (section === 'workshop') {
                     return (
                         val.pri_no == '04' ||
                         val.pri_no == '05' ||
                         val.pri_no == '07'
                     )
+                }
+
+                if (status === 'Ready') {
+                    return val.item_ready === 'Y' && val.audit_request === 'N'
+                }
+
+                if (status === 'Unaudit') {
+                    return (
+                        val.audit_request === 'N' &&
+                        val.item_ready === 'N' &&
+                        val.mre_request.length === 0
+                    )
+                }
+
+                if (status === 'MRE') {
+                    return (
+                        val.mre_request.length > 0 &&
+                        val.audit_request === 'N' &&
+                        val.item_ready === 'N'
+                    )
+                }
+
+                if (status === 'Audit') {
+                    return val.audit_request === 'Y'
                 }
 
                 return val
@@ -860,7 +890,7 @@ export const filteredRequestByMonth = createSelector(
     [filteredRequest, searchText, erpMonth],
     (data, text, month) => {
         function getFilter() {
-            if (text.length === 0 && !month) {
+            if (text.length === 0 && month === 'ALL') {
                 return data
             }
             return _.filter(data, (val) => {
@@ -868,7 +898,6 @@ export const filteredRequestByMonth = createSelector(
                     return false
                 }
 
-                // return val?.sheet_no.toLowerCase().includes(text.toLowerCase())
                 if (
                     (!_.isUndefined(val.sheet_no) &&
                         val.sheet_no
@@ -937,6 +966,7 @@ export const {
     setSearchText,
     setErpPrio,
     setErpMonth,
+    setReqStatus,
 } = erpMnSlices.actions
 
 export default erpMnSlices.reducer

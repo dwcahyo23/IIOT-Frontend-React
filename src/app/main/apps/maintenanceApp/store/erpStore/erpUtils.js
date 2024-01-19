@@ -6,6 +6,7 @@ export const getMonthErp = () => {
     for (let i = 0; i < 12; i++) {
         month.push(dayjs().month(i).format('MMMM'))
     }
+    month.unshift('ALL')
 
     return month
 }
@@ -29,14 +30,31 @@ export const getCountStatusRequest = (params) => {
         .groupBy((val) => dayjs(val.createdAt).format('MMMM'))
         .mapValues((val) => {
             return {
-                Open: _.countBy(val, (status) => status.audit_request == 'N'),
+                Unaudit: _.countBy(
+                    val,
+                    (status) => status.audit_request == 'N'
+                ),
                 Close: _.countBy(val, (status) => status.audit_request == 'Y'),
                 Sum: _.countBy(val, (status) => status.audit_request !== 'C'),
                 MRE: _.countBy(
                     val,
                     (status) =>
-                        status?.mre_request.length > 3 &&
-                        status.audit_request == 'N'
+                        status.mre_request.length > 0 &&
+                        status.audit_request === 'N' &&
+                        status.item_ready === 'N'
+                ),
+                Ready: _.countBy(
+                    val,
+                    (status) =>
+                        status.item_ready === 'Y' &&
+                        status.audit_request === 'N'
+                ),
+                Open: _.countBy(
+                    val,
+                    (status) =>
+                        status.audit_request === 'N' &&
+                        status.item_ready === 'N' &&
+                        status.mre_request.length === 0
                 ),
             }
         })

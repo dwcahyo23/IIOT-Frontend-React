@@ -134,7 +134,7 @@ export const status = [
 
     {
         id: 'Open PO',
-        name: 'Open PO',
+        name: 'Open PP',
         color: 'error',
         icon: 'heroicons-outline:x',
     },

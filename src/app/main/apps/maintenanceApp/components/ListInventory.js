@@ -34,6 +34,8 @@ import {
     setErpMonth,
     searchText,
     setSearchText,
+    reqStatus,
+    setReqStatus,
 } from '../store/erpStore/erpMnSlices'
 import DialogInventoryMenu from './DialogMenu/DialogInventoryMenu'
 import FuseLoading from '@fuse/core/FuseLoading'
@@ -47,10 +49,11 @@ function ListInventory() {
     const [open, setOpen] = useState(false)
     const [selectData, setSelectData] = useState(null)
 
-    const [filterData, selectMonth, useMonth, search] = [
+    const [filterData, selectMonth, useMonth, useStatus, search] = [
         useSelector(filteredRequestByMonth),
         useSelector(selectErpMonth),
         useSelector(erpMonth),
+        useSelector(reqStatus),
         useSelector(searchText),
     ]
 
@@ -60,6 +63,10 @@ function ListInventory() {
 
     function handleMonth(event, value) {
         dispatch(setErpMonth(value.props.value))
+    }
+
+    function handleStatus(event, value) {
+        dispatch(setReqStatus(value.props.value))
     }
 
     function handleSearch(event, value) {
@@ -155,6 +162,26 @@ function ListInventory() {
                                     {val}
                                 </MenuItem>
                             ))}
+                        </Select>
+                    </FormControl>
+                    <FormControl
+                        className="flex w-full sm:w-100 mx-8"
+                        variant="outlined"
+                    >
+                        <InputLabel>Status</InputLabel>
+
+                        <Select
+                            labelId="category-select-label"
+                            id="category-select"
+                            label="Category"
+                            value={useStatus}
+                            onChange={handleStatus}
+                        >
+                            <MenuItem value="ALL">ALL</MenuItem>
+                            <MenuItem value="Unaudit">Unaudit</MenuItem>
+                            <MenuItem value="Ready">Ready</MenuItem>
+                            <MenuItem value="MRE">MRE</MenuItem>
+                            <MenuItem value="Audit">Audit</MenuItem>
                         </Select>
                     </FormControl>
                     <TextField

@@ -15,7 +15,16 @@ import {
     Legend,
 } from 'recharts'
 import { Paper, Typography } from '@mui/material'
-import { indigo, red, green, blue, orange } from '@mui/material/colors'
+import {
+    indigo,
+    red,
+    green,
+    blue,
+    orange,
+    yellow,
+    teal,
+    deepOrange,
+} from '@mui/material/colors'
 import _ from 'lodash'
 
 function DataChart({ params }) {
@@ -72,14 +81,14 @@ function DataChart({ params }) {
                     <Bar
                         yAxisId="left"
                         dataKey="data.Close.true"
-                        name="Close"
+                        name="Audit"
                         fill={green[600]}
                     />
                     <Bar
                         yAxisId="left"
                         dataKey="data.Open.true"
                         stackId="openStack"
-                        name="Open"
+                        name="Unaudit"
                         fill={red[500]}
                     />
                     {_.has(params.data[0].data, 'MRE') == true && (
@@ -87,8 +96,17 @@ function DataChart({ params }) {
                             yAxisId="left"
                             dataKey="data.MRE.true"
                             stackId="openStack"
-                            name="MRE PO"
+                            name="MRE PP"
                             fill={orange[600]}
+                        />
+                    )}
+                    {_.has(params.data[0].data, 'Ready') == true && (
+                        <Bar
+                            yAxisId="left"
+                            dataKey="data.Ready.true"
+                            stackId="openStack"
+                            name="Ready"
+                            fill={deepOrange[400]}
                         />
                     )}
                     <Line

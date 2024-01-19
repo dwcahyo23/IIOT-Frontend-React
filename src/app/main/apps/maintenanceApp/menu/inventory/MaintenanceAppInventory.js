@@ -32,7 +32,7 @@ import {
     setErpPrio,
     setErpMonth,
     erpPending,
-    filteredRequestErp,
+    filteredRequest,
     getErpMnSlices,
     filteredRequestChart,
 } from '../../store/erpStore/erpMnSlices'
@@ -70,7 +70,7 @@ function MaintenanceAppInventory() {
     const dispatch = useDispatch()
     const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'))
 
-    const filterData = useSelector(filteredRequestErp)
+    const filterData = useSelector(filteredRequest)
     const [
         selectMonth,
         useMonth,
@@ -166,7 +166,7 @@ function MaintenanceAppInventory() {
                         </div>
                     </div>
 
-                    {filterData.length > 0 && (
+                    {filterData && (
                         <div className="grid grid-cols-1 sm:grid-cols-6 md:grid-cols-8 gap-16 w-full min-w-0 p-24">
                             <motion.div
                                 className="sm:col-span-6 md:col-span-8"
@@ -338,7 +338,7 @@ function MaintenanceAppInventory() {
                         </LoadingButton>
                     </div>
 
-                    {filterData.length > 0 ? (
+                    {filterData ? (
                         <MaintenanceAppInventoryMain />
                     ) : (
                         <FuseLoading />
