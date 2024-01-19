@@ -29,7 +29,6 @@ import {
     filteredErps,
     filterChartErps,
     erpPending,
-    getErpMnSlices,
 } from '../../store/erpStore/erpMnSlices'
 
 import {
@@ -44,6 +43,14 @@ import {
     selectMnMachines,
     selectMachinesResponbility,
 } from '../../store/machineStore/machineMnSlices'
+
+import { getErpMnSlices } from '../../store/erpStore/erpMnSlices'
+import { getMachineMnSlices } from '../../store/machineStore/machineMnSlices'
+import { getReportSlices } from '../../store/reportStore/reportMnSlices'
+import { getRequestSlices } from '../../store/requestStore/requestMnSlices'
+import { getSparepartSlices } from '../../store/sparepartStore/sparepartMnSlices'
+import { getStokSlices } from '../../store/stokStore/stokMnSlices'
+import { getUsersMn } from '../../store/userStore/userMnSlices'
 
 import { useThemeMediaQuery } from '@fuse/hooks'
 import MaintenanceAppErpMain from './MaintenanceAppErpMain'
@@ -136,6 +143,12 @@ function MaintenanceAppErps() {
 
     function reload(event, value) {
         dispatch(getErpMnSlices())
+        dispatch(getMachineMnSlices())
+        dispatch(getReportSlices())
+        dispatch(getRequestSlices())
+        dispatch(getSparepartSlices())
+        dispatch(getStokSlices())
+        dispatch(getUsersMn())
     }
 
     return (

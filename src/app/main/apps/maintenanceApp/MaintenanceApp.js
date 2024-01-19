@@ -12,17 +12,17 @@ import { getUsersMn } from './store/userStore/userMnSlices'
 import reducer from './store'
 
 function MaintenanceApp() {
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
 
-    useEffect(() => {
-        dispatch(getErpMnSlices())
-        dispatch(getMachineMnSlices())
-        dispatch(getReportSlices())
-        dispatch(getRequestSlices())
-        dispatch(getSparepartSlices())
-        dispatch(getStokSlices())
-        dispatch(getUsersMn())
-    }, [dispatch])
+    // useEffect(() => {
+    //     dispatch(getErpMnSlices())
+    //     dispatch(getMachineMnSlices())
+    //     dispatch(getReportSlices())
+    //     dispatch(getRequestSlices())
+    //     dispatch(getSparepartSlices())
+    //     dispatch(getStokSlices())
+    //     dispatch(getUsersMn())
+    // }, [dispatch])
 
     return <Outlet />
 }

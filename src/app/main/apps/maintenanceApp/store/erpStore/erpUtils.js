@@ -6,7 +6,6 @@ export const getMonthErp = () => {
     for (let i = 0; i < 12; i++) {
         month.push(dayjs().month(i).format('MMMM'))
     }
-    month.unshift('ALL')
 
     return month
 }

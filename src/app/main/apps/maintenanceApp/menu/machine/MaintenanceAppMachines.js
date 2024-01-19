@@ -51,6 +51,7 @@ function MaintenanceAppMachines() {
 
     useEffect(() => {
         dispatch(setMachinesCom('GM1'))
+        dispatch(setMachinesProcess('FORMING'))
     }, [])
 
     const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'))

@@ -257,7 +257,9 @@ export const selectErpPriNo = createSelector([machinesSection], (section) => {
 })
 
 export const selectErpMonth = createSelector(() => {
-    return getMonthErp()
+    const x = getMonthErp()
+    x.unshift('ALL')
+    return x
 })
 
 const comUtils = createSelector([machinesCom], (com) => {

@@ -10,6 +10,7 @@ import Error404Page from '../main/404/Error404Page'
 import ExampleConfig from '../main/example/ExampleConfig'
 import AuthRoleConfig from '../main/auth/AuthRoleConfig'
 import dashboardsConfigs from '../main/dashboard/dashboardsConfigs'
+import Hero200Page from '../main/200/Hero200Page'
 
 const routeConfigs = [
     ...appsConfig,
@@ -28,7 +29,7 @@ const routes = [
     ),
     {
         path: '/',
-        element: <Navigate to="/" />,
+        element: <Hero200Page />,
         auth: settingsConfig.defaultAuth,
     },
     {
