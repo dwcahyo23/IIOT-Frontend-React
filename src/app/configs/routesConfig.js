@@ -15,8 +15,8 @@ import Hero200Page from '../main/200/Hero200Page'
 const routeConfigs = [
     ...appsConfig,
     // ...AuthRoleConfig,
-    ...dashboardsConfigs,
-    ExampleConfig,
+    // ...dashboardsConfigs,
+    // ExampleConfig,
     SignOutConfig,
     SignInConfig,
     SignUpConfig,

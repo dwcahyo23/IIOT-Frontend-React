@@ -1,27 +1,5 @@
 import { authRoles } from '../auth'
 const navigationConfig = [
-    // {
-    //     id: 'dashboards',
-    //     title: 'Dashboards',
-    //     type: 'group',
-    //     icon: 'heroicons-outline:home',
-    //     translate: 'DASHBOARDS',
-    //     children: [
-    //         {
-    //             id: 'dashboards.project',
-    //             title: 'Maintenance System',
-    //             type: 'item',
-    //             auth: authRoles.admin,
-    //             icon: 'heroicons-outline:clipboard-check',
-    //             url: '/dashboards/maintenance',
-    //         },
-
-    //     ],
-    // },
-    // {
-    //     type: 'divider',
-    //     id: 'divider-2',
-    // },
     {
         id: 'apps',
         title: 'Applications',
@@ -29,6 +7,13 @@ const navigationConfig = [
         icon: 'heroicons-outline:cube',
         translate: 'APPLICATIONS',
         children: [
+            {
+                id: 'apps.home',
+                title: 'Hero',
+                type: 'item',
+                icon: 'heroicons-outline:home',
+                url: '/',
+            },
             {
                 id: 'apps.maintenanceAppErps',
                 title: 'Work Order',
@@ -61,7 +46,6 @@ const navigationConfig = [
                 auth: authRoles.admin,
                 url: '/apps/e3ivewApp/',
             },
-
             // {
             //     id: 'apps.maintenanceSystem',
             //     title: 'Maintenance Machine',
@@ -98,7 +82,6 @@ const navigationConfig = [
                 type: 'divider',
                 id: 'divider-2',
             },
-
             {
                 id: 'apps.pdApp',
                 title: 'Production',
@@ -107,7 +90,6 @@ const navigationConfig = [
                 auth: authRoles.admin,
                 url: '/apps/productionApp',
             },
-
             // {
             //     id: 'apps.modbus',
             //     title: 'Maintenance System',

@@ -126,7 +126,7 @@ function CustomToolbar(props) {
                             'DD/MM/YY HH:mm:ss\n'
                         )}`
                     }
-                } else {
+                } else if (entry.audit_request == 'Y') {
                     msg += `\n ↑ Sudah audit ${dayjs(
                         entry.date_audit_request
                     ).format('DD/MM/YY HH:mm\n')}`

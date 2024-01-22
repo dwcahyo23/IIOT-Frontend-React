@@ -12,12 +12,15 @@ import { getRequestSlices } from '../apps/maintenanceApp/store/requestStore/requ
 import { getSparepartSlices } from '../apps/maintenanceApp/store/sparepartStore/sparepartMnSlices'
 import { getStokSlices } from '../apps/maintenanceApp/store/stokStore/stokMnSlices'
 import { getUsersMn } from '../apps/maintenanceApp/store/userStore/userMnSlices'
+import FuseLoading from '@fuse/core/FuseLoading'
 
 function Hero200Page() {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(getErpMnSlices())
+        dispatch(getErpMnSlices()).then((action) =>
+            console.log(action.meta.requestStatus)
+        )
         dispatch(getMachineMnSlices())
         dispatch(getReportSlices())
         dispatch(getRequestSlices())
