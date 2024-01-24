@@ -21,6 +21,7 @@ export const getMachineMnSlices = createAsyncThunk(
 
 const MnMachineAdapter = createEntityAdapter({
     selectId: (data) => data.uuid,
+    sortComparer: (a, b) => a.mch_code.localeCompare(b.mch_code),
 })
 
 export const { selectAll: selectMnMachines, selectById: selectMnMachinesById } =

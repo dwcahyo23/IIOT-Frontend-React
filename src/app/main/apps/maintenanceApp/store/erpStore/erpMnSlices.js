@@ -39,6 +39,7 @@ export const getErpMnSlices = createAsyncThunk(
 
 const MnErpAdapter = createEntityAdapter({
     selectId: (data) => data.sheet_no,
+    sortComparer: (a, b) => b.sheet_no.localeCompare(a.sheet_no),
 })
 
 export const { selectAll: selectMnErps, selectById: selectMnErpsById } =
@@ -698,7 +699,6 @@ const dataUtilsRequest = createSelector(
         })
 
         if (erp.length > 0) {
-            console.log(y)
             return y
         }
     }
@@ -803,6 +803,8 @@ export const filteredRequest = createSelector(
         reqStatus,
     ],
     (data, year, prio, com, section, responsible, status) => {
+        console.log(prio)
+        console.log(data)
         function getFilter() {
             if (
                 com === 'ALL' &&
@@ -826,7 +828,7 @@ export const filteredRequest = createSelector(
                     return false
                 }
 
-                if (prio !== 'ALL' && val?.erp_index?.pri_no !== prio) {
+                if (prio !== 'ALL' && val?.pri_no !== prio) {
                     return false
                 }
 
@@ -892,11 +894,14 @@ export const filteredRequestByMonth = createSelector(
     [filteredRequest, searchText, erpMonth],
     (data, text, month) => {
         function getFilter() {
-            if (text.length === 0 && month === 'ALL') {
+            if (text.length === 0) {
                 return data
             }
             return _.filter(data, (val) => {
-                if (month && dayjs(val.createdAt).format('MMMM') !== month) {
+                if (
+                    month !== 'ALL' &&
+                    dayjs(val.createdAt).format('MMMM') !== month
+                ) {
                     return false
                 }
 

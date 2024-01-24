@@ -48,11 +48,15 @@ import {
     selectMachinesCom,
     selectMnMachines,
     selectMachinesResponbility,
+    getMachineMnSlices,
 } from '../../store/machineStore/machineMnSlices'
 
 import MaintenanceAppInventoryMain from './MaintenanceAppInventoryMain'
 import { LoadingButton } from '@mui/lab'
 import DataChart from '../../components/DataChart'
+import { getReportSlices } from '../../store/reportStore/reportMnSlices'
+import { getUsersMn } from '../../store/userStore/userMnSlices'
+import { getSparepartSlices } from '../../store/sparepartStore/sparepartMnSlices'
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
     '& .FusePageSimple-header': {
@@ -134,9 +138,20 @@ function MaintenanceAppInventory() {
         // dispatch(setMachinesResponbility('ALL'))
     }
 
+    // dispatch(getErpMnSlices())
+    // dispatch(getMachineMnSlices())
+    // dispatch(getReportSlices())
+    // dispatch(getRequestSlices())
+    // dispatch(getSparepartSlices())
+    // dispatch(getStokSlices())
+    // dispatch(getUsersMn())
+
     function reload(event, value) {
         dispatch(getErpMnSlices())
         dispatch(getRequestSlices())
+        dispatch(getReportSlices())
+        dispatch(getMachineMnSlices())
+        dispatch(getUsersMn())
     }
 
     return (

@@ -130,6 +130,10 @@ function CustomToolbar(props) {
                     msg += `\n ↑ Sudah audit ${dayjs(
                         entry.date_audit_request
                     ).format('DD/MM/YY HH:mm\n')}`
+                } else if (entry.audit_request == 'C') {
+                    msg += `\n ↑ Sparpart Cancel ${dayjs(
+                        entry.date_audit_request
+                    ).format('DD/MM/YY HH:mm\n')}`
                 }
             })
             if (
