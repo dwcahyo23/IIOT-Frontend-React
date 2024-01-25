@@ -124,14 +124,12 @@ export const status = [
         color: 'error',
         icon: 'heroicons-outline:x',
     },
-
     {
         id: 'Stock Ready',
         name: 'Stock Ready',
         color: 'success',
         icon: 'heroicons-outline:check',
     },
-
     {
         id: 'Open PO',
         name: 'Open PP',

@@ -263,7 +263,7 @@ export const selectErpMonth = createSelector(() => {
     return x
 })
 
-const comUtils = createSelector([machinesCom], (com) => {
+export const comUtils = createSelector([machinesCom], (com) => {
     if (com === 'GM1') {
         return '01'
     }
@@ -803,8 +803,6 @@ export const filteredRequest = createSelector(
         reqStatus,
     ],
     (data, year, prio, com, section, responsible, status) => {
-        console.log(prio)
-        console.log(data)
         function getFilter() {
             if (
                 com === 'ALL' &&
@@ -906,7 +904,8 @@ export const filteredRequestByMonth = createSelector(
                 }
 
                 if (
-                    (!_.isUndefined(val.sheet_no) &&
+                    (month &&
+                        !_.isUndefined(val.sheet_no) &&
                         val.sheet_no
                             .toLowerCase()
                             .includes(text.toLowerCase())) ||

@@ -9,20 +9,25 @@ import { getRequestSlices } from './store/requestStore/requestMnSlices'
 import { getSparepartSlices } from './store/sparepartStore/sparepartMnSlices'
 import { getStokSlices } from './store/stokStore/stokMnSlices'
 import { getUsersMn } from './store/userStore/userMnSlices'
+import { getErpIsueMnSlices } from './store/erpIsueStore/erpIsueMnSlices'
+import { getErpStockMnSlices } from './store/erpStockStore/erpStockMnSlices'
+
 import reducer from './store'
 
 function MaintenanceApp() {
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
 
-    // useEffect(() => {
-    //     dispatch(getErpMnSlices())
-    //     dispatch(getMachineMnSlices())
-    //     dispatch(getReportSlices())
-    //     dispatch(getRequestSlices())
-    //     dispatch(getSparepartSlices())
-    //     dispatch(getStokSlices())
-    //     dispatch(getUsersMn())
-    // }, [dispatch])
+    useEffect(() => {
+        // dispatch(getErpMnSlices())
+        // dispatch(getMachineMnSlices())
+        // dispatch(getReportSlices())
+        // dispatch(getRequestSlices())
+        // dispatch(getSparepartSlices())
+        // dispatch(getStokSlices())
+        // dispatch(getUsersMn())
+        // dispatch(getErpIsueMnSlices())
+        // dispatch(getErpIsueMnSlices())
+    }, [dispatch])
 
     return <Outlet />
 }

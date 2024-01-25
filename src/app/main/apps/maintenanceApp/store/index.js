@@ -11,6 +11,11 @@ import sparepart from './sparepartStore/sparepartMnSlice'
 import stoks from './stokStore/stokMnSlices'
 import stok from './stokStore/stokMnSlice'
 import users from './userStore/userMnSlices'
+import erpsstock from './erpStockStore/erpStockMnSlices'
+import erpsisue from './erpIsueStore/erpIsueMnSlices'
+import erpsstockcontrol from './erpStockControlStroe/erpStockControlMnSlices'
+import erptockcontrol from './erpStockControlStroe/erpStockControlMnSlice'
+
 const reducer = combineReducers({
     erps,
     machines,
@@ -24,6 +29,10 @@ const reducer = combineReducers({
     stoks,
     stok,
     users,
+    erpsstock,
+    erpsisue,
+    erpsstockcontrol,
+    erptockcontrol,
 })
 
 export default reducer

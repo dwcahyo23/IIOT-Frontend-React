@@ -46,7 +46,9 @@ export const removeMachine = createAsyncThunk(
 
 const machineMnSlice = createSlice({
     name: 'mnApp/machine',
-    initialState: null,
+    initialState: {
+        pending: false,
+    },
     reducers: {},
     extraReducers: {
         [getMachine.fulfilled]: (state, action) => action.payload,

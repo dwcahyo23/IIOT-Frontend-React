@@ -25,10 +25,26 @@ const navigationConfig = [
             {
                 id: 'apps.maintenanceAppInventories',
                 title: 'Inventories',
-                type: 'item',
-                icon: 'heroicons-outline:shopping-cart',
+                type: 'collapse',
                 auth: authRoles.admin,
-                url: '/apps/maintenanceApp/inventories',
+                icon: 'heroicons-outline:office-building',
+                children: [
+                    {
+                        id: 'maintenanceAppInventories.inventories',
+                        title: 'Request',
+                        type: 'item',
+                        url: '/apps/maintenanceApp/inventories',
+                        icon: 'heroicons-outline:shopping-cart',
+                        // end: true,
+                    },
+                    {
+                        id: 'maintenanceAppInventories.stock',
+                        title: 'Stock ',
+                        type: 'item',
+                        url: '/apps/maintenanceApp/stoks',
+                        icon: 'heroicons-outline:database',
+                    },
+                ],
             },
             {
                 id: 'apps.maintenanceAppMachines',

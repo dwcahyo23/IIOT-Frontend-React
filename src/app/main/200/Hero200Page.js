@@ -13,20 +13,20 @@ import { getSparepartSlices } from '../apps/maintenanceApp/store/sparepartStore/
 import { getStokSlices } from '../apps/maintenanceApp/store/stokStore/stokMnSlices'
 import { getUsersMn } from '../apps/maintenanceApp/store/userStore/userMnSlices'
 import FuseLoading from '@fuse/core/FuseLoading'
+import { getErpStockMnSlices } from '../apps/maintenanceApp/store/erpStockStore/erpStockMnSlices'
 
 function Hero200Page() {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(getErpMnSlices()).then((action) =>
-            console.log(action.meta.requestStatus)
-        )
+        dispatch(getErpMnSlices())
         dispatch(getMachineMnSlices())
         dispatch(getReportSlices())
         dispatch(getRequestSlices())
         dispatch(getSparepartSlices())
         dispatch(getStokSlices())
         dispatch(getUsersMn())
+        dispatch(getErpStockMnSlices())
     }, [dispatch])
     return (
         <div className="flex flex-col flex-1 items-center justify-center p-16">

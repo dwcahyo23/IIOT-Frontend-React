@@ -43,7 +43,9 @@ export const removeStok = createAsyncThunk(
 
 const stokMnSlice = createSlice({
     name: 'mnApp/stok',
-    initialState: null,
+    initialState: {
+        pending: false,
+    },
     reducers: {},
     extraReducers: {
         [getStok.fulfilled]: (state, action) => action.payload,

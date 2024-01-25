@@ -109,10 +109,6 @@ function MaintenanceAppInventory() {
 
     function handleComTab(event, value) {
         dispatch(setMachinesCom(value))
-    }
-
-    function handleComTab(event, value) {
-        dispatch(setMachinesCom(value))
         // dispatch(setMachinesSection('ALL'))
         dispatch(setMachinesResponbility('ALL'))
     }

@@ -8,11 +8,15 @@ const MaintenanceMachines = lazy(() =>
     import('./menu/machine/MaintenanceAppMachines')
 )
 const MaintenanceErps = lazy(() => import('./menu/erp/MaintenanceAppErps'))
+
 const MaintenanceInventory = lazy(() =>
     import('./menu/inventory/MaintenanceAppInventory')
 )
 const DialogErps = lazy(() =>
     import('./components/DialogMenu/DialogWorOrderMenu.js')
+)
+const MaintenanceErpsStock = lazy(() =>
+    import('./menu/erpStock/MaintenanceAppErpsStock')
 )
 
 const MaintenanceAppConfig = {
@@ -41,7 +45,10 @@ const MaintenanceAppConfig = {
                     path: 'inventories',
                     element: <MaintenanceInventory />,
                 },
-
+                {
+                    path: 'stoks',
+                    element: <MaintenanceErpsStock />,
+                },
                 {
                     path: 'machinesId/:id/:com',
                     element: <DialogErps />,
