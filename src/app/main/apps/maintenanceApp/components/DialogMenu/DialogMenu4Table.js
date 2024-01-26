@@ -95,6 +95,7 @@ function CustomToolbar(props) {
     })
 
     function sendMsg(o) {
+        console.log(o)
         if (o.length > 0) {
             let msg = `*Permintaan Sparepart*`
             msg += `\n\n${o[0].sheet_no} |  ${o[0].category_request}`
@@ -102,11 +103,11 @@ function CustomToolbar(props) {
                 o[0].createdAt
             ).format('DD/MM/YY HH:mm')})_\n`
             _.forEach(o, (entry, idx) => {
-                msg += `\n*${idx + 1}.* *${
+                msg += `\n${idx + 1}. ${
                     _.isNull(entry.item_stock) == false
                         ? entry.item_stock
                         : entry.name
-                }* _(${entry.item_qty} ${entry.item_uom})_`
+                } _(${entry.item_qty} ${entry.item_uom})_`
                 if (entry.audit_request == 'N') {
                     if (
                         _.isNull(entry.mre_request) == false &&
@@ -222,10 +223,10 @@ function CustomToolbar(props) {
                 })
             )
         } else {
+            if (options === 'whatsapp') {
+                sendMsg(selection)
+            }
             const x = _.map(selection, (val) => {
-                if (options === 'whatsapp') {
-                    return val
-                }
                 if (options === 'ready') {
                     const obj = {
                         ...val,
