@@ -14,6 +14,8 @@ import { getStokSlices } from '../apps/maintenanceApp/store/stokStore/stokMnSlic
 import { getUsersMn } from '../apps/maintenanceApp/store/userStore/userMnSlices'
 import FuseLoading from '@fuse/core/FuseLoading'
 import { getErpStockMnSlices } from '../apps/maintenanceApp/store/erpStockStore/erpStockMnSlices'
+import { getErpIsueMnSlices } from '../apps/maintenanceApp/store/erpIsueStore/erpIsueMnSlices'
+import { getErpStockControlMnSlices } from '../apps/maintenanceApp/store/erpStockControlStore/erpStockControlMnSlices'
 
 function Hero200Page() {
     const dispatch = useDispatch()
@@ -27,6 +29,8 @@ function Hero200Page() {
         dispatch(getStokSlices())
         dispatch(getUsersMn())
         dispatch(getErpStockMnSlices())
+        dispatch(getErpIsueMnSlices())
+        dispatch(getErpStockControlMnSlices())
     }, [dispatch])
     return (
         <div className="flex flex-col flex-1 items-center justify-center p-16">

@@ -13,8 +13,8 @@ import stok from './stokStore/stokMnSlice'
 import users from './userStore/userMnSlices'
 import erpsstock from './erpStockStore/erpStockMnSlices'
 import erpsisue from './erpIsueStore/erpIsueMnSlices'
-import erpsstockcontrol from './erpStockControlStroe/erpStockControlMnSlices'
-import erptockcontrol from './erpStockControlStroe/erpStockControlMnSlice'
+import erpsstockcontrol from './erpStockControlStore/erpStockControlMnSlices'
+import erptockcontrol from './erpStockControlStore/erpStockControlMnSlice'
 
 const reducer = combineReducers({
     erps,

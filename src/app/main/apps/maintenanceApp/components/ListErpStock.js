@@ -13,7 +13,7 @@ function ListErpStock({ params, columns }) {
 
     return (
         <Card
-            className="flex flex-col shadow mt-16"
+            className="flex flex-col shadow"
             sx={{
                 height: 600,
             }}

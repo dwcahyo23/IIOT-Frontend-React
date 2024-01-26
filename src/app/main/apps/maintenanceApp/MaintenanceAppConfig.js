@@ -16,7 +16,7 @@ const DialogErps = lazy(() =>
     import('./components/DialogMenu/DialogWorOrderMenu.js')
 )
 const MaintenanceErpsStock = lazy(() =>
-    import('./menu/erpStock/MaintenanceAppErpsStock')
+    import('./menu/inventory/erpStock/MaintenanceAppErpsStock')
 )
 
 const MaintenanceAppConfig = {

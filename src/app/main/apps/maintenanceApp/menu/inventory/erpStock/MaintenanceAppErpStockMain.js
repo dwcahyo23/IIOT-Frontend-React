@@ -3,9 +3,9 @@ import _ from 'lodash'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Typography } from '@mui/material'
-import { filteredErpsStock } from '../../store/erpStockStore/erpStockMnSlices'
-import ListErpStock from '../../components/ListErpStock'
-import StatusChip from '../../components/StatusChip'
+import { filteredErpsStock } from '../../../store/erpStockStore/erpStockMnSlices'
+import ListErpStock from '../../../components/ListErpStock'
+import StatusChip from '../../../components/StatusChip'
 
 const container = {
     show: {
@@ -54,7 +54,7 @@ const columns = [
         headerAlign: 'center',
         align: 'center',
         width: 100,
-        valueFormatter: (params) => params.value.replace(/\.00/g, ''),
+        // valueFormatter: (params) => params.value.replace(/\.00/g, ''),
     },
     {
         field: 'op',
@@ -95,7 +95,7 @@ const columns = [
             const y = params.row.stock_control?.op_qty
 
             if (_.isUndefined(y) == false) {
-                if (x < y) return <StatusChip id="Open" />
+                if (x <= y) return <StatusChip id="Open" />
             }
         },
     },

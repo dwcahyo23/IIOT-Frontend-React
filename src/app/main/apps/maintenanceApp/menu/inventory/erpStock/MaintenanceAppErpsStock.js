@@ -22,16 +22,27 @@ import {
     selectMachinesCom,
     getMachineMnSlices,
     selectMnMachines,
-} from '../../store/machineStore/machineMnSlices'
+} from '../../../store/machineStore/machineMnSlices'
 
 import { LoadingButton } from '@mui/lab'
 
 import {
     getErpStockMnSlices,
     filteredErpsStock,
-} from '../../store/erpStockStore/erpStockMnSlices'
+    isPendingErpStock,
+} from '../../../store/erpStockStore/erpStockMnSlices'
 import MaintenanceAppErpStockMain from './MaintenanceAppErpStockMain'
-import { getErpStockControlMnSlices } from '../../store/erpStockControlStroe/erpStockControlMnSlices'
+import {
+    getErpStockControlMnSlices,
+    selectCategoryStock,
+    setStockControlCategory,
+    setStockControlStatus,
+    stockControlCategory,
+    stockControlStatus,
+    isPendingStockControl,
+    setSearchText,
+    searchText,
+} from '../../../store/erpStockControlStore/erpStockControlMnSlices'
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
     '& .FusePageSimple-header': {
@@ -54,17 +65,35 @@ function MaintenanceAppErpsStock() {
         useSelector(machinesCom),
     ]
 
+    const [isPending1, isPending2] = [
+        useSelector(isPendingStockControl),
+        useSelector(isPendingErpStock),
+    ]
+
+    const [selectCategory, useCategory, useStatus, search] = [
+        useSelector(selectCategoryStock),
+        useSelector(stockControlCategory),
+        useSelector(stockControlStatus),
+        useSelector(searchText),
+    ]
+
     const filterData = useSelector(filteredErpsStock)
 
     function handleComTab(event, value) {
         dispatch(setMachinesCom(value))
     }
 
-    useEffect(() => {
-        // dispatch(getErpStockMnSlices())
-        // dispatch(getMachineMnSlices())
-        // dispatch(getErpStockControlMnSlices())
-    }, [])
+    function handleCategory(event, value) {
+        dispatch(setStockControlCategory(value.props.value))
+    }
+
+    function handleStatus(event, value) {
+        dispatch(setStockControlStatus(value.props.value))
+    }
+
+    function handleSearch(event, value) {
+        dispatch(setSearchText(event.target.value))
+    }
 
     function reload(event, value) {
         dispatch(getErpStockMnSlices())
@@ -132,6 +161,62 @@ function MaintenanceAppErpsStock() {
                                 />
                             ))}
                         </Tabs>
+                    </div>
+
+                    <div className="flex flex-1 justify-start my-16 lg:my-0">
+                        <FormControl
+                            className="flex w-full sm:w-auto mx-8"
+                            variant="outlined"
+                        >
+                            <InputLabel>Category</InputLabel>
+
+                            <Select
+                                labelId="category-select-label"
+                                id="category-select"
+                                label="Category"
+                                value={useCategory}
+                                onChange={handleCategory}
+                            >
+                                {selectCategory.map((val, index) => (
+                                    <MenuItem value={val} key={index}>
+                                        {val}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+
+                        <FormControl
+                            className="flex w-full sm:w-auto mx-8"
+                            variant="outlined"
+                        >
+                            <InputLabel>Status</InputLabel>
+
+                            <Select
+                                labelId="category-select-label"
+                                id="category-select"
+                                label="Category"
+                                value={useStatus}
+                                onChange={handleStatus}
+                            >
+                                <MenuItem value="ALL">ALL</MenuItem>
+                                <MenuItem value="open">OPEN</MenuItem>
+                            </Select>
+                        </FormControl>
+
+                        <FormControl>
+                            <TextField
+                                label="Search"
+                                placeholder="Search.."
+                                className="flex w-full sm:w-150 mx-8"
+                                value={search}
+                                onChange={handleSearch}
+                                variant="outlined"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                        </FormControl>
+
                         <LoadingButton
                             variant="outline"
                             color="secondary"
@@ -144,10 +229,32 @@ function MaintenanceAppErpsStock() {
                         </LoadingButton>
                     </div>
 
-                    {filterData.length > 0 ? (
-                        <MaintenanceAppErpStockMain />
+                    {isPending1 || isPending2 ? (
+                        <div className="flex items-center justify-center h-full">
+                            <FuseLoading />
+                        </div>
                     ) : (
-                        <FuseLoading />
+                        <div>
+                            {filterData.length > 0 ? (
+                                <MaintenanceAppErpStockMain />
+                            ) : (
+                                <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{
+                                        opacity: 1,
+                                        transition: { delay: 0.1 },
+                                    }}
+                                    className="flex flex-1 items-center justify-center h-full"
+                                >
+                                    <Typography
+                                        color="text.secondary"
+                                        variant="h5"
+                                    >
+                                        There are no data!
+                                    </Typography>
+                                </motion.div>
+                            )}
+                        </div>
                     )}
                 </div>
             }

@@ -7,7 +7,14 @@ import {
 import axios from 'axios'
 import { comUtils } from '../erpStore/erpMnSlices'
 import _ from 'lodash'
-import { selectMnErpsStockControl } from '../erpStockControlStroe/erpStockControlMnSlices'
+import {
+    selectMnErpsStockControl,
+    stockControlStatus,
+} from '../erpStockControlStore/erpStockControlMnSlices'
+import {
+    stockControlCategory,
+    searchText,
+} from '../erpStockControlStore/erpStockControlMnSlices'
 
 export const getErpStockMnSlices = createAsyncThunk(
     'mnApp/erpsstock/getErpsStock',
@@ -34,6 +41,9 @@ export const {
  * CREATE CUSTOM SELECTOR FOR STOK
  */
 
+export const isPendingErpStock = ({ mnApp }) =>
+    mnApp.erpsstock.isPendingErpStock
+
 const dataUtils = createSelector(
     [selectMnErpsStock, selectMnErpsStockControl],
     (data, join) => {
@@ -53,23 +63,49 @@ const dataUtils = createSelector(
 )
 
 export const filteredErpsStock = createSelector(
-    [dataUtils, comUtils],
-    (data, com) => {
+    [dataUtils, comUtils, stockControlCategory, stockControlStatus, searchText],
+    (data, com, cat, status, text) => {
         function getFilter() {
-            if (com === 'ALL') {
+            if (
+                text.length === 0 &&
+                com === 'ALL' &&
+                cat === 'ALL' &&
+                status === 'ALL'
+            ) {
                 return data
             }
             return _.filter(data, (val) => {
                 if (com !== 'ALL' && val.stk_no.substring(0, 2) !== com) {
                     return false
                 }
-                return val
+
+                if (
+                    cat !== 'ALL' &&
+                    val.stock_control?.sparepart_category !== cat
+                ) {
+                    return false
+                }
+                if (
+                    status !== 'ALL' &&
+                    val.stk_qty >= val.stock_control?.op_qty
+                ) {
+                    return false
+                }
+
+                if (
+                    (!_.isUndefined(val.mat_no) &&
+                        val.mat_no
+                            .toLowerCase()
+                            .includes(text.toLowerCase())) ||
+                    (!_.isUndefined(val.mat_name) &&
+                        val.mat_name.toLowerCase().includes(text.toLowerCase()))
+                ) {
+                    return val
+                }
             })
         }
 
         if (data) {
-            // console.log(getFilter())
-
             return getFilter()
         }
     }
@@ -77,10 +113,18 @@ export const filteredErpsStock = createSelector(
 
 const erpStockMnSlices = createSlice({
     name: 'mnApp/erpsstock',
-    initialState: Adapter.getInitialState({}),
+    initialState: Adapter.getInitialState({
+        isPendingErpStock: false,
+    }),
     reducers: {},
     extraReducers: {
-        [getErpStockMnSlices.fulfilled]: Adapter.setAll,
+        [getErpStockMnSlices.fulfilled]: (state, action) => {
+            state.isPendingErpStock = false
+            Adapter.setAll(state, action.payload)
+        },
+        [getErpStockMnSlices.pending]: (state, action) => {
+            state.isPendingErpStock = true
+        },
     },
 })
 

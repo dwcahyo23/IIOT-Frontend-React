@@ -104,9 +104,9 @@ function MaintenanceAppErpMain() {
             <motion.div variants={item} className="sm:col-span-4 md:col-span-5">
                 <DataChart params={{ data: filterChart }} />
             </motion.div>
-            <motion.div variants={item} className="sm:col-span-6 md:col-span-8">
+            {/* <motion.div variants={item} className="sm:col-span-6 md:col-span-8">
                 <MaintenanceAppErpKanban />
-            </motion.div>
+            </motion.div> */}
         </motion.div>
     )
 }

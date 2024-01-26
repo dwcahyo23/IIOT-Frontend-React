@@ -345,8 +345,7 @@ export const filteredErps = createSelector(
                 com === 'ALL' &&
                 responsible === 'ALL' &&
                 section === 'ALL' &&
-                year === 'ALL' &&
-                prio === 'ALL'
+                year === 'ALL'
             ) {
                 return data
             }
@@ -379,6 +378,24 @@ export const filteredErps = createSelector(
                     return false
                 }
 
+                if (section == 'machinery') {
+                    return (
+                        val.pri_no == '01' ||
+                        val.pri_no == '02' ||
+                        val.pri_no == '03' ||
+                        val.pri_no == '06'
+                    )
+                }
+
+                if (section == 'utility') {
+                    return (
+                        val.pri_no == '01' ||
+                        val.pri_no == '02' ||
+                        val.pri_no == '03' ||
+                        val.pri_no == '06'
+                    )
+                }
+
                 if (section == 'workshop') {
                     return (
                         val.pri_no == '04' ||
@@ -401,19 +418,19 @@ export const filteredErpsByMonth = createSelector(
     [filteredErps, searchText, erpMonth],
     (data, text, month) => {
         function getFilter() {
-            if (text.length === 0 && month == 'ALL') {
+            if (text.length === 0) {
                 return data
             }
             return _.filter(data, (val) => {
-                if (month && dayjs(val.ymd).format('MMMM') !== month) {
+                if (
+                    month !== 'ALL' &&
+                    dayjs(val.ymd).format('MMMM') !== month
+                ) {
                     return false
                 }
-
-                // return val?.sheet_no.toLowerCase().includes(text.toLowerCase())
-
-                // return val?.sheet_no.toLowerCase().includes(text.toLowerCase())
                 if (
-                    (!_.isUndefined(val.sheet_no) &&
+                    (month &&
+                        !_.isUndefined(val.sheet_no) &&
                         val.sheet_no
                             .toLowerCase()
                             .includes(text.toLowerCase())) ||
