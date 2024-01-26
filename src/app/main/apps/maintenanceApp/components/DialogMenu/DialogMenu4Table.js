@@ -98,33 +98,30 @@ function CustomToolbar(props) {
         if (o.length > 0) {
             let msg = `*Permintaan Sparepart*`
             msg += `\n\n${o[0].sheet_no} |  ${o[0].category_request}`
-            msg += `\n${o[0].mch_code} | ${o[0].user_req1} | ${dayjs(
+            msg += `\n${o[0].mch_code} _(${o[0].user_req1} | ${dayjs(
                 o[0].createdAt
-            ).format('DD/MM/YYYY HH:mm:ss')} `
-            msg += `\n\nList permintaan:`
+            ).format('DD/MM/YY HH:mm')})_\n`
             _.forEach(o, (entry, idx) => {
-                msg += `\n*${idx + 1}.)* *${
+                msg += `\n*${idx + 1}.* *${
                     _.isNull(entry.item_stock) == false
                         ? entry.item_stock
                         : entry.name
-                }* | ${entry.item_qty} ${entry.item_uom} | ${
-                    entry.item_ready == 'Y' ? '✅' : '❌'
-                } `
+                }* _(${entry.item_qty} ${entry.item_uom})_`
                 if (entry.audit_request == 'N') {
                     if (
                         _.isNull(entry.mre_request) == false &&
                         entry.mre_request.length > 3
                     ) {
-                        msg += `\n↑ Sudah terbit MRE, _*${entry.mre_request}*_`
-                        msg += `\n${dayjs(entry.date_mre_request).format(
-                            'DD/MM/YY HH:mm:ss\n'
-                        )}`
+                        msg += `\n ↑ Sudah terbit PP, _*${entry.mre_request}*_`
+                        // msg += `\n${dayjs(entry.date_mre_request).format(
+                        //     'DD/MM/YY HH:mm'
+                        // )}`
                     }
                     if (entry.item_ready == 'Y') {
-                        msg += `\n ↑ Sudah digudang, silahkan diambil`
-                        msg += `\n${dayjs(entry.ready_request).format(
-                            'DD/MM/YY HH:mm:ss\n'
-                        )}`
+                        msg += `\n ↑ Sudah digudang ✅, silahkan diambil`
+                        // msg += `\n${dayjs(entry.ready_request).format(
+                        //     'DD/MM/YY HH:mm'
+                        // )}`
                     }
                 } else if (entry.audit_request == 'Y') {
                     msg += `\n ↑ Sudah audit ${dayjs(
