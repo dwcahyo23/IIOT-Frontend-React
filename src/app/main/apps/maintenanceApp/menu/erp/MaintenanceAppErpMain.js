@@ -1,9 +1,7 @@
 import { motion } from 'framer-motion'
 import _ from 'lodash'
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Typography } from '@mui/material'
-
+import { useSelector } from 'react-redux'
 import DataChart from '../../components/DataChart'
 import ListWorkOrder from '../../components/ListWorkOrder'
 import MaintenanceAppErpKanban from './MaintenanceAppErpKanban'

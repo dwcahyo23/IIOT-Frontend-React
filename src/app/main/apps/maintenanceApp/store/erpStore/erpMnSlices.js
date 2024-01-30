@@ -417,8 +417,6 @@ export const filteredErps = createSelector(
 export const filteredErpsByMonth = createSelector(
     [filteredErps, searchText, erpMonth],
     (data, text, month) => {
-        console.log(month)
-        console.log(dayjs(data[0].ymd).format('MMMM'))
         function getFilter() {
             if (text.length === 0 && month === 'ALL') {
                 return data
@@ -444,6 +442,7 @@ export const filteredErpsByMonth = createSelector(
             })
         }
         if (data) {
+            console.log(getFilter())
             return getFilter()
         }
     }

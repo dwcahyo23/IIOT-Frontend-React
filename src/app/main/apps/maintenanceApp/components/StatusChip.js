@@ -1,5 +1,4 @@
 import _ from '@lodash'
-import clsx from 'clsx'
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon/FuseSvgIcon'
 import { Chip } from '@mui/material'
 

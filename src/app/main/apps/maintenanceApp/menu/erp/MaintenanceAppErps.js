@@ -2,10 +2,9 @@ import FusePageSimple from '@fuse/core/FusePageSimple'
 import FuseLoading from '@fuse/core/FuseLoading'
 import { motion } from 'framer-motion'
 import _ from 'lodash'
-import { useEffect, useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Tabs, Tab, Box, OutlinedInput } from '@mui/material'
-import TextField from '@mui/material/TextField'
+import { Tabs, Tab, Box } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
@@ -13,7 +12,6 @@ import Select from '@mui/material/Select'
 import InputLabel from '@mui/material/InputLabel'
 import { LoadingButton } from '@mui/lab'
 import { Refresh } from '@mui/icons-material'
-import dayjs from 'dayjs'
 import { styled } from '@mui/material/styles'
 
 import {
@@ -54,6 +52,7 @@ import { getUsersMn } from '../../store/userStore/userMnSlices'
 
 import { useThemeMediaQuery } from '@fuse/hooks'
 import MaintenanceAppErpMain from './MaintenanceAppErpMain'
+import DonwloadExcelWorkOrder from '../../components/DonwloadExcelWorkOrder'
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
     '& .FusePageSimple-header': {
@@ -373,6 +372,8 @@ function MaintenanceAppErps() {
                         >
                             <span>Reload</span>
                         </LoadingButton>
+
+                        <DonwloadExcelWorkOrder params={filterData} />
                     </div>
 
                     {isPending ? (
