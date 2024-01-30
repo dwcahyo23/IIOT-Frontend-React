@@ -44,6 +44,13 @@ const navigationConfig = [
                         url: '/apps/maintenanceApp/stoks',
                         icon: 'heroicons-outline:database',
                     },
+                    {
+                        id: 'maintenanceAppInventories.isue',
+                        title: 'Isue ',
+                        type: 'item',
+                        url: '/apps/maintenanceApp/isue',
+                        icon: 'heroicons-outline:database',
+                    },
                 ],
             },
             {

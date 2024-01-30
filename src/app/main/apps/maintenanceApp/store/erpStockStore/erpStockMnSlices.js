@@ -111,6 +111,10 @@ export const filteredErpsStock = createSelector(
     }
 )
 
+/*
+ * END CREATE CUSTOM SELECTOR FOR STOK
+ */
+
 const erpStockMnSlices = createSlice({
     name: 'mnApp/erpsstock',
     initialState: Adapter.getInitialState({

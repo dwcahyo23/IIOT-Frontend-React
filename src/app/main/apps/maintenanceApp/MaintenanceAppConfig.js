@@ -19,6 +19,10 @@ const MaintenanceErpsStock = lazy(() =>
     import('./menu/inventory/erpStock/MaintenanceAppErpsStock')
 )
 
+const MaintenanceErpsIsue = lazy(() =>
+    import('./menu/inventory/erpIsue/MaintenanceAppErpsIsue')
+)
+
 const MaintenanceAppConfig = {
     setting: {
         layout: {},
@@ -48,6 +52,10 @@ const MaintenanceAppConfig = {
                 {
                     path: 'stoks',
                     element: <MaintenanceErpsStock />,
+                },
+                {
+                    path: 'isue',
+                    element: <MaintenanceErpsIsue />,
                 },
                 {
                     path: 'machinesId/:id/:com',

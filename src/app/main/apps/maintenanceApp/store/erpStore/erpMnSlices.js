@@ -417,20 +417,18 @@ export const filteredErps = createSelector(
 export const filteredErpsByMonth = createSelector(
     [filteredErps, searchText, erpMonth],
     (data, text, month) => {
+        console.log(month)
+        console.log(dayjs(data[0].ymd).format('MMMM'))
         function getFilter() {
-            if (text.length === 0) {
+            if (text.length === 0 && month === 'ALL') {
                 return data
             }
             return _.filter(data, (val) => {
-                if (
-                    month !== 'ALL' &&
-                    dayjs(val.ymd).format('MMMM') !== month
-                ) {
+                if (month !== 'ALL' && dayjs(val.ymd).format('MMMM') != month) {
                     return false
                 }
                 if (
-                    (month &&
-                        !_.isUndefined(val.sheet_no) &&
+                    (!_.isUndefined(val.sheet_no) &&
                         val.sheet_no
                             .toLowerCase()
                             .includes(text.toLowerCase())) ||
@@ -909,7 +907,7 @@ export const filteredRequestByMonth = createSelector(
     [filteredRequest, searchText, erpMonth],
     (data, text, month) => {
         function getFilter() {
-            if (text.length === 0) {
+            if (text.length === 0 && !month) {
                 return data
             }
             return _.filter(data, (val) => {
