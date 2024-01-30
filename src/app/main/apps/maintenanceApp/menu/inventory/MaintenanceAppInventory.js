@@ -349,10 +349,35 @@ function MaintenanceAppInventory() {
                         </LoadingButton>
                     </div>
 
-                    {filterData ? (
-                        <MaintenanceAppInventoryMain />
+                    {isPending ? (
+                        <div className="flex items-center justify-center h-full">
+                            <FuseLoading />
+                        </div>
                     ) : (
-                        <FuseLoading />
+                        <div>
+                            {filterData ? (
+                                <div>
+                                    <MaintenanceAppInventoryMain />
+                                </div>
+                            ) : (
+                                <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{
+                                        opacity: 1,
+                                        transition: { delay: 0.1 },
+                                    }}
+                                    className="flex flex-1 items-center justify-center h-full"
+                                >
+                                    <Typography
+                                        color="text.secondary"
+                                        variant="h5"
+                                    >
+                                        There are no data!, click the Reload
+                                        button.
+                                    </Typography>
+                                </motion.div>
+                            )}
+                        </div>
                     )}
                 </div>
             }

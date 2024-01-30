@@ -188,7 +188,8 @@ function MaintenanceAppErpsIsue() {
                                         color="text.secondary"
                                         variant="h5"
                                     >
-                                        There are no data!
+                                        There are no data!, click the Reload
+                                        button.
                                     </Typography>
                                 </motion.div>
                             )}

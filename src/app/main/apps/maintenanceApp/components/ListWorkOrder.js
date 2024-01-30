@@ -91,7 +91,9 @@ function ListWorkOrder() {
                         <Typography className="text-13 mt-2 line-clamp-2">
                             {`${index + 1}. ${filterData[index].sheet_no}|${
                                 filterData[index].mch_no
-                            }`}
+                            }|${_.truncate(filterData[index].memo, {
+                                length: '15',
+                            })} `}
                         </Typography>
                     </ListItemText>
 
