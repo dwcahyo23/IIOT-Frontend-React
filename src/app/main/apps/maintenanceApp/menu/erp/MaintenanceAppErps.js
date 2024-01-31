@@ -26,7 +26,7 @@ import {
     setErpMonth,
     filteredErps,
     filterChartErps,
-    filteredRequestByMonth,
+    filteredErpsByMonth,
     erpPending,
 } from '../../store/erpStore/erpMnSlices'
 
