@@ -26,6 +26,7 @@ import {
     setErpMonth,
     filteredErps,
     filterChartErps,
+    filteredRequestByMonth,
     erpPending,
 } from '../../store/erpStore/erpMnSlices'
 
@@ -71,9 +72,10 @@ function MaintenanceAppErps() {
     const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'))
     const [loading, setLoading] = useState(true)
 
-    const [filterData, filterChart] = [
+    const [filterData, filterChart, filterExcel] = [
         useSelector(filteredErps),
         useSelector(filterChartErps),
+        useSelector(filteredErpsByMonth),
     ]
 
     const [
@@ -373,7 +375,7 @@ function MaintenanceAppErps() {
                             <span>Reload</span>
                         </LoadingButton>
 
-                        <DonwloadExcelWorkOrder params={filterData} />
+                        <DonwloadExcelWorkOrder params={filterExcel} />
                     </div>
 
                     {isPending ? (
