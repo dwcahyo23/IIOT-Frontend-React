@@ -9,6 +9,8 @@ import {
     Autocomplete,
     Button,
     FormControlLabel,
+    CircularProgress,
+    Typography,
 } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 import {
@@ -72,8 +74,6 @@ function DialogMenu3({ params }) {
         } else {
             setHidSparepart(false)
         }
-
-        console.log(sparepart_index)
     }, [watchRequest, hidSparepart, sparepart_index])
 
     // useEffect(() => {
@@ -90,17 +90,19 @@ function DialogMenu3({ params }) {
                 data.item_stock = data.new_sparepart
                 const { new_sparepart, ...newObj } = {
                     ...data,
-                    uuid_request: uuid,
+                    uuid_request: data.uuid_request || uuid,
                 }
                 return newObj
             } else {
                 const { new_sparepart, ...newObj } = {
                     ...data,
-                    uuid_request: uuid,
+                    uuid_request: data.uuid_request || uuid,
                 }
                 return newObj
             }
         }
+
+        // console.log(setRequest())
 
         dispatch(saveRequest(setRequest())).then((action) => {
             if (action.payload) {
@@ -113,102 +115,20 @@ function DialogMenu3({ params }) {
             }
         })
 
-        if (withMonitor) {
-            dispatch({ ...getValues('request'), uuid_request: uuid }).then(
-                (action) => {
-                    if (action.payload) {
-                        dispatch(
-                            showMessage({
-                                message: 'Data saved successfully',
-                                variant: 'success',
-                            })
-                        )
-                    }
-                }
-            )
-        }
-
-        // dispatch(
-        //     saveMnOneRequest({
-        //         row: { uuid_request: uuid, ...getValues('request_index') },
-        //         options: 'save',
-        //         user: user.data.datumUuid,
-        //     })
-        // ).then((action) => {
-        //     if (!action.error) {
-        //         dispatch(
-        //             showMessage({
-        //                 message: 'Data saved successfully',
-        //                 variant: 'success',
-        //             })
-        //         )
-        //         if (withMonitor) {
-        //             dispatch(
-        //                 saveMnOneRequest({
-        //                     row: { ...getValues(), uuid_request: uuid },
-        //                     options: 'lifeTime',
-        //                     user: user.data.datumUuid,
-        //                 })
-        //             ).then((action) => {
-        //                 if (!action.error) {
-        //                     dispatch(
-        //                         showMessage({
-        //                             message:
-        //                                 'Sparepart life time saved successfully',
-        //                             variant: 'success',
-        //                         })
-        //                     )
-        //                 } else {
-        //                     const errors = action.error.message
-        //                     dispatch(
-        //                         showMessage({
-        //                             message: errors,
-        //                             variant: 'error',
-        //                         })
-        //                     )
-        //                 }
-        //             })
+        // if (withMonitor) {
+        //     dispatch({ ...getValues('request'), uuid_request: uuid }).then(
+        //         (action) => {
+        //             if (action.payload) {
+        //                 dispatch(
+        //                     showMessage({
+        //                         message: 'Data saved successfully',
+        //                         variant: 'success',
+        //                     })
+        //                 )
+        //             }
         //         }
-        //         if (regenerateLifeTime) {
-        //             dispatch(
-        //                 saveMnOneRequest({
-        //                     row: {
-        //                         ...getValues('sparepart'),
-        //                         uuid_request: uuid,
-        //                     },
-        //                     options: 'regenerateLifeTime',
-        //                     user: user.data.datumUuid,
-        //                 })
-        //             ).then((action) => {
-        //                 if (!action.error) {
-        //                     dispatch(
-        //                         showMessage({
-        //                             message:
-        //                                 'Regenerate sparepart life time saved successfully',
-        //                             variant: 'success',
-        //                         })
-        //                     )
-        //                 } else {
-        //                     const errors = action.error.message
-        //                     dispatch(
-        //                         showMessage({
-        //                             message: errors,
-        //                             variant: 'error',
-        //                         })
-        //                     )
-        //                 }
-        //             })
-        //         }
-        //     } else {
-        //         const errors = action.error.message
-        //         dispatch(
-        //             showMessage({
-        //                 message: errors,
-        //                 variant: 'error',
-        //             })
-        //         )
-        //     }
-        // })
+        //     )
+        // }
     }
 
     return (
@@ -443,7 +363,7 @@ function DialogMenu3({ params }) {
                     />
                 </Grid>
             </Grid>
-            <Grid container spacing={2}>
+            {/* <Grid container spacing={2}>
                 <Grid item xs={5}>
                     <FormControlLabel
                         control={
@@ -604,7 +524,7 @@ function DialogMenu3({ params }) {
                         />
                     </Grid>
                 </Grid>
-            )}
+            )} */}
 
             <Grid container spacing={2}>
                 <Grid item xs={2}>
@@ -646,6 +566,11 @@ function DialogMenu3({ params }) {
                         color="secondary"
                         disabled={!isDirty && !isValid}
                         loading={isPending}
+                        loadingIndicator={
+                            <Typography sx={{ color: 'white' }}>
+                                Loading...
+                            </Typography>
+                        }
                         onClick={handleSaveRequest}
                         startIcon={<Save />}
                     >

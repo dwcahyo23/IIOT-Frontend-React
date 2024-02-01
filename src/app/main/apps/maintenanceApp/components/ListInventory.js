@@ -227,7 +227,7 @@ function ListInventory() {
                         </Button>
                     </Toolbar>
                 </AppBar>
-                <div style={{ width: 1100, height: 600, zIndex: 1000 }}>
+                <div style={{ width: 1300, height: 700, zIndex: 1000 }}>
                     <DialogInventoryMenu params={{ data: selectData }} />
                 </div>
             </Dialog>

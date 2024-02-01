@@ -427,14 +427,17 @@ export const filteredErpsByMonth = createSelector(
                 }
                 if (
                     (!_.isUndefined(val.sheet_no) &&
+                        !_.isNull(val.sheet_no) &&
                         val.sheet_no
                             .toLowerCase()
                             .includes(text.toLowerCase())) ||
                     (!_.isUndefined(val.mch_no) &&
+                        !_.isNull(val.mch_no) &&
                         val.mch_no
                             .toLowerCase()
                             .includes(text.toLowerCase())) ||
                     (!_.isUndefined(val.mch_code) &&
+                        !_.isNull(val.mch_code) &&
                         val.mch_code.toLowerCase().includes(text.toLowerCase()))
                 ) {
                     return val
@@ -442,7 +445,7 @@ export const filteredErpsByMonth = createSelector(
             })
         }
         if (data) {
-            console.log(getFilter())
+            // console.log(getFilter())
             return getFilter()
         }
     }
@@ -920,22 +923,27 @@ export const filteredRequestByMonth = createSelector(
                 if (
                     (month &&
                         !_.isUndefined(val.sheet_no) &&
+                        !_.isNull(val.sheet_no) &&
                         val.sheet_no
                             .toLowerCase()
                             .includes(text.toLowerCase())) ||
                     (!_.isNull(val.item_stock) &&
+                        !_.isNull(val.item_stock) &&
                         val.item_stock
                             .toLowerCase()
                             .includes(text.toLowerCase())) ||
                     (!_.isUndefined(val.mch_code) &&
+                        !_.isNull(val.mch_code) &&
                         val.mch_code
                             .toLowerCase()
                             .includes(text.toLowerCase())) ||
                     (!_.isUndefined(val.user_req1) &&
+                        !_.isNull(val.user_req1) &&
                         val.user_req1
                             .toLowerCase()
                             .includes(text.toLowerCase())) ||
                     (!_.isUndefined(val.mre_request) &&
+                        !_.isNull(val.mre_request) &&
                         val.mre_request
                             .toLowerCase()
                             .includes(text.toLowerCase()))

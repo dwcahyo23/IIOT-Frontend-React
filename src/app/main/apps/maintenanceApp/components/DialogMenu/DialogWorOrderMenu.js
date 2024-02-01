@@ -41,6 +41,7 @@ function DialogWorkOrderMenu({ params }) {
             return
         }
         reset(data)
+        console.log(data)
     }, [params, filterData, reset, routeParams])
 
     function handleTabChange(event, value) {

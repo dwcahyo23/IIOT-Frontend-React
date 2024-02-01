@@ -26,7 +26,7 @@ function DialogMenu4() {
     const [selectWa, setSelectWa] = useState(null)
     const [open, setOpen] = useState(false)
 
-    const { control, formState, watch, setValue } = methods
+    const { control, formState, watch, setValue, reset, getValues } = methods
 
     const { fields: request_index } = useFieldArray({
         name: 'request_index',
@@ -94,14 +94,14 @@ function DialogMenu4() {
         {
             field: 'item_qty',
             headerName: 'Qty',
-            width: 50,
+            width: 90,
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
         },
         {
             field: 'item_uom',
             headerName: 'Uom',
-            width: 50,
+            width: 90,
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
         },
@@ -172,11 +172,18 @@ function DialogMenu4() {
         setOpen(false)
     }
 
-    const tableIndex = (data) => {}
+    const tableIndex = (data) => {
+        if (data?.row) {
+            // console.log(data)
+            // reset({ request: data.row })
+
+            reset({ ...getValues(), request: data.row })
+        }
+    }
 
     return (
-        <Box style={{ width: '100%', height: 500 }}>
-            <div style={{ width: '100%', height: 450 }}>
+        <Box>
+            <div style={{ width: '100%', height: 600 }}>
                 <DialogMenu4Table
                     params={{
                         row: newRow,

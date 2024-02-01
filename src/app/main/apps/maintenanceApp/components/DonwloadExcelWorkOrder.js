@@ -19,6 +19,7 @@ function DonwloadExcelWorkOrder({ params }) {
                 { header: 'CHK_MARK', key: 'chk_mark', width: 20 },
                 { header: 'AP_SHEET', key: 'sheet_no', width: 20 },
                 { header: 'COM', key: 'com_no', width: 20 },
+                { header: 'MCH', key: 'mch_no', width: 20 },
                 { header: 'DEP_NO', key: 'dep_no', width: 20 },
                 { header: 'MEMO', key: 'memo', width: 40 },
                 { header: 'S_MEMO', key: 's_memo', width: 40 },

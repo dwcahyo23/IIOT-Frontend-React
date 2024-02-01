@@ -344,15 +344,14 @@ function DialogMenu2({ params }) {
                                 label="Audit Report"
                                 select
                                 autoFocus
-                                helperText={
-                                    disRep ? 'Need audit ERP/Ap-Request' : ''
-                                }
+                                // helperText={
+                                //     disRep ? 'Need audit ERP/Ap-Request' : ''
+                                // }
                                 id="audit_report"
                                 fullWidth
                             >
-                                <MenuItem value="Y" disabled={disRep}>
-                                    Audit
-                                </MenuItem>
+                                {/* <MenuItem value="Y" disabled={disRep}> */}
+                                <MenuItem value="Y">Audit</MenuItem>
                                 <MenuItem value="N">n.audit</MenuItem>
                             </TextField>
                         )}
