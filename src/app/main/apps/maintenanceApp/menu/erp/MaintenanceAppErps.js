@@ -368,6 +368,11 @@ function MaintenanceAppErps() {
                             variant="outline"
                             color="secondary"
                             loading={isPending}
+                            loadingIndicator={
+                                <Typography sx={{ color: 'white' }}>
+                                    Loading...
+                                </Typography>
+                            }
                             loadingPosition="start"
                             startIcon={<Refresh />}
                             onClick={reload}

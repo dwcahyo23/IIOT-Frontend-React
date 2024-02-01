@@ -310,7 +310,11 @@ function CustomToolbar(props) {
 
                 <LoadingButton
                     loading={isPending}
-                    loadingIndicator="Loading…"
+                    loadingIndicator={
+                        <Typography sx={{ color: 'white' }}>
+                            Loading...
+                        </Typography>
+                    }
                     variant="outlined"
                     startIcon={<InputIcon />}
                     onClick={() => handleOptions('ready')}
@@ -321,7 +325,11 @@ function CustomToolbar(props) {
 
                 <LoadingButton
                     loading={isPending}
-                    loadingIndicator="Loading…"
+                    loadingIndicator={
+                        <Typography sx={{ color: 'white' }}>
+                            Loading...
+                        </Typography>
+                    }
                     variant="outlined"
                     startIcon={<CheckCircleOutlineIcon />}
                     onClick={() => handleOptions('audit')}
@@ -332,7 +340,11 @@ function CustomToolbar(props) {
 
                 <LoadingButton
                     loading={isPending}
-                    loadingIndicator="Loading…"
+                    loadingIndicator={
+                        <Typography sx={{ color: 'white' }}>
+                            Loading...
+                        </Typography>
+                    }
                     variant="outlined"
                     startIcon={<HighlightOffIcon />}
                     onClick={() => handleOptions('cancel')}
@@ -369,7 +381,11 @@ function CustomToolbar(props) {
                             loading={isPending}
                             variant="contained"
                             color="primary"
-                            loadingIndicator="Loading…"
+                            loadingIndicator={
+                                <Typography sx={{ color: 'white' }}>
+                                    Loading...
+                                </Typography>
+                            }
                             startIcon={<Save />}
                             type="submit"
                         >

@@ -406,6 +406,11 @@ function DialogMenu2({ params }) {
                         variant="contained"
                         color="secondary"
                         loading={isPending}
+                        loadingIndicator={
+                            <Typography sx={{ color: 'white' }}>
+                                Loading...
+                            </Typography>
+                        }
                         loadingPosition="start"
                         startIcon={<Save />}
                         onClick={handleSaveReport}

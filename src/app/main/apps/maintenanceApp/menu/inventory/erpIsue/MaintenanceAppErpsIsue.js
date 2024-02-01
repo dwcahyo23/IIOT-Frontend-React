@@ -156,7 +156,12 @@ function MaintenanceAppErpsIsue() {
                         <LoadingButton
                             variant="outline"
                             color="secondary"
-                            // loading={isPending}
+                            loadingIndicator={
+                                <Typography sx={{ color: 'white' }}>
+                                    Loading...
+                                </Typography>
+                            }
+                            loading={isPending1}
                             loadingPosition="start"
                             startIcon={<Refresh />}
                             onClick={reload}
