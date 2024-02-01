@@ -51,6 +51,13 @@ const navigationConfig = [
                         url: '/apps/maintenanceApp/isue',
                         icon: 'heroicons-outline:database',
                     },
+                    {
+                        id: 'maintenanceAppInventories.purr',
+                        title: 'Purchase ',
+                        type: 'item',
+                        url: '/apps/maintenanceApp/purr',
+                        icon: 'heroicons-outline:database',
+                    },
                 ],
             },
             {

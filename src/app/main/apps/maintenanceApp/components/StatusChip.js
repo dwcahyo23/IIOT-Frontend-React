@@ -124,6 +124,18 @@ export const status = [
         icon: 'heroicons-outline:x',
     },
     {
+        id: 'over_y',
+        name: 'Over',
+        color: 'success',
+        icon: 'heroicons-outline:check',
+    },
+    {
+        id: 'over_n',
+        name: 'Not Yet',
+        color: 'error',
+        icon: 'heroicons-outline:x',
+    },
+    {
         id: 'Stock Ready',
         name: 'Stock Ready',
         color: 'success',

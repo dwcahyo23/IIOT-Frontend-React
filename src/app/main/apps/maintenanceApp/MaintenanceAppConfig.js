@@ -23,6 +23,10 @@ const MaintenanceErpsIsue = lazy(() =>
     import('./menu/inventory/erpIsue/MaintenanceAppErpsIsue')
 )
 
+const MaintenanceErpsPur = lazy(() =>
+    import('./menu/inventory/erpPur/MaintenanceAppErpsPur')
+)
+
 const MaintenanceAppConfig = {
     setting: {
         layout: {},
@@ -56,6 +60,10 @@ const MaintenanceAppConfig = {
                 {
                     path: 'isue',
                     element: <MaintenanceErpsIsue />,
+                },
+                {
+                    path: 'purr',
+                    element: <MaintenanceErpsPur />,
                 },
                 {
                     path: 'machinesId/:id/:com',

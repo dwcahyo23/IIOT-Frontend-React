@@ -15,6 +15,7 @@ import erpsstock from './erpStockStore/erpStockMnSlices'
 import erpsisue from './erpIsueStore/erpIsueMnSlices'
 import erpsstockcontrol from './erpStockControlStore/erpStockControlMnSlices'
 import erptockcontrol from './erpStockControlStore/erpStockControlMnSlice'
+import erppur from './erpPurStore/erpPurMnSlices'
 
 const reducer = combineReducers({
     erps,
@@ -33,6 +34,7 @@ const reducer = combineReducers({
     erpsisue,
     erpsstockcontrol,
     erptockcontrol,
+    erppur,
 })
 
 export default reducer
