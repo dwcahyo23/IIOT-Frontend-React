@@ -139,8 +139,8 @@ function MaintenanceAppErpMain() {
                             value={chart}
                             onChange={handleChart}
                         >
-                            <MenuItem value="YEARLY">YEARLY</MenuItem>
-                            <MenuItem value="PARETO">PARETO</MenuItem>
+                            <MenuItem value="YEARLY">Open&Close Chart</MenuItem>
+                            <MenuItem value="PARETO">Pareto Chart</MenuItem>
                         </Select>
                     </FormControl>
                 </div>
