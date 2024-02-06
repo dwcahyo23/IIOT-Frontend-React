@@ -60,3 +60,32 @@ export const getCountStatusRequest = (params) => {
         .value()
     return chart
 }
+
+export const getPareto = (params) => {
+    let y = 0
+
+    const chart = _(params)
+        .groupBy('mch_no')
+        .mapValues((val) => {
+            return {
+                count: val.length,
+            }
+        })
+        .omit(['-'])
+        .map((i, k) => {
+            return { name: k, ...i }
+        })
+        .sort((a, b) => a.count - b.count)
+        .reverse()
+        .take(20)
+        .value()
+
+    const total = _.sumBy(chart, 'count')
+
+    const pareto = _.map(chart, (val) => {
+        y += val.count
+        return { ...val, persen: (y / total) * 100 }
+    })
+
+    return pareto
+}

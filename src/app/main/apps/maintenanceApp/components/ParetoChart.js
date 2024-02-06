@@ -27,19 +27,39 @@ import {
 } from '@mui/material/colors'
 import _ from 'lodash'
 
-function DataChart({ params }) {
+function ParetoChart({ params }) {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         if (!params) {
             return
         }
-        setLoading(false)
         // console.log(params)
+        setLoading(false)
     }, [params, loading])
 
     if (loading) {
         return <FuseLoading />
+    }
+
+    function CustomizedAxisTick(props) {
+        const { x, y, stroke, payload } = props
+
+        return (
+            <g transform={`translate(${x},${y})`}>
+                <text
+                    x={0}
+                    y={0}
+                    dy={16}
+                    textAnchor="end"
+                    fill="#666"
+                    fontSize={11}
+                    transform="rotate(-35)"
+                >
+                    {payload.value}
+                </text>
+            </g>
+        )
     }
 
     return (
@@ -49,14 +69,14 @@ function DataChart({ params }) {
                     className="px-16 text-lg font-medium tracking-tight leading-6 truncate"
                     color="text.secondary"
                 >
-                    {params.data[0].title}
+                    {params.paretoChart.title}
                 </Typography>
             </div> */}
             <div className="flex items-center justify-center px-8 pt-12">
                 <ComposedChart
                     width={900}
                     height={460}
-                    data={params.data}
+                    data={params.paretoChart.data}
                     margin={{
                         top: 5,
                         right: 30,
@@ -64,57 +84,28 @@ function DataChart({ params }) {
                         bottom: 5,
                     }}
                 >
-                    {params.data[0].kpi.length > 0 && (
-                        <ReferenceLine
-                            y={params.data[0].kpi}
-                            label="KPI"
-                            stroke="red"
-                            strokeDasharray="3 3"
-                        />
-                    )}
-
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
+                    <XAxis
+                        dataKey="name"
+                        height={60}
+                        tick={<CustomizedAxisTick />}
+                    />
                     <YAxis yAxisId="left" />
                     <YAxis yAxisId="right" orientation="right" />
                     <Tooltip />
                     <Legend />
                     <Bar
+                        maxBarSize={25}
                         yAxisId="left"
-                        dataKey="data.Close.true"
-                        name="Audit"
+                        dataKey="count"
+                        name="Frequency"
                         fill={green[600]}
                     />
-                    <Bar
-                        yAxisId="left"
-                        dataKey="data.Open.true"
-                        stackId="openStack"
-                        name="Unaudit"
-                        fill={red[500]}
-                    />
-                    {_.has(params.data[0].data, 'MRE') == true && (
-                        <Bar
-                            yAxisId="left"
-                            dataKey="data.MRE.true"
-                            stackId="openStack"
-                            name="MRE PP"
-                            fill={orange[600]}
-                        />
-                    )}
-                    {_.has(params.data[0].data, 'Ready') == true && (
-                        <Bar
-                            yAxisId="left"
-                            dataKey="data.Ready.true"
-                            stackId="openStack"
-                            name="Ready"
-                            fill={deepOrange[400]}
-                        />
-                    )}
                     <Line
                         yAxisId="right"
                         type="monotone"
-                        name="Total"
-                        dataKey="data.Sum.true"
+                        name="%"
+                        dataKey="persen"
                         stroke={indigo[500]}
                     />
                 </ComposedChart>
@@ -123,4 +114,4 @@ function DataChart({ params }) {
     )
 }
 
-export default DataChart
+export default ParetoChart

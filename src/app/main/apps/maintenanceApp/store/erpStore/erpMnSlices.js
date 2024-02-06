@@ -18,6 +18,7 @@ import {
     getCountStatusErp,
     getCountStatusRequest,
     getMonthErp,
+    getPareto,
 } from './erpUtils'
 
 import { selectMnReports } from '../reportStore/reportMnSlices'
@@ -677,6 +678,19 @@ export const filterChartErps = createSelector(
         }
     }
 )
+
+export const filterParetoCharErps = createSelector([filteredErps], (data) => {
+    function getChart() {
+        const x = getPareto(data)
+
+        return { title: 'Work Order Pareto', data: x }
+    }
+
+    if (data) {
+        console.log(getChart())
+        return getChart()
+    }
+})
 
 /*
  * CREATE CUSTOM SELECTOR FOR REQUEST

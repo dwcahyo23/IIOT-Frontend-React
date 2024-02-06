@@ -42,7 +42,7 @@ function ListWorkOrder() {
     const [selectData, setSelectData] = useState(null)
 
     useEffect(() => {
-        console.log(selectData)
+        // console.log(selectData)
     }, [selectData])
 
     const [filterData, selectMonth, useMonth, search] = [
@@ -178,7 +178,7 @@ function ListWorkOrder() {
                         {({ width }) => (
                             <List
                                 width={width}
-                                height={400}
+                                height={460}
                                 rowCount={filterData.length}
                                 rowHeight={40}
                                 rowRenderer={rowRenderer}
