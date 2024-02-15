@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux'
 import { showMessage } from 'app/store/fuse/messageSlice'
 import _ from 'lodash'
 
-function DonwloadExcelWorkOrder({ params }) {
+function DonwloadExcelInventory({ params }) {
     const dispatch = useDispatch()
 
     function handleExportExcell() {
@@ -17,32 +17,40 @@ function DonwloadExcelWorkOrder({ params }) {
                 { header: 'YMD', key: 'ymd', width: 32 },
                 { header: 'CHK_YMD', key: 'chk_date', width: 32 },
                 { header: 'CHK_MARK', key: 'chk_mark', width: 20 },
+                { header: 'PRIO_AP_SHEET', key: 'pri_no', width: 5 },
                 { header: 'AP_SHEET', key: 'sheet_no', width: 20 },
                 { header: 'COM', key: 'com_no', width: 20 },
                 { header: 'MCH', key: 'mch_no', width: 20 },
                 { header: 'DEP_NO', key: 'dep_no', width: 20 },
                 { header: 'MEMO', key: 'memo', width: 40 },
                 { header: 'S_MEMO', key: 's_memo', width: 40 },
-                { header: 'CHK_REPORT', key: 'audit_report', width: 20 },
-                { header: 'ANALYZED', key: 'analyzed', width: 40 },
-                { header: 'CHRONOLOGICAL', key: 'chronological', width: 40 },
-                { header: 'CORRECTIVE', key: 'corrective', width: 40 },
-                { header: 'PREVENTION', key: 'prevention', width: 40 },
-                { header: 'KIND', key: 'kind', width: 40 },
-                { header: 'LEADER', key: 'user_rep1', width: 32 },
-                { header: 'TECHNICAN', key: 'user_rep2', width: 32 },
+                { header: 'MRE', key: 'mre_request', width: 20 },
+                { header: 'ITEM', key: 'item_stock', width: 40 },
+                { header: 'ITEM_MEMO', key: 'item_name', width: 40 },
+                { header: 'QTY', key: 'item_qty', width: 5 },
+                { header: 'UOM', key: 'item_uom', width: 5 },
+                { header: 'IS_READY', key: 'item_ready', width: 5 },
+                { header: 'IS_CLOSE', key: 'audit_request', width: 5 },
+
+                // { header: 'ANALYZED', key: 'analyzed', width: 40 },
+                // { header: 'CHRONOLOGICAL', key: 'chronological', width: 40 },
+                // { header: 'CORRECTIVE', key: 'corrective', width: 40 },
+                // { header: 'PREVENTION', key: 'prevention', width: 40 },
+                // { header: 'KIND', key: 'kind', width: 40 },
+                // { header: 'LEADER', key: 'user_rep1', width: 32 },
+                // { header: 'TECHNICAN', key: 'user_rep2', width: 32 },
             ]
 
             _.forEach(params, (val, index) => {
                 let newData = { ...val }
-                newData.audit_report = val?.report_index?.audit_report
-                newData.analyzed = val?.report_index?.analyzed
-                newData.chronological = val?.report_index?.chronological
-                newData.corrective = val?.report_index?.corrective
-                newData.prevention = val?.report_index?.prevention
-                newData.kind = val?.report_index?.kind
-                newData.user_rep1 = val?.report_index?.user_rep1
-                newData.user_rep2 = val?.report_index?.user_rep2
+                // newData.audit_report = val?.report_index?.audit_report
+                // newData.analyzed = val?.report_index?.analyzed
+                // newData.chronological = val?.report_index?.chronological
+                // newData.corrective = val?.report_index?.corrective
+                // newData.prevention = val?.report_index?.prevention
+                // newData.kind = val?.report_index?.kind
+                // newData.user_rep1 = val?.report_index?.user_rep1
+                // newData.user_rep2 = val?.report_index?.user_rep2
 
                 worksheet.addRow(newData)
             })
@@ -103,4 +111,4 @@ function DonwloadExcelWorkOrder({ params }) {
     )
 }
 
-export default DonwloadExcelWorkOrder
+export default DonwloadExcelInventory

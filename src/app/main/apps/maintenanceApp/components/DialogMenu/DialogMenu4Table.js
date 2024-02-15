@@ -139,28 +139,28 @@ function CustomToolbar(props) {
                 o[0].mch_com == 'GM3' ||
                 o[0].mch_com == 'GM5'
             ) {
-                axios
-                    .post('http://192.168.192.7:5010/send-message-group', {
-                        name: 'GM1 PENANGANAN SPAREPART',
-                        // number: '082124610363',
-                        message: msg,
-                    })
-                    .then(() =>
-                        dispatch(
-                            showMessage({
-                                message: 'Sended wa successfully',
-                                variant: 'success',
-                            })
-                        )
-                    )
-                    .catch((e) => {
-                        dispatch(
-                            showMessage({
-                                message: `${e.message}`,
-                                variant: 'error',
-                            })
-                        )
-                    })
+                // axios
+                //     .post('http://192.168.192.7:5010/send-message-group', {
+                //         name: 'GM1 PENANGANAN SPAREPART',
+                //         // number: '082124610363',
+                //         message: msg,
+                //     })
+                //     .then(() =>
+                //         dispatch(
+                //             showMessage({
+                //                 message: 'Sended wa successfully',
+                //                 variant: 'success',
+                //             })
+                //         )
+                //     )
+                //     .catch((e) => {
+                //         dispatch(
+                //             showMessage({
+                //                 message: `${e.message}`,
+                //                 variant: 'error',
+                //             })
+                //         )
+                //     })
             } else if (o[0].mch_com == 'GM2') {
                 axios
                     .post('http://192.168.192.7:5010/send-message-group', {

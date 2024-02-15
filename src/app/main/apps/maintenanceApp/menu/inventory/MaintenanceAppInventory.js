@@ -32,6 +32,7 @@ import {
     filteredRequest,
     getErpMnSlices,
     filteredRequestChart,
+    filteredRequestByMonth,
 } from '../../store/erpStore/erpMnSlices'
 
 import {
@@ -54,6 +55,7 @@ import DataChart from '../../components/DataChart'
 import { getReportSlices } from '../../store/reportStore/reportMnSlices'
 import { getUsersMn } from '../../store/userStore/userMnSlices'
 import { getSparepartSlices } from '../../store/sparepartStore/sparepartMnSlices'
+import DonwloadExcelInventory from '../../components/DownloadExcelInventory'
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
     '& .FusePageSimple-header': {
@@ -81,6 +83,7 @@ function MaintenanceAppInventory() {
         selectPrio,
         usePrio,
         filterChart,
+        filterExcel,
     ] = [
         useSelector(selectErpMonth),
         useSelector(erpMonth),
@@ -90,7 +93,10 @@ function MaintenanceAppInventory() {
         useSelector(selectErpPriNo),
         useSelector(erpPrio),
         useSelector(filteredRequestChart),
+        useSelector(filteredRequestByMonth),
     ]
+
+    console.log(filterExcel)
 
     const [selectCom, useCom] = [
         useSelector(selectMachinesCom),
@@ -338,17 +344,19 @@ function MaintenanceAppInventory() {
                             variant="outline"
                             color="secondary"
                             loading={isPending}
-                            loadingIndicator={
-                                <Typography sx={{ color: 'white' }}>
-                                    Loading...
-                                </Typography>
-                            }
+                            // loadingIndicator={
+                            //     <Typography sx={{ color: 'white' }}>
+                            //         Loading...
+                            //     </Typography>
+                            // }
                             loadingPosition="start"
                             startIcon={<Refresh />}
                             onClick={reload}
                         >
                             <span>Reload</span>
                         </LoadingButton>
+
+                        <DonwloadExcelInventory params={filterExcel} />
                     </div>
 
                     {isPending ? (
