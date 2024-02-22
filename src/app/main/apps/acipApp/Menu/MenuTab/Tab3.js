@@ -19,6 +19,8 @@ import FuseSvgIcon from '@fuse/core/FuseSvgIcon'
 import { useDispatch } from 'react-redux'
 import { saveGenbaAcip } from '../../store/genba/genbaAcipSlice'
 import { showMessage } from 'app/store/fuse/messageSlice'
+import { selectUser } from 'app/store/userSlice'
+import { useSelector } from 'react-redux'
 
 function Tab3() {
     const dispatch = useDispatch()
@@ -26,6 +28,12 @@ function Tab3() {
     const { control, formState, getValues, setValue, resetField } = methods
     const { errors, isValid } = formState
     const { images2 } = getValues()
+    const user = useSelector(selectUser)
+    const [isDiable, setDisabled] = useState(true)
+
+    useEffect(() => {
+        if (user.data.userNIK !== 'user5r') setDisabled(false)
+    }, [])
 
     function withImage() {
         return _.isPlainObject(images2)
@@ -316,7 +324,7 @@ function Tab3() {
                                     className="whitespace-nowrap mb-16"
                                     variant="contained"
                                     color="secondary"
-                                    // disabled={valid()}
+                                    disabled={isDiable}
                                     onClick={handleSave}
                                 >
                                     Save

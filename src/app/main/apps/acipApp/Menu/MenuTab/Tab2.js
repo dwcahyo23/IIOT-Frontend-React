@@ -18,6 +18,8 @@ import FuseSvgIcon from '@fuse/core/FuseSvgIcon'
 import { useDispatch } from 'react-redux'
 import { saveGenbaAcip } from '../../store/genba/genbaAcipSlice'
 import { showMessage } from 'app/store/fuse/messageSlice'
+import { selectUser } from 'app/store/userSlice'
+import { useSelector } from 'react-redux'
 
 function Tab2() {
     const dispatch = useDispatch()
@@ -25,6 +27,8 @@ function Tab2() {
     const { control, formState, getValues, setValue, resetField } = methods
     const { errors, isValid } = formState
     const { images1 } = getValues()
+    const user = useSelector(selectUser)
+    const [isDiable, setDisabled] = useState(true)
 
     function withImage() {
         return `data:${images1.mimetype};base64,${images1.data}`
@@ -32,6 +36,10 @@ function Tab2() {
 
     function handleSave(params) {
         // console.log(getValues('new_img1'))
+        useEffect(() => {
+            if (user.data.userNIK !== 'user5r') setDisabled(false)
+        }, [])
+
         const data = getValues()
         const omitData = _.omit(data, ['images1', 'images2'])
 
@@ -335,7 +343,7 @@ function Tab2() {
                                     className="whitespace-nowrap mb-16"
                                     variant="contained"
                                     color="secondary"
-                                    // disabled={valid()}
+                                    disabled={isDiable}
                                     onClick={handleSave}
                                 >
                                     Save

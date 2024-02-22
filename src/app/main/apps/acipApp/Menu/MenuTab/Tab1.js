@@ -4,17 +4,20 @@ import { Dialog, DialogTitle, DialogContent } from '@mui/material'
 import dayjs from 'dayjs'
 import { Controller, useFormContext, useForm } from 'react-hook-form'
 import _ from 'lodash'
-
 import { useDispatch } from 'react-redux'
 import {
     saveGenbaAcip,
     removeGenbaAcip,
 } from '../../store/genba/genbaAcipSlice'
 import { showMessage } from 'app/store/fuse/messageSlice'
+import { selectUser } from 'app/store/userSlice'
+import { useSelector } from 'react-redux'
 
 function Tab1({ useDelete }) {
     const dispatch = useDispatch()
     const methods = useFormContext()
+    const user = useSelector(selectUser)
+    const [isDiable, setDisabled] = useState(true)
     const { control, formState, getValues, setValue, resetField } = methods
     const { errors, isValid } = formState
     const [open, setOpen] = useState(false)
@@ -22,6 +25,10 @@ function Tab1({ useDelete }) {
     const { handleSubmit, register } = useForm({
         shouldUseNativeValidation: true,
     })
+
+    useEffect(() => {
+        if (user.data.userNIK !== 'user5r') setDisabled(false)
+    }, [])
 
     const onSubmit = async (data) => {
         const { sheet } = getValues()
@@ -238,6 +245,7 @@ function Tab1({ useDelete }) {
                             className="whitespace-nowrap mb-16"
                             variant="contained"
                             color="secondary"
+                            disabled={isDiable}
                             onClick={handleSave}
                         >
                             Save
@@ -248,6 +256,7 @@ function Tab1({ useDelete }) {
                             className="whitespace-nowrap mb-16"
                             variant="contained"
                             color="error"
+                            disabled={isDiable}
                             onClick={handleDelete}
                         >
                             Delete

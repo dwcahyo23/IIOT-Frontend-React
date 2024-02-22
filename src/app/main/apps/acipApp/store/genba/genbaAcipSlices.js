@@ -103,18 +103,32 @@ export const selectFilteredGenbas = createSelector(
 )
 
 export const selectFilteredGenbasForChart = createSelector(
-    [selectGenbasAcip, selectGenbasCom, selectGenbaDept, selectGenbaArea],
-    (genbas, genbasCom, genbasDept, genbasArea) => {
+    [
+        selectGenbasAcip,
+        selectGenbasCom,
+        selectGenbaDept,
+        selectGenbaArea,
+        selectGenbaYear,
+    ],
+    (genbas, genbasCom, genbasDept, genbasArea, year) => {
         function getFilter() {
             if (
                 genbasCom === 'ALL' &&
                 genbasDept === 'ALL' &&
-                genbasArea === 'ALL'
+                genbasArea === 'ALL' &&
+                year === 'ALL'
             ) {
                 return genbas
             }
             return _.filter(genbas, (val) => {
                 if (genbasCom !== 'ALL' && val.com !== genbasCom) {
+                    return false
+                }
+
+                if (
+                    year !== 'ALL' &&
+                    dayjs(val.createdAt).format('YYYY') !== year
+                ) {
                     return false
                 }
 
