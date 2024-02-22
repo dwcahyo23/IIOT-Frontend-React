@@ -30,15 +30,16 @@ function Tab2() {
     const user = useSelector(selectUser)
     const [isDiable, setDisabled] = useState(true)
 
+    useEffect(() => {
+        if (user.data.userNIK !== 'user5r') setDisabled(false)
+    }, [])
+
     function withImage() {
         return `data:${images1.mimetype};base64,${images1.data}`
     }
 
     function handleSave(params) {
         // console.log(getValues('new_img1'))
-        useEffect(() => {
-            if (user.data.userNIK !== 'user5r') setDisabled(false)
-        }, [])
 
         const data = getValues()
         const omitData = _.omit(data, ['images1', 'images2'])
