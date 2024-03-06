@@ -254,7 +254,11 @@ function DialogMenu3({ params }) {
                         defaultValue="#0 ADD NEW ITEM"
                         control={control}
                         render={({ field }) => (
-                            <VirtualizedData field={field} data={stock} />
+                            <VirtualizedData
+                                field={field}
+                                data={stock}
+                                label="Sparepart"
+                            />
                         )}
                     />
                 </Grid>

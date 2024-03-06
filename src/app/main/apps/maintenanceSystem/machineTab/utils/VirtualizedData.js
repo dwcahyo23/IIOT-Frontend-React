@@ -128,14 +128,18 @@ const StyledPopper = styled(Popper)({
     },
 })
 
-export default function VirtualizedData({ field, data }) {
+export default function VirtualizedData({ field, data, label }) {
     const getData = data.map((x) => {
-        return x.mat_name || x.item_name
+        return x.mat_name || x.item_name || x.mch_code
     })
+    const [inputValue, setInputValue] = React.useState('')
     // console.log({ field })
 
     return (
         <Autocomplete
+            freeSolo
+            autoSelect
+            clearOnBlur
             id="virtualize-demo"
             sx={{ width: '100%' }}
             className="mt-8 mb-16"
@@ -144,13 +148,15 @@ export default function VirtualizedData({ field, data }) {
             onChange={(event, value) => {
                 field.onChange(value)
             }}
+            inputValue={inputValue}
+            onInputChange={(event, newInputValue) => {
+                setInputValue(newInputValue)
+            }}
             value={field.value}
             ListboxComponent={ListboxComponent}
             options={!data ? ['Loading..'] : getData}
             groupBy={(option) => option[0].toUpperCase()}
-            renderInput={(params) => (
-                <TextField {...params} label="Sparepart" />
-            )}
+            renderInput={(params) => <TextField {...params} label={label} />}
             renderOption={(props, option, state) => [
                 props,
                 option,

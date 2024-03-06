@@ -16,6 +16,12 @@ export const status = [
         color: 'error',
         icon: 'heroicons-outline:x',
     },
+    {
+        id: 'Cancel',
+        name: 'Cancel',
+        color: 'error',
+        icon: 'heroicons-outline:x',
+    },
 ]
 
 function StatusChip(props) {

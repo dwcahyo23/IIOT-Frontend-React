@@ -8,8 +8,7 @@ import axios from 'axios'
 import { saveScw, updateScw, removeScw } from './scwProductionSlice'
 import _ from 'lodash'
 import dayjs from 'dayjs'
-import { getMonthScw, getCountStatusScw } from './scwUtils'
-import { Title } from '@mui/icons-material'
+import { getMonthScw, getCountStatusScw, getCountDeptChart } from './scwUtils'
 
 export const getScwSlices = createAsyncThunk('pdApp/scw/getScws', async () => {
     const response = await axios.get(`http://192.168.192.7:5000/ProductionScw`)
@@ -35,7 +34,9 @@ export const { selectAll: selectScws, selectById: selectScwById } =
 export const searchText = ({ pdApp }) => pdApp.scws.searchText
 export const status = ({ pdApp }) => pdApp.scws.status
 export const scwYear = ({ pdApp }) => pdApp.scws.scwYear
+export const scwMonth = ({ pdApp }) => pdApp.scws.scwMonth
 export const scwCom = ({ pdApp }) => pdApp.scws.scwCom
+export const scwDept = ({ pdApp }) => pdApp.scws.scwDept
 export const scwPending = ({ pdApp }) => pdApp.scws.pending
 
 export const selectScwYear = createSelector([selectScws], (data) => {
@@ -46,6 +47,12 @@ export const selectScwYear = createSelector([selectScws], (data) => {
         .sort()
         .value()
 
+    return x
+})
+
+export const selectScwMonth = createSelector(() => {
+    const x = getMonthScw()
+    x.unshift('ALL')
     return x
 })
 
@@ -61,14 +68,16 @@ export const selectScwCom = createSelector([selectScws], (data) => {
 })
 
 export const filteredScw = createSelector(
-    [selectScws, scwYear, scwCom, searchText, status],
-    (data, year, com, text, status) => {
+    [selectScws, scwYear, scwMonth, scwCom, scwDept, searchText, status],
+    (data, year, month, com, dept, text, status) => {
         function getFilter() {
             if (
                 text.length === 0 &&
                 year === 'ALL' &&
+                month === 'ALL' &&
                 com === 'ALL' &&
-                status === 'ALL'
+                status === 'ALL' &&
+                dept === 'ALL'
             ) {
                 return data
             }
@@ -80,7 +89,18 @@ export const filteredScw = createSelector(
                     return false
                 }
 
+                if (
+                    month !== 'ALL' &&
+                    dayjs(val.createdAt).format('MMMM') !== month
+                ) {
+                    return false
+                }
+
                 if (com !== 'ALL' && val.com !== com) {
+                    return false
+                }
+
+                if (dept !== 'ALL' && val.req_to !== dept) {
                     return false
                 }
 
@@ -128,6 +148,43 @@ export const filteredScwChartOpenClose = createSelector(
     }
 )
 
+export const filterScwChartDept = createSelector(
+    [selectScws, scwYear, scwMonth, scwCom],
+    (data, year, month, com) => {
+        function getFilter() {
+            if (year === 'ALL' && scwMonth === 'ALL' && com === 'ALL') {
+                return data
+            }
+            return _.filter(data, (val) => {
+                if (
+                    year !== 'ALL' &&
+                    dayjs(val.createdAt).format('YYYY') !== year
+                ) {
+                    return false
+                }
+
+                if (
+                    month !== 'ALL' &&
+                    dayjs(val.createdAt).format('MMMM') !== month
+                ) {
+                    return false
+                }
+
+                if (com !== 'ALL' && val.com !== com) {
+                    return false
+                }
+
+                return val
+            })
+        }
+
+        if (data) {
+            return getFilter()
+            // console.log(getCountDeptChart(getFilter()))
+        }
+    }
+)
+
 // * END SELECTOR
 
 const scwProductionSlices = createSlice({
@@ -136,8 +193,9 @@ const scwProductionSlices = createSlice({
         searchText: '',
         scwCom: 'ALL',
         scwYear: 'ALL',
-        scwMonth: 'January',
+        scwMonth: 'ALL',
         pending: false,
+        scwDept: 'ALL',
         status: 'ALL',
     }),
     reducers: {
@@ -152,6 +210,22 @@ const scwProductionSlices = createSlice({
         setScwYear: {
             reducer: (state, action) => {
                 state.scwYear = action.payload
+            },
+            prepare: (event) => {
+                return { payload: event }
+            },
+        },
+        setScwMonth: {
+            reducer: (state, action) => {
+                state.scwMonth = action.payload
+            },
+            prepare: (event) => {
+                return { payload: event }
+            },
+        },
+        setScwDept: {
+            reducer: (state, action) => {
+                state.scwDept = action.payload
             },
             prepare: (event) => {
                 return { payload: event }
@@ -185,7 +259,13 @@ const scwProductionSlices = createSlice({
     },
 })
 
-export const { setScwCom, setScwYear, setSearchText, setScwStatus } =
-    scwProductionSlices.actions
+export const {
+    setScwCom,
+    setScwYear,
+    setScwMonth,
+    setSearchText,
+    setScwStatus,
+    setScwDept,
+} = scwProductionSlices.actions
 
 export default scwProductionSlices.reducer

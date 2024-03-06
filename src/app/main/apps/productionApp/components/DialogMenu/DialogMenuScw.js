@@ -18,7 +18,6 @@ function DialogMenuScw({ params }) {
     const [tabValue, setTabValue] = useState('1')
 
     const schema = yup.object().shape({
-        area: yup.string().required('Required'),
         mch_code: yup.string().required('Required'),
         problem: yup.string().required('Required'),
     })
@@ -37,16 +36,14 @@ function DialogMenuScw({ params }) {
         setTabValue(value)
     }
 
-    useEffect(() => {
-        !_.has(params.data, 'uuid') ? setTabValue('1') : setTabValue('2')
-    }, [])
+    function hasFrom() {
+        return !_.has(params.data, 'uuid') ? 'INPUT' : 'UPDATE'
+    }
 
     useEffect(() => {
         if (!params) {
             return
         }
-        console.log(_.has(params.data, 'uuid'))
-
         reset(params.data)
     }, [params])
 
@@ -55,31 +52,17 @@ function DialogMenuScw({ params }) {
             <TabContext value={tabValue}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <TabList onChange={handleTabChange}>
-                        {!_.has(params.data, 'uuid') && (
-                            <Tab label="SCW-INPUT" value="1" />
-                        )}
-                        {_.has(params.data, 'uuid') && (
-                            <Tab label="SCW-UPDATE" value="2" />
-                        )}
+                        <Tab label="SCW-INPUT" value="1" />
+                        <Tab label="SCW-UPDATE" value="2" />
                     </TabList>
                 </Box>
+
                 <TabPanel value="1">
-                    <Dialog2 params={params.data} />
+                    <Dialog2 params={params.data} hasForm={hasFrom()} />
                 </TabPanel>
                 <TabPanel value="2">
-                    <Dialog1 params={params.data} />
+                    <Dialog1 params={params.data} hasForm={hasFrom()} />
                 </TabPanel>
-
-                {/* {!_.has(params.data, 'uuid') && (
-                    <TabPanel value="1">
-                        <Dialog2 params={params.data} />
-                    </TabPanel>
-                )}
-                {_.has(params.data, 'uuid') && (
-                    <TabPanel value="2">
-                        <Dialog1 params={params.data} />
-                    </TabPanel>
-                )} */}
             </TabContext>
         </FormProvider>
     )

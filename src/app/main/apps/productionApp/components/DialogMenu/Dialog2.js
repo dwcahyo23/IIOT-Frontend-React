@@ -13,24 +13,29 @@ import ReactToPrint from 'react-to-print'
 import { showMessage } from 'app/store/fuse/messageSlice'
 import _ from 'lodash'
 
+import { selectMnMachines } from '../../../maintenanceApp/store/machineStore/machineMnSlices'
 import { selectUser } from 'app/store/userSlice'
 import {
     scwActionPending,
     saveScw,
     updateScw,
 } from '../../store/scwStore/scwProductionSlice'
+import VirtualizedData from '../../../maintenanceSystem/machineTab/utils/VirtualizedData'
 
-function Dialog2({ params }) {
+function Dialog2({ params, hasForm }) {
     const methods = useFormContext()
     const dispatch = useDispatch()
     const user = useSelector(selectUser)
     const isPending = useSelector(scwActionPending)
-
+    const machines = useSelector(selectMnMachines)
     const { control, formState, getValues, setValue, resetField } = methods
-
     const { errors, isValid, dirtyFields } = formState
+    const [disabled, setDisabled] = useState(true)
 
-    console.log(isValid)
+    useEffect(() => {
+        hasForm == 'INPUT' && setDisabled(false)
+        console.log(hasForm)
+    }, [])
 
     function handleSubmit() {
         // console.log(getValues())
@@ -59,14 +64,16 @@ function Dialog2({ params }) {
                     <Controller
                         name="com"
                         control={control}
-                        defaultValue={params.com || 'GM1'}
+                        defaultValue="GM1"
                         render={({ field }) => (
                             <TextField
                                 {...field}
+                                id="com"
+                                key="com"
                                 className="mt-8 mb-16"
                                 label="Company"
                                 select
-                                autoFocus
+                                autoFocus={true}
                                 variant="outlined"
                                 fullWidth
                             >
@@ -78,7 +85,7 @@ function Dialog2({ params }) {
                         )}
                     />
                 </Grid>
-                <Grid item xs={2}>
+                {/* <Grid item xs={2}>
                     <Controller
                         name="area"
                         control={control}
@@ -88,7 +95,7 @@ function Dialog2({ params }) {
                                 {...field}
                                 className="mt-8 mb-16"
                                 label="Area"
-                                autoFocus
+                                 autoFocus={true}
                                 variant="outlined"
                                 fullWidth
                                 error={!!errors.area}
@@ -97,23 +104,28 @@ function Dialog2({ params }) {
                             />
                         )}
                     />
-                </Grid>
+                </Grid> */}
                 <Grid item xs={3}>
                     <Controller
                         name="mch_code"
                         control={control}
-                        defaultValue={params.mch_code || ''}
+                        defaultValue=""
                         render={({ field }) => (
-                            <TextField
-                                {...field}
-                                className="mt-8 mb-16"
-                                label="Machine Code"
-                                autoFocus
-                                variant="outlined"
-                                fullWidth
-                                error={!!errors.mch_code}
-                                required
-                                helperText={errors?.mch_code?.message}
+                            // <TextField
+                            //     {...field}
+                            //     className="mt-8 mb-16"
+                            //     label="Machine Code"
+                            //      autoFocus={true}
+                            //     variant="outlined"
+                            //     fullWidth
+                            //     error={!!errors.mch_code}
+                            //     required
+                            //     helperText={errors?.mch_code?.message}
+                            // />
+                            <VirtualizedData
+                                field={field}
+                                data={machines}
+                                label="Machine"
                             />
                         )}
                     />
@@ -122,26 +134,23 @@ function Dialog2({ params }) {
                     <Controller
                         name="req_to"
                         control={control}
-                        defaultValue={params.req_to || 'ENGINERING'}
+                        defaultValue="PE"
                         render={({ field }) => (
                             <TextField
                                 {...field}
+                                id="req_to"
+                                key="req_to"
                                 className="mt-8 mb-16"
-                                label="Req TO"
+                                label="Req To"
                                 select
-                                autoFocus
+                                autoFocus={true}
                                 variant="outlined"
                                 fullWidth
                             >
-                                <MenuItem value="ENGINERING">
-                                    ENGINERING
-                                </MenuItem>
-                                <MenuItem value="MAINTENANCE">
-                                    MAINTENANCE
-                                </MenuItem>
-                                <MenuItem value="TOOL&DIES">
-                                    TOOL & DIES
-                                </MenuItem>
+                                <MenuItem value="PE">PE</MenuItem>
+                                <MenuItem value="TE">TE</MenuItem>
+                                <MenuItem value="MN">MN</MenuItem>
+                                <MenuItem value="TD">TD</MenuItem>
                                 <MenuItem value="PPIC">PPIC</MenuItem>
                                 <MenuItem value="QC">QC</MenuItem>
                             </TextField>
@@ -177,18 +186,58 @@ function Dialog2({ params }) {
                 </Grid>
             </Grid>
             <Grid container spacing={2}>
+                <Grid item xs={6}>
+                    <Controller
+                        name="no_drawing"
+                        defaultValue=""
+                        control={control}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                id="no_drawing"
+                                key="no_drawing"
+                                className="mt-8 mb-16"
+                                label="Draw No."
+                                autoFocus={true}
+                                variant="outlined"
+                                fullWidth
+                            />
+                        )}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <Controller
+                        name="name_prd"
+                        defaultValue=""
+                        control={control}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                id="name_prd"
+                                key="name_prd"
+                                className="mt-8 mb-16"
+                                label="Prd. Name"
+                                autoFocus={true}
+                                variant="outlined"
+                                fullWidth
+                            />
+                        )}
+                    />
+                </Grid>
+            </Grid>
+            <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Controller
                         name="problem"
                         control={control}
-                        defaultValue={params.problem || ''}
+                        defaultValue=""
                         render={({ field }) => (
                             <TextField
                                 {...field}
                                 className="mt-8 mb-16"
                                 label="Problem"
                                 placeholder="Tuliskan masalah secara lengkap"
-                                autoFocus
+                                autoFocus={true}
                                 variant="outlined"
                                 fullWidth
                                 multiline
@@ -212,9 +261,10 @@ function Dialog2({ params }) {
                                 {...field}
                                 className="mt-8 mb-16"
                                 label="Input By"
-                                autoFocus
+                                autoFocus={true}
                                 variant="outlined"
                                 fullWidth
+                                disabled
                             />
                         )}
                     />
@@ -229,7 +279,8 @@ function Dialog2({ params }) {
                         loadingPosition="start"
                         startIcon={<Save />}
                         onClick={handleSubmit}
-                        disabled={_.isEmpty(dirtyFields) || !isValid}
+                        // disabled={_.isEmpty(dirtyFields) || !isValid}
+                        disabled={disabled}
                     >
                         <span>SAVE</span>
                     </LoadingButton>

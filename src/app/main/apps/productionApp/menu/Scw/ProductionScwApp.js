@@ -29,8 +29,16 @@ import {
     selectScwYear,
     filteredScw,
     scwPending,
+    setScwDept,
+    scwDept,
+    scwMonth,
+    selectScwMonth,
+    setScwMonth,
 } from '../../store/scwStore/scwProductionSlices'
 import ProductionAppScwMain from './ProductionAppScwMain'
+import { getMnMachineSlice } from 'src/app/main/dashboard/maintenanceSystem/store/mnMachineSlice'
+import { getMachineMnSlices } from '../../../maintenanceApp/store/machineStore/machineMnSlices'
+import ProductionAppScwHistori from './ProductionAppScwHistori'
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
     '& .FusePageSimple-header': {
@@ -46,17 +54,20 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 
 function ProductionScwApp() {
     const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'))
+    const [option, setOption] = useState('list')
     const dispatch = useDispatch()
-
-    const [selectYear, selectCom] = [
+    const [selectYear, selectMonth, selectCom] = [
         useSelector(selectScwYear),
+        useSelector(selectScwMonth),
         useSelector(selectScwCom),
     ]
-    const [useCom, useYear, useStatus, isPending] = [
+    const [useCom, useYear, useMonth, useStatus, isPending, useDept] = [
         useSelector(scwCom),
         useSelector(scwYear),
+        useSelector(scwMonth),
         useSelector(status),
         useSelector(scwPending),
+        useSelector(scwDept),
     ]
     const data = useSelector(filteredScw)
 
@@ -64,8 +75,16 @@ function ProductionScwApp() {
         dispatch(setScwCom(value.props.value))
     }
 
+    function handleDept(event, value) {
+        dispatch(setScwDept(value.props.value))
+    }
+
     function handleYear(event, value) {
         dispatch(setScwYear(value.props.value))
+    }
+
+    function handleMonth(event, value) {
+        dispatch(setScwMonth(value.props.value))
     }
 
     function handleStatus(event, value) {
@@ -74,13 +93,26 @@ function ProductionScwApp() {
 
     function reload(event, value) {
         dispatch(getScwSlices())
+        dispatch(getMachineMnSlices())
+    }
+
+    function handleOption(event, value) {
+        setOption(value)
+    }
+
+    function SelectOption() {
+        if (option == 'list') {
+            return <ProductionAppScwMain />
+        } else {
+            return <ProductionAppScwHistori />
+        }
     }
 
     return (
         <Root
             content={
                 <div className="flex flex-col flex-1 w-full mx-auto px-16 pt-8 sm:p-40">
-                    <div className="flex flex-col shrink-0 sm:flex-row items-center justify-between space-y-16 sm:space-y-0 mt-8 mb-16">
+                    <div className="flex flex-col shrink-0 sm:flex-row items-center justify-between space-y-16 sm:space-y-0">
                         <div className="flex items-center max-w-full">
                             <motion.div
                                 className="flex flex-col items-center sm:items-start min-w-0 mx-8 sm:mx-16"
@@ -91,7 +123,7 @@ function ProductionScwApp() {
                                 }}
                             >
                                 <Typography className="text-16 sm:text-20 truncate font-semibold">
-                                    SCW
+                                    SCW (Stop Call Wait Abnormality System)
                                 </Typography>
                                 <Typography
                                     variant="caption"
@@ -101,6 +133,46 @@ function ProductionScwApp() {
                                 </Typography>
                             </motion.div>
                         </div>
+                    </div>
+
+                    <div className="flex flex-1 justify-start my-16 lg:my-0">
+                        <Tabs
+                            value={option}
+                            onChange={handleOption}
+                            indicatorColor="secondary"
+                            textColor="inherit"
+                            variant="scrollable"
+                            scrollButtons={false}
+                            classes={{
+                                indicator:
+                                    'flex justify-center bg-transparent w-full h-full',
+                            }}
+                            TabIndicatorProps={{
+                                children: (
+                                    <Box
+                                        sx={{
+                                            bgcolor: 'text.disabled',
+                                        }}
+                                        className="w-full h-full rounded-full opacity-20"
+                                    />
+                                ),
+                            }}
+                        >
+                            <Tab
+                                className="text-14 font-semibold min-h-20 min-w-64 mx-2 px-8"
+                                disableRipple
+                                key={1}
+                                label="List"
+                                value="list"
+                            />
+                            <Tab
+                                className="text-14 font-semibold min-h-20 min-w-64 mx-2 px-8"
+                                disableRipple
+                                key={2}
+                                label="History"
+                                value="histori"
+                            />
+                        </Tabs>
                     </div>
 
                     <div className="flex flex-1 justify-start my-16 lg:my-0 mt-8 mb-16">
@@ -113,11 +185,32 @@ function ProductionScwApp() {
                             <Select
                                 labelId="category-select-label"
                                 id="category-select"
-                                label="Category"
+                                label="Year"
                                 value={useYear}
                                 onChange={handleYear}
                             >
                                 {selectYear.map((val, index) => (
+                                    <MenuItem value={val} key={index}>
+                                        {val}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+
+                        <FormControl
+                            className="flex w-full sm:w-auto mx-8"
+                            variant="outlined"
+                        >
+                            <InputLabel>Month</InputLabel>
+
+                            <Select
+                                labelId="category-select-label"
+                                id="category-select"
+                                label="Month"
+                                value={useMonth}
+                                onChange={handleMonth}
+                            >
+                                {selectMonth.map((val, index) => (
                                     <MenuItem value={val} key={index}>
                                         {val}
                                     </MenuItem>
@@ -143,6 +236,29 @@ function ProductionScwApp() {
                                         {val}
                                     </MenuItem>
                                 ))}
+                            </Select>
+                        </FormControl>
+
+                        <FormControl
+                            className="flex w-full sm:w-auto mx-8"
+                            variant="outlined"
+                        >
+                            <InputLabel>Dept</InputLabel>
+
+                            <Select
+                                labelId="category-select-label"
+                                id="category-select"
+                                label="Category"
+                                value={useDept}
+                                onChange={handleDept}
+                            >
+                                <MenuItem value="ALL">All</MenuItem>
+                                <MenuItem value="PE">PE</MenuItem>
+                                <MenuItem value="TE">TE</MenuItem>
+                                <MenuItem value="MN">MN</MenuItem>
+                                <MenuItem value="TD">TD</MenuItem>
+                                <MenuItem value="PPIC">PPIC</MenuItem>
+                                <MenuItem value="QC">QC</MenuItem>
                             </Select>
                         </FormControl>
 
@@ -177,7 +293,7 @@ function ProductionScwApp() {
                         </LoadingButton>
                     </div>
 
-                    {data && <ProductionAppScwMain />}
+                    {data && <SelectOption />}
                 </div>
             }
             scroll={isMobile ? 'normal' : 'page'}

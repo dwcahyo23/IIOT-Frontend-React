@@ -20,18 +20,20 @@ import {
     updateScw,
 } from '../../store/scwStore/scwProductionSlice'
 
-function Dialog1({ params }) {
+function Dialog1({ params, hasForm }) {
     const methods = useFormContext()
     const dispatch = useDispatch()
     const isPending = useSelector(scwActionPending)
     const user = useSelector(selectUser)
-
     const { control, formState, getValues, setValue, resetField } = methods
-
     const { errors, isValid, dirtyFields } = formState
+    const [disabled, setDisabled] = useState(true)
+
+    useEffect(() => {
+        hasForm == 'UPDATE' && setDisabled(false)
+    }, [])
 
     function handleSubmit() {
-        // console.log(getValues())
         dispatch(updateScw(getValues())).then((action) => {
             if (action.meta.requestStatus === 'rejected') {
                 dispatch(
@@ -57,46 +59,22 @@ function Dialog1({ params }) {
                     <Controller
                         name="com"
                         control={control}
-                        defaultValue={params.com || 'GM1'}
+                        defaultValue={params.com || ''}
                         render={({ field }) => (
                             <TextField
                                 {...field}
                                 className="mt-8 mb-16"
                                 label="Company"
-                                select
                                 autoFocus
+                                id="com"
                                 variant="outlined"
                                 fullWidth
                                 disabled
-                            >
-                                <MenuItem value="GM1">GM1</MenuItem>
-                                <MenuItem value="GM2">GM2</MenuItem>
-                                <MenuItem value="GM3">GM3</MenuItem>
-                                <MenuItem value="GM5">GM5</MenuItem>
-                            </TextField>
-                        )}
-                    />
-                </Grid>
-                <Grid item xs={2}>
-                    <Controller
-                        name="area"
-                        control={control}
-                        defaultValue={params.area || ''}
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                className="mt-8 mb-16"
-                                label="Area"
-                                autoFocus
-                                variant="outlined"
-                                fullWidth
-                                error={!!errors.area}
-                                required
-                                helperText={errors?.area?.message}
                             />
                         )}
                     />
                 </Grid>
+
                 <Grid item xs={3}>
                     <Controller
                         name="mch_code"
@@ -108,11 +86,10 @@ function Dialog1({ params }) {
                                 className="mt-8 mb-16"
                                 label="Machine Code"
                                 autoFocus
+                                id="mch_code"
                                 variant="outlined"
                                 fullWidth
-                                error={!!errors.mch_code}
-                                required
-                                helperText={errors?.mch_code?.message}
+                                disabled
                             />
                         )}
                     />
@@ -121,29 +98,18 @@ function Dialog1({ params }) {
                     <Controller
                         name="req_to"
                         control={control}
-                        defaultValue={params.req_to || 'ENGINERING'}
+                        defaultValue={params.req_to || 'PE'}
                         render={({ field }) => (
                             <TextField
                                 {...field}
                                 className="mt-8 mb-16"
-                                label="Req TO"
-                                select
+                                label="Req To"
                                 autoFocus
+                                id="req_to"
                                 variant="outlined"
                                 fullWidth
-                            >
-                                <MenuItem value="ENGINERING">
-                                    ENGINERING
-                                </MenuItem>
-                                <MenuItem value="MAINTENANCE">
-                                    MAINTENANCE
-                                </MenuItem>
-                                <MenuItem value="TOOL&DIES">
-                                    TOOL & DIES
-                                </MenuItem>
-                                <MenuItem value="PPIC">PPIC</MenuItem>
-                                <MenuItem value="QC">QC</MenuItem>
-                            </TextField>
+                                disabled
+                            />
                         )}
                     />
                 </Grid>
@@ -160,7 +126,7 @@ function Dialog1({ params }) {
                                     ampm={false}
                                     value={dayjs(field.value)}
                                     className="mt-8 mb-16"
-                                    id="date_report"
+                                    id="start_time"
                                     label="Start"
                                     sx={{
                                         width: '100%',
@@ -168,6 +134,44 @@ function Dialog1({ params }) {
                                     disabled
                                 />
                             </LocalizationProvider>
+                        )}
+                    />
+                </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+                <Grid item xs={6}>
+                    <Controller
+                        name="no_drawing"
+                        defaultValue={params.no_drawing || ''}
+                        control={control}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                className="mt-8 mb-16"
+                                label="Draw No."
+                                autoFocus
+                                variant="outlined"
+                                fullWidth
+                                disabled
+                            />
+                        )}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <Controller
+                        name="name_prd"
+                        defaultValue={params.name_prd || ''}
+                        control={control}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                className="mt-8 mb-16"
+                                label="Prd. Name"
+                                autoFocus
+                                variant="outlined"
+                                fullWidth
+                                disabled
+                            />
                         )}
                     />
                 </Grid>
@@ -182,16 +186,41 @@ function Dialog1({ params }) {
                             <TextField
                                 {...field}
                                 className="mt-8 mb-16"
-                                label="Remarks"
+                                label="Problem"
                                 placeholder="Tuliskan masalah secara lengkap"
                                 autoFocus
                                 variant="outlined"
                                 fullWidth
                                 multiline
+                                id="problem"
                                 rows={4}
+                                disabled
                                 error={!!errors.problem}
                                 required
                                 helperText={errors?.problem?.message}
+                            />
+                        )}
+                    />
+                </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <Controller
+                        name="remarks"
+                        control={control}
+                        defaultValue={params.remarks || ''}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                className="mt-8 mb-16"
+                                label="Remarks"
+                                placeholder="Tuliskan remark untuk proses statusnya"
+                                autoFocus
+                                id="remarks"
+                                variant="outlined"
+                                fullWidth
+                                multiline
+                                rows={4}
                             />
                         )}
                     />
@@ -224,19 +253,19 @@ function Dialog1({ params }) {
                     <Controller
                         name="end_time"
                         control={control}
-                        defaultValue={params.start_time || dayjs()}
+                        defaultValue={params.end_time || dayjs()}
                         render={({ field }) => (
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DateTimePicker
                                     {...field}
                                     ampm={false}
                                     value={
-                                        _.isUndefined(field.value)
+                                        _.isNull(field.value)
                                             ? dayjs()
                                             : dayjs(field.value)
                                     }
                                     className="mt-8 mb-16"
-                                    id="date_report"
+                                    id="end_time"
                                     label="Finish"
                                     sx={{
                                         width: '100%',
@@ -256,6 +285,7 @@ function Dialog1({ params }) {
                                 {...field}
                                 className="mt-8 mb-16"
                                 label="Input By"
+                                id="input_by"
                                 autoFocus
                                 variant="outlined"
                                 fullWidth
@@ -264,7 +294,7 @@ function Dialog1({ params }) {
                         )}
                     />
                 </Grid>
-                <Grid item xs={3}>
+                {/* <Grid item xs={3}>
                     <Controller
                         name="finished_by"
                         defaultValue={user.data.displayName}
@@ -273,14 +303,16 @@ function Dialog1({ params }) {
                             <TextField
                                 {...field}
                                 className="mt-8 mb-16"
-                                label="Finished By"
+                                label="Finish By"
+                                value={user.data.displayName}
                                 autoFocus
                                 variant="outlined"
                                 fullWidth
+                                inputProps="readonly"
                             />
                         )}
                     />
-                </Grid>
+                </Grid> */}
             </Grid>
             <Grid container spacing={2}>
                 <Grid item xs={4}>
@@ -291,7 +323,8 @@ function Dialog1({ params }) {
                         loadingPosition="start"
                         startIcon={<Save />}
                         onClick={handleSubmit}
-                        disabled={_.isEmpty(dirtyFields) || !isValid}
+                        // disabled={_.isEmpty(dirtyFields) || !isValid}
+                        disabled={disabled}
                     >
                         <span>SAVE</span>
                     </LoadingButton>

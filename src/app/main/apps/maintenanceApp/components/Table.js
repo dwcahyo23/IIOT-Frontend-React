@@ -134,12 +134,16 @@ function Table({ params, tableIndex }) {
             rows={params.row}
             columns={params.columns}
             getRowHeight={() => 'auto'}
-            getRowId={(row) => row.id}
+            getRowId={(row) => row.id || row.uuid}
             onRowDoubleClick={(data) => tableIndex(data)}
             checkboxSelection
             density="compact"
             slotProps={{ toolbar: { rows, column } }}
             autoPageSize
+            initialState={{
+                pagination: { paginationModel: { pageSize: 100 } },
+            }}
+            pageSizeOptions={[25, 50, 100]}
         />
     )
 }

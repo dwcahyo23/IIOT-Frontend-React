@@ -23,3 +23,28 @@ export const getCountStatusScw = (params) => {
         .value()
     return chart
 }
+
+export const getCountDeptChart = (params) => {
+    const dept = ['PE', 'TE', 'MN', 'TD', 'PPIC', 'QC']
+
+    const x = _(params)
+        .groupBy((val) => val.req_to)
+        .mapValues((val) => {
+            return {
+                Open: _.countBy(val, (r) => r.status == 'Open'),
+                Close: _.countBy(val, (r) => r.status == 'Close'),
+            }
+        })
+        .map((val, key) => {
+            return {
+                name: key,
+                data: [
+                    { name: 'Open', value: val.Open.true || 0 },
+                    { name: 'Close', value: val.Close.true || 0 },
+                ],
+            }
+        })
+        .value()
+
+    return x
+}

@@ -32,13 +32,9 @@ export const { selectAll: selectMnMachines, selectById: selectMnMachinesById } =
  */
 
 export const machinesCom = ({ mnApp }) => mnApp.machines.machinesCom
-
 export const machinesProcess = ({ mnApp }) => mnApp.machines.machinesProcess
-
 export const searchText = ({ mnApp }) => mnApp.machines.searchText
-
 export const machinesSection = ({ mnApp }) => mnApp.machines.machinesSection
-
 export const machinesResponbility = ({ mnApp }) =>
     mnApp.machines.machinesResponbility
 

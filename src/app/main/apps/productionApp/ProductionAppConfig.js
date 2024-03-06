@@ -4,7 +4,6 @@ import { authRoles } from 'src/app/auth'
 
 import ProductionApp from './ProductionApp'
 const ProducitnScw = lazy(() => import('./menu/Scw/ProductionScwApp'))
-const ProductionMachines = lazy(() => import('./menu/ProductionAppMachines'))
 
 const ProductionAppConfig = {
     setting: {
