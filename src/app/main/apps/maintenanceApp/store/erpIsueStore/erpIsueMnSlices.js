@@ -11,7 +11,7 @@ import { comUtils } from '../erpStore/erpMnSlices'
 export const getErpIsueMnSlices = createAsyncThunk(
     'mnApp/erpsisue/getErpsIsue',
     async () => {
-        const response = await axios.get(`http://localhost:5000/issumnerp`)
+        const response = await axios.get(`http://192.168.192.7:5000/issumnerp`)
 
         const data = await response.data
 

@@ -6,7 +6,7 @@ export const getMaintenanceSystem = createAsyncThunk(
     'maintenanceSystem/machineChildren/getMaintenanceSystem',
     async (uuid) => {
         const response = await axios.get(
-            `http://localhost:5000/maintenanceMachine/${uuid}`
+            `http://192.168.192.7:5000/maintenanceMachine/${uuid}`
         )
 
         const data = await response.data
@@ -20,7 +20,7 @@ export const saveMaintenanceSystem = createAsyncThunk(
     async (row, { dispatch, getState }) => {
         try {
             const response = await axios
-                .post(`http://localhost:5000/maintenanceReport`, row)
+                .post(`http://192.168.192.7:5000/maintenanceReport`, row)
                 .catch((err) => console.log(err))
             const data = await response.data
             return data
@@ -35,7 +35,7 @@ export const saveMaintenanceSystemRequest = createAsyncThunk(
     async (row, { dispatch, getState }) => {
         try {
             const response = await axios.post(
-                `http://localhost:5000/maintenanceRequest`,
+                `http://192.168.192.7:5000/maintenanceRequest`,
                 row
             )
             const data = await response.data

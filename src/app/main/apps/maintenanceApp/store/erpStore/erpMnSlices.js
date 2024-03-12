@@ -30,7 +30,7 @@ import { selectMnSpareparts } from '../sparepartStore/sparepartMnSlices'
 export const getErpMnSlices = createAsyncThunk(
     'mnApp/erps/getErps',
     async () => {
-        const response = await axios.get(`http://localhost:5000/mnerp`)
+        const response = await axios.get(`http://192.168.192.7:5000/mnerp`)
 
         const data = await response.data
 
