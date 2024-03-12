@@ -5,7 +5,7 @@ export const getErpStockControl = createAsyncThunk(
     'mnApp/erpstockcontrol/getErpStockControl',
     async (uuid) => {
         const response = await axios.get(
-            `http://192.168.192.7:5000/mnstockcontrolid/${uuid}`
+            `http://localhost:5000/mnstockcontrolid/${uuid}`
         )
 
         const data = await response.data
@@ -19,7 +19,7 @@ export const saveErpStockControl = createAsyncThunk(
     async (row, { dispatch, getState }) => {
         try {
             const response = await axios.patch(
-                `http://192.168.192.7:5000/mnstockcontrolid/${row.uuid}`,
+                `http://localhost:5000/mnstockcontrolid/${row.uuid}`,
                 row
             )
             const data = await response.data

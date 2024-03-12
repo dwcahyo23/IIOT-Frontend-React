@@ -128,7 +128,7 @@ const StyledPopper = styled(Popper)({
     },
 })
 
-export default function VirtualizedData({ field, data, label }) {
+export default function VirtualizedData({ field, data, label, disabled }) {
     const getData = data.map((x) => {
         return x.mat_name || x.item_name || x.mch_code
     })
@@ -137,6 +137,7 @@ export default function VirtualizedData({ field, data, label }) {
 
     return (
         <Autocomplete
+            disabled={disabled}
             freeSolo
             autoSelect
             clearOnBlur

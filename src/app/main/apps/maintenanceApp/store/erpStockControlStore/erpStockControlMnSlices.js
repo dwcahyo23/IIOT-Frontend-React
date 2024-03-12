@@ -11,9 +11,7 @@ import { comUtils } from '../erpStore/erpMnSlices'
 export const getErpStockControlMnSlices = createAsyncThunk(
     'mnApp/erpsstockcontrol/getErpStockControlMnSlices',
     async () => {
-        const response = await axios.get(
-            `http://192.168.192.7:5000/mnstockcontrol`
-        )
+        const response = await axios.get(`http://localhost:5000/mnstockcontrol`)
 
         const data = await response.data
 

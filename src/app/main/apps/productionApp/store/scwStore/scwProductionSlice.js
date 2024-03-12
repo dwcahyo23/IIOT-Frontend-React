@@ -4,7 +4,7 @@ import { create } from 'lodash'
 
 export const getScw = createAsyncThunk('pdApp/scw/getScw', async (uuid) => {
     const response = await axios.get(
-        `http://192.168.192.7:5000/ProductionSCW/${uuid}`
+        `http://localhost:5000/ProductionSCW/${uuid}`
     )
 
     const data = await response.data
@@ -17,7 +17,7 @@ export const updateScw = createAsyncThunk(
     async (row, { dispatch, getState, rejectWithValue }) => {
         try {
             const response = await axios.post(
-                `http://192.168.192.7:5000/ProductionSCW/${row.uuid}`,
+                `http://localhost:5000/ProductionSCW/${row.uuid}`,
                 row
             )
             const data = await response.data
@@ -34,7 +34,7 @@ export const saveScw = createAsyncThunk(
     async (row, { dispatch, getState, rejectWithValue }) => {
         try {
             const response = await axios.post(
-                `http://192.168.192.7:5000/ProductionSCW`,
+                `http://localhost:5000/ProductionSCW`,
                 row
             )
             const data = await response.data
@@ -50,7 +50,7 @@ export const removeScw = createAsyncThunk(
     'pdApp/scw/removeScw',
     async (uuid, { dispatch, getState }) => {
         const response = await axios.delete(
-            `http://192.168.192.7:5000/ProductionSCW/${uuid}`
+            `http://localhost:5000/ProductionSCW/${uuid}`
         )
 
         await response.data

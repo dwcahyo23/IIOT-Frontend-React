@@ -8,10 +8,16 @@ import axios from 'axios'
 import { saveScw, updateScw, removeScw } from './scwProductionSlice'
 import _ from 'lodash'
 import dayjs from 'dayjs'
-import { getMonthScw, getCountStatusScw, getCountDeptChart } from './scwUtils'
+import {
+    getMonthScw,
+    getCountStatusScw,
+    getCountDeptChart,
+    getDateofMonth,
+    getCountStatusOfDate,
+} from './scwUtils'
 
 export const getScwSlices = createAsyncThunk('pdApp/scw/getScws', async () => {
-    const response = await axios.get(`http://192.168.192.7:5000/ProductionScw`)
+    const response = await axios.get(`http://localhost:5000/ProductionScw`)
 
     const data = await response.data
 
@@ -118,6 +124,7 @@ export const filteredScw = createSelector(
         }
 
         if (data) {
+            getDateofMonth(month)
             return getFilter()
         }
     }
@@ -127,15 +134,40 @@ export const filteredScwChartOpenClose = createSelector(
     [filteredScw],
     (data) => {
         function getChart() {
-            const month = getMonthScw()
-
             const chart = getCountStatusScw(data)
+
+            const month = getMonthScw()
 
             const x = _.map(month, (val) => {
                 return {
                     name: val.substring(0, 3),
-                    data: chart[val] || { Open: 0, Close: 0 },
-                    title: 'Production SCW Chart',
+                    data: chart[val] || { Open: 0, Close: 0, OnProgress: 0 },
+                    title: 'Monthly SCW Chart',
+                }
+            })
+
+            return x
+        }
+
+        if (data) {
+            return getChart()
+        }
+    }
+)
+
+export const filteredScwChartDateOfMonth = createSelector(
+    [filteredScw, scwMonth],
+    (data, month) => {
+        function getChart() {
+            const date = getDateofMonth(month)
+
+            const chart = getCountStatusOfDate(data)
+
+            const x = _.map(date, (val) => {
+                return {
+                    name: val.substring(0, 3),
+                    data: chart[val] || { Open: 0, Close: 0, OnProgress: 0 },
+                    title: 'Daily SCW Chart',
                 }
             })
 
@@ -180,7 +212,6 @@ export const filterScwChartDept = createSelector(
 
         if (data) {
             return getFilter()
-            // console.log(getCountDeptChart(getFilter()))
         }
     }
 )

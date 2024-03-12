@@ -10,9 +10,7 @@ import { removeSparepart, saveSparepart } from './sparepartMnSlice'
 export const getSparepartSlices = createAsyncThunk(
     'mnApp/spareparts/getSpareparts',
     async () => {
-        const response = await axios.get(
-            `http://192.168.192.7:5000/mnsparepart`
-        )
+        const response = await axios.get(`http://localhost:5000/mnsparepart`)
 
         const data = await response.data
 

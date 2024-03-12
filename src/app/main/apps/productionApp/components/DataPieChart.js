@@ -18,7 +18,7 @@ import {
 
 import { indigo, red, green, blue, orange } from '@mui/material/colors'
 
-const COLORS = [red[500], green[500]]
+const COLORS = [red[500], green[500], orange[500]]
 
 const RADIAN = Math.PI / 180
 const renderCustomizedLabel = ({

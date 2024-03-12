@@ -10,7 +10,7 @@ import { saveReport, removeReport } from './reportMnSlice'
 export const getReportSlices = createAsyncThunk(
     'mnApp/reports/getReports',
     async () => {
-        const response = await axios.get(`http://192.168.192.7:5000/mnreport`)
+        const response = await axios.get(`http://localhost:5000/mnreport`)
 
         const data = await response.data
 

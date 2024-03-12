@@ -44,8 +44,8 @@ function DataChart({ params }) {
             </div>
             <div className="flex items-center justify-center px-8 pt-12">
                 <ComposedChart
-                    width={900}
-                    height={460}
+                    width={1000}
+                    height={200}
                     data={params.data}
                     margin={{
                         top: 5,
@@ -65,6 +65,13 @@ function DataChart({ params }) {
                         dataKey="data.Close.true"
                         name="Close"
                         fill={green[600]}
+                    />
+                    <Bar
+                        yAxisId="left"
+                        dataKey="data.OnProgress.true"
+                        name="Progress"
+                        stackId="openStack"
+                        fill={orange[600]}
                     />
                     <Bar
                         yAxisId="left"

@@ -2,9 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 export const getStok = createAsyncThunk('mnApp/stok/getStok', async (uuid) => {
-    const response = await axios.get(
-        `http://192.168.192.7:5000/mnstockid/${uuid}`
-    )
+    const response = await axios.get(`http://localhost:5000/mnstockid/${uuid}`)
 
     const data = await response.data
 
@@ -16,7 +14,7 @@ export const saveStok = createAsyncThunk(
     async (row, { dispatch, getState }) => {
         try {
             const response = await axios.patch(
-                `http://192.168.192.7:5000/mnstockid/${row.sheet_no}`,
+                `http://localhost:5000/mnstockid/${row.sheet_no}`,
                 row
             )
             const data = await response.data
@@ -32,7 +30,7 @@ export const removeStok = createAsyncThunk(
     'mnApp/stok/removeStok',
     async (uuid, { dispatch, getState }) => {
         const response = await axios.delete(
-            `http://192.168.192.7:5000/mnstockid/${uuid}`
+            `http://localhost:5000/mnstockid/${uuid}`
         )
 
         await response.data

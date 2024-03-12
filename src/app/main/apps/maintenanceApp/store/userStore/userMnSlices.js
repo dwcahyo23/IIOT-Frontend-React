@@ -8,7 +8,7 @@ import axios from 'axios'
 export const getUsersMn = createAsyncThunk(
     'mnApp/users/getUsersMn',
     async () => {
-        const response = await axios.get('http://192.168.192.7:5000/userData')
+        const response = await axios.get('http://localhost:5000/userData')
         const data = await response.data
         return data
     }

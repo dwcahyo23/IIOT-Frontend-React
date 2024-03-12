@@ -19,6 +19,7 @@ import {
     saveScw,
     updateScw,
 } from '../../store/scwStore/scwProductionSlice'
+import axios from 'axios'
 
 function Dialog1({ params, hasForm }) {
     const methods = useFormContext()
@@ -33,8 +34,10 @@ function Dialog1({ params, hasForm }) {
         hasForm == 'UPDATE' && setDisabled(false)
     }, [])
 
-    function handleSubmit() {
-        dispatch(updateScw(getValues())).then((action) => {
+    const handleSubmit = async () => {
+        const data = getValues()
+
+        await dispatch(updateScw(getValues())).then((action) => {
             if (action.meta.requestStatus === 'rejected') {
                 dispatch(
                     showMessage({
@@ -50,6 +53,67 @@ function Dialog1({ params, hasForm }) {
                 })
             )
         })
+
+        function getStatus(prop) {
+            switch (prop) {
+                case 'Open':
+                    return 'Open❌'
+
+                case 'On Progress':
+                    return 'On Progress❌'
+
+                case 'Close':
+                    return 'Close✅'
+
+                default:
+                    break
+            }
+        }
+
+        let msg = `*SCW ${data.req_to} (${getStatus(data.status)})*`
+        msg += `\n\nMachine: ${data.mch_code} | ${data.com}`
+        msg += `\nReq to: *${data.req_to}*`
+        msg += `\nNo.Draw: ${data.no_drawing}`
+        msg += `\nPrd: ${data.name_prd}`
+        msg += `\n*Problem:* \`${data.problem}\` `
+        msg += `\n*Progres:* \`${data.remarks}\` `
+        msg += `\nStart Time: *${dayjs(data.start_time).format(
+            'DD/MM/YY HH:mm'
+        )}*`
+        msg += `\n${
+            data.status == 'Close' ? 'End Time' : 'Update At'
+        }: *${dayjs(data.start_time).format('DD/MM/YY HH:mm')}*`
+        msg += `\nTotal Time: *${
+            data.status == 'Close'
+                ? dayjs(data.end_time)
+                      .diff(dayjs(data.start_time), 'h', true)
+                      .toFixed(2)
+                : dayjs().diff(dayjs(data.start_time), 'h', true).toFixed(2)
+        } hour⏱*`
+        msg += `\nInput By: ${data.input_by}`
+        msg += `\nFinish By: ${data.finished_by}`
+
+        axios
+            .post('http://192.168.192.7:5010/send-message-group', {
+                name: 'SCW BOT',
+                message: msg,
+            })
+            .then(() =>
+                dispatch(
+                    showMessage({
+                        message: 'Sended wa successfully',
+                        variant: 'success',
+                    })
+                )
+            )
+            .catch((e) => {
+                dispatch(
+                    showMessage({
+                        message: `${e.message}`,
+                        variant: 'error',
+                    })
+                )
+            })
     }
 
     return (
@@ -243,6 +307,9 @@ function Dialog1({ params, hasForm }) {
                                 fullWidth
                             >
                                 <MenuItem value="Open">Open</MenuItem>
+                                <MenuItem value="On Progress">
+                                    On Progress
+                                </MenuItem>
                                 <MenuItem value="Close">Close</MenuItem>
                                 <MenuItem value="Cancel">Cancel</MenuItem>
                             </TextField>
@@ -278,7 +345,7 @@ function Dialog1({ params, hasForm }) {
                 <Grid item xs={3}>
                     <Controller
                         name="input_by"
-                        defaultValue={params.input_by || ''}
+                        defaultValue={params.input_by}
                         control={control}
                         render={({ field }) => (
                             <TextField
@@ -294,7 +361,7 @@ function Dialog1({ params, hasForm }) {
                         )}
                     />
                 </Grid>
-                {/* <Grid item xs={3}>
+                <Grid item xs={3}>
                     <Controller
                         name="finished_by"
                         defaultValue={user.data.displayName}
@@ -308,11 +375,13 @@ function Dialog1({ params, hasForm }) {
                                 autoFocus
                                 variant="outlined"
                                 fullWidth
-                                inputProps="readonly"
+                                InputProps={{
+                                    readOnly: true,
+                                }}
                             />
                         )}
                     />
-                </Grid> */}
+                </Grid>
             </Grid>
             <Grid container spacing={2}>
                 <Grid item xs={4}>

@@ -293,7 +293,36 @@ function ProductionScwApp() {
                         </LoadingButton>
                     </div>
 
-                    {data && <SelectOption />}
+                    {isPending ? (
+                        <div className="flex items-center justify-center h-full">
+                            <FuseLoading />
+                        </div>
+                    ) : (
+                        <div>
+                            {data.length > 0 ? (
+                                <div>
+                                    <SelectOption />
+                                </div>
+                            ) : (
+                                <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{
+                                        opacity: 1,
+                                        transition: { delay: 0.1 },
+                                    }}
+                                    className="flex flex-1 items-center justify-center h-full"
+                                >
+                                    <Typography
+                                        color="text.secondary"
+                                        variant="h5"
+                                    >
+                                        There are no data!, click the Reload
+                                        button.
+                                    </Typography>
+                                </motion.div>
+                            )}
+                        </div>
+                    )}
                 </div>
             }
             scroll={isMobile ? 'normal' : 'page'}

@@ -62,8 +62,11 @@ function ListScw() {
                 >
                     <ListItemText>
                         <Typography className="text-13 mt-2 line-clamp-2">
-                            {`${index + 1}. ${_.truncate(
-                                filterData[index].problem
+                            {`${index + 1}.${_.truncate(
+                                filterData[index].problem,
+                                {
+                                    length: '15',
+                                }
                             )} | ${filterData[index].mch_code} | ${
                                 filterData[index].req_to
                             }`}

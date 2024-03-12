@@ -10,7 +10,7 @@ import _ from 'lodash'
 export const getErpPurMnSlices = createAsyncThunk(
     'mnApp/erpPur/getErpPurMnSlices',
     async () => {
-        const response = await axios.get(`http://192.168.192.7:5000/purmnerp`)
+        const response = await axios.get(`http://localhost:5000/purmnerp`)
 
         const data = await response.data
 

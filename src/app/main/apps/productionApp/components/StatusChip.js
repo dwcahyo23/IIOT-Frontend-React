@@ -22,6 +22,12 @@ export const status = [
         color: 'error',
         icon: 'heroicons-outline:x',
     },
+    {
+        id: 'On Progress',
+        name: 'Progress',
+        color: 'warning',
+        icon: 'heroicons-outline:x',
+    },
 ]
 
 function StatusChip(props) {

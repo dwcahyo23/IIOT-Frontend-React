@@ -15,7 +15,7 @@ import FuseUtils from '@fuse/utils/FuseUtils'
 export const getGenbasAcip = createAsyncThunk(
     'genbaAcip/genbas/getGenbasAcip',
     async () => {
-        const response = await axios.get(`http://192.168.192.7:5000/genbaAcip`)
+        const response = await axios.get(`http://localhost:5000/genbaAcip`)
 
         const data = await response.data
 

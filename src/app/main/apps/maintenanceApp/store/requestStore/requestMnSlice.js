@@ -5,7 +5,7 @@ export const getRequest = createAsyncThunk(
     'mnApp/request/getRequest',
     async (uuid) => {
         const response = await axios.get(
-            `http://192.168.192.7:5000/mnrequestid/${uuid}`
+            `http://localhost:5000/mnrequestid/${uuid}`
         )
 
         const data = await response.data
@@ -19,7 +19,7 @@ export const saveRequest = createAsyncThunk(
     async (row, { dispatch, getState }) => {
         try {
             const response = await axios.patch(
-                `http://192.168.192.7:5000/mnrequestid/${row.sheet_no}`,
+                `http://localhost:5000/mnrequestid/${row.sheet_no}`,
                 row
             )
             const data = await response.data
@@ -35,7 +35,7 @@ export const removeRequest = createAsyncThunk(
     'mnApp/request/removeRequest',
     async (uuid, { dispatch, getState }) => {
         const response = await axios.delete(
-            `http://192.168.192.7:5000/mnrequestid/${uuid}`
+            `http://localhost:5000/mnrequestid/${uuid}`
         )
 
         await response.data

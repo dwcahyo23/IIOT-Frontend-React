@@ -41,8 +41,8 @@ function ProductionAppScwHistori() {
 
     const Columns = [
         {
-            field: 'uuid',
-            headerName: 'ID',
+            field: 'input_by',
+            headerName: 'By',
             headerClassName: 'super-app-theme--header',
             headerAlign: 'center',
             width: 120,
@@ -104,6 +104,15 @@ function ProductionAppScwHistori() {
         {
             field: 'problem',
             headerName: 'Problem',
+            flex: 1,
+            minWidth: 180,
+            headerClassName: 'super-app-theme--header',
+            headerAlign: 'center',
+            align: 'center',
+        },
+        {
+            field: 'remarks',
+            headerName: 'Remarks',
             flex: 1,
             minWidth: 180,
             headerClassName: 'super-app-theme--header',

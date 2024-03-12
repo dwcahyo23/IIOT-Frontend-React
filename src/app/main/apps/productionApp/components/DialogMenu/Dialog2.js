@@ -21,6 +21,7 @@ import {
     updateScw,
 } from '../../store/scwStore/scwProductionSlice'
 import VirtualizedData from '../../../maintenanceSystem/machineTab/utils/VirtualizedData'
+import axios from 'axios'
 
 function Dialog2({ params, hasForm }) {
     const methods = useFormContext()
@@ -37,9 +38,9 @@ function Dialog2({ params, hasForm }) {
         console.log(hasForm)
     }, [])
 
-    function handleSubmit() {
-        // console.log(getValues())
-        dispatch(saveScw(getValues())).then((action) => {
+    const handleSubmit = async () => {
+        const data = getValues()
+        await dispatch(saveScw(getValues())).then((action) => {
             if (action.meta.requestStatus === 'rejected') {
                 dispatch(
                     showMessage({
@@ -55,6 +56,36 @@ function Dialog2({ params, hasForm }) {
                 })
             )
         })
+
+        let msg = `*SCW ${data.req_to} (OPEN❌)*`
+        msg += `\n\nMachine: ${data.mch_code} | ${data.com}`
+        msg += `\nReq to: *${data.req_to}*`
+        msg += `\nNo.Draw: ${data.no_drawing}`
+        msg += `\nPrd: ${data.name_prd}`
+        msg += `\n*Problem:* \`${data.problem}\` `
+        msg += `\nStart: *${dayjs(data.start_time).format('DD/MM/YY HH:mm')}*`
+        msg += `\nInput By: ${data.input_by}`
+        axios
+            .post('http://192.168.192.7:5010/send-message-group', {
+                name: 'SCW BOT',
+                message: msg,
+            })
+            .then(() =>
+                dispatch(
+                    showMessage({
+                        message: 'Sended wa successfully',
+                        variant: 'success',
+                    })
+                )
+            )
+            .catch((e) => {
+                dispatch(
+                    showMessage({
+                        message: `${e.message}`,
+                        variant: 'error',
+                    })
+                )
+            })
     }
 
     return (
@@ -76,6 +107,7 @@ function Dialog2({ params, hasForm }) {
                                 autoFocus={true}
                                 variant="outlined"
                                 fullWidth
+                                disabled={disabled}
                             >
                                 <MenuItem value="GM1">GM1</MenuItem>
                                 <MenuItem value="GM2">GM2</MenuItem>
@@ -85,48 +117,32 @@ function Dialog2({ params, hasForm }) {
                         )}
                     />
                 </Grid>
-                {/* <Grid item xs={2}>
-                    <Controller
-                        name="area"
-                        control={control}
-                        defaultValue={params.area || ''}
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                className="mt-8 mb-16"
-                                label="Area"
-                                 autoFocus={true}
-                                variant="outlined"
-                                fullWidth
-                                error={!!errors.area}
-                                required
-                                helperText={errors?.area?.message}
-                            />
-                        )}
-                    />
-                </Grid> */}
                 <Grid item xs={3}>
                     <Controller
                         name="mch_code"
+                        defaultValue="-"
                         control={control}
-                        defaultValue=""
                         render={({ field }) => (
-                            // <TextField
-                            //     {...field}
-                            //     className="mt-8 mb-16"
-                            //     label="Machine Code"
-                            //      autoFocus={true}
-                            //     variant="outlined"
-                            //     fullWidth
-                            //     error={!!errors.mch_code}
-                            //     required
-                            //     helperText={errors?.mch_code?.message}
-                            // />
-                            <VirtualizedData
-                                field={field}
-                                data={machines}
-                                label="Machine"
-                            />
+                            <div>
+                                {disabled == true ? (
+                                    <TextField
+                                        {...field}
+                                        className="mt-8 mb-16"
+                                        label="Machine Code"
+                                        autoFocus={true}
+                                        variant="outlined"
+                                        fullWidth
+                                        disabled
+                                    />
+                                ) : (
+                                    <VirtualizedData
+                                        disbaled={disabled}
+                                        field={field}
+                                        data={machines}
+                                        label="Machine"
+                                    />
+                                )}
+                            </div>
                         )}
                     />
                 </Grid>
@@ -146,6 +162,7 @@ function Dialog2({ params, hasForm }) {
                                 autoFocus={true}
                                 variant="outlined"
                                 fullWidth
+                                disabled={disabled}
                             >
                                 <MenuItem value="PE">PE</MenuItem>
                                 <MenuItem value="TE">TE</MenuItem>
@@ -171,6 +188,7 @@ function Dialog2({ params, hasForm }) {
                                     className="mt-8 mb-16"
                                     id="date_report"
                                     label="Start"
+                                    disabled={disabled}
                                     sx={{
                                         width: '100%',
                                     }}
@@ -199,6 +217,7 @@ function Dialog2({ params, hasForm }) {
                                 className="mt-8 mb-16"
                                 label="Draw No."
                                 autoFocus={true}
+                                disabled={disabled}
                                 variant="outlined"
                                 fullWidth
                             />
@@ -215,6 +234,7 @@ function Dialog2({ params, hasForm }) {
                                 {...field}
                                 id="name_prd"
                                 key="name_prd"
+                                disabled={disabled}
                                 className="mt-8 mb-16"
                                 label="Prd. Name"
                                 autoFocus={true}
@@ -239,6 +259,7 @@ function Dialog2({ params, hasForm }) {
                                 placeholder="Tuliskan masalah secara lengkap"
                                 autoFocus={true}
                                 variant="outlined"
+                                disabled={disabled}
                                 fullWidth
                                 multiline
                                 rows={4}
@@ -261,10 +282,13 @@ function Dialog2({ params, hasForm }) {
                                 {...field}
                                 className="mt-8 mb-16"
                                 label="Input By"
+                                disabled={disabled}
+                                InputProps={{
+                                    readOnly: true,
+                                }}
                                 autoFocus={true}
                                 variant="outlined"
                                 fullWidth
-                                disabled
                             />
                         )}
                     />
