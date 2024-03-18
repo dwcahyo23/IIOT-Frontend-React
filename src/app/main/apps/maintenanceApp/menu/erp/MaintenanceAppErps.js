@@ -28,6 +28,8 @@ import {
     filterChartErps,
     filteredErpsByMonth,
     erpPending,
+    reqStatus,
+    setReqStatus,
 } from '../../store/erpStore/erpMnSlices'
 
 import {
@@ -78,6 +80,8 @@ function MaintenanceAppErps() {
         useSelector(filteredErpsByMonth),
     ]
 
+    // console.log(filterData)
+
     const [
         selectMonth,
         useMonth,
@@ -86,6 +90,7 @@ function MaintenanceAppErps() {
         isPending,
         selectPrio,
         usePrio,
+        useStatus,
     ] = [
         useSelector(selectErpMonth),
         useSelector(erpMonth),
@@ -94,6 +99,7 @@ function MaintenanceAppErps() {
         useSelector(erpPending),
         useSelector(selectErpPriNo),
         useSelector(erpPrio),
+        useSelector(reqStatus),
     ]
 
     const [selectCom, useCom] = [
@@ -140,6 +146,11 @@ function MaintenanceAppErps() {
         dispatch(setErpPrio(value.props.value))
         // dispatch(setMachinesSection('ALL'))
         // dispatch(setMachinesResponbility('ALL'))
+    }
+
+    function handleStatus(event, value) {
+        dispatch(setReqStatus(value.props.value))
+        // dispatch(setReqStatus(value.props.value))
     }
 
     function reload(event, value) {
@@ -274,6 +285,25 @@ function MaintenanceAppErps() {
                                         {val.label}
                                     </MenuItem>
                                 ))}
+                            </Select>
+                        </FormControl>
+
+                        <FormControl
+                            className="flex w-full sm:w-auto mx-8"
+                            variant="outlined"
+                        >
+                            <InputLabel>Status</InputLabel>
+
+                            <Select
+                                labelId="category-select-label"
+                                id="category-select"
+                                label="Category"
+                                value={useStatus}
+                                onChange={handleStatus}
+                            >
+                                <MenuItem value="ALL">ALL</MenuItem>
+                                <MenuItem value="Unaudit">Unaudit</MenuItem>
+                                <MenuItem value="Audit">Audit</MenuItem>
                             </Select>
                         </FormControl>
 

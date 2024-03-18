@@ -30,6 +30,10 @@ function ProductionAppScwMain() {
     const filterChartDate = useSelector(filteredScwChartDateOfMonth)
     const data = useSelector(filteredScw)
 
+    //    useEffect(() => {
+    //     console.log(filterChartDate)
+    //    }, )
+
     return (
         <motion.div
             className="grid grid-cols-1 sm:grid-cols-6 md:grid-cols-8 gap-16 w-full min-w-0 pt-24"

@@ -339,14 +339,16 @@ export const filteredErps = createSelector(
         machinesSection,
         machinesResponbility,
         erpYear,
+        reqStatus,
     ],
-    (data, com, prio, section, responsible, year) => {
+    (data, com, prio, section, responsible, year, status) => {
         function getFilter() {
             if (
                 com === 'ALL' &&
                 responsible === 'ALL' &&
                 section === 'ALL' &&
-                year === 'ALL'
+                year === 'ALL' &&
+                status === 'ALL'
             ) {
                 return data
             }
@@ -377,6 +379,14 @@ export const filteredErps = createSelector(
                         responsible.toLowerCase()
                 ) {
                     return false
+                }
+
+                if (status == 'Unaudit') {
+                    return val.chk_mark === 'N'
+                }
+
+                if (status == 'Audit') {
+                    return val.chk_mark === 'Y'
                 }
 
                 if (section == 'machinery') {

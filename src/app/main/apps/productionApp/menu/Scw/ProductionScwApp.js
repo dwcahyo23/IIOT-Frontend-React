@@ -34,11 +34,13 @@ import {
     scwMonth,
     selectScwMonth,
     setScwMonth,
+    filterScwChartDept,
 } from '../../store/scwStore/scwProductionSlices'
 import ProductionAppScwMain from './ProductionAppScwMain'
 import { getMnMachineSlice } from 'src/app/main/dashboard/maintenanceSystem/store/mnMachineSlice'
 import { getMachineMnSlices } from '../../../maintenanceApp/store/machineStore/machineMnSlices'
 import ProductionAppScwHistori from './ProductionAppScwHistori'
+import RemainderButton from '../../components/RemainderButton'
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
     '& .FusePageSimple-header': {
@@ -70,6 +72,7 @@ function ProductionScwApp() {
         useSelector(scwDept),
     ]
     const data = useSelector(filteredScw)
+    const dataRemainder = useSelector(filterScwChartDept)
 
     function handleCom(event, value) {
         dispatch(setScwCom(value.props.value))
@@ -278,6 +281,9 @@ function ProductionScwApp() {
                                 <MenuItem value="ALL">All</MenuItem>
                                 <MenuItem value="Open">Open</MenuItem>
                                 <MenuItem value="Close">Close</MenuItem>
+                                <MenuItem value="On Progress">
+                                    On Progress
+                                </MenuItem>
                             </Select>
                         </FormControl>
 
@@ -291,6 +297,8 @@ function ProductionScwApp() {
                         >
                             <span>Reload</span>
                         </LoadingButton>
+
+                        {/* <RemainderButton params={dataRemainder} /> */}
                     </div>
 
                     {isPending ? (
