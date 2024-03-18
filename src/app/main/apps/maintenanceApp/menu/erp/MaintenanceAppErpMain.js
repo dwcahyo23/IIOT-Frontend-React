@@ -130,7 +130,7 @@ function MaintenanceAppErpMain() {
                         className="sm:col-span-2 mx-8"
                         variant="outlined"
                     >
-                        <InputLabel>Chart</InputLabel>
+                        <InputLabel>Chart Yearly</InputLabel>
 
                         <Select
                             labelId="category-select-label"
@@ -139,8 +139,10 @@ function MaintenanceAppErpMain() {
                             value={chart}
                             onChange={handleChart}
                         >
-                            <MenuItem value="YEARLY">Open&Close Chart</MenuItem>
-                            <MenuItem value="PARETO">Pareto Chart</MenuItem>
+                            <MenuItem value="YEARLY">
+                                Auidt/Unaudit Yearly
+                            </MenuItem>
+                            <MenuItem value="PARETO">Pareto Yearly</MenuItem>
                         </Select>
                     </FormControl>
                 </div>
